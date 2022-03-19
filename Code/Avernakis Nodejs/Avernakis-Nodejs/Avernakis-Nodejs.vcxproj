@@ -1,0 +1,310 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>16.0</VCProjectVersion>
+    <Keyword>Win32Proj</Keyword>
+    <ProjectGuid>{2d616f99-8f53-47a2-86ff-5dc1903963e8}</ProjectGuid>
+    <RootNamespace>AvernakisNodejs</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\..\External\Avernakis\Code\Avernakis-Property\Common.props" />
+    <Import Project="..\..\External\Avernakis\Code\Avernakis-Property\WinDesktop.props" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\..\External\Avernakis\Code\Avernakis-Property\Common.props" />
+    <Import Project="..\..\External\Avernakis\Code\Avernakis-Property\WinDesktop.props" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\..\External\Avernakis\Code\Avernakis-Property\Common.props" />
+    <Import Project="..\..\External\Avernakis\Code\Avernakis-Property\WinDesktop.props" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\..\External\Avernakis\Code\Avernakis-Property\Common.props" />
+    <Import Project="..\..\External\Avernakis\Code\Avernakis-Property\WinDesktop.props" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+    <TargetExt>.node</TargetExt>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+    <TargetExt>.node</TargetExt>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <LinkIncremental>true</LinkIncremental>
+    <TargetExt>.node</TargetExt>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <LinkIncremental>false</LinkIncremental>
+    <TargetExt>.node</TargetExt>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PreprocessorDefinitions>WIN32;_DEBUG;AVERNAKISNODEJS_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <AdditionalOptions>/Zm200 %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableUAC>false</EnableUAC>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>AveLib;WIN32;NDEBUG;AVERNAKISNODEJS_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <AdditionalOptions>/Zm200 %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableUAC>false</EnableUAC>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <PreprocessorDefinitions>_DEBUG;AVERNAKISNODEJS_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <AdditionalOptions>/Zm200 %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableUAC>false</EnableUAC>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>AveLib;NDEBUG;AVERNAKISNODEJS_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <AdditionalOptions>/Zm200 %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableUAC>false</EnableUAC>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="Private\App.cpp" />
+    <ClCompile Include="Private\CoCamera.cpp" />
+    <ClCompile Include="Private\Empty.cpp" />
+    <ClCompile Include="Private\Example.cpp" />
+    <ClCompile Include="Private\ExportAll.cpp" />
+    <ClCompile Include="Private\Library.cpp" />
+    <ClCompile Include="Private\StdAfx.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="Private\Test.cpp" />
+    <ClCompile Include="Private\UiAnimFrame.cpp" />
+    <ClCompile Include="Private\UiApp.cpp" />
+    <ClCompile Include="Private\UiButton.cpp" />
+    <ClCompile Include="Private\UiCalendar.cpp" />
+    <ClCompile Include="Private\UiCheckBox.cpp" />
+    <ClCompile Include="Private\UiColorPicker.cpp" />
+    <ClCompile Include="Private\UiColorView.cpp" />
+    <ClCompile Include="Private\UiComboBox.cpp" />
+    <ClCompile Include="Private\UiCommon.cpp" />
+    <ClCompile Include="Private\UiCommonUi.cpp" />
+    <ClCompile Include="Private\UiControlManager.cpp" />
+    <ClCompile Include="Private\UiPlatform.cpp" />
+    <ClCompile Include="Private\UiCommonUiWait.cpp" />
+    <ClCompile Include="Private\UiContainer3D.cpp" />
+    <ClCompile Include="Private\UiControl.cpp" />
+    <ClCompile Include="Private\UiDatePicker.cpp" />
+    <ClCompile Include="Private\UiGrid.cpp" />
+    <ClCompile Include="Private\UiGroup.cpp" />
+    <ClCompile Include="Private\UiHeader.cpp" />
+    <ClCompile Include="Private\UiHyperlink.cpp" />
+    <ClCompile Include="Private\UiIcon.cpp" />
+    <ClCompile Include="Private\UiIconManager.cpp" />
+    <ClCompile Include="Private\UiKnob.cpp" />
+    <ClCompile Include="Private\UiLabel.cpp" />
+    <ClCompile Include="Private\UiListBox.cpp" />
+    <ClCompile Include="Private\UiMatrixEditor.cpp" />
+    <ClCompile Include="Private\UiMatrixEditorDoc.cpp" />
+    <ClCompile Include="Private\UiMenu.cpp" />
+    <ClCompile Include="Private\UiMidiKey.cpp" />
+    <ClCompile Include="Private\UiPager.cpp" />
+    <ClCompile Include="Private\UiPicture.cpp" />
+    <ClCompile Include="Private\UiPlaceholder.cpp" />
+    <ClCompile Include="Private\UiProgressBar.cpp" />
+    <ClCompile Include="Private\UiRadioBox.cpp" />
+    <ClCompile Include="Private\UiRibbon.cpp" />
+    <ClCompile Include="Private\UiRibbonApp.cpp" />
+    <ClCompile Include="Private\UiRibbonBackstage.cpp" />
+    <ClCompile Include="Private\UiRibbonButton.cpp" />
+    <ClCompile Include="Private\UiRibbonGallery.cpp" />
+    <ClCompile Include="Private\UiRibbonGroup.cpp" />
+    <ClCompile Include="Private\UiRibbonTab.cpp" />
+    <ClCompile Include="Private\UiRichListBox.cpp" />
+    <ClCompile Include="Private\UiScrollBar.cpp" />
+    <ClCompile Include="Private\UiSpin.cpp" />
+    <ClCompile Include="Private\UiStatusBar.cpp" />
+    <ClCompile Include="Private\UiTab.cpp" />
+    <ClCompile Include="Private\UiTextBox.cpp" />
+    <ClCompile Include="Private\UiTheme.cpp" />
+    <ClCompile Include="Private\UiThemeImage.cpp" />
+    <ClCompile Include="Private\UiThemeImagePredefined.cpp" />
+    <ClCompile Include="Private\UiToolBar.cpp" />
+    <ClCompile Include="Private\UiTrackBar.cpp" />
+    <ClCompile Include="Private\UiTree.cpp" />
+    <ClCompile Include="Private\UiWindow.cpp" />
+    <ClCompile Include="Private\UiWindowFrame.cpp" />
+    <ClCompile Include="Private\UiWindowSysTray.cpp" />
+    <ClCompile Include="Private\UiWindowTaskbar.cpp" />
+    <ClCompile Include="Private\win_delay_load_hook.cc">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Private\App.h" />
+    <ClInclude Include="Private\CoCamera.h" />
+    <ClInclude Include="Private\Empty.h" />
+    <ClInclude Include="Private\Example.h" />
+    <ClInclude Include="Private\StdAfx.h" />
+    <ClInclude Include="Private\Test.h" />
+    <ClInclude Include="Private\UiAnimFrame.h" />
+    <ClInclude Include="Private\UiApp.h" />
+    <ClInclude Include="Private\UiButton.h" />
+    <ClInclude Include="Private\UiCalendar.h" />
+    <ClInclude Include="Private\UiCheckBox.h" />
+    <ClInclude Include="Private\UiColorPicker.h" />
+    <ClInclude Include="Private\UiColorView.h" />
+    <ClInclude Include="Private\UiComboBox.h" />
+    <ClInclude Include="Private\UiCommon.h" />
+    <ClInclude Include="Private\UiCommonUi.h" />
+    <ClInclude Include="Private\UiControlManager.h" />
+    <ClInclude Include="Private\UiPlatform.h" />
+    <ClInclude Include="Private\UiCommonUiWait.h" />
+    <ClInclude Include="Private\UiContainer3D.h" />
+    <ClInclude Include="Private\UiControl.h" />
+    <ClInclude Include="Private\UiControlHelper.h" />
+    <ClInclude Include="Private\UiDatePicker.h" />
+    <ClInclude Include="Private\UiGrid.h" />
+    <ClInclude Include="Private\UiGroup.h" />
+    <ClInclude Include="Private\UiHeader.h" />
+    <ClInclude Include="Private\UiHyperlink.h" />
+    <ClInclude Include="Private\UiIcon.h" />
+    <ClInclude Include="Private\UiIconManager.h" />
+    <ClInclude Include="Private\UiKnob.h" />
+    <ClInclude Include="Private\UiLabel.h" />
+    <ClInclude Include="Private\UiListBox.h" />
+    <ClInclude Include="Private\UiMatrixEditor.h" />
+    <ClInclude Include="Private\UiMatrixEditorDoc.h" />
+    <ClInclude Include="Private\UiMenu.h" />
+    <ClInclude Include="Private\UiMidiKey.h" />
+    <ClInclude Include="Private\UiPager.h" />
+    <ClInclude Include="Private\UiPicture.h" />
+    <ClInclude Include="Private\UiPlaceholder.h" />
+    <ClInclude Include="Private\UiProgressBar.h" />
+    <ClInclude Include="Private\UiRadioBox.h" />
+    <ClInclude Include="Private\UiRibbon.h" />
+    <ClInclude Include="Private\UiRibbonApp.h" />
+    <ClInclude Include="Private\UiRibbonBackstage.h" />
+    <ClInclude Include="Private\UiRibbonButton.h" />
+    <ClInclude Include="Private\UiRibbonGallery.h" />
+    <ClInclude Include="Private\UiRibbonGroup.h" />
+    <ClInclude Include="Private\UiRibbonTab.h" />
+    <ClInclude Include="Private\UiRichListBox.h" />
+    <ClInclude Include="Private\UiScrollBar.h" />
+    <ClInclude Include="Private\UiSpin.h" />
+    <ClInclude Include="Private\UiStatusBar.h" />
+    <ClInclude Include="Private\UiTab.h" />
+    <ClInclude Include="Private\UiTextBox.h" />
+    <ClInclude Include="Private\UiTheme.h" />
+    <ClInclude Include="Private\UiThemeImage.h" />
+    <ClInclude Include="Private\UiThemeImagePredefined.h" />
+    <ClInclude Include="Private\UiToolBar.h" />
+    <ClInclude Include="Private\UiTrackBar.h" />
+    <ClInclude Include="Private\UiTree.h" />
+    <ClInclude Include="Private\UiVisual.h" />
+    <ClInclude Include="Private\UiVisualHelper.h" />
+    <ClInclude Include="Private\UiWindow.h" />
+    <ClInclude Include="Private\UiWindowFrame.h" />
+    <ClInclude Include="Private\UiWindowSysTray.h" />
+    <ClInclude Include="Private\UiWindowTaskbar.h" />
+    <ClInclude Include="Private\WrapBase.h" />
+    <ClInclude Include="Private\WrapData.h" />
+    <ClInclude Include="Private\WrapObject.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Private\Export.def" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

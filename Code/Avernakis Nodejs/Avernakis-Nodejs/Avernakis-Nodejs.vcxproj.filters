@@ -1,0 +1,594 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="Private\StdAfx.cpp">
+      <Filter>Build</Filter>
+    </ClCompile>
+    <ClCompile Include="Private\Library.cpp">
+      <Filter>Build</Filter>
+    </ClCompile>
+    <ClCompile Include="Private\win_delay_load_hook.cc">
+      <Filter>External</Filter>
+    </ClCompile>
+    <ClCompile Include="Private\ExportAll.cpp" />
+    <ClCompile Include="Private\Test.cpp">
+      <Filter>Test</Filter>
+    </ClCompile>
+    <ClCompile Include="Private\UiCommon.cpp">
+      <Filter>Ui</Filter>
+    </ClCompile>
+    <ClCompile Include="Private\UiTheme.cpp">
+      <Filter>Ui\Theme</Filter>
+    </ClCompile>
+    <ClCompile Include="Private\UiControl.cpp">
+      <Filter>Ui\Control</Filter>
+    </ClCompile>
+    <ClCompile Include="Private\UiGrid.cpp">
+      <Filter>Ui\Control\Grid</Filter>
+    </ClCompile>
+    <ClCompile Include="Private\UiWindow.cpp">
+      <Filter>Ui\Control\Window</Filter>
+    </ClCompile>
+    <ClCompile Include="Private\UiButton.cpp">
+      <Filter>Ui\Control\Button</Filter>
+    </ClCompile>
+    <ClCompile Include="Private\UiThemeImage.cpp">
+      <Filter>Ui\Theme\Image-based</Filter>
+    </ClCompile>
+    <ClCompile Include="Private\UiThemeImagePredefined.cpp">
+      <Filter>Ui\Theme\Image-based</Filter>
+    </ClCompile>
+    <ClCompile Include="Private\Example.cpp">
+      <Filter>Example</Filter>
+    </ClCompile>
+    <ClCompile Include="Private\UiApp.cpp">
+      <Filter>Ui\App</Filter>
+    </ClCompile>
+    <ClCompile Include="Private\App.cpp">
+      <Filter>Ui\App</Filter>
+    </ClCompile>
+    <ClCompile Include="Private\Empty.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="Private\UiCheckBox.cpp">
+      <Filter>Ui\Control\CheckBox</Filter>
+    </ClCompile>
+    <ClCompile Include="Private\UiComboBox.cpp">
+      <Filter>Ui\Control\ComboBox</Filter>
+    </ClCompile>
+    <ClCompile Include="Private\UiTextBox.cpp">
+      <Filter>Ui\Control\TextBox</Filter>
+    </ClCompile>
+    <ClCompile Include="Private\UiWindowSysTray.cpp">
+      <Filter>Ui\Control\Window</Filter>
+    </ClCompile>
+    <ClCompile Include="Private\UiScrollBar.cpp">
+      <Filter>Ui\Control\ScrollBar</Filter>
+    </ClCompile>
+    <ClCompile Include="Private\UiWindowTaskbar.cpp">
+      <Filter>Ui\Control\Window</Filter>
+    </ClCompile>
+    <ClCompile Include="Private\UiProgressBar.cpp">
+      <Filter>Ui\Control\ProgressBar</Filter>
+    </ClCompile>
+    <ClCompile Include="Private\UiLabel.cpp">
+      <Filter>Ui\Visual\Label</Filter>
+    </ClCompile>
+    <ClCompile Include="Private\UiContainer3D.cpp">
+      <Filter>Ui\Control\Container3D</Filter>
+    </ClCompile>
+    <ClCompile Include="Private\UiListBox.cpp">
+      <Filter>Ui\Control\ListBox</Filter>
+    </ClCompile>
+    <ClCompile Include="Private\UiRichListBox.cpp">
+      <Filter>Ui\Control\RichListBox</Filter>
+    </ClCompile>
+    <ClCompile Include="Private\UiHeader.cpp">
+      <Filter>Ui\Control\Header</Filter>
+    </ClCompile>
+    <ClCompile Include="Private\UiWindowFrame.cpp">
+      <Filter>Ui\Control\WindowFrame</Filter>
+    </ClCompile>
+    <ClCompile Include="Private\UiAnimFrame.cpp">
+      <Filter>Ui\Visual\AnimFrame</Filter>
+    </ClCompile>
+    <ClCompile Include="Private\UiCalendar.cpp">
+      <Filter>Ui\Control\Calendar</Filter>
+    </ClCompile>
+    <ClCompile Include="Private\UiIcon.cpp">
+      <Filter>Ui\Visual\Icon</Filter>
+    </ClCompile>
+    <ClCompile Include="Private\UiColorPicker.cpp">
+      <Filter>Ui\Control\ColorPicker</Filter>
+    </ClCompile>
+    <ClCompile Include="Private\UiDatePicker.cpp">
+      <Filter>Ui\Control\DatePicker</Filter>
+    </ClCompile>
+    <ClCompile Include="Private\UiGroup.cpp">
+      <Filter>Ui\Control\Group</Filter>
+    </ClCompile>
+    <ClCompile Include="Private\UiHyperlink.cpp">
+      <Filter>Ui\Control\Hyperlink</Filter>
+    </ClCompile>
+    <ClCompile Include="Private\UiKnob.cpp">
+      <Filter>Ui\Control\Knob</Filter>
+    </ClCompile>
+    <ClCompile Include="Private\UiMatrixEditor.cpp">
+      <Filter>Ui\Control\MatrixEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="Private\UiMatrixEditorDoc.cpp">
+      <Filter>Ui\Control\MatrixEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="Private\UiMenu.cpp">
+      <Filter>Ui\Control\Menu</Filter>
+    </ClCompile>
+    <ClCompile Include="Private\UiMidiKey.cpp">
+      <Filter>Ui\Control\MidiKey</Filter>
+    </ClCompile>
+    <ClCompile Include="Private\UiPager.cpp">
+      <Filter>Ui\Control\Pager</Filter>
+    </ClCompile>
+    <ClCompile Include="Private\UiPlaceholder.cpp">
+      <Filter>Ui\Control\Placeholder</Filter>
+    </ClCompile>
+    <ClCompile Include="Private\UiRadioBox.cpp">
+      <Filter>Ui\Control\RadioBox</Filter>
+    </ClCompile>
+    <ClCompile Include="Private\UiSpin.cpp">
+      <Filter>Ui\Control\Spin</Filter>
+    </ClCompile>
+    <ClCompile Include="Private\UiStatusBar.cpp">
+      <Filter>Ui\Control\StatusBar</Filter>
+    </ClCompile>
+    <ClCompile Include="Private\UiTab.cpp">
+      <Filter>Ui\Control\Tab</Filter>
+    </ClCompile>
+    <ClCompile Include="Private\UiToolBar.cpp">
+      <Filter>Ui\Control\ToolBar</Filter>
+    </ClCompile>
+    <ClCompile Include="Private\UiTrackBar.cpp">
+      <Filter>Ui\Control\TrackBar</Filter>
+    </ClCompile>
+    <ClCompile Include="Private\UiTree.cpp">
+      <Filter>Ui\Control\Tree</Filter>
+    </ClCompile>
+    <ClCompile Include="Private\UiColorView.cpp">
+      <Filter>Ui\Visual\ColorView</Filter>
+    </ClCompile>
+    <ClCompile Include="Private\UiPicture.cpp">
+      <Filter>Ui\Visual\Picture</Filter>
+    </ClCompile>
+    <ClCompile Include="Private\UiRibbon.cpp">
+      <Filter>Ui\Ribbon\Ribbon</Filter>
+    </ClCompile>
+    <ClCompile Include="Private\UiRibbonApp.cpp">
+      <Filter>Ui\Ribbon\RibbonApp</Filter>
+    </ClCompile>
+    <ClCompile Include="Private\UiRibbonGroup.cpp">
+      <Filter>Ui\Ribbon\RibbonGroup</Filter>
+    </ClCompile>
+    <ClCompile Include="Private\UiRibbonTab.cpp">
+      <Filter>Ui\Ribbon\RibbonTab</Filter>
+    </ClCompile>
+    <ClCompile Include="Private\UiRibbonButton.cpp">
+      <Filter>Ui\Ribbon\RibbonButton</Filter>
+    </ClCompile>
+    <ClCompile Include="Private\UiRibbonBackstage.cpp">
+      <Filter>Ui\Ribbon\RibbonBackstage</Filter>
+    </ClCompile>
+    <ClCompile Include="Private\UiRibbonGallery.cpp">
+      <Filter>Ui\Ribbon\RibbonGallery</Filter>
+    </ClCompile>
+    <ClCompile Include="Private\CoCamera.cpp">
+      <Filter>Ui\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="Private\UiCommonUi.cpp">
+      <Filter>Ui\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="Private\UiCommonUiWait.cpp">
+      <Filter>Ui\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="Private\UiControlManager.cpp">
+      <Filter>Ui\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="Private\UiIconManager.cpp">
+      <Filter>Ui\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="Private\UiPlatform.cpp">
+      <Filter>Ui\Common</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Build">
+      <UniqueIdentifier>{b6dcc093-3d39-416f-a9a6-6a4d5a5bfef7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="External">
+      <UniqueIdentifier>{6af69e80-4eef-400c-91e0-ef7bf9528cb6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Ui">
+      <UniqueIdentifier>{dfd1e2f1-13f4-4eed-81f2-4d65fa6fd287}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Common">
+      <UniqueIdentifier>{fca84478-9ff5-4078-8cc6-fb0e641bf602}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Test">
+      <UniqueIdentifier>{d9e5e603-5a02-4587-ab73-203e270563c5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Ui\Control">
+      <UniqueIdentifier>{872618b4-8a8d-47af-b435-39d2a572c859}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Ui\Control\Window">
+      <UniqueIdentifier>{953e9a52-72f2-48f1-b8c2-6b4f7b2de331}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Ui\Theme">
+      <UniqueIdentifier>{d0b24f58-1809-4057-af2a-1dea6cf58562}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Ui\Control\Button">
+      <UniqueIdentifier>{a4c19c98-d20f-4b89-b3ff-fcdae9c01fad}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Ui\Control\Grid">
+      <UniqueIdentifier>{04020f08-80e1-4683-98c8-466a0bb0ec90}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Ui\Theme\Image-based">
+      <UniqueIdentifier>{ff45760e-0bcf-463e-a7a8-3b1092334e96}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Example">
+      <UniqueIdentifier>{7f7cb90f-539e-47c0-9c34-266ad34038e1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Ui\App">
+      <UniqueIdentifier>{297288b7-2bba-40d1-99b9-8ac5130fa012}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Ui\Common">
+      <UniqueIdentifier>{58d568e2-65f1-4739-956d-f1ddb0683d07}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Ui\Control\CheckBox">
+      <UniqueIdentifier>{a0d97c6d-effc-4ebc-b97d-00cd1c6efa38}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Ui\Control\ComboBox">
+      <UniqueIdentifier>{e61cd67a-c64f-4a04-ad24-74973821a97a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Ui\Control\TextBox">
+      <UniqueIdentifier>{8cf15181-8689-4893-b6e9-b58ec47f6526}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Ui\Visual">
+      <UniqueIdentifier>{f294d4f7-2708-4235-bebf-90b2f826f80e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Ui\Control\ScrollBar">
+      <UniqueIdentifier>{43cc70fc-83df-4e3b-8ede-12f9657d5655}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Ui\Control\ProgressBar">
+      <UniqueIdentifier>{efb98764-d52c-49d7-be9c-e6c5f9eab352}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Ui\Control\Container3D">
+      <UniqueIdentifier>{178208b0-b8a2-4ef8-96a6-5c4fec46016a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Ui\Control\ListBox">
+      <UniqueIdentifier>{b7674b91-0f50-4019-bb28-1e6dfff395bb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Ui\Control\RichListBox">
+      <UniqueIdentifier>{d4c1a94a-7709-4f05-9d56-b66d3bd70e76}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Ui\Control\Header">
+      <UniqueIdentifier>{22b88abe-16c2-404a-98d3-82b419002631}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Ui\Control\WindowFrame">
+      <UniqueIdentifier>{c3027680-052c-45bf-ab06-099bd8fe081b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Ui\Control\Calendar">
+      <UniqueIdentifier>{98f61dc8-3e01-4d24-97d2-7fc01d9d1676}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Ui\Visual\Icon">
+      <UniqueIdentifier>{cef2e3d1-39ed-4818-89c1-7bc2123b5c4a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Ui\Visual\Label">
+      <UniqueIdentifier>{e4d0fe0f-e166-4549-a9cc-ccdfabcd08f6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Ui\Visual\AnimFrame">
+      <UniqueIdentifier>{8f1bbedd-e6ab-4eff-aa90-04fabf3a094c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Ui\Visual\Picture">
+      <UniqueIdentifier>{8d322440-c765-4edb-af0f-904dc287ae1d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Ui\Visual\ColorView">
+      <UniqueIdentifier>{77387f44-d5f0-4243-8748-616343932d6c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Ui\Control\ColorPicker">
+      <UniqueIdentifier>{f37b496d-02c0-4462-8f5f-b4d36f7683a3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Ui\Control\DatePicker">
+      <UniqueIdentifier>{28cc7b8a-34be-4a03-94f7-9a0188e8b355}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Ui\Control\Dock">
+      <UniqueIdentifier>{db0ef711-e76f-43f9-bc73-4e25323b4690}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Ui\Control\Group">
+      <UniqueIdentifier>{a0c3e176-0899-4f58-84b6-130b9f59c24a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Ui\Control\Hyperlink">
+      <UniqueIdentifier>{839cba0d-1175-4153-acf0-d4fe0243d98a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Ui\Control\Knob">
+      <UniqueIdentifier>{07ed945d-1f0d-4561-8d32-7e2460a343aa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Ui\Control\MatrixEditor">
+      <UniqueIdentifier>{63f00797-4b75-429d-8c17-be64340e13ca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Ui\Control\Menu">
+      <UniqueIdentifier>{86216eba-6ca0-43c4-bb21-843dd8d1d966}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Ui\Control\MidiKey">
+      <UniqueIdentifier>{74e99764-b112-4338-8d50-3a57b1d14c5d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Ui\Control\Tree">
+      <UniqueIdentifier>{b489359d-8104-4ee5-907e-7337ada2a633}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Ui\Control\TrackEditor">
+      <UniqueIdentifier>{7559bf49-d1cb-4c68-8b38-a9d03aa05bfe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Ui\Control\TrackBar">
+      <UniqueIdentifier>{5c498340-c362-4fba-9c93-b093c12de567}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Ui\Control\ToolBar">
+      <UniqueIdentifier>{8912ef17-25ff-4306-8c9f-814c25caf2fd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Ui\Control\Tab">
+      <UniqueIdentifier>{7cae1d1f-d7dc-4e3c-b2cd-895d4e2130ae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Ui\Control\StatusBar">
+      <UniqueIdentifier>{a49e0a1e-110b-4a5e-be57-e287a94d6ae7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Ui\Control\Spin">
+      <UniqueIdentifier>{07b7f5a3-0950-4a20-bc32-0829ff1885f1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Ui\Control\RadioBox">
+      <UniqueIdentifier>{51bb1f9b-638a-4c3e-9167-06bfb036a67a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Ui\Control\PropertyEditor">
+      <UniqueIdentifier>{dff9af6e-073a-4eb0-bf25-ece83057c8fb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Ui\Control\Placeholder">
+      <UniqueIdentifier>{23e0fde0-ec9d-453c-a368-14a2a3e94cd7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Ui\Control\Pager">
+      <UniqueIdentifier>{6171ab26-5a59-4fed-b04e-16b5a03be162}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Ui\Ribbon">
+      <UniqueIdentifier>{182cfdde-cc7e-42b4-87ef-b93797543cc4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Ui\Ribbon\RibbonGallery">
+      <UniqueIdentifier>{80237249-6744-49a9-8cec-b7ccd402fb18}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Ui\Ribbon\RibbonButton">
+      <UniqueIdentifier>{db19da8a-5c04-4684-ac77-c89fcd6cfb88}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Ui\Ribbon\RibbonGroup">
+      <UniqueIdentifier>{34c4022c-5f99-49cd-b0dc-61b2930a8f83}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Ui\Ribbon\RibbonTab">
+      <UniqueIdentifier>{02ee1b29-e169-4371-9736-d15fb3501ce0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Ui\Ribbon\RibbonBackstage">
+      <UniqueIdentifier>{32389d32-acf0-49b4-8e9b-dfbc711bfb7a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Ui\Ribbon\RibbonApp">
+      <UniqueIdentifier>{6651b612-7cfe-4cea-a3a9-92f30e42c406}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Ui\Ribbon\Ribbon">
+      <UniqueIdentifier>{1b106360-c1bc-44b2-a9f4-13cf11762c72}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Private\Export.def">
+      <Filter>Build</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Private\StdAfx.h">
+      <Filter>Build</Filter>
+    </ClInclude>
+    <ClInclude Include="Private\Test.h">
+      <Filter>Test</Filter>
+    </ClInclude>
+    <ClInclude Include="Private\WrapBase.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Private\WrapObject.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Private\WrapData.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Private\UiCommon.h">
+      <Filter>Ui</Filter>
+    </ClInclude>
+    <ClInclude Include="Private\UiTheme.h">
+      <Filter>Ui\Theme</Filter>
+    </ClInclude>
+    <ClInclude Include="Private\UiControl.h">
+      <Filter>Ui\Control</Filter>
+    </ClInclude>
+    <ClInclude Include="Private\UiGrid.h">
+      <Filter>Ui\Control\Grid</Filter>
+    </ClInclude>
+    <ClInclude Include="Private\UiWindow.h">
+      <Filter>Ui\Control\Window</Filter>
+    </ClInclude>
+    <ClInclude Include="Private\UiControlHelper.h">
+      <Filter>Ui\Control</Filter>
+    </ClInclude>
+    <ClInclude Include="Private\UiButton.h">
+      <Filter>Ui\Control\Button</Filter>
+    </ClInclude>
+    <ClInclude Include="Private\UiVisual.h">
+      <Filter>Ui\Control</Filter>
+    </ClInclude>
+    <ClInclude Include="Private\UiVisualHelper.h">
+      <Filter>Ui\Control</Filter>
+    </ClInclude>
+    <ClInclude Include="Private\UiThemeImage.h">
+      <Filter>Ui\Theme\Image-based</Filter>
+    </ClInclude>
+    <ClInclude Include="Private\UiThemeImagePredefined.h">
+      <Filter>Ui\Theme\Image-based</Filter>
+    </ClInclude>
+    <ClInclude Include="Private\Example.h">
+      <Filter>Example</Filter>
+    </ClInclude>
+    <ClInclude Include="Private\UiApp.h">
+      <Filter>Ui\App</Filter>
+    </ClInclude>
+    <ClInclude Include="Private\App.h">
+      <Filter>Ui\App</Filter>
+    </ClInclude>
+    <ClInclude Include="Private\Empty.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Private\UiCheckBox.h">
+      <Filter>Ui\Control\CheckBox</Filter>
+    </ClInclude>
+    <ClInclude Include="Private\UiComboBox.h">
+      <Filter>Ui\Control\ComboBox</Filter>
+    </ClInclude>
+    <ClInclude Include="Private\UiTextBox.h">
+      <Filter>Ui\Control\TextBox</Filter>
+    </ClInclude>
+    <ClInclude Include="Private\UiWindowSysTray.h">
+      <Filter>Ui\Control\Window</Filter>
+    </ClInclude>
+    <ClInclude Include="Private\UiScrollBar.h">
+      <Filter>Ui\Control\ScrollBar</Filter>
+    </ClInclude>
+    <ClInclude Include="Private\UiWindowTaskbar.h">
+      <Filter>Ui\Control\Window</Filter>
+    </ClInclude>
+    <ClInclude Include="Private\UiProgressBar.h">
+      <Filter>Ui\Control\ProgressBar</Filter>
+    </ClInclude>
+    <ClInclude Include="Private\UiLabel.h">
+      <Filter>Ui\Visual\Label</Filter>
+    </ClInclude>
+    <ClInclude Include="Private\UiContainer3D.h">
+      <Filter>Ui\Control\Container3D</Filter>
+    </ClInclude>
+    <ClInclude Include="Private\UiListBox.h">
+      <Filter>Ui\Control\ListBox</Filter>
+    </ClInclude>
+    <ClInclude Include="Private\UiRichListBox.h">
+      <Filter>Ui\Control\RichListBox</Filter>
+    </ClInclude>
+    <ClInclude Include="Private\UiHeader.h">
+      <Filter>Ui\Control\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Private\UiWindowFrame.h">
+      <Filter>Ui\Control\WindowFrame</Filter>
+    </ClInclude>
+    <ClInclude Include="Private\UiAnimFrame.h">
+      <Filter>Ui\Visual\AnimFrame</Filter>
+    </ClInclude>
+    <ClInclude Include="Private\UiCalendar.h">
+      <Filter>Ui\Control\Calendar</Filter>
+    </ClInclude>
+    <ClInclude Include="Private\UiIcon.h">
+      <Filter>Ui\Visual\Icon</Filter>
+    </ClInclude>
+    <ClInclude Include="Private\UiColorPicker.h">
+      <Filter>Ui\Control\ColorPicker</Filter>
+    </ClInclude>
+    <ClInclude Include="Private\UiDatePicker.h">
+      <Filter>Ui\Control\DatePicker</Filter>
+    </ClInclude>
+    <ClInclude Include="Private\UiGroup.h">
+      <Filter>Ui\Control\Group</Filter>
+    </ClInclude>
+    <ClInclude Include="Private\UiHyperlink.h">
+      <Filter>Ui\Control\Hyperlink</Filter>
+    </ClInclude>
+    <ClInclude Include="Private\UiKnob.h">
+      <Filter>Ui\Control\Knob</Filter>
+    </ClInclude>
+    <ClInclude Include="Private\UiMatrixEditor.h">
+      <Filter>Ui\Control\MatrixEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="Private\UiMatrixEditorDoc.h">
+      <Filter>Ui\Control\MatrixEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="Private\UiMenu.h">
+      <Filter>Ui\Control\Menu</Filter>
+    </ClInclude>
+    <ClInclude Include="Private\UiMidiKey.h">
+      <Filter>Ui\Control\MidiKey</Filter>
+    </ClInclude>
+    <ClInclude Include="Private\UiPager.h">
+      <Filter>Ui\Control\Pager</Filter>
+    </ClInclude>
+    <ClInclude Include="Private\UiPlaceholder.h">
+      <Filter>Ui\Control\Placeholder</Filter>
+    </ClInclude>
+    <ClInclude Include="Private\UiRadioBox.h">
+      <Filter>Ui\Control\RadioBox</Filter>
+    </ClInclude>
+    <ClInclude Include="Private\UiSpin.h">
+      <Filter>Ui\Control\Spin</Filter>
+    </ClInclude>
+    <ClInclude Include="Private\UiStatusBar.h">
+      <Filter>Ui\Control\StatusBar</Filter>
+    </ClInclude>
+    <ClInclude Include="Private\UiTab.h">
+      <Filter>Ui\Control\Tab</Filter>
+    </ClInclude>
+    <ClInclude Include="Private\UiToolBar.h">
+      <Filter>Ui\Control\ToolBar</Filter>
+    </ClInclude>
+    <ClInclude Include="Private\UiTrackBar.h">
+      <Filter>Ui\Control\TrackBar</Filter>
+    </ClInclude>
+    <ClInclude Include="Private\UiTree.h">
+      <Filter>Ui\Control\Tree</Filter>
+    </ClInclude>
+    <ClInclude Include="Private\UiColorView.h">
+      <Filter>Ui\Visual\ColorView</Filter>
+    </ClInclude>
+    <ClInclude Include="Private\UiPicture.h">
+      <Filter>Ui\Visual\Picture</Filter>
+    </ClInclude>
+    <ClInclude Include="Private\UiRibbon.h">
+      <Filter>Ui\Ribbon\Ribbon</Filter>
+    </ClInclude>
+    <ClInclude Include="Private\UiRibbonApp.h">
+      <Filter>Ui\Ribbon\RibbonApp</Filter>
+    </ClInclude>
+    <ClInclude Include="Private\UiRibbonGroup.h">
+      <Filter>Ui\Ribbon\RibbonGroup</Filter>
+    </ClInclude>
+    <ClInclude Include="Private\UiRibbonTab.h">
+      <Filter>Ui\Ribbon\RibbonTab</Filter>
+    </ClInclude>
+    <ClInclude Include="Private\UiRibbonButton.h">
+      <Filter>Ui\Ribbon\RibbonButton</Filter>
+    </ClInclude>
+    <ClInclude Include="Private\UiRibbonBackstage.h">
+      <Filter>Ui\Ribbon\RibbonBackstage</Filter>
+    </ClInclude>
+    <ClInclude Include="Private\UiRibbonGallery.h">
+      <Filter>Ui\Ribbon\RibbonGallery</Filter>
+    </ClInclude>
+    <ClInclude Include="Private\CoCamera.h">
+      <Filter>Ui\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Private\UiCommonUi.h">
+      <Filter>Ui\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Private\UiCommonUiWait.h">
+      <Filter>Ui\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Private\UiControlManager.h">
+      <Filter>Ui\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Private\UiIconManager.h">
+      <Filter>Ui\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Private\UiPlatform.h">
+      <Filter>Ui\Common</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

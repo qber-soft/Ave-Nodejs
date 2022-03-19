@@ -1,0 +1,74 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31410.357
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Avernakis-Nodejs", "Avernakis-Nodejs\Avernakis-Nodejs.vcxproj", "{2D616F99-8F53-47A2-86FF-5DC1903963E8}"
+EndProject
+Project("{9092AA53-FB77-4645-B42D-1CCCA6BD08BD}") = "Test-Nodejs", "Test-Nodejs\Test-Nodejs.njsproj", "{B9220CEB-C362-47DA-A86A-836C762D90F7}"
+EndProject
+Project("{9092AA53-FB77-4645-B42D-1CCCA6BD08BD}") = "Test-React", "Test-React\Test-React.njsproj", "{099934C0-0E75-4930-ADE9-5A370EB99435}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test-Nodejs Resource", "Test-Nodejs Resource", "{73A43A40-7B04-425D-83AA-8F22DDB5A938}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Language", "Language", "{BB2C18D6-9E21-4477-B067-461686949402}"
+	ProjectSection(SolutionItems) = preProject
+		..\..\Resource\Language\ja-jp.ini = ..\..\Resource\Language\ja-jp.ini
+		..\..\Resource\Language\zh-cn.ini = ..\..\Resource\Language\zh-cn.ini
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|Any CPU = Release|Any CPU
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2D616F99-8F53-47A2-86FF-5DC1903963E8}.Debug|Any CPU.ActiveCfg = Debug|Win32
+		{2D616F99-8F53-47A2-86FF-5DC1903963E8}.Debug|x64.ActiveCfg = Debug|x64
+		{2D616F99-8F53-47A2-86FF-5DC1903963E8}.Debug|x64.Build.0 = Debug|x64
+		{2D616F99-8F53-47A2-86FF-5DC1903963E8}.Debug|x86.ActiveCfg = Debug|Win32
+		{2D616F99-8F53-47A2-86FF-5DC1903963E8}.Debug|x86.Build.0 = Debug|Win32
+		{2D616F99-8F53-47A2-86FF-5DC1903963E8}.Release|Any CPU.ActiveCfg = Release|Win32
+		{2D616F99-8F53-47A2-86FF-5DC1903963E8}.Release|x64.ActiveCfg = Release|x64
+		{2D616F99-8F53-47A2-86FF-5DC1903963E8}.Release|x64.Build.0 = Release|x64
+		{2D616F99-8F53-47A2-86FF-5DC1903963E8}.Release|x86.ActiveCfg = Release|Win32
+		{2D616F99-8F53-47A2-86FF-5DC1903963E8}.Release|x86.Build.0 = Release|Win32
+		{B9220CEB-C362-47DA-A86A-836C762D90F7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B9220CEB-C362-47DA-A86A-836C762D90F7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B9220CEB-C362-47DA-A86A-836C762D90F7}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{B9220CEB-C362-47DA-A86A-836C762D90F7}.Debug|x64.Build.0 = Debug|Any CPU
+		{B9220CEB-C362-47DA-A86A-836C762D90F7}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{B9220CEB-C362-47DA-A86A-836C762D90F7}.Debug|x86.Build.0 = Debug|Any CPU
+		{B9220CEB-C362-47DA-A86A-836C762D90F7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B9220CEB-C362-47DA-A86A-836C762D90F7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B9220CEB-C362-47DA-A86A-836C762D90F7}.Release|x64.ActiveCfg = Release|Any CPU
+		{B9220CEB-C362-47DA-A86A-836C762D90F7}.Release|x64.Build.0 = Release|Any CPU
+		{B9220CEB-C362-47DA-A86A-836C762D90F7}.Release|x86.ActiveCfg = Release|Any CPU
+		{B9220CEB-C362-47DA-A86A-836C762D90F7}.Release|x86.Build.0 = Release|Any CPU
+		{099934C0-0E75-4930-ADE9-5A370EB99435}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{099934C0-0E75-4930-ADE9-5A370EB99435}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{099934C0-0E75-4930-ADE9-5A370EB99435}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{099934C0-0E75-4930-ADE9-5A370EB99435}.Debug|x64.Build.0 = Debug|Any CPU
+		{099934C0-0E75-4930-ADE9-5A370EB99435}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{099934C0-0E75-4930-ADE9-5A370EB99435}.Debug|x86.Build.0 = Debug|Any CPU
+		{099934C0-0E75-4930-ADE9-5A370EB99435}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{099934C0-0E75-4930-ADE9-5A370EB99435}.Release|Any CPU.Build.0 = Release|Any CPU
+		{099934C0-0E75-4930-ADE9-5A370EB99435}.Release|x64.ActiveCfg = Release|Any CPU
+		{099934C0-0E75-4930-ADE9-5A370EB99435}.Release|x64.Build.0 = Release|Any CPU
+		{099934C0-0E75-4930-ADE9-5A370EB99435}.Release|x86.ActiveCfg = Release|Any CPU
+		{099934C0-0E75-4930-ADE9-5A370EB99435}.Release|x86.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{BB2C18D6-9E21-4477-B067-461686949402} = {73A43A40-7B04-425D-83AA-8F22DDB5A938}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {649858A3-1282-46E6-BE73-23F012895205}
+	EndGlobalSection
+EndGlobal

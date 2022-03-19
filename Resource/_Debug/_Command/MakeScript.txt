@@ -1,0 +1,5 @@
+﻿// App Resources
+-pg -id 00000010 -idr 4 \
+	-e *-Raw|*.svg \
+	-ts ResId "..\..\Code\Avernakis Nodejs\Test-Nodejs\src\ResId.ts" \
+	-b AppRes.index -l AppRes.log AppRes

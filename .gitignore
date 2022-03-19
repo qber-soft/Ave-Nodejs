@@ -1,32 +1,52 @@
-# Prerequisites
-*.d
+# C++
+/_BuildIntermediate
+/_BuildOutput
+/Code/External/Avernakis
+/Code/External/Avernakis-Tiny
 
-# Compiled Object files
-*.slo
-*.lo
-*.o
-*.obj
+# typescript
+node_modules
+*.js
+*.js.map
 
-# Precompiled Headers
-*.gch
-*.pch
+# Visual Studio
+.vs
+Generated Files
+ipch
+VC.db
+*.aps
+*.dbmdl
+*.jfm
+*.refactorlog
+*.suo
+*.tss
+*.user
 
-# Compiled Dynamic libraries
-*.so
-*.dylib
-*.dll
+# Xcode
+xcuserdata
 
-# Fortran module files
-*.mod
-*.smod
+# Windows
+[Tt]humbs.db
+desktop.ini
 
-# Compiled Static libraries
-*.lai
-*.la
-*.a
-*.lib
+# macOS
+.DS_Store
 
-# Executables
-*.exe
-*.out
-*.app
+# Project
+/Resource/DataTemp
+/Resource/_Debug/*.index
+/Resource/_Debug/*.log
+/Resource/_Debug/**/Icon
+/_Local
+*.ave-mesh
+*.ave-labyrinth-cliff
+
+/Code/Avernakis Nodejs/Test-Nodejs/obj
+/Code/Avernakis Nodejs/Test-Nodejs/bin
+/Code/Avernakis Nodejs/Test-Nodejs/build
+
+/Code/Avernakis Nodejs/Test-Nodejs/test/test-tools/AppRes
+/Code/Avernakis Nodejs/Test-Nodejs/test/test-tools/output
+*.bin
+
+!/Resource/Data/AppRes.bin
