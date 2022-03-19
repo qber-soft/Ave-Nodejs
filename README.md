@@ -1,4 +1,4 @@
-# Avernakis UI
+# Avernakis UI [![Build Status](https://github.com/qber-soft/Ave-Nodejs/workflows/build/badge.svg)](https://github.com/qber-soft/Ave-Nodejs/workflows/build/badge.svg)
 
 Ave 是用于开发桌面应用的 UI 库。
 
