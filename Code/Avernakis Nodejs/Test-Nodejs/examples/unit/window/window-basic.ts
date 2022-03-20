@@ -9,7 +9,7 @@ export function run() {
     cpWindow.Flag |= WindowFlag.Layered;
 
     const window = new Window(cpWindow);
-    globalThis.window = window;
+    globalThis._window = window;
 
     window.OnCreateContent((sender) => {
         return true;

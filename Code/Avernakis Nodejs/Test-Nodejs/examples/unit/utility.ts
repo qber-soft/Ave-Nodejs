@@ -7,8 +7,10 @@ import {
     ThemeImage,
     ThemePredefined_Dark,
     AppPath,
+    CultureId,
 } from "../../src";
 import * as fs from "fs";
+import { DefaultString } from "./DefaultString";
 
 export interface IThemeManager {
     theme: ThemeImage;
@@ -30,6 +32,10 @@ export function run(main: Function) {
         // release mode
         app.ResAddPackage(AppPath.AppPath + "Data\\AppRes.bin");
     }
+
+    // Config localized strings
+    globalThis.app.LangSetFileRoot(AppPath.AppPath + "Language", "ini");
+    globalThis.app.LangSetDefaultString(CultureId.en_us, DefaultString);
 
     //
     const cpWindow = new WindowCreation();

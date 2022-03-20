@@ -1,5 +1,5 @@
 import { Window, Button, IconSource, VisualTextLayout } from "../../../src";
-import { ResId } from "../../ResId";
+import { ResId } from "../ResId";
 import { getControlDemoContainer } from "../utility";
 
 export function main(window: Window) {

@@ -17,7 +17,7 @@ export function run() {
     cpWindow.Flag |= WindowFlag.Layered;
 
     const window = new Window(cpWindow);
-    globalThis.window = window;
+    globalThis._window = window;
 
     window.OnCreateContent((sender) => {
         sender.SetBackground(false);
@@ -26,8 +26,8 @@ export function run() {
         {
             const gridChild = new Grid(sender);
             grid.ControlAdd(gridChild).SetDock(DockMode.Fill);
-            const red = new Vec4(0, 0, 255, 255);
-            gridChild.SetBackColor(red);
+            const color = new Vec4(100, 149, 237, 255);
+            gridChild.SetBackColor(color);
             gridChild.SetOpacity(0.5);
         }
         window.SetContent(grid);
