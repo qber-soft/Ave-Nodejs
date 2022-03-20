@@ -36,7 +36,7 @@ desktop.ini
 /Resource/DataTemp
 /Resource/_Debug/*.index
 /Resource/_Debug/*.log
-/Resource/_Debug/**/Icon
+# /Resource/_Debug/**/Icon
 /_Local
 *.ave-mesh
 *.ave-labyrinth-cliff

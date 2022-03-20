@@ -14,8 +14,8 @@ export function main(window: Window) {
         DpiSize.FromPixelScaled(100), // margin left
         DpiSize.FromPixelScaled(50), // margin top
         DpiSize.FromPixelScaled(0), // margin right
-        DpiSize.FromPixelScaled(0)
-    ); // margin bottom
+        DpiSize.FromPixelScaled(0) // margin bottom
+    );
 
     const gridControl = container.ControlAdd(center);
     gridControl.SetGrid(0, 0, 1, 1);

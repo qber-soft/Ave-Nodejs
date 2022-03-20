@@ -9,7 +9,6 @@ export function main(window: Window) {
     const lightBlue = new Vec4(0, 146, 255, 255 * 0.75);
     center.SetBackColor(lightBlue);
 
-    // container.ControlAdd(center).SetGrid(1, 1, 1, 1);
     const gridControl = container.ControlAdd(center);
     const pos = {
         x: DpiSize.FromPixelScaled(100),
