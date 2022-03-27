@@ -12,13 +12,12 @@
 
  </div>
 
-## 简介
+## Introduction
 
-Ave 是用于开发桌面应用的 UI 库。
+- Docs: [Ave-Nodejs-Docs](https://qber-soft.github.io/Ave-Nodejs-Docs/)
+- Discussions: [GitHub Discussions](https://github.com/qber-soft/Ave-Nodejs/discussions)
+- Ave Lib Dev: [Ave-Nodejs](https://github.com/qber-soft/Ave-Nodejs/tree/main/Code/Avernakis%20Nodejs/Test-Nodejs)
 
-- 文档：[Ave-Nodejs-Docs](https://qber-soft.github.io/Ave-Nodejs-Docs/)
-- 开发：[Ave-Nodejs](https://github.com/qber-soft/Ave-Nodejs/tree/main/Code/Avernakis%20Nodejs/Test-Nodejs)
-
-## 开源协议
+## License
 
 [MIT](./LICENSE)

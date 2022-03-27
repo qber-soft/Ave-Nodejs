@@ -12,21 +12,19 @@
 
  </div>
 
-## 简介
+## Introduction
 
-这是 Ave UI 库的 JS 部分，用于构建 npm 包：https://www.npmjs.com/package/ave-ui
+-   Docs: [Ave-Nodejs-Docs](https://qber-soft.github.io/Ave-Nodejs-Docs/)
+-   Template Project: [Ave-Nodejs-Template](https://github.com/qber-soft/Ave-Nodejs-Template)
 
--   文档：[Ave-Nodejs-Docs](https://qber-soft.github.io/Ave-Nodejs-Docs/)
--   模板项目：[Ave-Nodejs-Template](https://github.com/qber-soft/Ave-Nodejs-Template)
-
-## 开发
+## Dev
 
 ```bash
 > npm install
-> npm run dev:unit # 运行单独组件例子
-> npm run dev:app # 运行示例app
+> npm run dev:unit # component example
+> npm run dev:app # example app
 ```
 
-## 开源协议
+## License
 
 [MIT](../../../LICENSE)
