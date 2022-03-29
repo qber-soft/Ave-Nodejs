@@ -1,5 +1,4 @@
-import { Window, Picture, ResourceSource, Byo2Image, Byo2ImageCreation, Byo2ImageDataType, PixFormat, Rect, InMemoryData, Button } from "../../../src";
-import { AppPath } from "../../../src";
+import { Window, Picture, ResourceSource } from "../../../src";
 import { getControlDemoContainer } from "../utility";
 import { ResId } from "../ResId";
 
