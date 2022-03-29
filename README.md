@@ -1,12 +1,23 @@
-# Avernakis UI [![Build Status](https://github.com/qber-soft/Ave-Nodejs/workflows/build/badge.svg)](https://github.com/qber-soft/Ave-Nodejs/workflows/build/badge.svg)
+<p align="center">
+  <a href="https://qber-soft.github.io/Ave-Nodejs-Docs/">
+    <img width="200" src="https://qber-soft.github.io/Ave-Nodejs-Docs/img/Ave.svg">
+  </a>
+</p>
 
-Ave 是用于开发桌面应用的 UI 库。
+<h1 align="center">Avernakis UI</h1>
 
-## 简介
+<div align="center">
 
-- 文档：https://github.com/qber-soft/Ave-Nodejs-Docs
-- 模板项目：https://github.com/qber-soft/Ave-Nodejs-Template
+[![Build Status](https://github.com/qber-soft/Ave-Nodejs/workflows/build/badge.svg)](https://github.com/qber-soft/Ave-Nodejs/workflows/build/badge.svg)
 
-## 开源协议
+ </div>
+
+## Introduction
+
+- Docs: [Ave-Nodejs-Docs](https://qber-soft.github.io/Ave-Nodejs-Docs/)
+- Discussions: [GitHub Discussions](https://github.com/qber-soft/Ave-Nodejs/discussions)
+- Ave Lib Dev: [Ave-Nodejs](https://github.com/qber-soft/Ave-Nodejs/tree/main/Code/Avernakis%20Nodejs/Test-Nodejs)
+
+## License
 
 [MIT](./LICENSE)

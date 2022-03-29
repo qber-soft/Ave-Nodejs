@@ -1,20 +1,30 @@
-# Avernakis Nodejs
+<p align="center">
+  <a href="https://qber-soft.github.io/Ave-Nodejs-Docs/">
+    <img width="200" src="https://qber-soft.github.io/Ave-Nodejs-Docs/img/Ave.svg">
+  </a>
+</p>
 
-这是 Ave UI 库的 JS 部分，用于构建 npm 包：https://www.npmjs.com/package/ave-ui
+<h1 align="center">Avernakis Nodejs</h1>
 
-## 简介
+<div align="center">
 
--   文档：https://github.com/qber-soft/Ave-Nodejs-Docs
--   模板项目：https://github.com/qber-soft/Ave-Nodejs-Template
+[![Build Status](https://github.com/qber-soft/Ave-Nodejs/workflows/build/badge.svg)](https://github.com/qber-soft/Ave-Nodejs/workflows/build/badge.svg)
 
-## 开发
+ </div>
+
+## Introduction
+
+-   Docs: [Ave-Nodejs-Docs](https://qber-soft.github.io/Ave-Nodejs-Docs/)
+-   Template Project: [Ave-Nodejs-Template](https://github.com/qber-soft/Ave-Nodejs-Template)
+
+## Dev
 
 ```bash
 > npm install
-> npm run dev:unit # 运行单独组件例子
-> npm run dev:app # 运行示例app
+> npm run dev:unit # component example
+> npm run dev:app # example app
 ```
 
-## 开源协议
+## License
 
 [MIT](../../../LICENSE)
