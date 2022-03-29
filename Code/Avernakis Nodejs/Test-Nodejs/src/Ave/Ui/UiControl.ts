@@ -161,4 +161,6 @@ export interface IControl extends IControlExtension {
     OnMessagePost(
         fn: (sender: IControl, nMsg: ControlMessage) => void
     ): IControl;
+    OnPointerEnter(fn: (sender: IControl) => void): IControl;
+    OnPointerLeave(fn: (sender: IControl) => void): IControl;
 }

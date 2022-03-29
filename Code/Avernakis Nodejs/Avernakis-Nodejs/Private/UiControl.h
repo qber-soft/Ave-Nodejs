@@ -69,6 +69,8 @@ namespace Nav
 
 			AutoAddMethod( ListenEvent );
 			AutoAddMethod( OnMessagePost );
+			AutoAddMethod( OnPointerEnter );
+			AutoAddMethod( OnPointerLeave );
 
 #		undef AutoAddMethod
 		}
@@ -112,9 +114,12 @@ namespace Nav
 		}
 
 	private:
+		using Callback_t = JsFuncSafe<void(UiControl* sender)>;
 		using OnMessagePostCallback = JsFuncSafe<void(UiControl* sender, U32 nMsg)>;
 
 		OnMessagePostCallback	m_OnMessagePost;
+		Callback_t				m_OnPointerEnter;
+		Callback_t				m_OnPointerLeave;
 
 		void					__OnMessagePost(Ui::IControl& sender, Ui::ControlMessage nMsg, const Ui::MessageParam& mp);
 
@@ -159,6 +164,8 @@ namespace Nav
 		WrapPointer<UiControl>	Redraw() { GetControl().Redraw(); return __GetUiControl(); }
 
 		WrapPointer<UiControl>  OnMessagePost(OnMessagePostCallback&& fn);
+		WrapPointer<UiControl>  OnPointerEnter(Callback_t&& fn);
+		WrapPointer<UiControl>  OnPointerLeave(Callback_t&& fn);
 		void					ListenEvent();
 	};
 

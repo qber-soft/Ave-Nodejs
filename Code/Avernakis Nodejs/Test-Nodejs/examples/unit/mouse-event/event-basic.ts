@@ -6,14 +6,19 @@ export function main(window: Window) {
     button.SetText("Button");
 
     button.ListenEvent();
-    button.OnMessagePost((sender, nMsg) => {
-        if (
-            nMsg === ControlMessage.PointerEnter ||
-            nMsg === ControlMessage.PointerLeave
-        ) {
-            console.log(`on message post: ${ControlMessage[nMsg]}(${nMsg})`);
-        }
+    button.OnPointerEnter((sender) => {
+        console.log("-----on enter");
     });
+    button.OnPointerLeave((sender) => {
+        console.log("on leave");
+    });
+    // button.OnMessagePost((sender, nMsg) => {
+    //     if (nMsg === ControlMessage.PointerEnter) {
+    //         console.log(`-----${ControlMessage[nMsg]}(${nMsg})`);
+    //     } else if (nMsg === ControlMessage.PointerLeave) {
+    //         console.log(`${ControlMessage[nMsg]}(${nMsg})`);
+    //     }
+    // });
 
     const container = getControlDemoContainer(window);
     container.ControlAdd(button).SetGrid(1, 1);
