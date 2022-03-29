@@ -629,6 +629,10 @@ export class Rect {
     Equal(r: Rect) {
         return this.Position.Equal(r.Position) && this.Size.Equal(r.Size);
     }
+
+    static get Empty(): Rect {
+        return new Rect(0, 0, 0, 0);
+    }
 }
 
 export class IconSource {
@@ -694,6 +698,18 @@ export class FontDescription {
     Flag: FontFlag = FontFlag.Standard;
 }
 
+export class InMemoryData {
+    Data: ArrayBuffer = null;
+    RowPitch: number = 0;
+    SlicePitch: number = 0;
+
+    constructor(ab: ArrayBuffer = null, rowPitch: number = 0, slicePitch: number = 0) {
+        this.Data = ab;
+        this.RowPitch = rowPitch;
+        this.SlicePitch = slicePitch;
+    }
+}
+
 export enum ResourceSourceType {
     Resource,
     FilePath,
@@ -704,7 +720,7 @@ export class ResourceSource {
     Type: ResourceSourceType = ResourceSourceType.Resource;
     ResourceId: number = 0;
     FilePath: string = "";
-    InMemory: ArrayBuffer = null;
+    InMemory: InMemoryData = new InMemoryData();
 
     static FromResource(n: number) {
         let r = new ResourceSource();
@@ -719,14 +735,21 @@ export class ResourceSource {
         return r;
     }
 
-    static FromBuffer(buffer: Buffer) {
-        return ResourceSource.FromArrayBuffer(buffer.buffer);
+    static FromBuffer(ab: Buffer, rowPitch: number = 0, slicePitch: number = 0) {
+        return this.FromArrayBuffer(ab.buffer, rowPitch, slicePitch);
     }
 
-    static FromArrayBuffer(ab: ArrayBuffer) {
+    static FromArrayBuffer(ab: ArrayBuffer, rowPitch: number = 0, slicePitch: number = 0) {
         let r = new ResourceSource();
         r.Type = ResourceSourceType.InMemory;
-        r.InMemory = ab;
+        r.InMemory = new InMemoryData(ab, rowPitch, slicePitch);
+        return r;
+    }
+
+    static get Empty() {
+        let r = new ResourceSource();
+        r.Type = ResourceSourceType.InMemory;
+        r.InMemory = new InMemoryData(null, 0, 0);
         return r;
     }
 }

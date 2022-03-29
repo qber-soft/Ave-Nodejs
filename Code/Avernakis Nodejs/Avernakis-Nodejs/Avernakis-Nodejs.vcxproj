@@ -158,6 +158,7 @@
     <ClCompile Include="Private\Empty.cpp" />
     <ClCompile Include="Private\Example.cpp" />
     <ClCompile Include="Private\ExportAll.cpp" />
+    <ClCompile Include="Private\Byo2Image.cpp" />
     <ClCompile Include="Private\Library.cpp" />
     <ClCompile Include="Private\StdAfx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -235,6 +236,7 @@
     <ClInclude Include="Private\CoCamera.h" />
     <ClInclude Include="Private\Empty.h" />
     <ClInclude Include="Private\Example.h" />
+    <ClInclude Include="Private\Byo2Image.h" />
     <ClInclude Include="Private\StdAfx.h" />
     <ClInclude Include="Private\Test.h" />
     <ClInclude Include="Private\UiAnimFrame.h" />
