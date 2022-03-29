@@ -170,13 +170,23 @@ namespace Nav
 		InMemory,
 	};
 
+	class InMemoryData
+	{
+	public:
+		WrapArray<U8>			m_Data;
+		U32						m_RowPitch;
+		U32						m_SlicePitch;
+	};
+
+	NavDefineDataByMember_( InMemoryData, Data, RowPitch, SlicePitch );
+
 	class UiResourceSource
 	{
 	public:
 		UiResourceSourceType	m_Type;
 		U32						m_ResourceId;
 		WString					m_FilePath;
-		WrapArray<U8>			m_InMemory;
+		WrapData<InMemoryData>	m_InMemory;
 
 		Io::ResourceSource ToResourceSource() const
 		{
@@ -185,7 +195,7 @@ namespace Nav
 			else if ( UiResourceSourceType::FilePath == m_Type )
 				return Io::ResourceSource::FromFilePath( m_FilePath.c_str() );
 			else if ( UiResourceSourceType::InMemory == m_Type )
-				return Io::ResourceSource::FromMemory( m_InMemory.m_Pointer, (U32) m_InMemory.m_Length );
+				return Io::ResourceSource::FromMemory( m_InMemory.m_Data.m_Pointer, (U32) m_InMemory.m_Data.m_Length, m_InMemory.m_RowPitch, m_InMemory.m_SlicePitch );
 			else
 				return Io::ResourceSource::FromMemory( nullptr, 0 );
 		}

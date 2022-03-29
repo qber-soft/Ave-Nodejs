@@ -5,6 +5,8 @@
 namespace Nav
 {
 
+	class Byo2Image;
+
 	class UiPicture : public UiVisualHelper<UiPicture, Ui::IPicture>
 	{
 	public:
@@ -26,6 +28,8 @@ namespace Nav
 		Ui::StretchMode					GetStretchMode() const { return GetControlTyped().GetStretchMode(); }
 
 		UiPicture*						SetPicture( const WrapData<UiResourceSource>& rs ) { GetControlTyped().SetPicture( rs.ToResourceSource() ); return this; }
+
+		void							SetImage( Byo2Image* img );
 
 	};
 }

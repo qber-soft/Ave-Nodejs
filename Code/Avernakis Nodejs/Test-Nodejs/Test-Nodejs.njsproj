@@ -69,6 +69,7 @@
     <Folder Include="src\" />
     <Folder Include="src\Ave\" />
     <Folder Include="src\Ave\Math\" />
+    <Folder Include="src\Ave\Byo2\" />
     <Folder Include="src\Ave\Ui\" />
     <Folder Include="src\Ave\Ui\Control\" />
     <Folder Include="src\Ave\Ui\Ribbon\" />
@@ -141,6 +142,7 @@
     <TypeScriptCompile Include="examples\unit\window\window-opacity.ts" />
     <TypeScriptCompile Include="src\Ave\Ave.ts" />
     <TypeScriptCompile Include="src\Ave\AveLib.ts" />
+    <TypeScriptCompile Include="src\Ave\Byo2\Byo2Image.ts" />
     <TypeScriptCompile Include="src\Ave\Common.ts" />
     <TypeScriptCompile Include="src\Ave\Culture.ts" />
     <TypeScriptCompile Include="src\Ave\index.ts" />

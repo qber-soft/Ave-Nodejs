@@ -1,5 +1,6 @@
 ﻿#include "StdAfx.h"
 #include "UiPicture.h"
+#include "Byo2Image.h"
 
 #define ThisMethod($x) &UiPicture::$x
 #define AutoAddMethod($x, ...) AddMethod<__VA_ARGS__>( #$x, ThisMethod( $x ) )
@@ -18,6 +19,7 @@ namespace Nav
 		AutoAddMethod( SetStretchMode );
 		AutoAddMethod( GetStretchMode );
 		AutoAddMethod( SetPicture );
+		AutoAddMethod( SetImage );
 	}
 
 	U1 UiPicture::Ctor( UiWindow * p, Napi::Value v )
@@ -27,4 +29,10 @@ namespace Nav
 
 		return true;
 	}
+
+	void UiPicture::SetImage( Byo2Image * img )
+	{
+		GetControlTyped().SetImage( img->CloneImage() );
+	}
+
 }
