@@ -1,5 +1,5 @@
 import { run } from "./utility";
-import { main } from "./picture/picture-buffer";
+import { main } from "./button/button-event-click";
 run(main);
 
 // ---
