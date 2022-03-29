@@ -60,49 +60,64 @@ export interface IGridControl<T extends IControl = IControl> {
     BringToBack(): IGridControl<T>;
 }
 
-export interface IGrid extends IControl {
+// fix: constructor provides no match for signature new
+// https://stackoverflow.com/questions/37654840/constructor-provides-no-match-for-signature-new/53056911
+// https://www.typescriptlang.org/docs/handbook/interfaces.html#difference-between-the-static-and-instance-sides-of-classes
+export interface IGridConstructor {
     new (x: IWindow): IGrid;
+}
 
-    SetBackground(b: boolean): Grid;
+interface IGridExtend {
+    RowAddPx(...x: number[]): IGrid;
+    RowAddDpx(...x: number[]): IGrid;
+    RowAddSlice(...x: number[]): IGrid;
+
+    ColAddPx(...x: number[]): IGrid;
+    ColAddDpx(...x: number[]): IGrid;
+    ColAddSlice(...x: number[]): IGrid;
+}
+
+export interface IGrid extends IControl, IGridExtend {
+    SetBackground(b: boolean): IGrid;
     GetBackground(): boolean;
 
-    SetBackColor(vColor: Vec4): Grid;
+    SetBackColor(vColor: Vec4): IGrid;
     GetBackColor(): Vec4;
 
-    SetSplitterX(n: DpiSize): Grid;
+    SetSplitterX(n: DpiSize): IGrid;
     GetSplitterX(): DpiSize;
-    SetSplitterY(n: DpiSize): Grid;
+    SetSplitterY(n: DpiSize): IGrid;
     GetSplitterY(): DpiSize;
 
-    RowGetClear(): Grid;
+    RowGetClear(): IGrid;
     RowGetCount(): number;
     RowGetOffset(nIndex: number): number;
     RowGetSize(nIndex: number): number;
     RowGetDef(nIndex: number): GridDefinition;
-    RowAdd(def: GridDefinition): Grid;
-    RowInsert(nInsertBefore: number, def: GridDefinition): Grid;
-    RowRemove(nIndex: number): Grid;
-    RowSet(nIndex: number, def: DpiSize): Grid;
-    RowSetDef(nIndex: number, def: GridDefinition): Grid;
+    RowAdd(def: GridDefinition): IGrid;
+    RowInsert(nInsertBefore: number, def: GridDefinition): IGrid;
+    RowRemove(nIndex: number): IGrid;
+    RowSet(nIndex: number, def: DpiSize): IGrid;
+    RowSetDef(nIndex: number, def: GridDefinition): IGrid;
 
-    ColGetClear(): Grid;
+    ColGetClear(): IGrid;
     ColGetCount(): number;
     ColGetOffset(nIndex: number): number;
     ColGetSize(nIndex: number): number;
     ColGetDef(nIndex: number): GridDefinition;
-    ColAdd(def: GridDefinition): Grid;
-    ColInsert(nInsertBefore: number, def: GridDefinition): Grid;
-    ColRemove(nIndex: number): Grid;
-    ColSet(nIndex: number, def: DpiSize): Grid;
-    ColSetDef(nIndex: number, def: GridDefinition): Grid;
+    ColAdd(def: GridDefinition): IGrid;
+    ColInsert(nInsertBefore: number, def: GridDefinition): IGrid;
+    ColRemove(nIndex: number): IGrid;
+    ColSet(nIndex: number, def: DpiSize): IGrid;
+    ColSetDef(nIndex: number, def: GridDefinition): IGrid;
 
     ControlAdd(c: IControl, bIsParasite?: boolean): any;
     ControlGet<T extends IControl>(c: T): IGridControl<T>;
     ControlRemove(c: IControl): IControl;
-    ControlRemoveAll(): Grid;
+    ControlRemoveAll(): IGrid;
 }
 
-export class Grid extends (AveLib.UiGrid as IGrid) {
+export class Grid extends (AveLib.UiGrid as IGridConstructor) {
     // prevent gc
     private children: Set<IControl>;
 
@@ -146,7 +161,7 @@ export class Grid extends (AveLib.UiGrid as IGrid) {
         defOrSize: GridDefinition | DpiSize,
         nMin: DpiSize = DpiSize.Zero,
         nMax: DpiSize = DpiSize.MaxPixel
-    ): Grid {
+    ): IGrid {
         if (defOrSize instanceof GridDefinition)
             return super.RowInsert(nInsertBefore, defOrSize);
         else {
@@ -193,7 +208,7 @@ export class Grid extends (AveLib.UiGrid as IGrid) {
         defOrSize: GridDefinition | DpiSize,
         nMin: DpiSize = DpiSize.Zero,
         nMax: DpiSize = DpiSize.MaxPixel
-    ): Grid {
+    ): IGrid {
         if (defOrSize instanceof GridDefinition)
             return super.ColInsert(nInsertBefore, defOrSize);
         else {
