@@ -123,6 +123,8 @@
     <TypeScriptCompile Include="examples\unit\list-box\list-box-basic.ts" />
     <TypeScriptCompile Include="examples\unit\message-box\message-box-basic.ts" />
     <TypeScriptCompile Include="examples\unit\picture\picture-basic.ts" />
+    <TypeScriptCompile Include="examples\unit\picture\picture-file.ts" />
+    <TypeScriptCompile Include="examples\unit\picture\picture-pixel-data.ts" />
     <TypeScriptCompile Include="examples\unit\progress\progress-basic.ts" />
     <TypeScriptCompile Include="examples\unit\progress\progress-state.ts" />
     <TypeScriptCompile Include="examples\unit\progress\progress-step.ts" />

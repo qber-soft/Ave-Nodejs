@@ -703,7 +703,7 @@ export class InMemoryData {
     RowPitch: number = 0;
     SlicePitch: number = 0;
 
-    constructor(ab: ArrayBuffer, rowPitch: number = 0, slicePitch: number = 0) {
+    constructor(ab: ArrayBuffer = null, rowPitch: number = 0, slicePitch: number = 0) {
         this.Data = ab;
         this.RowPitch = rowPitch;
         this.SlicePitch = slicePitch;
@@ -720,7 +720,7 @@ export class ResourceSource {
     Type: ResourceSourceType = ResourceSourceType.Resource;
     ResourceId: number = 0;
     FilePath: string = "";
-    InMemory: InMemoryData = null;
+    InMemory: InMemoryData = new InMemoryData();
 
     static FromResource(n: number) {
         let r = new ResourceSource();
@@ -733,6 +733,10 @@ export class ResourceSource {
         r.Type = ResourceSourceType.FilePath;
         r.FilePath = s;
         return r;
+    }
+
+    static FromBuffer(ab: Buffer, rowPitch: number = 0, slicePitch: number = 0) {
+        return this.FromArrayBuffer(ab.buffer, rowPitch, slicePitch);
     }
 
     static FromArrayBuffer(ab: ArrayBuffer, rowPitch: number = 0, slicePitch: number = 0) {
