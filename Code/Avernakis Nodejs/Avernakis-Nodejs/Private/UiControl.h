@@ -67,6 +67,7 @@ namespace Nav
 			AutoAddMethod( GetRect );
 			AutoAddMethod( Redraw );
 
+			AutoAddMethod( OnMessagePost );
 #		undef AutoAddMethod
 		}
 
@@ -109,6 +110,13 @@ namespace Nav
 		}
 
 	private:
+		using OnMessagePostCallback = JsFuncSafe<void(UiControl* sender, U32 nMsg)>;
+
+		OnMessagePostCallback	m_OnMessagePost;
+
+		void					__OnMessagePost(Ui::IControl& sender, Ui::ControlMessage nMsg, const Ui::MessageParam& mp);
+
+	private:
 		WrapPointer<UiControl>	SetVisible( U1 b ) { GetControl().SetVisible( b ); return __GetUiControl(); }
 		U1						GetVisible() { return GetControl().GetVisible(); }
 
@@ -148,6 +156,7 @@ namespace Nav
 		WrapData<S32_R>			GetRect() { return GetControl().GetRect(); }
 		WrapPointer<UiControl>	Redraw() { GetControl().Redraw(); return __GetUiControl(); }
 
+		WrapPointer<UiControl>  OnMessagePost(OnMessagePostCallback&& fn);
 	};
 
 }
