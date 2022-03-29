@@ -697,12 +697,14 @@ export class FontDescription {
 export enum ResourceSourceType {
     Resource,
     FilePath,
+    InMemory,
 }
 
 export class ResourceSource {
     Type: ResourceSourceType = ResourceSourceType.Resource;
     ResourceId: number = 0;
     FilePath: string = "";
+    InMemory: ArrayBuffer = null;
 
     static FromResource(n: number) {
         let r = new ResourceSource();
@@ -714,6 +716,12 @@ export class ResourceSource {
         let r = new ResourceSource();
         r.Type = ResourceSourceType.FilePath;
         r.FilePath = s;
+        return r;
+    }
+    static FromBuffer(ab: ArrayBuffer){
+        let r = new ResourceSource();
+        r.Type = ResourceSourceType.InMemory;
+        r.InMemory = ab;
         return r;
     }
 }
