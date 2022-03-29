@@ -12,9 +12,13 @@ namespace Nav
 
 	WrapPointer<UiControl> UiControl::OnMessagePost(OnMessagePostCallback&& fn)
 	{
-		// TODO: move it to constructor?
-		GetControl().GetEvent<Ui::IControl::OnMessagePost>() += MakeThisFunc(__OnMessagePost);
 		m_OnMessagePost = std::move(fn);
 		return __GetUiControl();
+	}
+
+	void UiControl::ListenEvent()
+	{
+		// TODO: move it to constructor?
+		GetControl().GetEvent<Ui::IControl::OnMessagePost>() += MakeThisFunc(__OnMessagePost);
 	}
 }

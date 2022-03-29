@@ -4,11 +4,12 @@ import { getControlDemoContainer } from "../utility";
 export function main(window: Window) {
     const button = new Button(window);
     button.SetText("Button");
+
+    button.ListenEvent();
     button.OnMessagePost((sender, nMsg) => {
         if (
-            nMsg !== ControlMessage.Paint &&
-            nMsg !== ControlMessage.PointerCursor &&
-            nMsg !== ControlMessage.PointerMove
+            nMsg === ControlMessage.PointerEnter ||
+            nMsg === ControlMessage.PointerLeave
         ) {
             console.log(`on message post: ${ControlMessage[nMsg]}(${nMsg})`);
         }

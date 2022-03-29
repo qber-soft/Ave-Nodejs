@@ -67,7 +67,9 @@ namespace Nav
 			AutoAddMethod( GetRect );
 			AutoAddMethod( Redraw );
 
+			AutoAddMethod( ListenEvent );
 			AutoAddMethod( OnMessagePost );
+
 #		undef AutoAddMethod
 		}
 
@@ -157,6 +159,7 @@ namespace Nav
 		WrapPointer<UiControl>	Redraw() { GetControl().Redraw(); return __GetUiControl(); }
 
 		WrapPointer<UiControl>  OnMessagePost(OnMessagePostCallback&& fn);
+		void					ListenEvent();
 	};
 
 }

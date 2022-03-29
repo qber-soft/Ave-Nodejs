@@ -156,6 +156,8 @@ export interface IControl extends IControlExtension {
     OnDragLeave(fn: (sender: IDragContext) => void): IControl;
     OnDragDrop(fn: (sender: IDragContext) => void): IControl;
     OnDragEnd(fn: (sender: IDragContext) => void): IControl;
+
+    ListenEvent();
     OnMessagePost(
         fn: (sender: IControl, nMsg: ControlMessage) => void
     ): IControl;
