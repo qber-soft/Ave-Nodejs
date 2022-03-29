@@ -718,7 +718,12 @@ export class ResourceSource {
         r.FilePath = s;
         return r;
     }
-    static FromBuffer(ab: ArrayBuffer){
+
+    static FromBuffer(buffer: Buffer) {
+        return ResourceSource.FromArrayBuffer(buffer.buffer);
+    }
+
+    static FromArrayBuffer(ab: ArrayBuffer) {
         let r = new ResourceSource();
         r.Type = ResourceSourceType.InMemory;
         r.InMemory = ab;
