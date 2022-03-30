@@ -15,6 +15,10 @@ export class Mat34 {
     _32: number = 0;
     _33: number = 1;
     _34: number = 0;
+
+    static get Identity() {
+        return new Mat34();
+    }
 }
 
 export class Mat44 {
@@ -34,6 +38,10 @@ export class Mat44 {
     _42: number = 0;
     _43: number = 0;
     _44: number = 1;
+
+    static get Identity() {
+        return new Mat44();
+    }
 
     constructor(
         a: Mat44 | Vec4 | number = 1,

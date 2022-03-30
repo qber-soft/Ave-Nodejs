@@ -7,6 +7,73 @@ namespace Nav
 
 	class UiVisual;
 
+	class UiMessagePointerMouse
+	{
+	public:
+		S32										m_LinePerWheel;
+		S32										m_Wheel;
+	};
+
+	NavDefineDataByMember_( UiMessagePointerMouse, LinePerWheel, Wheel );
+	NavDefineTransitByMember_( Ui::MessagePointerMouse, UiMessagePointerMouse, LinePerWheel, Wheel );
+
+	class UiMessagePointerTouch
+	{
+	public:
+		R32										m_Pressure;
+		R32										m_Orientation;
+		WrapData<S32_R>							m_Contact;
+	};
+
+	NavDefineDataByMember_( UiMessagePointerTouch, Pressure, Orientation, Contact );
+	NavDefineTransitByMember_( Ui::MessagePointerTouch, UiMessagePointerTouch, Pressure, Orientation, Contact );
+
+	class UiMessagePointerPen
+	{
+	public:
+		R32										m_Pressure;
+		R32										m_Twist;
+		WrapData<R32_2>							m_Tilt;
+	};
+
+	NavDefineDataByMember_( UiMessagePointerPen, Pressure, Twist, Tilt );
+	NavDefineTransitByMember_( Ui::MessagePointerPen, UiMessagePointerPen, Pressure, Twist, Tilt );
+
+	class UiMessagePointer
+	{
+	public:
+		U64										m_Id;
+		Ui::PointerType							m_Type;
+		WrapData<S32_2>							m_Position;
+		U32										m_Modifier;
+		Ui::PointerButton						m_Button;
+		U32										m_Count;
+
+		WrapData<UiMessagePointerMouse>			m_Mouse;
+		WrapData<UiMessagePointerTouch>			m_Touch;
+		WrapData<UiMessagePointerPen>			m_Pen;
+
+		AveInline void FromUiMessage( const Ui::MessagePointer& s )
+		{
+			m_Id = (U64) (USize) s.m_Id;
+			m_Type = s.m_Type;
+			m_Position = s.m_Position;
+			m_Modifier = s.m_Modifier;
+			m_Button = s.m_Button;
+			m_Count = s.m_Count;
+			switch ( s.m_Type )
+			{
+			case Ui::PointerType::Mouse: WrapDataTransit<Ui::MessagePointerMouse>::Transit( m_Mouse, s.m_Mouse ); break;
+			case Ui::PointerType::Touch: WrapDataTransit<Ui::MessagePointerTouch>::Transit( m_Touch, s.m_Touch );  break;
+			case Ui::PointerType::Pen: WrapDataTransit<Ui::MessagePointerPen>::Transit( m_Pen, s.m_Pen );  break;
+			}
+		}
+	};
+
+	NavDefineDataByMember_( UiMessagePointer, Id, Type, Position, Modifier, Button, Count, Mouse, Touch, Pen );
+
+	NavDefineDataByMember_( Ui::MessageKey, Key, Modifier );
+
 	class UiControl
 	{
 	protected:
@@ -67,10 +134,20 @@ namespace Nav
 			AutoAddMethod( GetRect );
 			AutoAddMethod( Redraw );
 
-			AutoAddMethod( ListenEvent );
-			AutoAddMethod( OnMessagePost );
-			AutoAddMethod( OnPointerEnter );
-			AutoAddMethod( OnPointerLeave );
+			AutoAddMethod( OnKeyPress   /**/ );
+			AutoAddMethod( OnKeyRelease /**/ );
+
+			AutoAddMethod( OnPointerEnter    /**/ );
+			AutoAddMethod( OnPointerLeave    /**/ );
+			AutoAddMethod( OnPointerPress    /**/ );
+			AutoAddMethod( OnPointerRelease  /**/ );
+			AutoAddMethod( OnPointerClickNdc /**/ );
+			AutoAddMethod( OnPointerMove     /**/ );
+			AutoAddMethod( OnPointerVWheel   /**/ );
+			AutoAddMethod( OnPointerHWheel   /**/ );
+			AutoAddMethod( OnPointerHover    /**/ );
+			AutoAddMethod( OnPointerLost     /**/ );
+			AutoAddMethod( OnPointerCursor   /**/ );
 
 #		undef AutoAddMethod
 		}
@@ -107,6 +184,9 @@ namespace Nav
 			return { p ? (UiVisual*) p->GetUserContext() : nullptr };
 		}
 
+		void					__ListenEvent();
+		void					__OnMessagePost( Ui::IControl& sender, Ui::ControlMessage nMsg, const Ui::MessageParam& mp );
+
 	private:
 		AveInline WrapPointer<UiControl> __GetUiControl()
 		{
@@ -114,14 +194,24 @@ namespace Nav
 		}
 
 	private:
-		using Callback_t = JsFuncSafe<void(UiControl* sender)>;
-		using OnMessagePostCallback = JsFuncSafe<void(UiControl* sender, U32 nMsg)>;
+		using OnKey_t			/**/ = JsFuncSafe<void( UiControl* sender, const WrapData<Ui::MessageKey>& mk )>;
+		using OnPointer_t		/**/ = JsFuncSafe<void( UiControl* sender, const WrapData<UiMessagePointer>& mp )>;
+		using OnPointerCursor_t /**/ = JsFuncSafe<Ui::CursorType( UiControl* sender, const WrapData<UiMessagePointer>& mp )>;
 
-		OnMessagePostCallback	m_OnMessagePost;
-		Callback_t				m_OnPointerEnter;
-		Callback_t				m_OnPointerLeave;
+		OnKey_t					m_OnKeyPress   /**/;
+		OnKey_t					m_OnKeyRelease /**/;
 
-		void					__OnMessagePost(Ui::IControl& sender, Ui::ControlMessage nMsg, const Ui::MessageParam& mp);
+		OnPointer_t				m_OnPointerEnter    /**/;
+		OnPointer_t				m_OnPointerLeave    /**/;
+		OnPointer_t				m_OnPointerPress    /**/;
+		OnPointer_t				m_OnPointerRelease  /**/;
+		OnPointer_t				m_OnPointerClickNdc /**/;
+		OnPointer_t				m_OnPointerMove     /**/;
+		OnPointer_t				m_OnPointerVWheel   /**/;
+		OnPointer_t				m_OnPointerHWheel   /**/;
+		OnPointer_t				m_OnPointerHover    /**/;
+		OnPointer_t				m_OnPointerLost     /**/;
+		OnPointerCursor_t		m_OnPointerCursor   /**/;
 
 	private:
 		WrapPointer<UiControl>	SetVisible( U1 b ) { GetControl().SetVisible( b ); return __GetUiControl(); }
@@ -163,10 +253,20 @@ namespace Nav
 		WrapData<S32_R>			GetRect() { return GetControl().GetRect(); }
 		WrapPointer<UiControl>	Redraw() { GetControl().Redraw(); return __GetUiControl(); }
 
-		WrapPointer<UiControl>  OnMessagePost(OnMessagePostCallback&& fn);
-		WrapPointer<UiControl>  OnPointerEnter(Callback_t&& fn);
-		WrapPointer<UiControl>  OnPointerLeave(Callback_t&& fn);
-		void					ListenEvent();
+		WrapPointer<UiControl>  OnKeyPress   /**/( OnKey_t&& fn ) { m_OnKeyPress   /**/ = std::move( fn ); return __GetUiControl(); }
+		WrapPointer<UiControl>  OnKeyRelease /**/( OnKey_t&& fn ) { m_OnKeyRelease /**/ = std::move( fn ); return __GetUiControl(); }
+
+		WrapPointer<UiControl>  OnPointerEnter    /**/( OnPointer_t       /**/ && fn ) { m_OnPointerEnter    /**/ = std::move( fn ); return __GetUiControl(); }
+		WrapPointer<UiControl>  OnPointerLeave    /**/( OnPointer_t       /**/ && fn ) { m_OnPointerLeave    /**/ = std::move( fn ); return __GetUiControl(); }
+		WrapPointer<UiControl>  OnPointerPress    /**/( OnPointer_t       /**/ && fn ) { m_OnPointerPress    /**/ = std::move( fn ); return __GetUiControl(); }
+		WrapPointer<UiControl>  OnPointerRelease  /**/( OnPointer_t       /**/ && fn ) { m_OnPointerRelease  /**/ = std::move( fn ); return __GetUiControl(); }
+		WrapPointer<UiControl>  OnPointerClickNdc /**/( OnPointer_t       /**/ && fn ) { m_OnPointerClickNdc /**/ = std::move( fn ); return __GetUiControl(); }
+		WrapPointer<UiControl>  OnPointerMove     /**/( OnPointer_t       /**/ && fn ) { m_OnPointerMove     /**/ = std::move( fn ); return __GetUiControl(); }
+		WrapPointer<UiControl>  OnPointerVWheel   /**/( OnPointer_t       /**/ && fn ) { m_OnPointerVWheel   /**/ = std::move( fn ); return __GetUiControl(); }
+		WrapPointer<UiControl>  OnPointerHWheel   /**/( OnPointer_t       /**/ && fn ) { m_OnPointerHWheel   /**/ = std::move( fn ); return __GetUiControl(); }
+		WrapPointer<UiControl>  OnPointerHover    /**/( OnPointer_t       /**/ && fn ) { m_OnPointerHover    /**/ = std::move( fn ); return __GetUiControl(); }
+		WrapPointer<UiControl>  OnPointerLost     /**/( OnPointer_t       /**/ && fn ) { m_OnPointerLost     /**/ = std::move( fn ); return __GetUiControl(); }
+		WrapPointer<UiControl>  OnPointerCursor   /**/( OnPointerCursor_t /**/ && fn ) { m_OnPointerCursor   /**/ = std::move( fn ); return __GetUiControl(); }
 	};
 
 }

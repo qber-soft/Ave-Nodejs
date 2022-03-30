@@ -6,6 +6,10 @@ export class Quat extends Vec4 {
         super(x, y, z, w);
     }
 
+    static get Identity() {
+        return new Quat(0, 0, 0, 1);
+    }
+
     get Vector() {
         return this as Vec4;
     }

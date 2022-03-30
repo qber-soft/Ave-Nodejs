@@ -5,63 +5,41 @@
 
 namespace Nav
 {
-	void UiControl::__OnMessagePost(Ui::IControl& sender, Ui::ControlMessage nMsg, const Ui::MessageParam& mp)
+
+	void UiControl::__ListenEvent()
 	{
-		m_OnMessagePost(this, static_cast<uint32_t>(nMsg));
+		GetControl().GetEvent<Ui::IControl::OnMessagePost>() += MakeThisFunc( __OnMessagePost );
+	}
 
-		switch (nMsg)
+	void UiControl::__OnMessagePost( Ui::IControl& sender, Ui::ControlMessage nMsg, const Ui::MessageParam& mp )
+	{
+		UiMessagePointer msgPointer;
+		switch ( nMsg )
 		{
-		case Ave::Ui::ControlMessage::PointerEnter:
-			m_OnPointerEnter(this);
-			break;
-		case Ave::Ui::ControlMessage::PointerLeave:
-			m_OnPointerLeave(this);
-			break;
-		case Ave::Ui::ControlMessage::PointerPress:
-			break;
-		case Ave::Ui::ControlMessage::PointerRelease:
-			break;
-		case Ave::Ui::ControlMessage::PointerClickNdc:
-			break;
-		case Ave::Ui::ControlMessage::PointerMove:
-			break;
-		case Ave::Ui::ControlMessage::PointerVWheel:
-			break;
-		case Ave::Ui::ControlMessage::PointerHWheel:
-			break;
-		case Ave::Ui::ControlMessage::PointerHover:
-			break;
-		case Ave::Ui::ControlMessage::PointerLost:
-			break;
-		case Ave::Ui::ControlMessage::PointerCursor:
-			break;
+		case Ui::ControlMessage::KeyPress   /**/: m_OnKeyPress   /**/( this, mp.m_Key ); break;
+		case Ui::ControlMessage::KeyRelease /**/: m_OnKeyRelease /**/( this, mp.m_Key ); break;
 
-		default:
+		case Ui::ControlMessage::PointerEnter    /**/: msgPointer.FromUiMessage( mp.m_Pointer ); m_OnPointerEnter    /**/( this, msgPointer ); break;
+		case Ui::ControlMessage::PointerLeave    /**/: msgPointer.FromUiMessage( mp.m_Pointer ); m_OnPointerLeave    /**/( this, msgPointer ); break;
+		case Ui::ControlMessage::PointerPress    /**/: msgPointer.FromUiMessage( mp.m_Pointer ); m_OnPointerPress    /**/( this, msgPointer ); break;
+		case Ui::ControlMessage::PointerRelease  /**/: msgPointer.FromUiMessage( mp.m_Pointer ); m_OnPointerRelease  /**/( this, msgPointer ); break;
+		case Ui::ControlMessage::PointerClickNdc /**/: msgPointer.FromUiMessage( mp.m_Pointer ); m_OnPointerClickNdc /**/( this, msgPointer ); break;
+		case Ui::ControlMessage::PointerMove     /**/: msgPointer.FromUiMessage( mp.m_Pointer ); m_OnPointerMove     /**/( this, msgPointer ); break;
+		case Ui::ControlMessage::PointerVWheel   /**/: msgPointer.FromUiMessage( mp.m_Pointer ); m_OnPointerVWheel   /**/( this, msgPointer ); break;
+		case Ui::ControlMessage::PointerHWheel   /**/: msgPointer.FromUiMessage( mp.m_Pointer ); m_OnPointerHWheel   /**/( this, msgPointer ); break;
+		case Ui::ControlMessage::PointerHover    /**/: msgPointer.FromUiMessage( mp.m_Pointer ); m_OnPointerHover    /**/( this, msgPointer ); break;
+		case Ui::ControlMessage::PointerLost     /**/: msgPointer.FromUiMessage( mp.m_Pointer ); m_OnPointerLost     /**/( this, msgPointer ); break;
+
+		case Ui::ControlMessage::PointerCursor:
+			if ( m_OnPointerCursor )
+			{
+				msgPointer.FromUiMessage( mp.m_Pointer );
+				m_OnPointerCursor.BlockAsyncCall( this, msgPointer, [&mp]( Ui::CursorType nType ) {
+					*mp.m_Pointer.m_CursorType = nType;
+				} );
+			}
 			break;
 		}
 	}
 
-	WrapPointer<UiControl> UiControl::OnMessagePost(OnMessagePostCallback&& fn)
-	{
-		m_OnMessagePost = std::move(fn);
-		return __GetUiControl();
-	}
-
-	WrapPointer<UiControl> UiControl::OnPointerEnter(Callback_t&& fn)
-	{
-		m_OnPointerEnter = std::move(fn);
-		return __GetUiControl();
-	}
-
-	WrapPointer<UiControl> UiControl::OnPointerLeave(Callback_t&& fn)
-	{
-		m_OnPointerLeave = std::move(fn);
-		return __GetUiControl();
-	}
-
-	void UiControl::ListenEvent()
-	{
-		// TODO: move it to constructor?
-		GetControl().GetEvent<Ui::IControl::OnMessagePost>() += MakeThisFunc(__OnMessagePost);
-	}
 }

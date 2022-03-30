@@ -55,6 +55,7 @@ namespace Nav
 				__m_Control = ctl;
 				__m_Control->SetUserContext( static_cast<UiControl*>(this) );
 				__m_ControlData = std::move( ctl );
+				this->__ListenEvent();
 			}
 			return true;
 		}
