@@ -1,5 +1,12 @@
 ﻿import { Vec2, Vec4 } from "../Math/Vector";
-import { CursorType, InputModifier, PointerButton, PointerType, Rect } from "./UiCommon";
+import {
+    CursorType,
+    InputModifier,
+    KbKey,
+    PointerButton,
+    PointerType,
+    Rect,
+} from "./UiCommon";
 import { IControlExtension } from "../AveLib";
 
 export enum DropBehavior {
@@ -21,6 +28,11 @@ export enum DragDropImage {
 }
 
 export interface IShellData {}
+
+export class MessageKey {
+    Key: KbKey;
+    Modifier: InputModifier;
+}
 
 export class MessagePointerMouse {
     LinePerWheel: number;
@@ -115,6 +127,9 @@ export interface IControl extends IControlExtension {
     OnDragDrop  /**/(fn: (sender: IDragContext) => void): IControl;
     OnDragEnd   /**/(fn: (sender: IDragContext) => void): IControl;
     
+    OnKeyPress  /**/(fn: (sender: IControl, mk: MessageKey) => void): IControl;
+    OnKeyRelease/**/(fn: (sender: IControl, mk: MessageKey) => void): IControl;
+
     OnPointerEnter    /**/(fn: (sender: IControl, mp: MessagePointer) => void): IControl;
     OnPointerLeave    /**/(fn: (sender: IControl, mp: MessagePointer) => void): IControl;
     OnPointerPress    /**/(fn: (sender: IControl, mp: MessagePointer) => void): IControl;
