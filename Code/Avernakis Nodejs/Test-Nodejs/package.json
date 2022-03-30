@@ -30,9 +30,9 @@
     ],
     "scripts": {
         "prepare": "cd ../../.. && husky install .husky",
-        "dev:unit": "tsnd --respawn --transpile-only ./examples/unit/index.ts",
+        "dev:unit": "tsnd --respawn ./examples/unit/index.ts",
         "dev:unit:debug": "cross-env AVE_BUILD_ENV=DEBUG_BUILD npm run dev:unit",
-        "dev:app": "tsnd --respawn --transpile-only ./examples/app/index.ts",
+        "dev:app": "tsnd --respawn ./examples/app/index.ts",
         "prebuild": "del-cli ./build",
         "build": "tsc --build",
         "release": "npm run build && npm publish",
