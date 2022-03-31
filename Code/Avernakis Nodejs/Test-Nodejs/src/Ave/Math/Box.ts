@@ -15,4 +15,8 @@ export class Box {
     get Extend() {
         return this.Max.Sub(this.Min).Mul(0.5);
     }
+
+    static get Empty() {
+        return new Box(Vec3.Zero, Vec3.Zero);
+    }
 }

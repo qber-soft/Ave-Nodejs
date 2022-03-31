@@ -1,5 +1,12 @@
 ﻿import { Vec2, Vec4 } from "../Math/Vector";
-import { Rect } from "./UiCommon";
+import {
+    CursorType,
+    InputModifier,
+    KbKey,
+    PointerButton,
+    PointerType,
+    Rect,
+} from "./UiCommon";
 import { IControlExtension } from "../AveLib";
 
 export enum DropBehavior {
@@ -22,6 +29,43 @@ export enum DragDropImage {
 
 export interface IShellData {}
 
+export class MessageKey {
+    Key: KbKey;
+    Modifier: InputModifier;
+}
+
+export class MessagePointerMouse {
+    LinePerWheel: number;
+    Wheel: number;
+}
+
+export class MessagePointerTouch {
+    Pressure: number; // [0, 1]
+    Orientation: number; // [0, 1]
+    Contact: Rect;
+}
+
+export class MessagePointerPen {
+    Pressure: number; // [0, 1]
+    Twist: number; // [0, 1]
+    Tilt: Vec2; // [-1, 1]
+}
+
+export class MessagePointer {
+    // Common
+    Id: number;
+    Type: PointerType;
+    Position: Vec2;
+    Modifier: InputModifier;
+    Button: PointerButton;
+    Count: number;
+
+    // Specified types by Type
+    Mouse: MessagePointerMouse;
+    Touch: MessagePointerTouch;
+    Pen: MessagePointerPen;
+}
+
 export interface IDragContext {
     GetBehavior(): DropBehavior;
     GetPosition(): Vec2;
@@ -31,6 +75,7 @@ export interface IDragContext {
     SetDropBehavior(n: DropBehavior): void;
 }
 
+// prettier-ignore
 export interface IControl extends IControlExtension {
     SetVisible(b: boolean): IControl;
     GetVisible(): boolean;
@@ -76,9 +121,24 @@ export interface IControl extends IControlExtension {
     SetDropEnable(b: boolean): IControl;
     GetDropEnable(): boolean;
 
-    OnDragEnter(fn: (sender: IDragContext) => void): IControl;
-    OnDragMove(fn: (sender: IDragContext) => void): IControl;
-    OnDragLeave(fn: (sender: IDragContext) => void): IControl;
-    OnDragDrop(fn: (sender: IDragContext) => void): IControl;
-    OnDragEnd(fn: (sender: IDragContext) => void): IControl;
+    OnDragEnter /**/(fn: (sender: IDragContext) => void): IControl;
+    OnDragMove  /**/(fn: (sender: IDragContext) => void): IControl;
+    OnDragLeave /**/(fn: (sender: IDragContext) => void): IControl;
+    OnDragDrop  /**/(fn: (sender: IDragContext) => void): IControl;
+    OnDragEnd   /**/(fn: (sender: IDragContext) => void): IControl;
+    
+    OnKeyPress  /**/(fn: (sender: IControl, mk: MessageKey) => void): IControl;
+    OnKeyRelease/**/(fn: (sender: IControl, mk: MessageKey) => void): IControl;
+
+    OnPointerEnter    /**/(fn: (sender: IControl, mp: MessagePointer) => void): IControl;
+    OnPointerLeave    /**/(fn: (sender: IControl, mp: MessagePointer) => void): IControl;
+    OnPointerPress    /**/(fn: (sender: IControl, mp: MessagePointer) => void): IControl;
+    OnPointerRelease  /**/(fn: (sender: IControl, mp: MessagePointer) => void): IControl;
+    OnPointerClickNdc /**/(fn: (sender: IControl, mp: MessagePointer) => void): IControl;
+    OnPointerMove     /**/(fn: (sender: IControl, mp: MessagePointer) => void): IControl;
+    OnPointerVWheel   /**/(fn: (sender: IControl, mp: MessagePointer) => void): IControl;
+    OnPointerHWheel   /**/(fn: (sender: IControl, mp: MessagePointer) => void): IControl;
+    OnPointerHover    /**/(fn: (sender: IControl, mp: MessagePointer) => void): IControl;
+    OnPointerLost     /**/(fn: (sender: IControl, mp: MessagePointer) => void): IControl;
+    OnPointerCursor   /**/(fn: (sender: IControl, mp: MessagePointer) => CursorType): IControl;
 }

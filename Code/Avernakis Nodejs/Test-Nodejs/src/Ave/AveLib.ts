@@ -125,7 +125,10 @@ function RequireAveLib() {
     ap.InitializeAppPath(sPath);
 
     // Try release path first
-    if (fs.existsSync(sPath + "/lib/Avernakis-Nodejs.node"))
+    if (
+        process.env.AVE_BUILD_ENV !== "DEBUG_BUILD" &&
+        fs.existsSync(sPath + "/lib/Avernakis-Nodejs.node")
+    )
         return require(sPath + "/lib/Avernakis-Nodejs");
 
     ap.IsDebugFolder = true;

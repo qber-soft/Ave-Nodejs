@@ -82,6 +82,46 @@ export enum ExpandAction {
     Toggle,
 }
 
+export enum PointerType {
+    Mouse,
+    Touch,
+    Pen,
+    Unknown,
+};
+
+export enum PointerButton {
+    None,
+
+    _1,
+    _2,
+    _3,
+    _4,
+    _5,
+
+    First = _1,
+    Second = _2,
+    Third = _3,
+    Fourth = _4,
+    Fifth = _5,
+};
+
+export enum CursorType {
+    Arrow,
+    AppStarting,
+    Busy,
+    Help,
+    Link,
+    Cross,
+    SizeAll,
+    SizeNS,
+    SizeWE,
+    SizeNESW,
+    SizeNWSE,
+    ArrowInvert,
+    Ibeam,
+    No,
+};
+
 export enum KbKey {
     None,
 
