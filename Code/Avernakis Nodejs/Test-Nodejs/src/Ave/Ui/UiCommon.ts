@@ -87,7 +87,7 @@ export enum PointerType {
     Touch,
     Pen,
     Unknown,
-};
+}
 
 export enum PointerButton {
     None,
@@ -103,7 +103,7 @@ export enum PointerButton {
     Third = _3,
     Fourth = _4,
     Fifth = _5,
-};
+}
 
 export enum CursorType {
     Arrow,
@@ -120,7 +120,7 @@ export enum CursorType {
     ArrowInvert,
     Ibeam,
     No,
-};
+}
 
 export enum KbKey {
     None,
@@ -743,7 +743,11 @@ export class InMemoryData {
     RowPitch: number = 0;
     SlicePitch: number = 0;
 
-    constructor(ab: ArrayBuffer = null, rowPitch: number = 0, slicePitch: number = 0) {
+    constructor(
+        ab: ArrayBuffer = null,
+        rowPitch: number = 0,
+        slicePitch: number = 0
+    ) {
         this.Data = ab;
         this.RowPitch = rowPitch;
         this.SlicePitch = slicePitch;
@@ -775,11 +779,24 @@ export class ResourceSource {
         return r;
     }
 
-    static FromBuffer(ab: Buffer, rowPitch: number = 0, slicePitch: number = 0) {
-        return this.FromArrayBuffer(ab.buffer, rowPitch, slicePitch);
+    // https://stackoverflow.com/a/22165328
+    static FromBuffer(
+        buffer: Buffer,
+        rowPitch: number = 0,
+        slicePitch: number = 0
+    ) {
+        const ab = buffer.buffer.slice(
+            buffer.byteOffset,
+            buffer.byteOffset + buffer.byteLength
+        );
+        return this.FromArrayBuffer(ab, rowPitch, slicePitch);
     }
 
-    static FromArrayBuffer(ab: ArrayBuffer, rowPitch: number = 0, slicePitch: number = 0) {
+    static FromArrayBuffer(
+        ab: ArrayBuffer,
+        rowPitch: number = 0,
+        slicePitch: number = 0
+    ) {
         let r = new ResourceSource();
         r.Type = ResourceSourceType.InMemory;
         r.InMemory = new InMemoryData(ab, rowPitch, slicePitch);
