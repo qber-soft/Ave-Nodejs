@@ -785,10 +785,16 @@ export class ResourceSource {
         rowPitch: number = 0,
         slicePitch: number = 0
     ) {
-        const ab = buffer.buffer.slice(
-            buffer.byteOffset,
-            buffer.byteOffset + buffer.byteLength
-        );
+        // use <= here: when png is decoded, if you pass 5kb data, and the png data ranges from 0 ~ 2k
+        // the png lib will find and use 0 ~ 2k even you pass 5kb data
+        const ab =
+            buffer.byteOffset === 0 &&
+            buffer.byteLength <= buffer.buffer.byteLength
+                ? buffer.buffer
+                : buffer.buffer.slice(
+                      buffer.byteOffset,
+                      buffer.byteOffset + buffer.byteLength
+                  );
         return this.FromArrayBuffer(ab, rowPitch, slicePitch);
     }
 
