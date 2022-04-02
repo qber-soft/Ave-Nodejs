@@ -7,9 +7,6 @@
     <ClCompile Include="Private\Library.cpp">
       <Filter>Build</Filter>
     </ClCompile>
-    <ClCompile Include="Private\win_delay_load_hook.cc">
-      <Filter>External</Filter>
-    </ClCompile>
     <ClCompile Include="Private\ExportAll.cpp" />
     <ClCompile Include="Private\Test.cpp">
       <Filter>Test</Filter>
@@ -199,6 +196,9 @@
     </ClCompile>
     <ClCompile Include="Private\CoCamera.cpp">
       <Filter>Ave\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="Private\WinLoadLibraryHook.cpp">
+      <Filter>Build</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
