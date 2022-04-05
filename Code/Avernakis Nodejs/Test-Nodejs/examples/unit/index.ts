@@ -1,5 +1,5 @@
 import { run } from "./utility";
-import { main } from "./label/label-text-color";
+import { main } from "./mouse-event/event-basic";
 run(main);
 
 // ---

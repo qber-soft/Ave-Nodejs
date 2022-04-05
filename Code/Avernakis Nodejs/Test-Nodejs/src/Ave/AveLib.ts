@@ -10,182 +10,142 @@ export interface IControlExtension {
     GetEnableWithParent(): boolean;
 }
 
-function AddControlExtension(ControlClass: IControl & { new (): IControl }) {
+function ExtendControlInstance(instance: IControl) {
+    const SetKeyTip = instance.SetKeyTip.bind(instance);
+    instance.SetKeyTip = (tip: string, nIndex: number = 0): IControl => {
+        return SetKeyTip(tip, nIndex);
+    };
+
+    const MapRect = instance.MapRect.bind(instance);
+    instance.MapRect = (rc: Rect, bClient: boolean): Rect => {
+        return Rect.FromNative(MapRect(rc, bClient));
+    };
+
+    const GetRect = instance.GetRect.bind(instance);
+    instance.GetRect = () => {
+        return Rect.FromNative(GetRect());
+    };
+
+    const GetRectClient = instance.GetRectClient?.bind(instance);
+    // GetRectClient is undefined in Window
+    if (GetRectClient) {
+        instance.GetRectClient = () => {
+            return Rect.FromNative(GetRectClient());
+        };
+    }
+
+    instance.GetPosition = () => {
+        return instance.GetRect().Position;
+    };
+
+    instance.GetSize = () => {
+        return instance.GetRect().Size;
+    };
+
+    const GetTextColor = instance.GetTextColor.bind(instance);
+    instance.GetTextColor = (): Vec4 => {
+        return Vec4.FromNative(GetTextColor());
+    };
+
+    instance.GetEnableWithParent = () => {
+        let p: IControl = instance;
+        for (; p && p.GetEnable(); p = p.GetParent());
+        return !p;
+    };
+
+    //
+    const createDragHandler = (
+        original: (fn: (sender: IDragContext) => void) => IControl
+    ): ((fn: (sender: IDragContext) => void) => IControl) => {
+        return (fn) =>
+            original((sender: IDragContext) => {
+                const OriginalGetPosition = sender.GetPosition.bind(sender);
+                sender.GetPosition = () =>
+                    Vec2.FromNative(OriginalGetPosition());
+                return fn(sender);
+            });
+    };
+
+    // OnDragEnter is undefined in Window
+    const OnDragEnter = instance.OnDragEnter?.bind(instance);
+    if (OnDragEnter) {
+        instance.OnDragEnter = createDragHandler(OnDragEnter);
+    }
+
+    const OnDragMove = instance.OnDragMove?.bind(instance);
+    if (OnDragMove) {
+        instance.OnDragMove = createDragHandler(OnDragMove);
+    }
+
+    const OnDragLeave = instance.OnDragLeave?.bind(instance);
+    if (OnDragLeave) {
+        instance.OnDragLeave = createDragHandler(OnDragLeave);
+    }
+
+    const OnDragDrop = instance.OnDragDrop?.bind(instance);
+    if (OnDragDrop) {
+        instance.OnDragDrop = createDragHandler(OnDragDrop);
+    }
+
+    const OnDragEnd = instance.OnDragEnd?.bind(instance);
+    if (OnDragEnd) {
+        instance.OnDragEnd = createDragHandler(OnDragEnd);
+    }
+
+    //
+    const createPointHandler = (
+        original: (
+            fn: (sender: IControl, mp: MessagePointer) => void
+        ) => IControl
+    ): ((fn: (sender: IControl, mp: MessagePointer) => void) => IControl) => {
+        return (fn) => {
+            return original((sender: IControl, mp: MessagePointer) =>
+                fn(sender, MessagePointer.FromNative(mp))
+            );
+        };
+    };
+
+    const OnPointerEnter = instance.OnPointerEnter.bind(instance);
+    instance.OnPointerEnter = createPointHandler(OnPointerEnter);
+
+    const OnPointerLeave = instance.OnPointerLeave.bind(instance);
+    instance.OnPointerLeave = createPointHandler(OnPointerLeave);
+
+    const OnPointerPress = instance.OnPointerPress.bind(instance);
+    instance.OnPointerPress = createPointHandler(OnPointerPress);
+
+    const OnPointerRelease = instance.OnPointerRelease.bind(instance);
+    instance.OnPointerRelease = createPointHandler(OnPointerRelease);
+
+    const OnPointerClickNdc = instance.OnPointerClickNdc.bind(instance);
+    instance.OnPointerClickNdc = createPointHandler(OnPointerClickNdc);
+
+    const OnPointerMove = instance.OnPointerMove.bind(instance);
+    instance.OnPointerMove = createPointHandler(OnPointerMove);
+
+    const OnPointerVWheel = instance.OnPointerVWheel.bind(instance);
+    instance.OnPointerVWheel = createPointHandler(OnPointerVWheel);
+
+    const OnPointerHWheel = instance.OnPointerHWheel.bind(instance);
+    instance.OnPointerHWheel = createPointHandler(OnPointerHWheel);
+
+    const OnPointerHover = instance.OnPointerHover.bind(instance);
+    instance.OnPointerHover = createPointHandler(OnPointerHover);
+
+    const OnPointerLost = instance.OnPointerLost.bind(instance);
+    instance.OnPointerLost = createPointHandler(OnPointerLost);
+
+    const OnPointerCursor = instance.OnPointerCursor.bind(instance);
+    instance.OnPointerCursor = createPointHandler(OnPointerCursor);
+}
+
+function AddControlExtension(
+    ControlClass: IControl & { new (...args: any[]): IControl }
+) {
     return class extends ControlClass implements IControlExtension {
-        SetKeyTip(tip: string, nIndex: number = 0): IControl {
-            return super.SetKeyTip(tip, nIndex);
-        }
-
-        MapRect(rc: Rect, bClient: boolean): Rect {
-            return Rect.FromNative(super.MapRect(rc, bClient));
-        }
-
-        GetRect() {
-            return Rect.FromNative(super.GetRect());
-        }
-
-        GetRectClient() {
-            return Rect.FromNative(super.GetRectClient());
-        }
-
-        GetPosition() {
-            return this.GetRect().Position;
-        }
-
-        GetSize() {
-            return this.GetRect().Size;
-        }
-
-        GetTextColor(): Vec4 {
-            return Vec4.FromNative(super.GetTextColor());
-        }
-
-        GetEnableWithParent() {
-            let p: IControl = this;
-            for (; p && p.GetEnable(); p = p.GetParent());
-            return !p;
-        }
-
-        OnDragEnter(fn: (sender: IDragContext) => void): IControl {
-            return super.OnDragEnter((sender: IDragContext) => {
-                const OriginalGetPosition = sender.GetPosition.bind(sender);
-                sender.GetPosition = () =>
-                    Vec2.FromNative(OriginalGetPosition());
-                return fn(sender);
-            });
-        }
-
-        OnDragMove(fn: (sender: IDragContext) => void): IControl {
-            return super.OnDragMove((sender: IDragContext) => {
-                const OriginalGetPosition = sender.GetPosition.bind(sender);
-                sender.GetPosition = () =>
-                    Vec2.FromNative(OriginalGetPosition());
-                return fn(sender);
-            });
-        }
-
-        OnDragLeave(fn: (sender: IDragContext) => void): IControl {
-            return super.OnDragLeave((sender: IDragContext) => {
-                const OriginalGetPosition = sender.GetPosition.bind(sender);
-                sender.GetPosition = () =>
-                    Vec2.FromNative(OriginalGetPosition());
-                return fn(sender);
-            });
-        }
-
-        OnDragDrop(fn: (sender: IDragContext) => void): IControl {
-            return super.OnDragDrop((sender: IDragContext) => {
-                const OriginalGetPosition = sender.GetPosition.bind(sender);
-                sender.GetPosition = () =>
-                    Vec2.FromNative(OriginalGetPosition());
-                return fn(sender);
-            });
-        }
-
-        OnDragEnd(fn: (sender: IDragContext) => void): IControl {
-            return super.OnDragEnd((sender: IDragContext) => {
-                const OriginalGetPosition = sender.GetPosition.bind(sender);
-                sender.GetPosition = () =>
-                    Vec2.FromNative(OriginalGetPosition());
-                return fn(sender);
-            });
-        }
-
-        OnPointerEnter(
-            fn: (sender: IControl, mp: MessagePointer) => void
-        ): IControl {
-            return super.OnPointerEnter(
-                (sender: IControl, mp: MessagePointer) =>
-                    fn(sender, MessagePointer.FromNative(mp))
-            );
-        }
-
-        OnPointerLeave(
-            fn: (sender: IControl, mp: MessagePointer) => void
-        ): IControl {
-            return super.OnPointerLeave(
-                (sender: IControl, mp: MessagePointer) =>
-                    fn(sender, MessagePointer.FromNative(mp))
-            );
-        }
-
-        OnPointerPress(
-            fn: (sender: IControl, mp: MessagePointer) => void
-        ): IControl {
-            return super.OnPointerPress(
-                (sender: IControl, mp: MessagePointer) =>
-                    fn(sender, MessagePointer.FromNative(mp))
-            );
-        }
-
-        OnPointerRelease(
-            fn: (sender: IControl, mp: MessagePointer) => void
-        ): IControl {
-            return super.OnPointerRelease(
-                (sender: IControl, mp: MessagePointer) =>
-                    fn(sender, MessagePointer.FromNative(mp))
-            );
-        }
-
-        OnPointerClickNdc(
-            fn: (sender: IControl, mp: MessagePointer) => void
-        ): IControl {
-            return super.OnPointerClickNdc(
-                (sender: IControl, mp: MessagePointer) =>
-                    fn(sender, MessagePointer.FromNative(mp))
-            );
-        }
-
-        OnPointerMove(
-            fn: (sender: IControl, mp: MessagePointer) => void
-        ): IControl {
-            return super.OnPointerMove((sender: IControl, mp: MessagePointer) =>
-                fn(sender, MessagePointer.FromNative(mp))
-            );
-        }
-
-        OnPointerVWheel(
-            fn: (sender: IControl, mp: MessagePointer) => void
-        ): IControl {
-            return super.OnPointerVWheel(
-                (sender: IControl, mp: MessagePointer) =>
-                    fn(sender, MessagePointer.FromNative(mp))
-            );
-        }
-
-        OnPointerHWheel(
-            fn: (sender: IControl, mp: MessagePointer) => void
-        ): IControl {
-            return super.OnPointerHWheel(
-                (sender: IControl, mp: MessagePointer) =>
-                    fn(sender, MessagePointer.FromNative(mp))
-            );
-        }
-
-        OnPointerHover(
-            fn: (sender: IControl, mp: MessagePointer) => void
-        ): IControl {
-            return super.OnPointerHover(
-                (sender: IControl, mp: MessagePointer) =>
-                    fn(sender, MessagePointer.FromNative(mp))
-            );
-        }
-
-        OnPointerLost(
-            fn: (sender: IControl, mp: MessagePointer) => void
-        ): IControl {
-            return super.OnPointerLost((sender: IControl, mp: MessagePointer) =>
-                fn(sender, MessagePointer.FromNative(mp))
-            );
-        }
-
-        OnPointerCursor(
-            fn: (sender: IControl, mp: MessagePointer) => CursorType
-        ): IControl {
-            return super.OnPointerCursor(
-                (sender: IControl, mp: MessagePointer) =>
-                    fn(sender, MessagePointer.FromNative(mp))
-            );
+        constructor(...args: any[]) {
+            super(...args);
+            ExtendControlInstance(this);
         }
     };
 }
