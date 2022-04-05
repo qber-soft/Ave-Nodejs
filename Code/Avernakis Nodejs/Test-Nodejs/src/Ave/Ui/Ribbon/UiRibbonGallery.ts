@@ -105,4 +105,8 @@ export interface IRibbonGallery extends IControl {
     ): RibbonGallery;
 }
 
-export class RibbonGallery extends (AveLib.UiRibbonGallery as IRibbonGallery) {}
+export class RibbonGallery extends (AveLib.UiRibbonGallery as IRibbonGallery) {
+    ViewGetItemCountPerLineRange(): Vec2 {
+        return Vec2.FromNative(super.ViewGetItemCountPerLineRange());
+    }
+}

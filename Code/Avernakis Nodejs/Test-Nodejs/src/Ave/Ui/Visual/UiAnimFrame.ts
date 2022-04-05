@@ -5,6 +5,10 @@ import { Vec2 } from "../../Math/Vector";
 import { Window } from "../Control/UiWindow";
 
 export class AnimFrameInfo {
+    static FromNative(info: AnimFrameInfo) {
+        info.SizePerFrame = Vec2.FromNative(info.SizePerFrame);
+        return info;
+    }
     SizePerFrame: Vec2;
     FramePerRow: number;
     FrameCount: number;
@@ -31,4 +35,8 @@ export interface IAnimFrame extends IControl {
     IsPlaying(): boolean;
 }
 
-export class AnimFrame extends (AveLib.UiAnimFrame as IAnimFrame) {}
+export class AnimFrame extends (AveLib.UiAnimFrame as IAnimFrame) {
+    GetFrameInfo(): AnimFrameInfo {
+        return AnimFrameInfo.FromNative(super.GetFrameInfo());
+    }
+}

@@ -104,6 +104,10 @@ export class Vec2 extends Vec<2> {
         super([x, y]);
     }
 
+    static FromNative(vec: Vec2) {
+        return new Vec2(vec.x, vec.y);
+    }
+
     get x() {
         return this._v[0];
     }
@@ -136,18 +140,36 @@ export class Vec2 extends Vec<2> {
         return this.Sub(r.Mul(this.Dot(r) * 2));
     }
 
-    static get Zero() { return new Vec2(0, 0); }
-    static get One() { return new Vec2(1, 1); }
-    static get NegOne() { return new Vec2(-1, -1); }
-    static get UnitX() { return new Vec2(1, 0); }
-    static get UnitY() { return new Vec2(0, 1); }
-    static get NegUnitX() { return new Vec2(-1, 0); }
-    static get NegUnitY() { return new Vec2(0, -1); }
+    static get Zero() {
+        return new Vec2(0, 0);
+    }
+    static get One() {
+        return new Vec2(1, 1);
+    }
+    static get NegOne() {
+        return new Vec2(-1, -1);
+    }
+    static get UnitX() {
+        return new Vec2(1, 0);
+    }
+    static get UnitY() {
+        return new Vec2(0, 1);
+    }
+    static get NegUnitX() {
+        return new Vec2(-1, 0);
+    }
+    static get NegUnitY() {
+        return new Vec2(0, -1);
+    }
 }
 
 export class Vec3 extends Vec<3> {
     constructor(x: number = 0, y: number = 0, z: number = 0) {
         super([x, y, z]);
+    }
+
+    static FromNative(vec: Vec3) {
+        return new Vec3(vec.x, vec.y, vec.z);
     }
 
     get x() {
@@ -244,20 +266,42 @@ export class Vec3 extends Vec<3> {
         return this.Sub(r.Mul(this.Dot(r) * 2));
     }
 
-    static get Zero() { return new Vec3(0, 0, 0); }
-    static get One() { return new Vec3(1, 1, 1); }
-    static get NegOne() { return new Vec3(-1, -1, -1); }
-    static get UnitX() { return new Vec3(1, 0, 0); }
-    static get UnitY() { return new Vec3(0, 1, 0); }
-    static get UnitZ() { return new Vec3(0, 0, 1); }
-    static get NegUnitX() { return new Vec3(-1, 0, 0); }
-    static get NegUnitY() { return new Vec3(0, -1, 0); }
-    static get NegUnitZ() { return new Vec3(0, 0, -1); }
+    static get Zero() {
+        return new Vec3(0, 0, 0);
+    }
+    static get One() {
+        return new Vec3(1, 1, 1);
+    }
+    static get NegOne() {
+        return new Vec3(-1, -1, -1);
+    }
+    static get UnitX() {
+        return new Vec3(1, 0, 0);
+    }
+    static get UnitY() {
+        return new Vec3(0, 1, 0);
+    }
+    static get UnitZ() {
+        return new Vec3(0, 0, 1);
+    }
+    static get NegUnitX() {
+        return new Vec3(-1, 0, 0);
+    }
+    static get NegUnitY() {
+        return new Vec3(0, -1, 0);
+    }
+    static get NegUnitZ() {
+        return new Vec3(0, 0, -1);
+    }
 }
 
 export class Vec4 extends Vec<4> {
     constructor(x: number = 0, y: number = 0, z: number = 0, w: number = 0) {
         super([x, y, z, w]);
+    }
+
+    static FromNative(vec: Vec4) {
+        return new Vec4(vec.x, vec.y, vec.z, vec.w);
     }
 
     get x() {
@@ -465,15 +509,37 @@ export class Vec4 extends Vec<4> {
         this._v[3] = r.z;
     }
 
-    static get Zero() { return new Vec4(0, 0, 0, 0); }
-    static get One() { return new Vec4(1, 1, 1, 1); }
-    static get NegOne() { return new Vec4(-1, -1, -1, -1); }
-    static get UnitX() { return new Vec4(1, 0, 0, 0); }
-    static get UnitY() { return new Vec4(0, 1, 0, 0); }
-    static get UnitZ() { return new Vec4(0, 0, 1, 0); }
-    static get UnitW() { return new Vec4(0, 0, 0, 1); }
-    static get NegUnitX() { return new Vec4(-1, 0, 0, 0); }
-    static get NegUnitY() { return new Vec4(0, -1, 0, 0); }
-    static get NegUnitZ() { return new Vec4(0, 0, -1, 0); }
-    static get NegUnitW() { return new Vec4(0, 0, 0, -1); }
+    static get Zero() {
+        return new Vec4(0, 0, 0, 0);
+    }
+    static get One() {
+        return new Vec4(1, 1, 1, 1);
+    }
+    static get NegOne() {
+        return new Vec4(-1, -1, -1, -1);
+    }
+    static get UnitX() {
+        return new Vec4(1, 0, 0, 0);
+    }
+    static get UnitY() {
+        return new Vec4(0, 1, 0, 0);
+    }
+    static get UnitZ() {
+        return new Vec4(0, 0, 1, 0);
+    }
+    static get UnitW() {
+        return new Vec4(0, 0, 0, 1);
+    }
+    static get NegUnitX() {
+        return new Vec4(-1, 0, 0, 0);
+    }
+    static get NegUnitY() {
+        return new Vec4(0, -1, 0, 0);
+    }
+    static get NegUnitZ() {
+        return new Vec4(0, 0, -1, 0);
+    }
+    static get NegUnitW() {
+        return new Vec4(0, 0, 0, -1);
+    }
 }

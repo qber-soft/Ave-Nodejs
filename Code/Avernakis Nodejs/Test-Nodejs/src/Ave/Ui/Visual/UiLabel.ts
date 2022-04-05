@@ -23,4 +23,8 @@ export interface ILabel extends IVisual {
     GetWrappable(): boolean;
 }
 
-export class Label extends (AveLib.UiLabel as ILabel) {}
+export class Label extends (AveLib.UiLabel as ILabel) {
+    GetBackColor(): Vec4 {
+        return Vec4.FromNative(super.GetBackColor());
+    }
+}

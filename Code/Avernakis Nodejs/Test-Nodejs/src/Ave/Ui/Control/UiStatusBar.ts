@@ -59,4 +59,8 @@ export class StatusBar extends (AveLib.UiStatusBar as IStatusBar) {
     GetItemRect(nIndex: number): Rect {
         return Rect.FromNative(super.GetItemRect(nIndex));
     }
+
+    GetBackColor(): Vec4 {
+        return Vec4.FromNative(super.GetBackColor());
+    }
 }

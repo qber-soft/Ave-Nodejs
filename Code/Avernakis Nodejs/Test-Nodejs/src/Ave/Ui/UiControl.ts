@@ -54,6 +54,8 @@ export class MessagePointerPen {
 export class MessagePointer {
     static FromNative(mp: MessagePointer): MessagePointer {
         mp.Touch.Contact = Rect.FromNative(mp.Touch.Contact);
+        mp.Pen.Tilt = Vec2.FromNative(mp.Pen.Tilt);
+        mp.Position = Vec2.FromNative(mp.Position);
         return mp;
     }
     // Common

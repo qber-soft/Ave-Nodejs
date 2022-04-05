@@ -86,4 +86,24 @@ export interface ICamera {
     GetViewProjectionT(): Mat44;
 }
 
-export class Camera extends (AveLib.CoCamera as ICamera) {}
+export class Camera extends (AveLib.CoCamera as ICamera) {
+    GetPosition(): Vec3 {
+        return Vec3.FromNative(super.GetPosition());
+    }
+
+    GetDirection(): Vec3 {
+        return Vec3.FromNative(super.GetDirection());
+    }
+
+    GetOrthoRange(): Vec4 {
+        return Vec4.FromNative(super.GetOrthoRange());
+    }
+
+    GetViewUp(): Vec3 {
+        return Vec3.FromNative(super.GetViewUp());
+    }
+
+    GetViewRight(): Vec3 {
+        return Vec3.FromNative(super.GetViewRight());
+    }
+}

@@ -13,7 +13,7 @@ import {
 } from "../UiCommon";
 import { Theme } from "../Theme/UiTheme";
 import { ICommonUi } from "../UiCommonUi";
-import { Vec2 } from "../../Math/Vector";
+import { Vec2, Vec4 } from "../../Math/Vector";
 import { IPlatform, MonitorItem } from "../UiPlatform";
 import { IWindowFrame } from "./UiWindowFrame";
 import { IIcon } from "../Visual/UiIcon";
@@ -277,6 +277,36 @@ export class Window extends (AveLib.UiWindow as IWindow) {
         return super.SetContent(c);
     }
 
+    GetClientSize(): Vec2 {
+        return Vec2.FromNative(super.GetClientSize());
+    }
+
+    GetClientPosition(): Vec2 {
+        return Vec2.FromNative(super.GetClientPosition());
+    }
+
+    GetCommonUi(): ICommonUi {
+        const commonUi = super.GetCommonUi();
+
+        const OriginalPickColor = commonUi.PickColor.bind(commonUi);
+        commonUi.PickColor = (vColor: Vec4, bAllowAlpha: boolean) =>
+            Vec4.FromNative(OriginalPickColor(vColor, bAllowAlpha));
+
+        const OriginalPickColorEx = commonUi.PickColorEx.bind(commonUi);
+        commonUi.PickColorEx = (
+            vColor: Vec4,
+            bAllowAlpha: boolean,
+            fnPreview: (vColor: Vec4) => void
+        ) =>
+            Vec4.FromNative(
+                OriginalPickColorEx(vColor, bAllowAlpha, (vColor: Vec4) =>
+                    fnPreview(Vec4.FromNative(vColor))
+                )
+            );
+
+        return commonUi;
+    }
+
     GetPlatform(): IPlatform {
         const platform = super.GetPlatform();
         const OriginalGetArea: typeof platform.ScreenGetArea =
@@ -289,6 +319,12 @@ export class Window extends (AveLib.UiWindow as IWindow) {
             OriginalMonitorEnumerate().map((item) =>
                 MonitorItem.FromNative(item)
             );
+
+        const OriginalPointerGetPosition: typeof platform.PointerGetPosition =
+            platform.PointerGetPosition.bind(platform);
+        platform.PointerGetPosition = () =>
+            Vec2.FromNative(OriginalPointerGetPosition());
+
         return platform;
     }
 

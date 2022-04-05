@@ -32,4 +32,8 @@ export interface IColorPicker extends IControl {
     OnChange(fn: (sender: ColorPicker) => void): ColorPicker;
 }
 
-export class ColorPicker extends (AveLib.UiColorPicker as IColorPicker) {}
+export class ColorPicker extends (AveLib.UiColorPicker as IColorPicker) {
+    GetColor(): Vec3 {
+        return Vec3.FromNative(super.GetColor());
+    }
+}

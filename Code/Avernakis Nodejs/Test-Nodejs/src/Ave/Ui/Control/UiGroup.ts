@@ -32,4 +32,8 @@ export class Group extends (AveLib.UiGroup as IGroup) {
         this.m_Content = c;
         return super.SetContent(c);
     }
+
+    GetContentSize(): Vec2 {
+        return Vec2.FromNative(super.GetContentSize());
+    }
 }

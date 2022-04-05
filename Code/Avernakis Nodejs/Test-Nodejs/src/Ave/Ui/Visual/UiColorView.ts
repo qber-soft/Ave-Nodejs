@@ -20,4 +20,16 @@ export interface IColorView extends IVisual {
     GetBackBlockSize(): DpiSize;
 }
 
-export class ColorView extends (AveLib.UiColorView as IColorView) {}
+export class ColorView extends (AveLib.UiColorView as IColorView) {
+    GetSolidColor(): Vec4 {
+        return Vec4.FromNative(super.GetSolidColor());
+    }
+
+    GetBackColor1(): Vec4 {
+        return Vec4.FromNative(super.GetBackColor1());
+    }
+
+    GetBackColor2(): Vec4 {
+        return Vec4.FromNative(super.GetBackColor2());
+    }
+}

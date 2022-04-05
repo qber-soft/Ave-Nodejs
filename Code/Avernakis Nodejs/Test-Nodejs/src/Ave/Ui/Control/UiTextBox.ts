@@ -116,4 +116,16 @@ export interface ITextBox extends IControl {
     OnSpin(fn: (sender: TextBox) => void): TextBox;
 }
 
-export class TextBox extends (AveLib.UiTextBox as ITextBox) {}
+export class TextBox extends (AveLib.UiTextBox as ITextBox) {
+    SelectionGet(): Vec2 {
+        return Vec2.FromNative(super.SelectionGet());
+    }
+
+    GetRange(): Vec2 {
+        return Vec2.FromNative(super.GetRange());
+    }
+
+    GetCaretPos(): Vec2 {
+        return Vec2.FromNative(super.GetCaretPos());
+    }
+}

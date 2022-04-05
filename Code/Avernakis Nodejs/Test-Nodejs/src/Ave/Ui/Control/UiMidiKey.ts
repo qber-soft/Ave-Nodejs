@@ -335,4 +335,20 @@ export class MidiKey extends (AveLib.UiMidiKey as IMidiKey) {
     KeyGetRect(nKey: NoteIndex): Rect {
         return Rect.FromNative(super.KeyGetRect(nKey));
     }
+
+    GetBlackSize(): Vec2 {
+        return Vec2.FromNative(super.GetBlackSize());
+    }
+
+    MarkGetLabelColor(nNote: NoteIndex): Vec4 {
+        return Vec4.FromNative(super.MarkGetLabelColor(nNote));
+    }
+
+    MarkGetColor(nNote: NoteIndex): Vec4 {
+        return Vec4.FromNative(super.MarkGetColor(nNote));
+    }
+
+    MarkbarGetColor(nNote: NoteIndex): Vec4 {
+        return Vec4.FromNative(super.MarkbarGetColor(nNote));
+    }
 }

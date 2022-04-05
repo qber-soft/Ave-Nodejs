@@ -157,4 +157,8 @@ export class Tree extends (AveLib.UiTree as ITree) {
     ItemGetRect(pItem: TreeItemHandle, nPart: TreeItemPart): Rect {
         return Rect.FromNative(super.ItemGetRect(pItem, nPart));
     }
+
+    GetScrollPosition(): Vec2 {
+        return Vec2.FromNative(super.GetScrollPosition());
+    }
 }
