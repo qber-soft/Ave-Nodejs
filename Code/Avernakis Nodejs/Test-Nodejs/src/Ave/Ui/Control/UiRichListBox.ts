@@ -201,4 +201,11 @@ export class RichListBox extends (AveLib.UiRichListBox as IRichListBox) {
     GetScrollPosition(): Vec2 {
         return Vec2.FromNative(super.GetScrollPosition());
     }
+
+    GetHeader(): Header {
+        const header = super.GetHeader();
+        const OriginalGetRect = header.GetRect.bind(header);
+        header.GetRect = (): Rect => Rect.FromNative(OriginalGetRect());
+        return header;
+    }
 }
