@@ -1,5 +1,5 @@
 ﻿import { IControl } from "../UiControl";
-import { AveLib } from "../../AveLib";
+import { AveLib, ExtendControlInstance } from "../../AveLib";
 import { Window } from "../Control/UiWindow";
 import { RibbonApp } from "./UiRibbonApp";
 import { ToolBar } from "../Control/UiToolBar";
@@ -53,6 +53,18 @@ export class Ribbon extends (AveLib.UiRibbon as IRibbon) {
     private m_AppMenu: IControl;
     private m_Backstage: IControl;
     private m_Tab: Set<RibbonTab> = new Set();
+
+    GetApp(): RibbonApp {
+        const app = super.GetApp();
+        ExtendControlInstance(app);
+        return app;
+    }
+
+    GetToolBar(): ToolBar {
+        const toolbar = super.GetToolBar();
+        ExtendControlInstance(toolbar);
+        return toolbar;
+    }
 
     TabAdd(pChild: RibbonTab) {
         this.m_Tab.add(pChild);

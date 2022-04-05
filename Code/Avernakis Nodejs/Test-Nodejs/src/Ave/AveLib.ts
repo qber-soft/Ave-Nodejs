@@ -10,7 +10,7 @@ export interface IControlExtension {
     GetEnableWithParent(): boolean;
 }
 
-function ExtendControlInstance(instance: IControl) {
+export function ExtendControlInstance(instance: IControl) {
     const SetKeyTip = instance.SetKeyTip.bind(instance);
     instance.SetKeyTip = (tip: string, nIndex: number = 0): IControl => {
         return SetKeyTip(tip, nIndex);

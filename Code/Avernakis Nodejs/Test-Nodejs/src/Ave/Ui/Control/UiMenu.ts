@@ -1,5 +1,5 @@
 ﻿import { IControl } from "../UiControl";
-import { AveLib } from "../../AveLib";
+import { AveLib, ExtendControlInstance } from "../../AveLib";
 import { Window } from "./UiWindow";
 import { IconCache, DpiSize, StringKey, DpiSize_2 } from "../UiCommon";
 
@@ -128,5 +128,11 @@ export class Menu extends (AveLib.UiMenu as IMenu) {
         if (t) this.m_Content.delete(t);
         if (pControl) this.m_Content.add(pControl);
         return t;
+    }
+
+    InsertSubMenu(pItem: MenuItem): Menu {
+        const menu = super.InsertSubMenu(pItem);
+        ExtendControlInstance(menu);
+        return menu;
     }
 }
