@@ -77,10 +77,10 @@ namespace Nav
 			m_App->BlockCallEnter();
 	}
 
-	void __App::BlockCallLeave()
+	void __App::BlockCallLeave( Sys::IEvent* pEvent )
 	{
 		if ( m_App )
-			m_App->BlockCallLeave();
+			m_App->BlockCallLeave( pEvent );
 	}
 
 	void __App::SetDpiwareSizeList( Ui::IIconManager & im )

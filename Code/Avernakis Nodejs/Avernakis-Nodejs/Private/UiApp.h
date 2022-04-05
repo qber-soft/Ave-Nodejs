@@ -48,6 +48,8 @@ namespace Nav
 		Callback_t							m_OnExit;
 
 		std::atomic<U32>					m_BlockCall{ 0 };
+		Sys::IEvent*						m_BlockEvent{ nullptr };
+		U1									m_BlockExecuteInUi{ false };
 
 	private:
 		void								__UiThread();
@@ -77,6 +79,6 @@ namespace Nav
 	public:
 		void								ExecuteInUiThread( Func<void()>&& f, U1 bWait );
 		void								BlockCallEnter();
-		void								BlockCallLeave();
+		void								BlockCallLeave( Sys::IEvent* pEvent );
 	};
 }

@@ -29,6 +29,12 @@ namespace Nav
 		WrapData<S32_2>					GetContentSize() const { return GetControlTyped().GetContentSize(); }
 		WrapData<S32_2>					GetRealContentSize() const { return GetControlTyped().GetRealContentSize(); }
 
+		UiPager*						SetContentHorizontalAlign( Ui::AlignType nType ) { GetControlTyped().SetContentHorizontalAlign( nType ); return this; }
+		Ui::AlignType					GetContentHorizontalAlign() const { return GetControlTyped().GetContentHorizontalAlign(); }
+
+		UiPager*						SetContentVerticalAlign( Ui::AlignType nType ) { GetControlTyped().SetContentVerticalAlign( nType ); return this; }
+		Ui::AlignType					GetContentVerticalAlign() const { return GetControlTyped().GetContentVerticalAlign(); }
+
 		UiPager*						SetAdjustment( Ui::PagerAdjustment nAdjust ) { GetControlTyped().SetAdjustment( nAdjust ); return this; }
 		Ui::PagerAdjustment				GetAdjustment() const { return GetControlTyped().GetAdjustment(); }
 

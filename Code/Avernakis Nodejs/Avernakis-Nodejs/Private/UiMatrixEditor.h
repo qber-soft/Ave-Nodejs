@@ -32,7 +32,7 @@ namespace Nav
 		UnitCallback_t						m_OnUnitChangeBegin;
 		OnUnitChangeEnd_t					m_OnUnitChangeEnd;
 
-		UiMatrixEditorDoc*					m_Doc{ nullptr };
+		JsObject<UiMatrixEditorDoc>			m_Doc{ nullptr };
 		UiWindow*							m_Window{ nullptr };
 
 		void								__OnUnitClick( Ui::IMatrixEditor& sender, S32 x, S32 y, const Ui::MatrixUnit& u );

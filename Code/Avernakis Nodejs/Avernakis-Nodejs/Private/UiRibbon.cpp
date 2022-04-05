@@ -51,11 +51,11 @@ namespace Nav
 
 	U1 UiRibbon::Ctor( const CallbackInfo& ci, UiWindow * p, Napi::Value v )
 	{
-		m_App = ci.NewJsObject<UiRibbonApp>( true );
+		m_App = ci.NewJsObjectWithOwnership<UiRibbonApp>();
 		if ( !m_App )
 			return false;
 
-		m_ToolBar = ci.NewJsObject<UiToolBar>( true );
+		m_ToolBar = ci.NewJsObjectWithOwnership<UiToolBar>();
 		if ( !m_ToolBar )
 			return false;
 

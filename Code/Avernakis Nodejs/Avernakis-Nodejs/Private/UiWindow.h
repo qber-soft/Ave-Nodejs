@@ -49,11 +49,13 @@ namespace Nav
 
 	using UiWindowFeature = AppHelper::WindowFeature<AppHelper::WindowIconManager, AppHelper::WindowDpiware, AppHelper::WindowCommonUi>;
 
+	class UiThemeImage;
 	class UiCommonUi;
 	class UiPlatform;
 	class UiControlManager;
 	class UiIconManager;
 	class UiIcon;
+	class UiWindowDragDrop;
 	class UiWindowSysTray;
 	class UiWindowTaskbar;
 	
@@ -100,14 +102,14 @@ namespace Nav
 		virtual void						OnDpiChange() override;
 
 	private:
-		using OnCreateContent_t				= JsFuncDirect<U1( UiWindow* sender )>;
-		using OnHotkey_t					= JsFuncSafe<void( UiWindow* sender, U32 nId, Ui::Key nKey, U32 nInputModifier )>;
+		using OnCreateContent_t				/**/ = JsFuncDirect<U1( UiWindow* sender )>;
+		using OnHotkey_t					/**/ = JsFuncSafe<void( UiWindow* sender, U32 nId, Ui::Key nKey, U32 nInputModifier )>;
 
-		using CallbackBool_t				= JsFuncSafe<U1( UiWindow* sender )>;
-		using CallbackGeneric_t				= JsFuncSafe<void( UiWindow* sender )>;
+		using CallbackBool_t				/**/ = JsFuncSafe<U1( UiWindow* sender )>;
+		using CallbackGeneric_t				/**/ = JsFuncSafe<void( UiWindow* sender )>;
 
 	public:
-		using SysTrayCallback_t				= JsFuncSafe<void( UiWindow* sender )>;
+		using SysTrayCallback_t				/**/ = JsFuncSafe<void( UiWindow* sender )>;
 
 	private:
 		UiWindowCreation_t					m_Param;
@@ -129,23 +131,39 @@ namespace Nav
 		CallbackGeneric_t					m_OnDeviceChange;
 		U1									m_DeviceNotificationEnable{ false };
 
+		OnDrag_t							m_OnDragEnter;
+		OnDrag_t							m_OnDragMove;
+		OnDrag_t							m_OnDragLeave;
+		OnDrag_t							m_OnDragDrop;
+		OnDragEnd_t							m_OnDragEnd;
+		UiControl*							m_DragControl{ nullptr };
+		JsObject<UiDragContext>				m_DragContext;
+
 		JsFuncSafe<void()>					m_Keep;
 
 		S32									m_OnClosingResult{ 0 };
 
 		U32									m_IconResId{ 0 };
 
+		JsObject<UiThemeImage>				m_ThemeDefaultData;
 		WrapPointer<UiTheme>				m_Theme{ nullptr };
-		UiWindowFrame*						m_Frame{ nullptr };
+		JsObject<UiWindowFrame>				m_Frame;
 
-		UiControlManager*					m_ControlManager{ nullptr };
-		UiIconManager*						m_IconManager{ nullptr };
-		UiCommonUi*							m_CommonUi{ nullptr };
-		UiWindowSysTray*					m_SysTray{ nullptr };
-		UiWindowTaskbar*					m_Taskbar{ nullptr };
-		UiPlatform*							m_Platform{ nullptr };
+		JsObject<UiControlManager>			m_ControlManager;
+		JsObject<UiIconManager>				m_IconManager;
+		JsObject<UiCommonUi>				m_CommonUi;
+		JsObject<UiWindowDragDrop>			m_DragDrop;
+		JsObject<UiWindowSysTray>			m_SysTray;
+		JsObject<UiWindowTaskbar>			m_Taskbar;
+		JsObject<UiPlatform>				m_Platform;
 
 	private:
+		void								__OnDragEnter( Ui::IWindowDragContext& sender );
+		void								__OnDragMove( Ui::IWindowDragContext& sender );
+		void								__OnDragLeave( Ui::IWindowDragContext& sender );
+		void								__OnDragDrop( Ui::IWindowDragContext& sender );
+		void								__OnDragEnd( const Ui::IWindowDragContext& sender, U1 bOk );
+
 		void								OnSysTrayClick( Ui::IWindowSysTray& sender, const S32_2& vPos );
 		void								OnSysTrayRightClick( Ui::IWindowSysTray& sender, const S32_2& vPos );
 
@@ -220,7 +238,7 @@ namespace Nav
 		UiControlManager*					__GetControlManager( const CallbackInfo& ci ) { return m_ControlManager; }
 		UiIconManager*						__GetIconManager() const { return m_IconManager; }
 		UiCommonUi*							__GetCommonUi() const { return m_CommonUi; }
-		void*								GetDragDrop( const CallbackInfo& ci );
+		UiWindowDragDrop*					GetDragDrop() const { return m_DragDrop; }
 		UiWindowSysTray*					GetSysTray() const { return m_SysTray; }
 		UiWindowTaskbar*					GetTaskbar() const { return m_Taskbar; }
 		UiPlatform*							GetPlatform() const { return m_Platform; }
@@ -245,6 +263,12 @@ namespace Nav
 		UiWindow*							OnScaleChange( CallbackGeneric_t&& fn ) { m_OnScaleChange = std::move( fn ); return this; }
 		UiWindow*							OnLanguageChange( CallbackGeneric_t&& fn ) { m_OnLanguageChange = std::move( fn ); return this; }
 		UiWindow*							OnDeviceChange( CallbackGeneric_t&& fn ) { m_OnDeviceChange = std::move( fn ); return this; }
+
+		UiWindow*							OnDragEnter( OnDrag_t&& fn ) { m_OnDragEnter = std::move( fn ); return this; }
+		UiWindow*							OnDragMove( OnDrag_t&& fn ) { m_OnDragMove = std::move( fn ); return this; }
+		UiWindow*							OnDragLeave( OnDrag_t&& fn ) { m_OnDragLeave = std::move( fn ); return this; }
+		UiWindow*							OnDragDrop( OnDrag_t&& fn ) { m_OnDragDrop = std::move( fn ); return this; }
+		UiWindow*							OnDragEnd( OnDragEnd_t&& fn ) { m_OnDragEnd = std::move( fn ); return this; }
 
 	public:
 		AveInline IAveFactoryCreation&		GetFactoryUi() const { return GetUiFactory(); }

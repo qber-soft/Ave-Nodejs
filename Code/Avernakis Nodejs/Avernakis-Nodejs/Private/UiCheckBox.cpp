@@ -24,6 +24,10 @@ namespace Nav
 		AutoAddMethod( GetTriple );
 		AutoAddMethod( SetCheckBoxStyle );
 		AutoAddMethod( GetCheckBoxStyle );
+		AutoAddMethod( SetVisualTextLayout );
+		AutoAddMethod( GetVisualTextLayout );
+		AutoAddMethod( SetVisual );
+		AutoAddMethod( GetVisual );
 
 		AutoAddMethod( OnCheck );
 		AutoAddMethod( OnChecking );

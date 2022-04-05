@@ -1,7 +1,8 @@
 ﻿import { IControl } from "../UiControl";
 import { AveLib } from "../../AveLib";
-import { CheckValue } from "../UiCommon";
+import { CheckValue, VisualTextLayout } from "../UiCommon";
 import { Window } from "./UiWindow";
+import { IVisual } from "../UiVisual";
 
 export enum CheckBoxStyle {
     Checking,
@@ -23,6 +24,12 @@ export interface ICheckBox extends IControl {
 
     SetCheckBoxStyle(n: CheckBoxStyle): CheckBox;
     GetCheckBoxStyle(): CheckBoxStyle;
+
+    SetVisualTextLayout(n: VisualTextLayout): CheckBox;
+    GetVisualTextLayout(): VisualTextLayout;
+
+    SetVisual(v: IVisual): IVisual;
+    GetVisual(): IVisual;
 
     OnCheck(fn: (sender: CheckBox) => void): CheckBox;
     OnChecking(fn: (sender: CheckBox) => boolean): CheckBox;

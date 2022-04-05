@@ -1,6 +1,7 @@
 ﻿#pragma once
 
 #include "UiVisualHelper.h"
+#include "IoCommon.h"
 
 namespace Nav
 {
@@ -43,7 +44,7 @@ namespace Nav
 		UiAnimFrame*					SetFrameInfo( const WrapData<Ui::AnimFrameInfo>& info ) { GetControlTyped().SetFrameInfo( info ); return this; }
 		WrapData<Ui::AnimFrameInfo>		GetFrameInfo() const { return GetControlTyped().GetFrameInfo(); }
 
-		UiAnimFrame*					SetPicture( const WrapData<UiResourceSource>& rs ) { GetControlTyped().SetPicture( rs.ToResourceSource() ); return this; }
+		UiAnimFrame*					SetPicture( const WrapData<IoResourceSource>& rs ) { GetControlTyped().SetPicture( rs.ToResourceSource() ); return this; }
 
 		UiAnimFrame*					Play() { GetControlTyped().Play(); return this; }
 		UiAnimFrame*					Stop() { GetControlTyped().Stop(); return this; }

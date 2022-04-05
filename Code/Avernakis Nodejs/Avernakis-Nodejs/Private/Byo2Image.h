@@ -1,6 +1,7 @@
 ﻿#pragma once
 
 #include "UiCommon.h"
+#include "IoCommon.h"
 
 namespace Nav
 {
@@ -11,7 +12,7 @@ namespace Nav
 	{
 	public:
 		Byo2::ImageDataType					m_DataType;
-		WrapData<UiResourceSource>			m_Data;
+		WrapData<IoResourceSource>			m_Data;
 		S32									m_Width;
 		S32									m_Height;
 		Img::PixFormat						m_Format;

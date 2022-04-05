@@ -83,7 +83,7 @@ namespace Nav
 
 	U1 UiMatrixEditor::Ctor( const CallbackInfo& ci, UiWindow * p, Napi::Value v )
 	{
-		m_Doc = ci.NewJsObject<UiMatrixEditorDoc>( true );
+		m_Doc = ci.NewJsObjectWithOwnership<UiMatrixEditorDoc>();
 		if ( !m_Doc )
 			return false;
 

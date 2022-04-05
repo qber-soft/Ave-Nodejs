@@ -22,7 +22,7 @@ namespace Nav
 	private:
 		using OnChange_t = JsFuncSafe<void( UiDatePicker* sender )>;
 
-		UiDateTimeFormat				m_Format;
+		DateTimeFormat					m_Format;
 
 		OnChange_t						m_OnChange;
 
@@ -41,8 +41,8 @@ namespace Nav
 		UiDatePicker*					SetCultureId( CultureId nCid ) { GetControlTyped().SetCultureId( nCid ); return this; }
 		CultureId						GetCultureId() const { return GetControlTyped().GetCultureId(); }
 
-		UiDatePicker*					SetFormat( const WrapData<UiDateTimeFormat>& pFormat );
-		WrapData<UiDateTimeFormat>		GetFormat() const;
+		UiDatePicker*					SetFormat( const WrapData<DateTimeFormat>& pFormat );
+		WrapData<DateTimeFormat>		GetFormat() const;
 
 		UiDatePicker*					SetBorder( U1 b ) { GetControlTyped().SetBorder( b ); return this; }
 		U1								GetBorder() const { return GetControlTyped().GetBorder(); }

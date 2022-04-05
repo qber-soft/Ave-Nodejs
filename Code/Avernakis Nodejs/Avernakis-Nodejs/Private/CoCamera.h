@@ -1,6 +1,6 @@
 ﻿#pragma once
 
-#include "UiCommon.h"
+#include "Common.h"
 
 namespace Nav
 {

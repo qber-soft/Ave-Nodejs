@@ -2,6 +2,7 @@
 import { AveLib } from "../../AveLib";
 import { Window } from "./UiWindow";
 import { Vec2 } from "../../Math/Vector";
+import { AlignType } from "../UiCommon";
 
 export enum PagerAdjustment {
     None,
@@ -10,7 +11,7 @@ export enum PagerAdjustment {
 }
 
 export interface IPager extends IControl {
-    new (window: Window): IPager;
+    new(window: Window): IPager;
 
     SetContent(pControl: IControl): IControl;
     GetContent(): IControl;
@@ -18,6 +19,12 @@ export interface IPager extends IControl {
     SetContentSize(vSize: Vec2): Pager;
     GetContentSize(): Vec2;
     GetRealContentSize(): Vec2;
+
+    SetContentHorizontalAlign(nType: AlignType): Pager;
+    GetContentHorizontalAlign(): AlignType;
+
+    SetContentVerticalAlign(nType: AlignType): Pager;
+    GetContentVerticalAlign(): AlignType;
 
     SetAdjustment(nAdjust: PagerAdjustment): Pager;
     GetAdjustment(): PagerAdjustment;

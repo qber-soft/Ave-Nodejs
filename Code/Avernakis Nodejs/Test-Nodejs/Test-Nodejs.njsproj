@@ -70,6 +70,7 @@
     <Folder Include="src\Ave\" />
     <Folder Include="src\Ave\Math\" />
     <Folder Include="src\Ave\Byo2\" />
+    <Folder Include="src\Ave\Io\" />
     <Folder Include="src\Ave\Ui\" />
     <Folder Include="src\Ave\Ui\Control\" />
     <Folder Include="src\Ave\Ui\Ribbon\" />
@@ -148,6 +149,8 @@
     <TypeScriptCompile Include="src\Ave\Common.ts" />
     <TypeScriptCompile Include="src\Ave\Culture.ts" />
     <TypeScriptCompile Include="src\Ave\index.ts" />
+    <TypeScriptCompile Include="src\Ave\Io\IoCommon.ts" />
+    <TypeScriptCompile Include="src\Ave\Io\IoStream.ts" />
     <TypeScriptCompile Include="src\Ave\Math\Box.ts" />
     <TypeScriptCompile Include="src\Ave\Math\Camera.ts" />
     <TypeScriptCompile Include="src\Ave\Math\Frustum.ts" />

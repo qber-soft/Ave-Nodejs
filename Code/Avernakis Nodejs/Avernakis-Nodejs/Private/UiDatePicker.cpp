@@ -53,7 +53,7 @@ namespace Nav
 		m_OnChange( this );
 	}
 
-	UiDatePicker * UiDatePicker::SetFormat( const WrapData<UiDateTimeFormat>& pFormat )
+	UiDatePicker * UiDatePicker::SetFormat( const WrapData<DateTimeFormat>& pFormat )
 	{
 		if ( 7 != pFormat.m_DayNameFull.Size() || 7 != pFormat.m_DayNameAbbreviated.Size() || 12 != pFormat.m_MonthNameFull.Size() || 12 != pFormat.m_MonthNameAbbreviated.Size() )
 			return this;
@@ -67,9 +67,9 @@ namespace Nav
 		return this;
 	}
 
-	WrapData<UiDateTimeFormat> UiDatePicker::GetFormat() const
+	WrapData<DateTimeFormat> UiDatePicker::GetFormat() const
 	{
-		WrapData<UiDateTimeFormat> r{};
+		WrapData<DateTimeFormat> r{};
 		r.FromCultureInfo( GetControlTyped().GetFormat() );
 		return r;
 	}

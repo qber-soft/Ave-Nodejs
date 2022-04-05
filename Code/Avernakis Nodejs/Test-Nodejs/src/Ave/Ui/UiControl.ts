@@ -8,6 +8,8 @@ import {
     Rect,
 } from "./UiCommon";
 import { IControlExtension } from "../AveLib";
+import { FileFindItem } from "../Io/IoCommon";
+import { IAveStream } from "../Io/IoStream";
 
 export enum DropBehavior {
     None = 0b0000,
@@ -27,7 +29,7 @@ export enum DragDropImage {
     Warning,
 }
 
-export interface IShellData {}
+export interface IShellData { }
 
 export class MessageKey {
     Key: KbKey;
@@ -73,12 +75,21 @@ export class MessagePointer {
 }
 
 export interface IDragContext {
-    GetBehavior(): DropBehavior;
+    GetModifier(): InputModifier;
     GetPosition(): Vec2;
-    GetData(): IShellData;
 
     SetDropTip(image: DragDropImage, s: string): void;
     SetDropBehavior(n: DropBehavior): void;
+
+    HasVirtualFile(): boolean;
+    HasFile(): boolean;
+
+    VirtualFileGetCount(): number;
+    VirtualFileGetInfo(nIndex: number): FileFindItem;
+    VirtualFileOpen(nIndex: number): IAveStream;
+
+    FileGetCount(): number;
+    FileGet(): string[];
 }
 
 // prettier-ignore
@@ -127,12 +138,12 @@ export interface IControl extends IControlExtension {
     SetDropEnable(b: boolean): IControl;
     GetDropEnable(): boolean;
 
-    OnDragEnter /**/(fn: (sender: IDragContext) => void): IControl;
-    OnDragMove  /**/(fn: (sender: IDragContext) => void): IControl;
-    OnDragLeave /**/(fn: (sender: IDragContext) => void): IControl;
-    OnDragDrop  /**/(fn: (sender: IDragContext) => void): IControl;
-    OnDragEnd   /**/(fn: (sender: IDragContext) => void): IControl;
-    
+    OnDragEnter /**/(fn: (sender: IControl, dc: IDragContext) => void): IControl;
+    OnDragMove  /**/(fn: (sender: IControl, dc: IDragContext) => void): IControl;
+    OnDragLeave /**/(fn: (sender: IControl, dc: IDragContext) => void): IControl;
+    OnDragDrop  /**/(fn: (sender: IControl, dc: IDragContext) => void): IControl;
+    OnDragEnd   /**/(fn: (sender: IControl, dc: IDragContext) => void): IControl;
+
     OnKeyPress  /**/(fn: (sender: IControl, mk: MessageKey) => void): IControl;
     OnKeyRelease/**/(fn: (sender: IControl, mk: MessageKey) => void): IControl;
 
