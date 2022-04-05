@@ -54,9 +54,11 @@ function ExtendControlInstance(instance: IControl) {
     };
 
     //
-    const createDragHandler = (
-        original: (fn: (sender: IDragContext) => void) => IControl
-    ): ((fn: (sender: IDragContext) => void) => IControl) => {
+    type DragHandler = (sender: IDragContext) => void;
+    type OnDragMethod = (fn: DragHandler) => IControl;
+    const createOnDragMethod: (original: OnDragMethod) => OnDragMethod = (
+        original
+    ) => {
         return (fn) =>
             original((sender: IDragContext) => {
                 const OriginalGetPosition = sender.GetPosition.bind(sender);
@@ -69,35 +71,35 @@ function ExtendControlInstance(instance: IControl) {
     // OnDragEnter is undefined in Window
     const OnDragEnter = instance.OnDragEnter?.bind(instance);
     if (OnDragEnter) {
-        instance.OnDragEnter = createDragHandler(OnDragEnter);
+        instance.OnDragEnter = createOnDragMethod(OnDragEnter);
     }
 
     const OnDragMove = instance.OnDragMove?.bind(instance);
     if (OnDragMove) {
-        instance.OnDragMove = createDragHandler(OnDragMove);
+        instance.OnDragMove = createOnDragMethod(OnDragMove);
     }
 
     const OnDragLeave = instance.OnDragLeave?.bind(instance);
     if (OnDragLeave) {
-        instance.OnDragLeave = createDragHandler(OnDragLeave);
+        instance.OnDragLeave = createOnDragMethod(OnDragLeave);
     }
 
     const OnDragDrop = instance.OnDragDrop?.bind(instance);
     if (OnDragDrop) {
-        instance.OnDragDrop = createDragHandler(OnDragDrop);
+        instance.OnDragDrop = createOnDragMethod(OnDragDrop);
     }
 
     const OnDragEnd = instance.OnDragEnd?.bind(instance);
     if (OnDragEnd) {
-        instance.OnDragEnd = createDragHandler(OnDragEnd);
+        instance.OnDragEnd = createOnDragMethod(OnDragEnd);
     }
 
     //
-    const createPointHandler = (
-        original: (
-            fn: (sender: IControl, mp: MessagePointer) => void
-        ) => IControl
-    ): ((fn: (sender: IControl, mp: MessagePointer) => void) => IControl) => {
+    type PointerHandler = (sender: IControl, mp: MessagePointer) => void;
+    type OnPointerMethod = (fn: PointerHandler) => IControl;
+    const createOnPointerMethod: (
+        original: OnPointerMethod
+    ) => OnPointerMethod = (original) => {
         return (fn) => {
             return original((sender: IControl, mp: MessagePointer) =>
                 fn(sender, MessagePointer.FromNative(mp))
@@ -106,37 +108,37 @@ function ExtendControlInstance(instance: IControl) {
     };
 
     const OnPointerEnter = instance.OnPointerEnter.bind(instance);
-    instance.OnPointerEnter = createPointHandler(OnPointerEnter);
+    instance.OnPointerEnter = createOnPointerMethod(OnPointerEnter);
 
     const OnPointerLeave = instance.OnPointerLeave.bind(instance);
-    instance.OnPointerLeave = createPointHandler(OnPointerLeave);
+    instance.OnPointerLeave = createOnPointerMethod(OnPointerLeave);
 
     const OnPointerPress = instance.OnPointerPress.bind(instance);
-    instance.OnPointerPress = createPointHandler(OnPointerPress);
+    instance.OnPointerPress = createOnPointerMethod(OnPointerPress);
 
     const OnPointerRelease = instance.OnPointerRelease.bind(instance);
-    instance.OnPointerRelease = createPointHandler(OnPointerRelease);
+    instance.OnPointerRelease = createOnPointerMethod(OnPointerRelease);
 
     const OnPointerClickNdc = instance.OnPointerClickNdc.bind(instance);
-    instance.OnPointerClickNdc = createPointHandler(OnPointerClickNdc);
+    instance.OnPointerClickNdc = createOnPointerMethod(OnPointerClickNdc);
 
     const OnPointerMove = instance.OnPointerMove.bind(instance);
-    instance.OnPointerMove = createPointHandler(OnPointerMove);
+    instance.OnPointerMove = createOnPointerMethod(OnPointerMove);
 
     const OnPointerVWheel = instance.OnPointerVWheel.bind(instance);
-    instance.OnPointerVWheel = createPointHandler(OnPointerVWheel);
+    instance.OnPointerVWheel = createOnPointerMethod(OnPointerVWheel);
 
     const OnPointerHWheel = instance.OnPointerHWheel.bind(instance);
-    instance.OnPointerHWheel = createPointHandler(OnPointerHWheel);
+    instance.OnPointerHWheel = createOnPointerMethod(OnPointerHWheel);
 
     const OnPointerHover = instance.OnPointerHover.bind(instance);
-    instance.OnPointerHover = createPointHandler(OnPointerHover);
+    instance.OnPointerHover = createOnPointerMethod(OnPointerHover);
 
     const OnPointerLost = instance.OnPointerLost.bind(instance);
-    instance.OnPointerLost = createPointHandler(OnPointerLost);
+    instance.OnPointerLost = createOnPointerMethod(OnPointerLost);
 
     const OnPointerCursor = instance.OnPointerCursor.bind(instance);
-    instance.OnPointerCursor = createPointHandler(OnPointerCursor);
+    instance.OnPointerCursor = createOnPointerMethod(OnPointerCursor);
 }
 
 function AddControlExtension(
