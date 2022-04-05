@@ -14,7 +14,7 @@ import {
 import { Theme } from "../Theme/UiTheme";
 import { ICommonUi } from "../UiCommonUi";
 import { Vec2 } from "../../Math/Vector";
-import { IPlatform } from "../UiPlatform";
+import { IPlatform, MonitorItem } from "../UiPlatform";
 import { IWindowFrame } from "./UiWindowFrame";
 import { IIcon } from "../Visual/UiIcon";
 
@@ -277,6 +277,21 @@ export class Window extends (AveLib.UiWindow as IWindow) {
         return super.SetContent(c);
     }
 
+    GetPlatform(): IPlatform {
+        const platform = super.GetPlatform();
+        const OriginalGetArea: typeof platform.ScreenGetArea =
+            platform.ScreenGetArea.bind(platform);
+        platform.ScreenGetArea = () => Rect.FromNative(OriginalGetArea());
+
+        const OriginalMonitorEnumerate: typeof platform.MonitorEnumerate =
+            platform.MonitorEnumerate.bind(platform);
+        platform.MonitorEnumerate = () =>
+            OriginalMonitorEnumerate().map((item) =>
+                MonitorItem.FromNative(item)
+            );
+        return platform;
+    }
+
     GetFrame() {
         if (!this.m_Frame) {
             this.m_Frame = super.GetFrame();
@@ -296,6 +311,30 @@ export class Window extends (AveLib.UiWindow as IWindow) {
                 this.m_FrameToolBarRight = control;
                 return OriginalSetToolBarRight(control);
             };
+
+            const OriginalGetCaptionRect = this.m_Frame.GetCaptionRect.bind(
+                this.m_Frame
+            );
+            this.m_Frame.GetCaptionRect = () =>
+                Rect.FromNative(OriginalGetCaptionRect());
+
+            const OriginalGetIconRect = this.m_Frame.GetIconRect.bind(
+                this.m_Frame
+            );
+            this.m_Frame.GetIconRect = () =>
+                Rect.FromNative(OriginalGetIconRect());
+
+            const OriginalGetTextRect = this.m_Frame.GetTextRect.bind(
+                this.m_Frame
+            );
+            this.m_Frame.GetTextRect = () =>
+                Rect.FromNative(OriginalGetTextRect());
+
+            const OriginalGetNonBorderRect = this.m_Frame.GetNonBorderRect.bind(
+                this.m_Frame
+            );
+            this.m_Frame.GetNonBorderRect = () =>
+                Rect.FromNative(OriginalGetNonBorderRect());
         }
 
         return this.m_Frame;

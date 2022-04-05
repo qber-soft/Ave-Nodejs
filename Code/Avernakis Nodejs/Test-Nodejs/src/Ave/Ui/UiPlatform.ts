@@ -33,6 +33,11 @@ export enum MonitorConnectorType {
 }
 
 export class MonitorItem {
+    static FromNative(item: MonitorItem) {
+        item.AreaFull = Rect.FromNative(item.AreaFull);
+        item.AreaWorking = Rect.FromNative(item.AreaWorking);
+        return item;
+    }
     AreaFull: Rect;
     AreaWorking: Rect; // Taskbar is excluded
 

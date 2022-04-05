@@ -1,5 +1,5 @@
 import { run } from "./utility";
-import { main } from "./button/button-event-click";
+import { main } from "./mouse-event/event-basic";
 run(main);
 
 // ---

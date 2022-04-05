@@ -55,4 +55,8 @@ export class StatusBar extends (AveLib.UiStatusBar as IStatusBar) {
             this.m_Content[nIndex] = pControl;
         return super.SetContent(nIndex, pControl);
     }
+
+    GetItemRect(nIndex: number): Rect {
+        return Rect.FromNative(super.GetItemRect(nIndex));
+    }
 }

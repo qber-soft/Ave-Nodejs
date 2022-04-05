@@ -189,4 +189,12 @@ export interface IRichListBox extends IControl {
     ): RichListBox;
 }
 
-export class RichListBox extends (AveLib.UiRichListBox as IRichListBox) {}
+export class RichListBox extends (AveLib.UiRichListBox as IRichListBox) {
+    ItemGetRect(nIndex: number): Rect {
+        return Rect.FromNative(super.ItemGetRect(nIndex));
+    }
+
+    GetListRect(): Rect {
+        return Rect.FromNative(super.GetListRect());
+    }
+}

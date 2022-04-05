@@ -153,4 +153,8 @@ export interface ITree extends IControl {
     OnDragBegin(fn: (sender: Tree) => boolean): Tree;
 }
 
-export class Tree extends (AveLib.UiTree as ITree) {}
+export class Tree extends (AveLib.UiTree as ITree) {
+    ItemGetRect(pItem: TreeItemHandle, nPart: TreeItemPart): Rect {
+        return Rect.FromNative(super.ItemGetRect(pItem, nPart));
+    }
+}

@@ -58,4 +58,8 @@ export class RibbonBackstage extends (AveLib.UiRibbonBackstage as IRibbonBacksta
         }
         return super.SetContent(nIndex, pControl);
     }
+
+    GetItemRect(nIndex: number): Rect {
+        return Rect.FromNative(super.GetItemRect(nIndex));
+    }
 }

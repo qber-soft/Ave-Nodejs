@@ -188,6 +188,14 @@ export interface IMatrixEditor extends IControl {
 export class MatrixEditor extends (AveLib.UiMatrixEditor as IMatrixEditor) {
     private m_CornerContent: IControl;
 
+    UnitGetRect(x: number, y: number): Rect {
+        return Rect.FromNative(super.UnitGetRect(x, y));
+    }
+
+    GetEditorRect(): Rect {
+        return Rect.FromNative(super.GetEditorRect());
+    }
+
     ViewSetCornerContent(c: IControl) {
         this.m_CornerContent = c;
         return super.ViewSetCornerContent(c);
