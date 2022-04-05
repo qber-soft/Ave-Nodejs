@@ -331,4 +331,8 @@ export interface IMidiKey extends IControl {
     ): MidiKey;
 }
 
-export class MidiKey extends (AveLib.UiMidiKey as IMidiKey) {}
+export class MidiKey extends (AveLib.UiMidiKey as IMidiKey) {
+    KeyGetRect(nKey: NoteIndex): Rect {
+        return Rect.FromNative(super.KeyGetRect(nKey));
+    }
+}

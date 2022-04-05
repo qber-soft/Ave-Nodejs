@@ -1,5 +1,6 @@
-﻿import { IControl } from "./Ui/UiControl";
+﻿import { IControl, MessagePointer } from "./Ui/UiControl";
 import { Vec2 } from "./Math/Vector";
+import { CursorType, Rect } from "./Ui/UiCommon";
 import * as fs from "fs";
 
 export interface IControlExtension {
@@ -15,18 +16,127 @@ function AddControlExtension(ControlClass: IControl & { new (): IControl }) {
             return super.SetKeyTip(tip, nIndex);
         }
 
+        MapRect(rc: Rect, bClient: boolean): Rect {
+            return Rect.FromNative(super.MapRect(rc, bClient));
+        }
+
+        GetRect() {
+            return Rect.FromNative(super.GetRect());
+        }
+
+        GetRectClient() {
+            return Rect.FromNative(super.GetRectClient());
+        }
+
         GetPosition() {
-            return super.GetRect().Position;
+            return this.GetRect().Position;
         }
 
         GetSize() {
-            return super.GetRect().Size;
+            return this.GetRect().Size;
         }
 
         GetEnableWithParent() {
             let p: IControl = this;
             for (; p && p.GetEnable(); p = p.GetParent());
             return !p;
+        }
+
+        OnPointerEnter(
+            fn: (sender: IControl, mp: MessagePointer) => void
+        ): IControl {
+            return super.OnPointerEnter(
+                (sender: IControl, mp: MessagePointer) =>
+                    fn(sender, MessagePointer.FromNative(mp))
+            );
+        }
+
+        OnPointerLeave(
+            fn: (sender: IControl, mp: MessagePointer) => void
+        ): IControl {
+            return super.OnPointerLeave(
+                (sender: IControl, mp: MessagePointer) =>
+                    fn(sender, MessagePointer.FromNative(mp))
+            );
+        }
+
+        OnPointerPress(
+            fn: (sender: IControl, mp: MessagePointer) => void
+        ): IControl {
+            return super.OnPointerPress(
+                (sender: IControl, mp: MessagePointer) =>
+                    fn(sender, MessagePointer.FromNative(mp))
+            );
+        }
+
+        OnPointerRelease(
+            fn: (sender: IControl, mp: MessagePointer) => void
+        ): IControl {
+            return super.OnPointerRelease(
+                (sender: IControl, mp: MessagePointer) =>
+                    fn(sender, MessagePointer.FromNative(mp))
+            );
+        }
+
+        OnPointerClickNdc(
+            fn: (sender: IControl, mp: MessagePointer) => void
+        ): IControl {
+            return super.OnPointerClickNdc(
+                (sender: IControl, mp: MessagePointer) =>
+                    fn(sender, MessagePointer.FromNative(mp))
+            );
+        }
+
+        OnPointerMove(
+            fn: (sender: IControl, mp: MessagePointer) => void
+        ): IControl {
+            return super.OnPointerMove((sender: IControl, mp: MessagePointer) =>
+                fn(sender, MessagePointer.FromNative(mp))
+            );
+        }
+
+        OnPointerVWheel(
+            fn: (sender: IControl, mp: MessagePointer) => void
+        ): IControl {
+            return super.OnPointerVWheel(
+                (sender: IControl, mp: MessagePointer) =>
+                    fn(sender, MessagePointer.FromNative(mp))
+            );
+        }
+
+        OnPointerHWheel(
+            fn: (sender: IControl, mp: MessagePointer) => void
+        ): IControl {
+            return super.OnPointerHWheel(
+                (sender: IControl, mp: MessagePointer) =>
+                    fn(sender, MessagePointer.FromNative(mp))
+            );
+        }
+
+        OnPointerHover(
+            fn: (sender: IControl, mp: MessagePointer) => void
+        ): IControl {
+            return super.OnPointerHover(
+                (sender: IControl, mp: MessagePointer) =>
+                    fn(sender, MessagePointer.FromNative(mp))
+            );
+        }
+
+        OnPointerLost(
+            fn: (sender: IControl, mp: MessagePointer) => void
+        ): IControl {
+            return super.OnPointerLost((sender: IControl, mp: MessagePointer) =>
+                fn(sender, MessagePointer.FromNative(mp))
+            );
+        }
+
+        OnPointerCursor(
+            fn: (sender: IControl, mp: MessagePointer) => CursorType
+        ): IControl {
+            return super.OnPointerCursor(
+                (sender: IControl, mp: MessagePointer) =>
+                    fn(sender, MessagePointer.FromNative(mp))
+            );
         }
     };
 }

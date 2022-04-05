@@ -100,4 +100,12 @@ export class Ribbon extends (AveLib.UiRibbon as IRibbon) {
         this.m_Backstage = pControl;
         return super.SetBackstage(pControl);
     }
+
+    TabGetRect(nIndex: number): Rect {
+        return Rect.FromNative(super.TabGetRect(nIndex));
+    }
+
+    TabGetContentRect(): Rect {
+        return Rect.FromNative(super.TabGetContentRect());
+    }
 }

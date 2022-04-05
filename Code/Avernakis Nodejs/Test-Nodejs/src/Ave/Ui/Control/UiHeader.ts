@@ -58,14 +58,14 @@ export enum HeaderItemSort {
     Auto,
 }
 
-export interface IHeader extends IControl {
+export interface IHeader extends Omit<IControl, "GetRect"> {
     new (window: Window, key?: StringKey): IHeader;
 
     Add(item: HeaderItem): Header;
     Insert(nInsertBefore: number, item: HeaderItem): boolean;
     GetCount(): number;
     Get(nIndex: number): HeaderItem;
-    Get(nIndex: number): Rect;
+    GetRect(nIndex: number): Rect;
     Set(nInsertBefore: number, item: HeaderItem): boolean;
     Remove(nIndex: number): boolean;
     RemoveAll(): Header;
@@ -113,4 +113,8 @@ export interface IHeader extends IControl {
     OnCheckHeader(/**/ fn: (sender: Header) => void): Header;
 }
 
-export class Header extends (AveLib.UiHeader as IHeader) {}
+export class Header extends (AveLib.UiHeader as IHeader) {
+    GetRect(nIndex: number): Rect {
+        return Rect.FromNative(super.GetRect(nIndex));
+    }
+}

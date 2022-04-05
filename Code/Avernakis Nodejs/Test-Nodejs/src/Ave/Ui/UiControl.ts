@@ -52,6 +52,10 @@ export class MessagePointerPen {
 }
 
 export class MessagePointer {
+    static FromNative(mp: MessagePointer): MessagePointer {
+        mp.Touch.Contact = Rect.FromNative(mp.Touch.Contact);
+        return mp;
+    }
     // Common
     Id: number;
     Type: PointerType;

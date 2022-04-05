@@ -200,6 +200,18 @@ export class Tab extends (AveLib.UiTab as ITab) {
     private m_HeaderFarContent: IControl;
     private m_Content: Map<number, IControl> = new Map();
 
+    TabGetRect(nId: number, bReal: boolean): Rect {
+        return Rect.FromNative(super.TabGetRect(nId, bReal));
+    }
+
+    TabGetHeaderRect(): Rect {
+        return Rect.FromNative(super.TabGetHeaderRect());
+    }
+
+    ContentGetRect(): Rect {
+        return Rect.FromNative(super.ContentGetRect());
+    }
+
     HeaderSetNearContent(pControl: IControl) {
         this.m_HeaderNearContent = pControl;
         return super.HeaderSetNearContent(pControl);

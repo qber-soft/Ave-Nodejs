@@ -496,6 +496,10 @@ export class Rect {
         this.Size.y = h;
     }
 
+    static FromNative(raw: Rect) {
+        return new Rect(raw.x, raw.y, raw.w, raw.h);
+    }
+
     get x() {
         return this.Position.x;
     }
