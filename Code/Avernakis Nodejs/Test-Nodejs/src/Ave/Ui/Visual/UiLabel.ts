@@ -5,26 +5,26 @@ import { IVisual } from "../UiVisual";
 import { Window } from "../Control/UiWindow";
 
 export interface ILabel extends IVisual {
-    new (window: Window, key?: string | number): ILabel;
+	new (window: Window, key?: string | number): ILabel;
 
-    SetText(s: string): Label;
-    GetText(): string;
+	SetText(s: string): Label;
+	GetText(): string;
 
-    SetAlignHorz(n: AlignType): Label;
-    GetAlignHorz(): AlignType;
+	SetAlignHorz(n: AlignType): Label;
+	GetAlignHorz(): AlignType;
 
-    SetAlignVert(n: AlignType): Label;
-    GetAlignVert(): AlignType;
+	SetAlignVert(n: AlignType): Label;
+	GetAlignVert(): AlignType;
 
-    SetBackColor(vColor: Vec4): Label;
-    GetBackColor(): Vec4;
+	SetBackColor(vColor: Vec4): Label;
+	GetBackColor(): Vec4;
 
-    SetWrappable(b: boolean): Label;
-    GetWrappable(): boolean;
+	SetWrappable(b: boolean): Label;
+	GetWrappable(): boolean;
 }
 
 export class Label extends (AveLib.UiLabel as ILabel) {
-    GetBackColor(): Vec4 {
-        return Vec4.FromNative(super.GetBackColor());
-    }
+	GetBackColor(): Vec4 {
+		return Vec4.FromNative(super.GetBackColor());
+	}
 }

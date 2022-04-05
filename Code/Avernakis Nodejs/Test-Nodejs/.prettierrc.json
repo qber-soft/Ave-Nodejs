@@ -1,8 +1,8 @@
 {
     "arrowParens": "always",
     "bracketSpacing": true,
-    "printWidth": 80,
+    "printWidth": 10000000,
     "proseWrap": "never",
-    "useTabs": false,
+    "useTabs": true,
     "tabWidth": 4
 }

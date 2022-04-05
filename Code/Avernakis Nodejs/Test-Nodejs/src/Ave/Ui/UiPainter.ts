@@ -6,7 +6,7 @@ export enum FillMode {
 	Color,
 	Brush,
 	Image,
-};
+}
 
 // prettier-ignore
 export enum DrawTextFlag {
@@ -41,12 +41,12 @@ export enum DrawImageFlag {
 export enum DrawImageFilter {
 	Point = 0,
 	Linear = 1,
-};
+}
 
 export enum DrawImageAddress {
 	Clamp = 0,
 	Wrap = 1,
-};
+}
 
 export class DrawImageParam {
 	SourceRect: Rect = Rect.Empty;

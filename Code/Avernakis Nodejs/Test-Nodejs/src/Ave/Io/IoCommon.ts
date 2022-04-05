@@ -1,76 +1,61 @@
 ﻿import { TimePoint } from "../TimePoint";
 
 export class InMemoryData {
-    Data: ArrayBuffer = null;
-    RowPitch: number = 0;
-    SlicePitch: number = 0;
+	Data: ArrayBuffer = null;
+	RowPitch: number = 0;
+	SlicePitch: number = 0;
 
-    constructor(
-        ab: ArrayBuffer = null,
-        rowPitch: number = 0,
-        slicePitch: number = 0
-    ) {
-        this.Data = ab;
-        this.RowPitch = rowPitch;
-        this.SlicePitch = slicePitch;
-    }
+	constructor(ab: ArrayBuffer = null, rowPitch: number = 0, slicePitch: number = 0) {
+		this.Data = ab;
+		this.RowPitch = rowPitch;
+		this.SlicePitch = slicePitch;
+	}
 }
 
 export enum ResourceSourceType {
-    Resource,
-    FilePath,
-    InMemory,
+	Resource,
+	FilePath,
+	InMemory,
 }
 
 export class ResourceSource {
-    Type: ResourceSourceType = ResourceSourceType.Resource;
-    ResourceId: number = 0;
-    FilePath: string = "";
-    InMemory: InMemoryData = new InMemoryData();
+	Type: ResourceSourceType = ResourceSourceType.Resource;
+	ResourceId: number = 0;
+	FilePath: string = "";
+	InMemory: InMemoryData = new InMemoryData();
 
-    static FromResource(n: number) {
-        let r = new ResourceSource();
-        r.Type = ResourceSourceType.Resource;
-        r.ResourceId = n;
-        return r;
-    }
-    static FromFilePath(s: string) {
-        let r = new ResourceSource();
-        r.Type = ResourceSourceType.FilePath;
-        r.FilePath = s;
-        return r;
-    }
+	static FromResource(n: number) {
+		let r = new ResourceSource();
+		r.Type = ResourceSourceType.Resource;
+		r.ResourceId = n;
+		return r;
+	}
+	static FromFilePath(s: string) {
+		let r = new ResourceSource();
+		r.Type = ResourceSourceType.FilePath;
+		r.FilePath = s;
+		return r;
+	}
 
-    // https://stackoverflow.com/a/22165328
-    static FromBuffer(
-        buffer: Buffer,
-        rowPitch: number = 0,
-        slicePitch: number = 0
-    ) {
-        const ab = buffer.buffer.slice(
-            buffer.byteOffset,
-            buffer.byteOffset + buffer.byteLength
-        );
-        return this.FromArrayBuffer(ab, rowPitch, slicePitch);
-    }
+	// https://stackoverflow.com/a/22165328
+	static FromBuffer(buffer: Buffer, rowPitch: number = 0, slicePitch: number = 0) {
+		const ab = buffer.buffer.slice(buffer.byteOffset, buffer.byteOffset + buffer.byteLength);
+		return this.FromArrayBuffer(ab, rowPitch, slicePitch);
+	}
 
-    static FromArrayBuffer(
-        ab: ArrayBuffer,
-        rowPitch: number = 0,
-        slicePitch: number = 0
-    ) {
-        let r = new ResourceSource();
-        r.Type = ResourceSourceType.InMemory;
-        r.InMemory = new InMemoryData(ab, rowPitch, slicePitch);
-        return r;
-    }
+	static FromArrayBuffer(ab: ArrayBuffer, rowPitch: number = 0, slicePitch: number = 0) {
+		let r = new ResourceSource();
+		r.Type = ResourceSourceType.InMemory;
+		r.InMemory = new InMemoryData(ab, rowPitch, slicePitch);
+		return r;
+	}
 
-    static get Empty() {
-        let r = new ResourceSource();
-        r.Type = ResourceSourceType.InMemory;
-        r.InMemory = new InMemoryData(null, 0, 0);
-        return r;
-    }
+	static get Empty() {
+		let r = new ResourceSource();
+		r.Type = ResourceSourceType.InMemory;
+		r.InMemory = new InMemoryData(null, 0, 0);
+		return r;
+	}
 }
 
 // prettier-ignore
@@ -96,37 +81,37 @@ export enum FileAttribute {
 }
 
 export class FileInfo {
-    Size: number;
-    TimeCreate: TimePoint;
-    TimeModify: TimePoint;
-    TimeAccess: TimePoint;
-    Attribute: FileAttribute;
+	Size: number;
+	TimeCreate: TimePoint;
+	TimeModify: TimePoint;
+	TimeAccess: TimePoint;
+	Attribute: FileAttribute;
 
-    static FromNative(p: FileInfo) {
-        let r = new FileInfo();
-        r.Size = p.Size;
-        r.TimeCreate = TimePoint.FromTick(p.TimeCreate.Tick);
-        r.TimeModify = TimePoint.FromTick(p.TimeModify.Tick);
-        r.TimeAccess = TimePoint.FromTick(p.TimeAccess.Tick);
-        r.Attribute = p.Attribute;
-        return r;
-    }
+	static FromNative(p: FileInfo) {
+		let r = new FileInfo();
+		r.Size = p.Size;
+		r.TimeCreate = TimePoint.FromTick(p.TimeCreate.Tick);
+		r.TimeModify = TimePoint.FromTick(p.TimeModify.Tick);
+		r.TimeAccess = TimePoint.FromTick(p.TimeAccess.Tick);
+		r.Attribute = p.Attribute;
+		return r;
+	}
 }
 
 export class FileFindItem {
-    Info: FileInfo;
-    Name: string;
+	Info: FileInfo;
+	Name: string;
 
-    static FromNative(p: FileFindItem) {
-        let r = new FileFindItem();
-        r.Info = FileInfo.FromNative(p.Info);
-        r.Name = p.Name;
-        return r;
-    }
+	static FromNative(p: FileFindItem) {
+		let r = new FileFindItem();
+		r.Info = FileInfo.FromNative(p.Info);
+		r.Name = p.Name;
+		return r;
+	}
 }
 
 export enum SeekMode {
-    Begin,
-    Current,
-    End,
+	Begin,
+	Current,
+	End,
 }

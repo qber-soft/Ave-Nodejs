@@ -6,14 +6,14 @@ import { Byo2Image } from "../../Ave";
 import { ResourceSource } from "../../Io/IoCommon";
 
 export interface IPicture extends IVisual {
-    new(window: Window): IPicture;
+	new (window: Window): IPicture;
 
-    SetStretchMode(nMode: StretchMode): Picture;
-    GetStretchMode(): StretchMode;
+	SetStretchMode(nMode: StretchMode): Picture;
+	GetStretchMode(): StretchMode;
 
-    SetPicture(rs: ResourceSource): Picture;
+	SetPicture(rs: ResourceSource): Picture;
 
-    SetImage(img: Byo2Image): void;
+	SetImage(img: Byo2Image): void;
 }
 
-export class Picture extends (AveLib.UiPicture as IPicture) { }
+export class Picture extends (AveLib.UiPicture as IPicture) {}

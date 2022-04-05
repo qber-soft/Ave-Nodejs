@@ -91,4 +91,101 @@ namespace Nav
 		}
 	};
 
+	enum class FontResourceType
+	{
+		Name,
+		File,
+		ResourceId,
+	};
+
+	class UiFontDescription
+	{
+	public:
+		FontResourceType		m_Type;
+		List<WString>			m_Name;
+		List<WString>			m_File;
+		List<U32>				m_ResourceId;
+		List<U32>				m_Index;
+		R32						m_Size;
+		U32						m_Flag;
+	};
+
+	class UiFontDescriptionByo2
+	{
+	public:
+		WString					m_String;
+		List<Io::AveStream>		m_Stream;
+		List<Io::IAveStream*>	m_StreamPointer;
+		Byo2::FontDesc			m_FontDesc;
+
+		void FromJs( const WrapData<UiFontDescription>& font, Io::IResourceManager& rm )
+		{
+			m_String.clear();
+			m_Stream.Clear();
+			m_StreamPointer.Clear();
+			AveZeroObject( m_FontDesc );
+
+			if ( FontResourceType::Name == font.m_Type )
+			{
+				if ( font.m_Name.IsEmpty() )
+					return;
+				if ( !font.m_Index.IsEmpty() && font.m_Index.Size() != font.m_Name.Size() )
+					return;
+				for ( auto& i : font.m_Name )
+				{
+					if ( AveStr.Find( i.c_str(), AveWide( "/" ) ) )
+						return;
+					m_String += i + AveWide( "/" );
+				}
+				m_String.pop_back();
+			}
+			else if ( FontResourceType::File == font.m_Type )
+			{
+				if ( font.m_File.IsEmpty() )
+					return;
+				if ( !font.m_Index.IsEmpty() && font.m_Index.Size() != font.m_File.Size() )
+					return;
+				for ( auto& i : font.m_Name )
+				{
+					if ( AveStr.Find( i.c_str(), AveWide( "/" ) ) )
+						return;
+					auto fs = AveKak.Create<Io::IStreamFile>( i.c_str() );
+					if ( !fs )
+						return;
+					m_StreamPointer.Add( fs );
+					m_Stream.Add( std::move( fs ) );
+					m_String += WString( AveWide( "a:" ) ) + i + AveWide( "/" );
+				}
+				m_String.pop_back();
+			}
+			else if ( FontResourceType::ResourceId == font.m_Type )
+			{
+				if ( font.m_ResourceId.IsEmpty() )
+					return;
+				if ( !font.m_Index.IsEmpty() && font.m_Index.Size() != font.m_ResourceId.Size() )
+					return;
+				for ( auto& i : font.m_ResourceId )
+				{
+					auto fs = rm.Open( i );
+					if ( !fs )
+						return;
+					m_StreamPointer.Add( fs );
+					m_Stream.Add( std::move( fs ) );
+					m_String += AveWide( "a/" );
+				}
+				m_String.pop_back();
+			}
+
+			m_FontDesc.m_Res.m_Name = m_String.c_str();
+			if ( !m_StreamPointer.IsEmpty() )
+				m_FontDesc.m_Res.m_Stream = m_StreamPointer.Data();
+			if ( !font.m_Index.IsEmpty() )
+				m_FontDesc.m_Res.m_Index = font.m_Index.Data();
+			m_FontDesc.m_Size = font.m_Size;
+			m_FontDesc.m_Flag = font.m_Flag;
+		}
+	};
+
+	NavDefineDataByMember_( UiFontDescription, Type, Name, File, ResourceId, Index, Size, Flag );
+
 }

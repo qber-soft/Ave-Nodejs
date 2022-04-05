@@ -6,104 +6,104 @@ import { Quat } from "./Quaternion";
 import { Vec3, Vec4 } from "./Vector";
 
 export enum ProjectionType {
-    Perspective, // Default
-    Orthographic,
-    Customization,
+	Perspective, // Default
+	Orthographic,
+	Customization,
 }
 
 export interface ICamera {
-    new (): ICamera;
+	new (): ICamera;
 
-    // ----------------------------------------------------------------------------------------------------
-    // Common
-    CopyFrom(r: ICamera): void;
+	// ----------------------------------------------------------------------------------------------------
+	// Common
+	CopyFrom(r: ICamera): void;
 
-    SetProjectionType(r: ProjectionType): void;
-    GetProjectionType(): ProjectionType;
+	SetProjectionType(r: ProjectionType): void;
+	GetProjectionType(): ProjectionType;
 
-    SetPosition(v: Vec3): void;
-    GetPosition(): Vec3;
+	SetPosition(v: Vec3): void;
+	GetPosition(): Vec3;
 
-    SetRotation(v: Quat): void;
-    GetRotation(): Quat;
+	SetRotation(v: Quat): void;
+	GetRotation(): Quat;
 
-    // ----------------------------------------------------------------------------------------------------
-    // Perspective & Orthographic
+	// ----------------------------------------------------------------------------------------------------
+	// Perspective & Orthographic
 
-    SetZNear(f: number): void;
-    GetZNear(): number;
+	SetZNear(f: number): void;
+	GetZNear(): number;
 
-    SetZFar(f: number): void;
-    GetZFar(): number;
+	SetZFar(f: number): void;
+	GetZFar(): number;
 
-    SetDirection(v: Vec3): void;
-    GetDirection(): Vec3;
+	SetDirection(v: Vec3): void;
+	GetDirection(): Vec3;
 
-    SetTarget(v: Vec3): void;
+	SetTarget(v: Vec3): void;
 
-    Roll(f: number): void;
-    Yaw(f: number): void;
-    Pitch(f: number): void;
-    RotateAngle(v: Vec3, f: number): void;
+	Roll(f: number): void;
+	Yaw(f: number): void;
+	Pitch(f: number): void;
+	RotateAngle(v: Vec3, f: number): void;
 
-    // ----------------------------------------------------------------------------------------------------
-    // Perspective
+	// ----------------------------------------------------------------------------------------------------
+	// Perspective
 
-    SetFovY(f: number): void;
-    GetFovY(): number;
+	SetFovY(f: number): void;
+	GetFovY(): number;
 
-    SetAspect(f: number): void;
-    GetAspect(): number;
+	SetAspect(f: number): void;
+	GetAspect(): number;
 
-    GetFrustum(): Frustum;
+	GetFrustum(): Frustum;
 
-    // ----------------------------------------------------------------------------------------------------
-    // Orthographic
+	// ----------------------------------------------------------------------------------------------------
+	// Orthographic
 
-    SetOrthoRange(vLRBT: Vec4): void; // x=left, y=right, z=bottom, w=top
-    GetOrthoRange(): Vec4;
+	SetOrthoRange(vLRBT: Vec4): void; // x=left, y=right, z=bottom, w=top
+	GetOrthoRange(): Vec4;
 
-    GetOrthoBox(): Box;
+	GetOrthoBox(): Box;
 
-    // ----------------------------------------------------------------------------------------------------
-    // Customization
+	// ----------------------------------------------------------------------------------------------------
+	// Customization
 
-    SetCustomProjection(mProj: Mat44): void;
+	SetCustomProjection(mProj: Mat44): void;
 
-    // ----------------------------------------------------------------------------------------------------
-    // Get methods
-    GetViewUp(): Vec3;
-    GetViewRight(): Vec3;
-    GetView(): Mat44;
-    GetView33(): Mat34;
-    GetView33_4(): Mat44;
-    GetViewT(): Mat44;
-    GetViewT33(): Mat34;
-    GetViewT33_4(): Mat44;
-    GetProjection(): Mat44;
-    GetProjectionT(): Mat44;
-    GetViewProjection(): Mat44;
-    GetViewProjectionT(): Mat44;
+	// ----------------------------------------------------------------------------------------------------
+	// Get methods
+	GetViewUp(): Vec3;
+	GetViewRight(): Vec3;
+	GetView(): Mat44;
+	GetView33(): Mat34;
+	GetView33_4(): Mat44;
+	GetViewT(): Mat44;
+	GetViewT33(): Mat34;
+	GetViewT33_4(): Mat44;
+	GetProjection(): Mat44;
+	GetProjectionT(): Mat44;
+	GetViewProjection(): Mat44;
+	GetViewProjectionT(): Mat44;
 }
 
 export class Camera extends (AveLib.CoCamera as ICamera) {
-    GetPosition(): Vec3 {
-        return Vec3.FromNative(super.GetPosition());
-    }
+	GetPosition(): Vec3 {
+		return Vec3.FromNative(super.GetPosition());
+	}
 
-    GetDirection(): Vec3 {
-        return Vec3.FromNative(super.GetDirection());
-    }
+	GetDirection(): Vec3 {
+		return Vec3.FromNative(super.GetDirection());
+	}
 
-    GetOrthoRange(): Vec4 {
-        return Vec4.FromNative(super.GetOrthoRange());
-    }
+	GetOrthoRange(): Vec4 {
+		return Vec4.FromNative(super.GetOrthoRange());
+	}
 
-    GetViewUp(): Vec3 {
-        return Vec3.FromNative(super.GetViewUp());
-    }
+	GetViewUp(): Vec3 {
+		return Vec3.FromNative(super.GetViewUp());
+	}
 
-    GetViewRight(): Vec3 {
-        return Vec3.FromNative(super.GetViewRight());
-    }
+	GetViewRight(): Vec3 {
+		return Vec3.FromNative(super.GetViewRight());
+	}
 }

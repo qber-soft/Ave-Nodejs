@@ -1,96 +1,89 @@
 ﻿import { Vec2, Vec4 } from "../Math/Vector";
-import {
-    CursorType,
-    InputModifier,
-    KbKey,
-    PointerButton,
-    PointerType,
-    Rect,
-} from "./UiCommon";
+import { CursorType, InputModifier, KbKey, PointerButton, PointerType, Rect } from "./UiCommon";
 import { IControlExtension } from "../AveLib";
 import { FileFindItem } from "../Io/IoCommon";
 import { IAveStream } from "../Io/IoStream";
 import { IPainter } from "./UiPainter";
 
 export enum DropBehavior {
-    None = 0b0000,
-    Copy = 0b0001,
-    Move = 0b0010,
-    Link = 0b0100,
+	None = 0b0000,
+	Copy = 0b0001,
+	Move = 0b0010,
+	Link = 0b0100,
 }
 
 export enum DragDropImage {
-    Invalid,
-    No, // no image
-    None, // can't drop (a red "no" circle typically)
-    Copy,
-    Move,
-    Link,
-    Label,
-    Warning,
+	Invalid,
+	No, // no image
+	None, // can't drop (a red "no" circle typically)
+	Copy,
+	Move,
+	Link,
+	Label,
+	Warning,
 }
 
-export interface IShellData { }
+export interface IShellData {}
 
 export class MessageKey {
-    Key: KbKey;
-    Modifier: InputModifier;
+	Key: KbKey;
+	Modifier: InputModifier;
 }
 
 export class MessagePointerMouse {
-    LinePerWheel: number;
-    Wheel: number;
+	LinePerWheel: number;
+	Wheel: number;
 }
 
 export class MessagePointerTouch {
-    Pressure: number; // [0, 1]
-    Orientation: number; // [0, 1]
-    Contact: Rect;
+	Pressure: number; // [0, 1]
+	Orientation: number; // [0, 1]
+	Contact: Rect;
 }
 
 export class MessagePointerPen {
-    Pressure: number; // [0, 1]
-    Twist: number; // [0, 1]
-    Tilt: Vec2; // [-1, 1]
+	Pressure: number; // [0, 1]
+	Twist: number; // [0, 1]
+	Tilt: Vec2; // [-1, 1]
 }
 
 export class MessagePointer {
-    static FromNative(mp: MessagePointer): MessagePointer {
-        mp.Touch.Contact = Rect.FromNative(mp.Touch.Contact);
-        mp.Pen.Tilt = Vec2.FromNative(mp.Pen.Tilt);
-        mp.Position = Vec2.FromNative(mp.Position);
-        return mp;
-    }
-    // Common
-    Id: number;
-    Type: PointerType;
-    Position: Vec2;
-    Modifier: InputModifier;
-    Button: PointerButton;
-    Count: number;
+	static FromNative(mp: MessagePointer): MessagePointer {
+		mp.Touch.Contact = Rect.FromNative(mp.Touch.Contact);
+		mp.Pen.Tilt = Vec2.FromNative(mp.Pen.Tilt);
+		mp.Position = Vec2.FromNative(mp.Position);
+		return mp;
+	}
+	// Common
+	Id: number;
+	Type: PointerType;
+	Position: Vec2;
+	Modifier: InputModifier;
+	Button: PointerButton;
+	Count: number;
 
-    // Specified types by Type
-    Mouse: MessagePointerMouse;
-    Touch: MessagePointerTouch;
-    Pen: MessagePointerPen;
+	// Specified types by Type
+	Mouse: MessagePointerMouse;
+	Touch: MessagePointerTouch;
+	Pen: MessagePointerPen;
 }
 
 export interface IDragContext {
-    GetModifier(): InputModifier;
-    GetPosition(): Vec2;
+	GetModifier(): InputModifier;
+	GetPosition(): Vec2;
 
-    SetDropTip(image: DragDropImage, s: string): void;
-    SetDropBehavior(n: DropBehavior): void;
+	SetDropTip(image: DragDropImage, s: string): void;
+	SetDropBehavior(n: DropBehavior): void;
 
-    HasVirtualFile(): boolean;
-    HasFile(): boolean;
+	HasVirtualFile(): boolean;
+	HasFile(): boolean;
 
-    VirtualFileGetCount(): number;
-    VirtualFileGetInfo(nIndex: number): FileFindItem;
-    VirtualFileOpen(nIndex: number): IAveStream;
+	VirtualFileGetCount(): number;
+	VirtualFileGetInfo(nIndex: number): FileFindItem;
+	VirtualFileOpen(nIndex: number): IAveStream;
 
-    FileGetCount(): number;
-    FileGet(): string[];
+	FileGetCount(): number;
+	FileGet(): string[];
 }
 
 // prettier-ignore

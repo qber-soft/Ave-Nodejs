@@ -22,97 +22,93 @@ const c_KeyName = [
 ];
 
 function IsModifierKey(k: KbKey) {
-    switch (k) {
-        case KbKey.Control:
-        case KbKey.LControl:
-        case KbKey.RControl:
-        case KbKey.Shift:
-        case KbKey.LShift:
-        case KbKey.RShift:
-        case KbKey.Menu:
-        case KbKey.LMenu:
-        case KbKey.RMenu:
-        case KbKey.LWindows:
-        case KbKey.RWindows:
-        case KbKey.Application:
-            return true;
-        default:
-            return false;
-    }
+	switch (k) {
+		case KbKey.Control:
+		case KbKey.LControl:
+		case KbKey.RControl:
+		case KbKey.Shift:
+		case KbKey.LShift:
+		case KbKey.RShift:
+		case KbKey.Menu:
+		case KbKey.LMenu:
+		case KbKey.RMenu:
+		case KbKey.LWindows:
+		case KbKey.RWindows:
+		case KbKey.Application:
+			return true;
+		default:
+			return false;
+	}
 }
 
 function FormatMessageKey(m: MessageKey) {
-    let s: string = "";
-    if (InputModifier.Control & m.Modifier) s += "Ctrl + ";
-    if (InputModifier.Shift & m.Modifier) s += "Shift + ";
-    if (InputModifier.Menu & m.Modifier) s += "Alt + ";
-    if (m.Key < c_KeyName.length)
-        return s + c_KeyName[m.Key];
-    else
-        return s + m.Key.toString();
+	let s: string = "";
+	if (InputModifier.Control & m.Modifier) s += "Ctrl + ";
+	if (InputModifier.Shift & m.Modifier) s += "Shift + ";
+	if (InputModifier.Menu & m.Modifier) s += "Alt + ";
+	if (m.Key < c_KeyName.length) return s + c_KeyName[m.Key];
+	else return s + m.Key.toString();
 }
 
 function FormatMessagePointer(m: MessagePointer) {
-    return `ID=${m.Id}, Type=${c_PointerTypeString[m.Type]}, Pos=(${m.Position.x}, ${m.Position.y}), Button=${c_ButtonTypeString[m.Button]}, Count=${m.Count}`;
+	return `ID=${m.Id}, Type=${c_PointerTypeString[m.Type]}, Pos=(${m.Position.x}, ${m.Position.y}), Button=${c_ButtonTypeString[m.Button]}, Count=${m.Count}`;
 }
 
 export function main(window: Window) {
-    const button = new Button(window);
-    let bEntered = false;
-    let vPos = Vec2.Zero;
+	const button = new Button(window);
+	let bEntered = false;
+	let vPos = Vec2.Zero;
 
-    const updateButton = () => button.SetText(`${bEntered ? "◆" : "◇"} ${vPos.x}, ${vPos.y}`);
-    updateButton();
+	const updateButton = () => button.SetText(`${bEntered ? "◆" : "◇"} ${vPos.x}, ${vPos.y}`);
+	updateButton();
 
-    button.OnKeyPress((sender, mk) => {
-        if (!IsModifierKey(mk.Key))
-            console.log(`Key        Press: ${FormatMessageKey(mk)}`);
-    });
-    button.OnKeyRelease((sender, mk) => {
-        if (!IsModifierKey(mk.Key))
-            console.log(`Key      Release: ${FormatMessageKey(mk)}`);
-    });
+	button.OnKeyPress((sender, mk) => {
+		if (!IsModifierKey(mk.Key)) console.log(`Key        Press: ${FormatMessageKey(mk)}`);
+	});
+	button.OnKeyRelease((sender, mk) => {
+		if (!IsModifierKey(mk.Key)) console.log(`Key      Release: ${FormatMessageKey(mk)}`);
+	});
 
-    button.OnPointerEnter((sender, mp) => {
-        bEntered = true;
-        updateButton();
-        //console.log("Pointer    Enter:");
-    });
-    button.OnPointerLeave((sender, mp) => {
-        bEntered = false;
-        updateButton();
-        //console.log("Pointer    Leave:");
-    });
-    button.OnPointerPress((sender, mp) => {
-        console.log(`Pointer    Press: ${FormatMessagePointer(mp)}`);
-    });
-    button.OnPointerRelease((sender, mp) => {
-        console.log(`Pointer  Release: ${FormatMessagePointer(mp)}`);
-    });
-    button.OnPointerClickNdc((sender, mp) => {
-        console.log(`Pointer ClickNdc: ${FormatMessagePointer(mp)}`);
-    });
-    button.OnPointerMove((sender, mp) => {
-        vPos = mp.Position;
-        updateButton();
-    });
-    button.OnPointerVWheel((sender, mp) => {
-        console.log(`Pointer   VWheel: ${mp.Mouse.Wheel}`);
-    });
-    button.OnPointerHWheel((sender, mp) => {
-        console.log(`Pointer   HWheel: ${mp.Mouse.Wheel}`);
-    });
-    button.OnPointerHover((sender, mp) => {
-        console.log("Pointer    Hover:");
-    });
-    button.OnPointerLost((sender, mp) => {
-        console.log(`Pointer     Lost: ID=${mp.Id}`);
-    });
-    button.OnPointerCursor((sender, mp) => {
-        return CursorType.Link;
-    });
+	button.OnPointerEnter((sender, mp) => {
+		bEntered = true;
+		updateButton();
+		//console.log("Pointer    Enter:");
+	});
+	button.OnPointerLeave((sender, mp) => {
+		bEntered = false;
+		updateButton();
+		//console.log("Pointer    Leave:");
+	});
+	button.OnPointerPress((sender, mp) => {
+		console.log(`Pointer    Press: ${FormatMessagePointer(mp)}`);
+	});
+	button.OnPointerRelease((sender, mp) => {
+		console.log(`Pointer  Release: ${FormatMessagePointer(mp)}`);
+	});
+	button.OnPointerClickNdc((sender, mp) => {
+		console.log(`Pointer ClickNdc: ${FormatMessagePointer(mp)}`);
+	});
+	button.OnPointerMove((sender, mp) => {
+		vPos = mp.Position;
+		updateButton();
+	});
+	button.OnPointerVWheel((sender, mp) => {
+		console.log(`Pointer   VWheel: ${mp.Mouse.Wheel}`);
+	});
+	button.OnPointerHWheel((sender, mp) => {
+		console.log(`Pointer   HWheel: ${mp.Mouse.Wheel}`);
+	});
+	button.OnPointerHover((sender, mp) => {
+		console.log("Pointer    Hover:");
+	});
+	button.OnPointerLost((sender, mp) => {
+		console.log(`Pointer     Lost: ID=${mp.Id}`);
+	});
+	button.OnPointerCursor((sender, mp) => {
+		return CursorType.Link;
+	});
 
-    const container = getControlDemoContainer(window);
-    container.ControlAdd(button).SetGrid(1, 1);
-    window.SetContent(container);
+	const container = getControlDemoContainer(window);
+	container.ControlAdd(button).SetGrid(1, 1);
+	window.SetContent(container);
 }

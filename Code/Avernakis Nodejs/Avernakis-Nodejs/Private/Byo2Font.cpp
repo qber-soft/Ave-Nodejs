@@ -32,13 +32,11 @@ namespace Nav
 		AutoAddMethod( Measure );
 	}
 
-	U1 Byo2Font::Ctor( UiWindow* p, const WrapData<Byo2FontCreation>& c )
+	U1 Byo2Font::Ctor( UiWindow* p, const WrapData<UiFontDescription>& c )
 	{
-		Byo2::IFont::CreationParam cp{};
-		cp.m_Res.m_Name = c.m_Name.c_str();
-		cp.m_Size = c.m_Size;
-		cp.m_Flag = c.m_Flag;
-		m_Font = p->PublicGetWindow().GetDevice().GetFactory().Create<Byo2::IFont>( cp );
+		UiFontDescriptionByo2 f2;
+		f2.FromJs( c, p->PublicGetWindow().GetDevice().GetResourceManager() );
+		m_Font = p->PublicGetWindow().GetDevice().GetFactory().Create<Byo2::IFont>( f2.m_FontDesc );
 		if ( !m_Font )
 			return false;
 

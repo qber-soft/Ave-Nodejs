@@ -49,69 +49,9 @@ namespace Nav
 
 	void UiThemeImage::SetFont( const WrapData<UiFontDescription>& font )
 	{
-		WString s;
-		List<Io::AveStream> vStream;
-		List<Io::IAveStream*> vStreamPointer;
-		if ( FontResourceType::Name == font.m_Type )
-		{
-			if ( font.m_Name.IsEmpty() )
-				return;
-			if ( !font.m_Index.IsEmpty() && font.m_Index.Size() != font.m_Name.Size() )
-				return;
-			for ( auto& i : font.m_Name )
-			{
-				if ( AveStr.Find( i.c_str(), AveWide( "/" ) ) )
-					return;
-				s += i + AveWide( "/" );
-			}
-			s.pop_back();
-		}
-		else if ( FontResourceType::File == font.m_Type )
-		{
-			if ( font.m_File.IsEmpty() )
-				return;
-			if ( !font.m_Index.IsEmpty() && font.m_Index.Size() != font.m_File.Size() )
-				return;
-			for ( auto& i : font.m_Name )
-			{
-				if ( AveStr.Find( i.c_str(), AveWide( "/" ) ) )
-					return;
-				auto fs = AveKak.Create<Io::IStreamFile>( i.c_str() );
-				if ( !fs )
-					return;
-				vStreamPointer.Add( fs );
-				vStream.Add( std::move( fs ) );
-				s += WString( AveWide( "a:" ) ) + i + AveWide( "/" );
-			}
-			s.pop_back();
-		}
-		else if ( FontResourceType::ResourceId == font.m_Type )
-		{
-			if ( font.m_ResourceId.IsEmpty() )
-				return;
-			if ( !font.m_Index.IsEmpty() && font.m_Index.Size() != font.m_ResourceId.Size() )
-				return;
-			for ( auto& i : font.m_ResourceId )
-			{
-				auto fs = m_Object->GetResourceManager().Open( i );
-				if ( !fs )
-					return;
-				vStreamPointer.Add( fs );
-				vStream.Add( std::move( fs ) );
-				s += AveWide( "a/" );
-			}
-			s.pop_back();
-		}
-
-		Byo2::FontDesc fd{};
-		fd.m_Res.m_Name = s.c_str();
-		if ( !vStreamPointer.IsEmpty() )
-			fd.m_Res.m_Stream = vStreamPointer.Data();
-		if ( !font.m_Index.IsEmpty() )
-			fd.m_Res.m_Index = font.m_Index.Data();
-		fd.m_Size = font.m_Size;
-		fd.m_Flag = font.m_Flag;
-		m_Object->SetFont( fd );
+		UiFontDescriptionByo2 f2;
+		f2.FromJs( font, m_Object->GetResourceManager() );
+		m_Object->SetFont( f2.m_FontDesc );
 	}
 
 	void UiThemeImage::AnimationSetDuration( U32 nMillisecond )

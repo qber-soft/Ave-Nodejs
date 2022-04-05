@@ -8,17 +8,17 @@ namespace Nav
 
 	class UiWindow;
 
-	class Byo2FontCreation
-	{
-	public:
-		WString							m_Name;
-		R32								m_Size;
-		U32								m_Flag;
-	};
+	//class Byo2FontCreation
+	//{
+	//public:
+	//	WString							m_Name;
+	//	R32								m_Size;
+	//	U32								m_Flag;
+	//};
 
-	NavDefineDataByMember_( Byo2FontCreation, Name, Size, Flag );
+	//NavDefineDataByMember_( Byo2FontCreation, Name, Size, Flag );
 
-	class Byo2Font : public WrapObject<Byo2Font, void( UiWindow*, const WrapData<Byo2FontCreation>& )>
+	class Byo2Font : public WrapObject<Byo2Font, void( UiWindow*, const WrapData<UiFontDescription>& )>
 	{
 	public:
 		AveWrapObject( Byo2Font );
@@ -26,7 +26,7 @@ namespace Nav
 		static PCAChar						GetExportName() { return "Byo2Font"; }
 		static void							DefineObject();
 
-		U1									Ctor( UiWindow* p, const WrapData<Byo2FontCreation>& c );
+		U1									Ctor( UiWindow* p, const WrapData<UiFontDescription>& c );
 		Napi::Value							GetObjectValue( Napi::Env env ) { return __GetObjectValue( env ); }
 
 	private:
