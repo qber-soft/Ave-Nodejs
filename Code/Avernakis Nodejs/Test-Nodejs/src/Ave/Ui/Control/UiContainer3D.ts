@@ -80,7 +80,17 @@ export class Container3D extends (AveLib.UiContainer3D as IContainer3D) {
     ControlAdd<T extends IControl>(c: T) {
         this.m_Child.add(c);
         super.ControlAdd(c);
-        return super.GetContainerControl(c);
+
+        const control = super.GetContainerControl(c);
+
+        const OriginalGetPosition = control.GetPosition.bind(control);
+        control.GetPosition = (): Vec3 =>
+            Vec3.FromNative(OriginalGetPosition());
+
+        const OriginalGetScaling = control.GetScaling.bind(control);
+        control.GetScaling = (): Vec3 => Vec3.FromNative(OriginalGetScaling());
+
+        return control;
     }
 
     ControlRemove(c: IControl) {

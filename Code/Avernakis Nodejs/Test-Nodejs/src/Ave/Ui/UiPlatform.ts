@@ -36,6 +36,10 @@ export class MonitorItem {
     static FromNative(item: MonitorItem) {
         item.AreaFull = Rect.FromNative(item.AreaFull);
         item.AreaWorking = Rect.FromNative(item.AreaWorking);
+        item.DpiEffective = Vec2.FromNative(item.DpiEffective);
+        item.DpiRaw = Vec2.FromNative(item.DpiRaw);
+        item.ScaleEffective = Vec2.FromNative(item.ScaleEffective);
+        item.ScaleRaw = Vec2.FromNative(item.ScaleRaw);
         return item;
     }
     AreaFull: Rect;

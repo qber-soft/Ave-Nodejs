@@ -1,5 +1,5 @@
-﻿import { IControl, MessagePointer } from "./Ui/UiControl";
-import { Vec2 } from "./Math/Vector";
+﻿import { IControl, IDragContext, MessagePointer } from "./Ui/UiControl";
+import { Vec2, Vec4 } from "./Math/Vector";
 import { CursorType, Rect } from "./Ui/UiCommon";
 import * as fs from "fs";
 
@@ -36,10 +36,59 @@ function AddControlExtension(ControlClass: IControl & { new (): IControl }) {
             return this.GetRect().Size;
         }
 
+        GetTextColor(): Vec4 {
+            return Vec4.FromNative(super.GetTextColor());
+        }
+
         GetEnableWithParent() {
             let p: IControl = this;
             for (; p && p.GetEnable(); p = p.GetParent());
             return !p;
+        }
+
+        OnDragEnter(fn: (sender: IDragContext) => void): IControl {
+            return super.OnDragEnter((sender: IDragContext) => {
+                const OriginalGetPosition = sender.GetPosition.bind(sender);
+                sender.GetPosition = () =>
+                    Vec2.FromNative(OriginalGetPosition());
+                return fn(sender);
+            });
+        }
+
+        OnDragMove(fn: (sender: IDragContext) => void): IControl {
+            return super.OnDragMove((sender: IDragContext) => {
+                const OriginalGetPosition = sender.GetPosition.bind(sender);
+                sender.GetPosition = () =>
+                    Vec2.FromNative(OriginalGetPosition());
+                return fn(sender);
+            });
+        }
+
+        OnDragLeave(fn: (sender: IDragContext) => void): IControl {
+            return super.OnDragLeave((sender: IDragContext) => {
+                const OriginalGetPosition = sender.GetPosition.bind(sender);
+                sender.GetPosition = () =>
+                    Vec2.FromNative(OriginalGetPosition());
+                return fn(sender);
+            });
+        }
+
+        OnDragDrop(fn: (sender: IDragContext) => void): IControl {
+            return super.OnDragDrop((sender: IDragContext) => {
+                const OriginalGetPosition = sender.GetPosition.bind(sender);
+                sender.GetPosition = () =>
+                    Vec2.FromNative(OriginalGetPosition());
+                return fn(sender);
+            });
+        }
+
+        OnDragEnd(fn: (sender: IDragContext) => void): IControl {
+            return super.OnDragEnd((sender: IDragContext) => {
+                const OriginalGetPosition = sender.GetPosition.bind(sender);
+                sender.GetPosition = () =>
+                    Vec2.FromNative(OriginalGetPosition());
+                return fn(sender);
+            });
         }
 
         OnPointerEnter(

@@ -61,4 +61,20 @@ export class Knob extends (AveLib.UiKnob as IKnob) {
         this.m_RingVisual = v;
         return super.RingSetVisual(v);
     }
+
+    ValueGetRange(): Vec2 {
+        return Vec2.FromNative(super.ValueGetRange());
+    }
+
+    RingGetColor(): Vec4 {
+        return Vec4.FromNative(super.RingGetColor());
+    }
+
+    RingGetDefaultColor(): Vec4 {
+        return Vec4.FromNative(super.RingGetDefaultColor());
+    }
+
+    RingGetTickColor(): Vec4 {
+        return Vec4.FromNative(super.RingGetTickColor());
+    }
 }

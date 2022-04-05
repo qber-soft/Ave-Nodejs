@@ -188,6 +188,33 @@ export interface IMatrixEditor extends IControl {
 export class MatrixEditor extends (AveLib.UiMatrixEditor as IMatrixEditor) {
     private m_CornerContent: IControl;
 
+    DocGet(): IMatrixEditorDoc {
+        const doc = super.DocGet();
+
+        const OriginalGetDimension = doc.GetDimension.bind(doc);
+        doc.GetDimension = () => Vec2.FromNative(OriginalGetDimension());
+
+        const OriginalGetUnitBackColor = doc.GetUnitBackColor.bind(doc);
+        doc.GetUnitBackColor = () =>
+            Vec4.FromNative(OriginalGetUnitBackColor());
+
+        const OriginalGetUnitForeColor = doc.GetUnitForeColor.bind(doc);
+        doc.GetUnitForeColor = () =>
+            Vec4.FromNative(OriginalGetUnitForeColor());
+
+        const OriginalGetUnitFillColor = doc.GetUnitFillColor.bind(doc);
+        doc.GetUnitFillColor = () =>
+            Vec4.FromNative(OriginalGetUnitFillColor());
+
+        const OriginalColGetBackColor = doc.ColGetBackColor.bind(doc);
+        doc.ColGetBackColor = () => Vec4.FromNative(OriginalColGetBackColor());
+
+        const OriginalRowGetBackColor = doc.RowGetBackColor.bind(doc);
+        doc.RowGetBackColor = () => Vec4.FromNative(OriginalRowGetBackColor());
+
+        return doc;
+    }
+
     UnitGetRect(x: number, y: number): Rect {
         return Rect.FromNative(super.UnitGetRect(x, y));
     }

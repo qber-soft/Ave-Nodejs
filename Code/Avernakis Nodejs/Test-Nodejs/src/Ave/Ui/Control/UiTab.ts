@@ -200,6 +200,28 @@ export class Tab extends (AveLib.UiTab as ITab) {
     private m_HeaderFarContent: IControl;
     private m_Content: Map<number, IControl> = new Map();
 
+    OnDrag(
+        fn: (
+            sender: Tab,
+            nId: number,
+            nType: TabObjectType,
+            vDragStartPosition: Vec2
+        ) => void
+    ): Tab {
+        return super.OnDrag(
+            (
+                sender: Tab,
+                nId: number,
+                nType: TabObjectType,
+                vDragStartPosition: Vec2
+            ) => fn(sender, nId, nType, Vec2.FromNative(vDragStartPosition))
+        );
+    }
+
+    GetSimpleColor(): Vec4 {
+        return Vec4.FromNative(super.GetSimpleColor());
+    }
+
     TabGetRect(nId: number, bReal: boolean): Rect {
         return Rect.FromNative(super.TabGetRect(nId, bReal));
     }

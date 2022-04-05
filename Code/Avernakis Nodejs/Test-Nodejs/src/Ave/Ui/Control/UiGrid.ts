@@ -205,6 +205,10 @@ export class Grid extends (AveLib.UiGrid as IGrid) {
         }
     }
 
+    GetBackColor(): Vec4 {
+        return Vec4.FromNative(super.GetBackColor());
+    }
+
     private AddGridExtension<T extends IControl>(
         gridControl: IGridControl<T>
     ): IGridControl<T> {
@@ -224,6 +228,8 @@ export class Grid extends (AveLib.UiGrid as IGrid) {
         gridControl.BringToFront = () => gridControl.SetPosZ(0);
         gridControl.BringToBack = () => gridControl.SetPosZ(2147483647);
 
+        const OriginalGetGrid = gridControl.GetGrid.bind(gridControl);
+        gridControl.GetGrid = (): Vec4 => Vec4.FromNative(OriginalGetGrid());
         return gridControl;
     }
 

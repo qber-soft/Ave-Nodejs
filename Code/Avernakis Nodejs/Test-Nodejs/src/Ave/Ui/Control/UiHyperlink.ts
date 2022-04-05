@@ -35,4 +35,8 @@ export interface IHyperlink extends IVisual {
     OnClick(fn: (sender: Hyperlink, nId: number) => void): Hyperlink;
 }
 
-export class Hyperlink extends (AveLib.UiHyperlink as IHyperlink) {}
+export class Hyperlink extends (AveLib.UiHyperlink as IHyperlink) {
+    GetBackColor(): Vec4 {
+        return Vec4.FromNative(super.GetBackColor());
+    }
+}

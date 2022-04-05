@@ -36,4 +36,12 @@ export class Pager extends (AveLib.UiPager as IPager) {
         this.m_Content = pControl;
         return super.SetContent(pControl);
     }
+
+    GetContentSize(): Vec2 {
+        return Vec2.FromNative(super.GetContentSize());
+    }
+
+    GetRealContentSize(): Vec2 {
+        return Vec2.FromNative(super.GetRealContentSize());
+    }
 }
