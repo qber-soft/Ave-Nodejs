@@ -2,6 +2,38 @@
 import { DualQuat, Quat } from "./Quaternion";
 import { Vec3, Vec4 } from "./Vector";
 
+export class Mat32 {
+    _11: number = 1;
+    _12: number = 0;
+    _21: number = 0;
+    _22: number = 1;
+    _31: number = 0;
+    _32: number = 0;
+
+    static get Identity() {
+        return new Mat32();
+    }
+}
+
+export class Mat43 {
+    _11: number = 1;
+    _12: number = 0;
+    _13: number = 0;
+    _21: number = 0;
+    _22: number = 1;
+    _23: number = 0;
+    _31: number = 0;
+    _32: number = 0;
+    _33: number = 1;
+    _41: number = 0;
+    _42: number = 0;
+    _43: number = 0;
+
+    static get Identity() {
+        return new Mat43();
+    }
+}
+
 export class Mat34 {
     _11: number = 1;
     _12: number = 0;

@@ -27,7 +27,15 @@
     MenuItem,
     MenuType,
     StatusBar,
+    Vec4,
+    Byo2ImageCreation,
+    Byo2ImageDataType,
+    AppPath,
+    Byo2Image,
+    Vec2,
 } from "../../../src";
+import { ResourceSource } from "../../../src/Ave/Io/IoCommon";
+import { DrawImageFlag, DrawImageParam } from "../../../src/Ave/Ui/UiPainter";
 import { DefaultString } from "../DefaultString";
 import { ResId } from "../ResId";
 import { IPage, PageRegister } from "./Page";

@@ -1,8 +1,9 @@
 import { AveLib } from "../../AveLib";
 import { IControl } from "../UiControl";
-import { ResourceSource, StretchMode } from "../UiCommon";
 import { Vec2 } from "../../Math/Vector";
 import { Window } from "../Control/UiWindow";
+import { ResourceSource } from "../../Io/IoCommon";
+import { StretchMode } from "../UiCommon";
 
 export class AnimFrameInfo {
     static FromNative(info: AnimFrameInfo) {

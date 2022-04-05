@@ -10,6 +10,7 @@ import {
 import { IControlExtension } from "../AveLib";
 import { FileFindItem } from "../Io/IoCommon";
 import { IAveStream } from "../Io/IoStream";
+import { IPainter } from "./UiPainter";
 
 export enum DropBehavior {
     None = 0b0000,
@@ -138,12 +139,6 @@ export interface IControl extends IControlExtension {
     SetDropEnable(b: boolean): IControl;
     GetDropEnable(): boolean;
 
-    OnDragEnter /**/(fn: (sender: IControl, dc: IDragContext) => void): IControl;
-    OnDragMove  /**/(fn: (sender: IControl, dc: IDragContext) => void): IControl;
-    OnDragLeave /**/(fn: (sender: IControl, dc: IDragContext) => void): IControl;
-    OnDragDrop  /**/(fn: (sender: IControl, dc: IDragContext) => void): IControl;
-    OnDragEnd   /**/(fn: (sender: IControl, dc: IDragContext) => void): IControl;
-
     OnKeyPress  /**/(fn: (sender: IControl, mk: MessageKey) => void): IControl;
     OnKeyRelease/**/(fn: (sender: IControl, mk: MessageKey) => void): IControl;
 
@@ -158,4 +153,14 @@ export interface IControl extends IControlExtension {
     OnPointerHover    /**/(fn: (sender: IControl, mp: MessagePointer) => void): IControl;
     OnPointerLost     /**/(fn: (sender: IControl, mp: MessagePointer) => void): IControl;
     OnPointerCursor   /**/(fn: (sender: IControl, mp: MessagePointer) => CursorType): IControl;
+    
+    OnDragEnter /**/(fn: (sender: IControl, dc: IDragContext) => void): IControl;
+    OnDragMove  /**/(fn: (sender: IControl, dc: IDragContext) => void): IControl;
+    OnDragLeave /**/(fn: (sender: IControl, dc: IDragContext) => void): IControl;
+    OnDragDrop  /**/(fn: (sender: IControl, dc: IDragContext) => void): IControl;
+    OnDragEnd   /**/(fn: (sender: IControl, dc: IDragContext) => void): IControl;
+
+    OnChangeFocus(fn: (sender: IControl, bFocus: boolean) => void): IControl;
+    OnChangeSize(fn: (sender: IControl, vSize: Vec2) => void): IControl;
+    OnPaintPost(fn: (sender: IControl, painter: IPainter, rc: Rect) => void): IControl;
 }

@@ -135,7 +135,6 @@ namespace Nav
 	U1 UiWindow::Ctor( const CallbackInfo& ci, const UiWindowCreation_t & cp )
 	{
 		m_Param = cp;
-
 		if ( UiWindowDevice::Default2D == m_Param.m_Device )
 		{
 #		if AvePlatform == AvePlatformWinDesktop

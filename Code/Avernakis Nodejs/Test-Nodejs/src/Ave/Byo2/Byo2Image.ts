@@ -1,6 +1,7 @@
-﻿import { InMemoryData, Rect, ResourceSource } from "../Ave";
+﻿import { Rect } from "../Ave";
 import { AveLib } from "../AveLib";
 import { PixFormat } from "../Common";
+import { InMemoryData, ResourceSource } from "../Io/IoCommon";
 import { Window } from "../Ui/Control/UiWindow";
 
 export enum Byo2ImageDataType {
@@ -14,7 +15,7 @@ export class Byo2ImageCreation {
     Data: ResourceSource = null;
     Width: number = 0;
     Height: number = 0;
-    Format: PixFormat;
+    Format: PixFormat = PixFormat.UNKNOWN;
 }
 
 export interface IByo2Image {

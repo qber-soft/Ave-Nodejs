@@ -40,6 +40,7 @@ namespace Nav
 		void								Upload( const WrapData<S32_R>& rc, const WrapData<InMemoryData>& pData ) { m_Image->Upload( rc.IsEmpty() ? nullptr : &rc, { pData.m_Data.m_Pointer, pData.m_RowPitch, pData.m_SlicePitch } ); }
 
 	public:
+		Byo2::IImage*						GetImage() { return m_Image; }
 		Byo2::Image							CloneImage() { return m_Image; }
 	};
 }

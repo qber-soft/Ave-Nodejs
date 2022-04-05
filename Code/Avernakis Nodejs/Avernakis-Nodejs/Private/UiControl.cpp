@@ -1,5 +1,6 @@
 ﻿#include "StdAfx.h"
 #include "UiControl.h"
+#include "UiPainter.h"
 
 #define MakeThisFunc($x) MakeFunc( this, &UiControl::$x )
 
@@ -9,6 +10,7 @@ namespace Nav
 	void UiControl::__ListenEvent()
 	{
 		GetControl().GetEvent<Ui::IControl::OnMessagePost>() += MakeThisFunc( __OnMessagePost );
+		GetControl().GetEvent<Ui::IControl::OnChangeFocus>() += MakeThisFunc( __OnChangeFocus );
 	}
 
 	void UiControl::__OnMessagePost( Ui::IControl& sender, Ui::ControlMessage nMsg, const Ui::MessageParam& mp )
@@ -39,7 +41,34 @@ namespace Nav
 				} );
 			}
 			break;
+
+		case Ui::ControlMessage::ChangedSize:
+			m_OnChangeSize( this, mp.m_ChangedSize );
+			break;
 		}
+	}
+
+	void UiControl::__OnChangeFocus( Ui::IControl & sender, U1 bFocus )
+	{
+		m_OnChangeFocus( this, bFocus );
+	}
+
+	void UiControl::__OnPaintPost( Ui::IControl & sender, Ui::IPainter & painter, Ui::IPainterTyped & paintert, const S32_R & rcClient )
+	{
+		m_Painter->SetPainter( &painter );
+		m_OnPaintPost.BlockAsyncCall( this, m_Painter, rcClient, [] {} );
+		m_Painter->SetPainter( nullptr );
+	}
+
+	WrapPointer<UiControl> UiControl::OnPaintPost( const CallbackInfo& ci, OnPaintPost_t && fn )
+	{
+		if ( fn && !m_Painter )
+		{
+			m_Painter = ci.NewJsObjectWithOwnership<UiPainter>();
+			GetControl().GetEvent<Ui::IControl::OnPaintPost>() += MakeThisFunc( __OnPaintPost );
+		}
+		m_OnPaintPost = std::move( fn );
+		return __GetUiControl();
 	}
 
 }

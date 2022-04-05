@@ -1,8 +1,6 @@
 ﻿import {
     ComboBox,
     DpiSize,
-    DragDropImage,
-    DropBehavior,
     Grid,
     HeaderItem,
     HeaderItemFormat,

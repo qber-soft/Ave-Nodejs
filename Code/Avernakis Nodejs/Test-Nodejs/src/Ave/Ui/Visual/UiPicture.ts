@@ -1,8 +1,9 @@
 import { AveLib } from "../../AveLib";
 import { IVisual } from "../UiVisual";
 import { Window } from "../Control/UiWindow";
-import { StretchMode, ResourceSource } from "../UiCommon";
+import { StretchMode } from "../UiCommon";
 import { Byo2Image } from "../../Ave";
+import { ResourceSource } from "../../Io/IoCommon";
 
 export interface IPicture extends IVisual {
     new(window: Window): IPicture;

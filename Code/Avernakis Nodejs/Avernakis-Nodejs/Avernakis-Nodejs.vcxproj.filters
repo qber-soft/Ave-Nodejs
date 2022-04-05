@@ -212,6 +212,12 @@
     <ClCompile Include="Private\UiDragContext.cpp">
       <Filter>Ave\Ui\Common</Filter>
     </ClCompile>
+    <ClCompile Include="Private\UiPainter.cpp">
+      <Filter>Ave\Ui\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="Private\Byo2Font.cpp">
+      <Filter>Ave\Byo2\Font</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Build">
@@ -402,6 +408,9 @@
     </Filter>
     <Filter Include="Ave\Io">
       <UniqueIdentifier>{b38acd2f-e2e7-459d-bc07-776de3f791d4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Ave\Byo2\Font">
+      <UniqueIdentifier>{26469b2b-d406-48f6-924b-284b1e55e75b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -634,6 +643,12 @@
     </ClInclude>
     <ClInclude Include="Private\UiDragContext.h">
       <Filter>Ave\Ui\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Private\UiPainter.h">
+      <Filter>Ave\Ui\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Private\Byo2Font.h">
+      <Filter>Ave\Byo2\Font</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

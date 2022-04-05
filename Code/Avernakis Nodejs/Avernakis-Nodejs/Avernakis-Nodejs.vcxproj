@@ -156,6 +156,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Private\App.cpp" />
+    <ClCompile Include="Private\Byo2Font.cpp" />
     <ClCompile Include="Private\CoCamera.cpp" />
     <ClCompile Include="Private\Common.cpp" />
     <ClCompile Include="Private\Empty.cpp" />
@@ -183,6 +184,7 @@
     <ClCompile Include="Private\UiCommonUi.cpp" />
     <ClCompile Include="Private\UiControlManager.cpp" />
     <ClCompile Include="Private\UiDragContext.cpp" />
+    <ClCompile Include="Private\UiPainter.cpp" />
     <ClCompile Include="Private\UiPlatform.cpp" />
     <ClCompile Include="Private\UiCommonUiWait.cpp" />
     <ClCompile Include="Private\UiContainer3D.cpp" />
@@ -239,6 +241,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Private\App.h" />
+    <ClInclude Include="Private\Byo2Font.h" />
     <ClInclude Include="Private\CoCamera.h" />
     <ClInclude Include="Private\Common.h" />
     <ClInclude Include="Private\Empty.h" />
@@ -260,6 +263,7 @@
     <ClInclude Include="Private\UiCommonUi.h" />
     <ClInclude Include="Private\UiControlManager.h" />
     <ClInclude Include="Private\UiDragContext.h" />
+    <ClInclude Include="Private\UiPainter.h" />
     <ClInclude Include="Private\UiPlatform.h" />
     <ClInclude Include="Private\UiCommonUiWait.h" />
     <ClInclude Include="Private\UiContainer3D.h" />
