@@ -1,5 +1,5 @@
 ﻿import { IControl } from "../UiControl";
-import { AveLib } from "../../AveLib";
+import { AveLib, ExtendControlInstance } from "../../AveLib";
 import { Window } from "./UiWindow";
 import { DpiSize, DpiSize_2, IconCache, Rect } from "../UiCommon";
 import { Vec2 } from "../../Math/Vector";
@@ -204,8 +204,7 @@ export class RichListBox extends (AveLib.UiRichListBox as IRichListBox) {
 
     GetHeader(): Header {
         const header = super.GetHeader();
-        const OriginalGetRect = header.GetRect.bind(header);
-        header.GetRect = (): Rect => Rect.FromNative(OriginalGetRect());
+        ExtendControlInstance(header as any as IControl);
         return header;
     }
 }

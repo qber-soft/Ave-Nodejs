@@ -1,5 +1,5 @@
 ﻿import { IControl } from "../UiControl";
-import { AveLib } from "../../AveLib";
+import { AveLib, ExtendControlInstance } from "../../AveLib";
 import { Window } from "./UiWindow";
 import {
     DpiSize,
@@ -190,6 +190,7 @@ export class MatrixEditor extends (AveLib.UiMatrixEditor as IMatrixEditor) {
 
     DocGet(): IMatrixEditorDoc {
         const doc = super.DocGet();
+        ExtendControlInstance(doc as any as IControl);
 
         const OriginalGetDimension = doc.GetDimension.bind(doc);
         doc.GetDimension = () => Vec2.FromNative(OriginalGetDimension());
