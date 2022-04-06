@@ -5,37 +5,37 @@ import { TimePoint } from "../../TimePoint";
 import { CultureId, CultureInfoDateTime } from "../../Culture";
 
 export interface IDatePicker extends IControl {
-    new (window: Window): IDatePicker;
+	new (window: Window): IDatePicker;
 
-    SetRange(tpFrom: TimePoint, tpTo: TimePoint): DatePicker;
-    GetRange(): TimePoint[];
+	SetRange(tpFrom: TimePoint, tpTo: TimePoint): DatePicker;
+	GetRange(): TimePoint[];
 
-    SetDate(n: TimePoint): DatePicker;
-    GetDate(): TimePoint;
+	SetDate(n: TimePoint): DatePicker;
+	GetDate(): TimePoint;
 
-    SetDateMark(c: TimePoint): DatePicker;
-    GetDateMark(): TimePoint;
+	SetDateMark(c: TimePoint): DatePicker;
+	GetDateMark(): TimePoint;
 
-    SetCultureId(n: CultureId): DatePicker;
-    GetCultureId(): CultureId;
+	SetCultureId(n: CultureId): DatePicker;
+	GetCultureId(): CultureId;
 
-    SetFormat(n: CultureInfoDateTime): DatePicker;
-    GetFormat(): CultureInfoDateTime;
+	SetFormat(n: CultureInfoDateTime): DatePicker;
+	GetFormat(): CultureInfoDateTime;
 
-    SetBorder(b: boolean): DatePicker;
-    GetBorder(): boolean;
+	SetBorder(b: boolean): DatePicker;
+	GetBorder(): boolean;
 
-    Drop(): DatePicker;
+	Drop(): DatePicker;
 
-    OnChange(fn: (sender: DatePicker) => void): DatePicker;
+	OnChange(fn: (sender: DatePicker) => void): DatePicker;
 }
 
 export class DatePicker extends (AveLib.UiDatePicker as IDatePicker) {
-    GetDate() {
-        return TimePoint.FromTick(super.GetDate().Tick);
-    }
+	GetDate() {
+		return TimePoint.FromTick(super.GetDate().Tick);
+	}
 
-    GetDateMark() {
-        return TimePoint.FromTick(super.GetDateMark().Tick);
-    }
+	GetDateMark() {
+		return TimePoint.FromTick(super.GetDateMark().Tick);
+	}
 }

@@ -24,8 +24,8 @@ namespace Nav
 		U1								Ctor( const CallbackInfo& ci, UiWindow* p, Napi::Value v );
 
 	private:
-		UiRibbonApp*					m_App;
-		UiToolBar*						m_ToolBar;
+		JsObject<UiRibbonApp>			m_App;
+		JsObject<UiToolBar>				m_ToolBar;
 
 	private:
 		UiRibbonApp*					GetApp() const { return m_App; }

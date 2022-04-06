@@ -1,6 +1,7 @@
 ﻿#pragma once
 
 #include "UiCommon.h"
+#include "IoCommon.h"
 
 namespace Nav
 {
@@ -11,7 +12,7 @@ namespace Nav
 	{
 	public:
 		Byo2::ImageDataType					m_DataType;
-		WrapData<UiResourceSource>			m_Data;
+		WrapData<IoResourceSource>			m_Data;
 		S32									m_Width;
 		S32									m_Height;
 		Img::PixFormat						m_Format;
@@ -39,6 +40,7 @@ namespace Nav
 		void								Upload( const WrapData<S32_R>& rc, const WrapData<InMemoryData>& pData ) { m_Image->Upload( rc.IsEmpty() ? nullptr : &rc, { pData.m_Data.m_Pointer, pData.m_RowPitch, pData.m_SlicePitch } ); }
 
 	public:
+		Byo2::IImage*						GetImage() { return m_Image; }
 		Byo2::Image							CloneImage() { return m_Image; }
 	};
 }

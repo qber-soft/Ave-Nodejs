@@ -22,7 +22,7 @@ namespace Nav
 	private:
 		using OnChange_t = JsFuncSafe<void( UiCalendar* sender )>;
 
-		UiDateTimeFormat				m_Format;
+		DateTimeFormat					m_Format;
 
 		OnChange_t						m_OnChange;
 
@@ -44,8 +44,8 @@ namespace Nav
 		UiCalendar*						SetCultureId( CultureId nCid ) { GetControlTyped().SetCultureId( nCid ); return this; }
 		CultureId						GetCultureId() const { return GetControlTyped().GetCultureId(); }
 
-		UiCalendar*						SetFormat( const WrapData<UiDateTimeFormat>& pFormat );
-		WrapData<UiDateTimeFormat>		GetFormat() const;
+		UiCalendar*						SetFormat( const WrapData<DateTimeFormat>& pFormat );
+		WrapData<DateTimeFormat>		GetFormat() const;
 
 		UiCalendar*						OnChange( OnChange_t&& fn ) { m_OnChange = std::move( fn ); return this; }
 	};

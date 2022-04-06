@@ -30,6 +30,41 @@ namespace Nav
 		AveInline const TData& operator [] ( USize nIndex ) const { return m_Pointer[nIndex]; }
 	};
 
+	class ReturnBuffer
+	{
+	public:
+		List<U8>		m_Data;
+		U1				m_Null{ false };
+	};
+
+	// Don't use Napi::ObjectReference, this class doesn't allow copy
+	template<class TObject>
+	class JsObject
+	{
+	public:
+		JsObject()
+		{
+		}
+
+		JsObject( std::nullptr_t )
+		{
+		}
+
+		JsObject( const Napi::Object& obj )
+		{
+			m_Object = Napi::ObjectReference::New( obj, 1 );
+			m_TypedObject = Napi::ObjectWrap<TObject>::Unwrap( obj );
+		}
+
+	private:
+		Napi::ObjectReference	m_Object;
+		TObject*				m_TypedObject{ nullptr };
+
+	public:
+		operator TObject* () const { return m_TypedObject; }
+		TObject* operator -> () const { return m_TypedObject; }
+	};
+
 	class CallbackInfo
 	{
 		CallbackInfo( const CallbackInfo& ) = delete;
@@ -59,21 +94,27 @@ namespace Nav
 		}
 
 		template<class T>
-		AveInline T* NewJsObject( U1 bPersist = false ) const
+		AveInline T* NewJsObject() const
 		{
 			Napi::Object obj;
 			{
 				Napi::EscapableHandleScope scope( m_cb.Env() );
 				auto v = scope.Escape( T::ctor->New( { Napi::Symbol::New( m_cb.Env(), "" ) } ) );
-				if ( bPersist )
-				{
-					auto vp = Napi::Persistent( v.ToObject() );
-					vp.SuppressDestruct();
-					v = vp.Value();
-				}
+				//if ( bPersist )
+				//{
+				//	auto vp = Napi::Persistent( v.ToObject() );
+				//	vp.SuppressDestruct();
+				//	v = vp.Value();
+				//}
 				obj = v.ToObject();
 			}
 			return Napi::ObjectWrap<T>::Unwrap( obj );
+		}
+
+		template<class T>
+		AveInline JsObject<T> NewJsObjectWithOwnership() const
+		{
+			return JsObject<T>( T::ctor->New( { Napi::Symbol::New( m_cb.Env(), "" ) } ) );
 		}
 	};
 
@@ -519,18 +560,29 @@ namespace Nav
 			static AveInline U1 Check( const Napi::Value & v ) { return v.IsNull() || v.IsUndefined() || v.IsArrayBuffer(); }
 		};
 
-		template<> class __CheckType<WrapArray<S8  /**/>> : public __CheckArrayHelper {};
-		template<> class __CheckType<WrapArray<S16 /**/>> : public __CheckArrayHelper {};
-		template<> class __CheckType<WrapArray<S32 /**/>> : public __CheckArrayHelper {};
-		template<> class __CheckType<WrapArray<U8  /**/>> : public __CheckArrayHelper {};
-		template<> class __CheckType<WrapArray<U16 /**/>> : public __CheckArrayHelper {};
-		template<> class __CheckType<WrapArray<U32 /**/>> : public __CheckArrayHelper {};
-		template<> class __CheckType<WrapArray<R32 /**/>> : public __CheckArrayHelper {};
-		template<> class __CheckType<WrapArray<R64 /**/>> : public __CheckArrayHelper {};
+		template<> class __CheckType<WrapArray<S8    /**/>> : public __CheckArrayHelper {};
+		template<> class __CheckType<WrapArray<S16   /**/>> : public __CheckArrayHelper {};
+		template<> class __CheckType<WrapArray<S32   /**/>> : public __CheckArrayHelper {};
+		template<> class __CheckType<WrapArray<U8    /**/>> : public __CheckArrayHelper {};
+		template<> class __CheckType<WrapArray<U16   /**/>> : public __CheckArrayHelper {};
+		template<> class __CheckType<WrapArray<U32   /**/>> : public __CheckArrayHelper {};
+		template<> class __CheckType<WrapArray<R32   /**/>> : public __CheckArrayHelper {};
+		template<> class __CheckType<WrapArray<R64   /**/>> : public __CheckArrayHelper {};
+		template<> class __CheckType<WrapArray<R32_2 /**/>> : public __CheckArrayHelper {};
+		template<> class __CheckType<WrapArray<R32_3 /**/>> : public __CheckArrayHelper {};
+		template<> class __CheckType<WrapArray<R32_4 /**/>> : public __CheckArrayHelper {};
 
-		template<> class __CheckType<WrapArray<R32_2>> : public __CheckArrayHelper {};
-		template<> class __CheckType<WrapArray<R32_3>> : public __CheckArrayHelper {};
-		template<> class __CheckType<WrapArray<R32_4>> : public __CheckArrayHelper {};
+		template<> class __CheckType<const WrapArray<S8    /**/>&> : public __CheckArrayHelper {};
+		template<> class __CheckType<const WrapArray<S16   /**/>&> : public __CheckArrayHelper {};
+		template<> class __CheckType<const WrapArray<S32   /**/>&> : public __CheckArrayHelper {};
+		template<> class __CheckType<const WrapArray<U8    /**/>&> : public __CheckArrayHelper {};
+		template<> class __CheckType<const WrapArray<U16   /**/>&> : public __CheckArrayHelper {};
+		template<> class __CheckType<const WrapArray<U32   /**/>&> : public __CheckArrayHelper {};
+		template<> class __CheckType<const WrapArray<R32   /**/>&> : public __CheckArrayHelper {};
+		template<> class __CheckType<const WrapArray<R64   /**/>&> : public __CheckArrayHelper {};
+		template<> class __CheckType<const WrapArray<R32_2 /**/>&> : public __CheckArrayHelper {};
+		template<> class __CheckType<const WrapArray<R32_3 /**/>&> : public __CheckArrayHelper {};
+		template<> class __CheckType<const WrapArray<R32_4 /**/>&> : public __CheckArrayHelper {};
 
 		template<USize TIndex, class... T>
 		class __ObjectWrapperCheckType
@@ -777,6 +829,27 @@ namespace Nav
 		template<class T>
 		class __ConvertType<WrapArray<T>> : public __ConvertArray<T> {};
 
+		template<>
+		class __ConvertType<ReturnBuffer>
+		{
+		public:
+			using TargetType_t = ReturnBuffer;
+
+			static AveInline void ToCpp( void* p, const Napi::Value& v )
+			{
+			}
+
+			static AveInline Napi::Value ToJs( Napi::Env env, const void* v )
+			{
+				auto& rb = *(ReturnBuffer*) v;
+				if ( rb.m_Null )
+					return env.Undefined();
+				auto buf = Napi::ArrayBuffer::New( env, rb.m_Data.Size() );
+				AveCopyMemory( buf.Data(), rb.m_Data.Data(), rb.m_Data.Size() );
+				return buf;
+			}
+		};
+
 		template<class T, class TRet, class... TArg>
 		void* __ConvertFunc( TRet( T::*p )(TArg...) )
 		{
@@ -903,8 +976,7 @@ namespace Nav
 					__Detail::__ConvertType<TRet>::ToCpp( &r, val );
 					evt->Set();
 				} );
-				evt->Wait();
-				App::GetSingleton().BlockCallLeave();
+				App::GetSingleton().BlockCallLeave( evt );
 				__Detail::__EventManger::GetSingleton().Free( evt );
 				fnWait( r );
 			}
@@ -944,8 +1016,7 @@ namespace Nav
 					fn.Call( { __Detail::__ConvertType<TArg>::ToJs( env, &p )... } );
 					evt->Set();
 				} );
-				evt->Wait();
-				App::GetSingleton().BlockCallLeave();
+				App::GetSingleton().BlockCallLeave( evt );
 				__Detail::__EventManger::GetSingleton().Free( evt );
 				fnWait();
 			}

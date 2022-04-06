@@ -51,7 +51,7 @@ namespace Nav
 		m_OnChange( this );
 	}
 
-	UiCalendar * UiCalendar::SetFormat( const WrapData<UiDateTimeFormat>& pFormat )
+	UiCalendar * UiCalendar::SetFormat( const WrapData<DateTimeFormat>& pFormat )
 	{
 		if ( 7 != pFormat.m_DayNameFull.Size() || 7 != pFormat.m_DayNameAbbreviated.Size() || 12 != pFormat.m_MonthNameFull.Size() || 12 != pFormat.m_MonthNameAbbreviated.Size() )
 			return this;
@@ -65,9 +65,9 @@ namespace Nav
 		return this;
 	}
 
-	WrapData<UiDateTimeFormat> UiCalendar::GetFormat() const
+	WrapData<DateTimeFormat> UiCalendar::GetFormat() const
 	{
-		WrapData<UiDateTimeFormat> r{};
+		WrapData<DateTimeFormat> r{};
 		r.FromCultureInfo( GetControlTyped().GetFormat() );
 		return r;
 	}

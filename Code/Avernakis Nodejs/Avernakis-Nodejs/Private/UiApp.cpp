@@ -107,13 +107,12 @@ namespace Nav
 			for ( CSize i = 0; i < nCount; ++i )
 				m_ExecuteBuffer[i]();
 		}
+		m_ExecuteFinishEvent->Set();
 	}
 
 	void UiApp::OnAppWakeup( Ave::IApplication & pApplication, const void * pContext )
 	{
 		__ExecuteQueued();
-
-		m_ExecuteFinishEvent->Set();
 	}
 
 	U1 UiApp::ResAddPackageIndex( PCWChar szFile, PCWChar szRoot )
@@ -268,7 +267,22 @@ namespace Nav
 
 		if ( m_BlockCall )
 		{
-			f();
+			if ( m_BlockEvent )
+			{
+				m_ExecuteFinishEvent->Reset();
+				{
+					Sys::RwLockScoped __Lock( *m_ExecuteLock );
+					m_Execute.Enqueue( std::move( f ) );
+				}
+				m_BlockExecuteInUi = true;
+				if ( m_BlockEvent )
+					m_BlockEvent->Set();
+				m_ExecuteFinishEvent->Wait();
+			}
+			else
+			{
+				f();
+			}
 		}
 		else
 		{
@@ -290,12 +304,27 @@ namespace Nav
 			// The UI thread will start waiting for the nodejs thread from this point, and the nodejs is started waiting for the UI thread here
 			// It's safe to execute all queued UI thread executes here
 			__ExecuteQueued();
-			m_ExecuteFinishEvent->Set();
 		}
 	}
 
-	void UiApp::BlockCallLeave()
+	void UiApp::BlockCallLeave( Sys::IEvent* pEvent )
 	{
+		m_BlockEvent = pEvent;
+		for ( ;; )
+		{
+			m_BlockEvent->Wait();
+			if ( m_BlockExecuteInUi )
+			{
+				m_BlockExecuteInUi = false;
+				__ExecuteQueued();
+			}
+			else
+				break;
+		}
+		m_BlockEvent = nullptr;
+
+		__ExecuteQueued();
+
 		--m_BlockCall;
 	}
 

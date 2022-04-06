@@ -52,7 +52,7 @@ namespace Nav
 
 		void									ExecuteInUiThread( Func<void()>&& f, U1 bWait = true );
 		void									BlockCallEnter();
-		void									BlockCallLeave();
+		void									BlockCallLeave( Sys::IEvent* pEvent );
 
 		void									SetDpiwareSizeList( Ui::IIconManager & im );
 

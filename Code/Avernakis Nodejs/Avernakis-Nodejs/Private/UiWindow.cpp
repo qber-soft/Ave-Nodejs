@@ -7,6 +7,7 @@
 #include "UiPlatform.h"
 #include "UiIconManager.h"
 #include "UiIcon.h"
+#include "UiWindowDragDrop.h"
 #include "UiWindowSysTray.h"
 #include "UiWindowTaskbar.h"
 
@@ -95,6 +96,7 @@ namespace Nav
 		AddMethod<WrapObjectGeneric>( "GetControlManager", ThisMethod( __GetControlManager ) );
 		AddMethod<WrapObjectGeneric>( "GetIconManager", ThisMethod( __GetIconManager ) );
 		AddMethod<WrapObjectGeneric>( "GetCommonUi", ThisMethod( __GetCommonUi ) );
+		AutoAddMethod( GetDragDrop, WrapObjectGeneric );
 		AutoAddMethod( GetSysTray, WrapObjectGeneric );
 		AutoAddMethod( GetTaskbar, WrapObjectGeneric );
 		AutoAddMethod( GetPlatform, WrapObjectGeneric );
@@ -122,12 +124,17 @@ namespace Nav
 		AutoAddMethod( OnLanguageChange );
 
 		AutoAddMethod( OnDeviceChange );
+
+		AutoAddMethod( OnDragEnter /**/ );
+		AutoAddMethod( OnDragMove  /**/ );
+		AutoAddMethod( OnDragLeave /**/ );
+		AutoAddMethod( OnDragDrop  /**/ );
+		AutoAddMethod( OnDragEnd   /**/ );
 	}
 
 	U1 UiWindow::Ctor( const CallbackInfo& ci, const UiWindowCreation_t & cp )
 	{
 		m_Param = cp;
-
 		if ( UiWindowDevice::Default2D == m_Param.m_Device )
 		{
 #		if AvePlatform == AvePlatformWinDesktop
@@ -155,42 +162,50 @@ namespace Nav
 		}
 		else
 		{
-			auto p = ci.NewJsObject<UiThemeImage>( true );
-			if ( !p->Ctor() )
+			m_ThemeDefaultData = ci.NewJsObjectWithOwnership<UiThemeImage>();
+			if ( !m_ThemeDefaultData->Ctor() )
 				return false;
-			m_Theme.m_Pointer = p;
+			m_Theme.m_Pointer = m_ThemeDefaultData;
 		}
 		if ( !m_Theme )
 			return false;
 
-		m_Frame = ci.NewJsObject<UiWindowFrame>( true );
+		m_Frame = ci.NewJsObjectWithOwnership<UiWindowFrame>();
 		if ( !m_Frame )
 			return false;
 
-		m_IconManager = ci.NewJsObject<UiIconManager>( true );
+		m_IconManager = ci.NewJsObjectWithOwnership<UiIconManager>();
 		if ( !m_IconManager )
 			return false;
 
-		m_ControlManager = ci.NewJsObject<UiControlManager>( true );
+		m_ControlManager = ci.NewJsObjectWithOwnership<UiControlManager>();
 		if ( !m_ControlManager )
 			return false;
 
-		m_CommonUi = ci.NewJsObject<UiCommonUi>( true );
+		m_CommonUi = ci.NewJsObjectWithOwnership<UiCommonUi>();
 		if ( !m_CommonUi )
 			return false;
 
-		m_Platform = ci.NewJsObject<UiPlatform>( true );
+		m_Platform = ci.NewJsObjectWithOwnership<UiPlatform>();
 		if ( !m_Platform->Ctor() )
 			return false;
 		if ( !m_Platform )
 			return false;
 
-		m_SysTray = ci.NewJsObject<UiWindowSysTray>( true );
+		m_DragDrop = ci.NewJsObjectWithOwnership<UiWindowDragDrop>();
+		if ( !m_DragDrop )
+			return false;
+
+		m_SysTray = ci.NewJsObjectWithOwnership<UiWindowSysTray>();
 		if ( !m_SysTray )
 			return false;
 
-		m_Taskbar = ci.NewJsObject<UiWindowTaskbar>( true );
+		m_Taskbar = ci.NewJsObjectWithOwnership<UiWindowTaskbar>();
 		if ( !m_Taskbar )
+			return false;
+
+		m_DragContext = ci.NewJsObjectWithOwnership<UiDragContext>();
+		if ( !m_DragContext )
 			return false;
 
 		return true;
@@ -226,7 +241,7 @@ namespace Nav
 
 		default:
 			return false;
-	}
+		}
 		if ( AveGuidNull == cp.m_Device.m_DeviceId )
 			return false;
 
@@ -273,8 +288,19 @@ namespace Nav
 		m_ControlManager->SetControlManager( &GetControlManager() );
 		m_CommonUi->SetCommonUi( &GetWindow(), &GetCommonUi() );
 
-		Ui::IWindowSysTray* pSysTray;
-		if ( GetNativeWindow().QueryInterface( &pSysTray ) )
+		if ( auto pDragDrop = GetNativeWindow().QueryInterface<Ui::IWindowDragDrop>() )
+		{
+			pDragDrop->GetEvent<Ui::IWindowDragDrop::OnEnter /**/>() += MakeThisFunc( __OnDragEnter /**/ );
+			pDragDrop->GetEvent<Ui::IWindowDragDrop::OnMove  /**/>() += MakeThisFunc( __OnDragMove  /**/ );
+			pDragDrop->GetEvent<Ui::IWindowDragDrop::OnLeave /**/>() += MakeThisFunc( __OnDragLeave /**/ );
+			pDragDrop->GetEvent<Ui::IWindowDragDrop::OnDrop  /**/>() += MakeThisFunc( __OnDragDrop  /**/ );
+			pDragDrop->GetEvent<Ui::IWindowDragDrop::OnEnd   /**/>() += MakeThisFunc( __OnDragEnd   /**/ );
+			m_DragDrop->SetDragDrop( this, pDragDrop );
+		}
+		else
+			m_DragDrop = nullptr;
+
+		if ( auto pSysTray = GetNativeWindow().QueryInterface<Ui::IWindowSysTray>() )
 		{
 			pSysTray->GetEvent<Ui::IWindowSysTray::OnClick>() += MakeThisFunc( OnSysTrayClick );
 			pSysTray->GetEvent<Ui::IWindowSysTray::OnRightClick>() += MakeThisFunc( OnSysTrayRightClick );
@@ -283,8 +309,7 @@ namespace Nav
 		else
 			m_SysTray = nullptr;
 
-		Ui::IWindowTaskbar* pTaskbar;
-		if ( GetNativeWindow().QueryInterface( &pTaskbar ) )
+		if ( auto pTaskbar = GetNativeWindow().QueryInterface<Ui::IWindowTaskbar>() )
 			m_Taskbar->SetTaskbar( this, pTaskbar );
 		else
 			m_Taskbar = nullptr;
@@ -355,6 +380,79 @@ namespace Nav
 	void UiWindow::OnDpiChange()
 	{
 		m_OnScaleChange( this );
+	}
+
+	void UiWindow::__OnDragEnter( Ui::IWindowDragContext& sender )
+	{
+		m_DragContext->SetDragContext( &GetWindow(), &sender );
+		m_OnDragEnter.BlockAsyncCall( static_cast<UiControl*>(this), m_DragContext, [] {} );
+	}
+
+	void UiWindow::__OnDragMove( Ui::IWindowDragContext& sender )
+	{
+		m_DragContext->SetDragContext( &GetWindow(), &sender );
+
+		auto pc = GetWindow().ControlFromPoint( sender.GetPosition(), true, false, false, true );
+		auto pu = pc && pc->GetUserContext() ? (UiControl*) pc->GetUserContext() : nullptr;
+		if ( pu != m_DragControl )
+		{
+			if ( m_DragControl )
+				m_DragControl->FireDragLeave( m_DragContext );
+			m_DragControl = pu;
+			if ( m_DragControl )
+				m_DragControl->FireDragEnter( m_DragContext );
+		}
+		if ( m_DragControl )
+			m_DragControl->FireDragMove( m_DragContext );
+		else if ( m_DragContext->GetBehavior() )
+		{
+			m_DragContext->SetDropTip( Ui::DragDropImage::Invalid, nullptr );
+			m_DragContext->SetDropBehavior( Ui::DropBehavior::None );
+		}
+
+		if ( 0 == m_DragContext->GetBehavior() )
+		{
+			m_DragContext->SetControl( nullptr );
+			m_OnDragMove.BlockAsyncCall( static_cast<UiControl*>(this), m_DragContext, [] {} );
+		}
+	}
+
+	void UiWindow::__OnDragLeave( Ui::IWindowDragContext& sender )
+	{
+		m_DragContext->SetDragContext( &GetWindow(), &sender );
+
+		if ( m_DragControl )
+			m_DragControl->FireDragLeave( m_DragContext );
+
+		m_DragContext->SetControl( nullptr );
+		m_OnDragLeave.BlockAsyncCall( static_cast<UiControl*>(this), m_DragContext, [] {} );
+	}
+
+	void UiWindow::__OnDragDrop( Ui::IWindowDragContext& sender )
+	{
+		m_DragContext->SetDragContext( &GetWindow(), &sender );
+
+		U1 b = false;
+		if ( m_DragControl )
+			b = m_DragControl->FireDragDrop( m_DragContext );
+
+		if ( !b )
+		{
+			m_DragContext->SetControl( nullptr );
+			m_OnDragDrop.BlockAsyncCall( static_cast<UiControl*>(this), m_DragContext, [] {} );
+		}
+	}
+
+	void UiWindow::__OnDragEnd( const Ui::IWindowDragContext& sender, U1 bOk )
+	{
+		m_DragContext->SetDragContext( &GetWindow(), const_cast<Ui::IWindowDragContext*>(&sender) );
+
+		if ( m_DragControl )
+			m_DragControl->FireDragEnd( m_DragContext, bOk );
+		m_DragControl = nullptr;
+
+		m_DragContext->SetControl( nullptr );
+		m_OnDragEnd.BlockAsyncCall( static_cast<UiControl*>(this), m_DragContext, bOk, [] {} );
 	}
 
 	void UiWindow::OnSysTrayClick( Ui::IWindowSysTray & sender, const S32_2 & vPos )

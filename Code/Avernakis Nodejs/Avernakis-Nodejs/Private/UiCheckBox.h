@@ -43,6 +43,12 @@ namespace Nav
 		UiCheckBox*						SetCheckBoxStyle( Ui::CheckBoxStyle nStyle ) { GetControlTyped().SetCheckBoxStyle( nStyle ); return this; }
 		Ui::CheckBoxStyle				GetCheckBoxStyle() const { return GetControlTyped().GetCheckBoxStyle(); }
 
+		UiCheckBox*						SetVisualTextLayout( Ui::VisualTextLayout nLayout ) { GetControlTyped().SetVisualTextLayout( nLayout ); return this; }
+		Ui::VisualTextLayout			GetVisualTextLayout() const { return GetControlTyped().GetVisualTextLayout(); }
+
+		WrapPointer<UiVisual>			SetVisual( WrapPointer<UiVisual> v ) { return __ChangeContent( GetControlTyped().SetVisual( v->TakeVisual() ) ); }
+		WrapPointer<UiVisual>			GetVisual() const { return __ReturnContent( GetControlTyped().GetVisual() ); }
+
 		UiCheckBox*						OnCheck( OnCheck_t&& fn ) { m_OnCheck = std::move( fn ); return this; }
 		UiCheckBox*						OnChecking( OnChecking_t&& fn ) { m_OnChecking = std::move( fn ); return this; }
 	};

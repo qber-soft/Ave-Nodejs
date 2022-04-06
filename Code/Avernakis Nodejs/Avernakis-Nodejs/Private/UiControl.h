@@ -1,6 +1,7 @@
 ﻿#pragma once
 
 #include "UiCommon.h"
+#include "UiDragContext.h"
 
 namespace Nav
 {
@@ -74,6 +75,13 @@ namespace Nav
 
 	NavDefineDataByMember_( Ui::MessageKey, Key, Modifier );
 
+	class UiControl;
+	class UiDragContext;
+	class UiPainter;
+
+	using OnDrag_t = JsFuncSafe<void( UiControl* sender, UiDragContext* dc )>;
+	using OnDragEnd_t = JsFuncSafe<void( UiControl* sender, UiDragContext* dc, U1 bOk )>;
+
 	class UiControl
 	{
 	protected:
@@ -134,6 +142,10 @@ namespace Nav
 			AutoAddMethod( GetRect );
 			AutoAddMethod( Redraw );
 
+#		undef AutoAddMethod
+
+#		define AutoAddMethod($x) T::template AddMethod<WrapObjectGeneric>( #$x, &T::$x )
+
 			AutoAddMethod( OnKeyPress   /**/ );
 			AutoAddMethod( OnKeyRelease /**/ );
 
@@ -148,6 +160,16 @@ namespace Nav
 			AutoAddMethod( OnPointerHover    /**/ );
 			AutoAddMethod( OnPointerLost     /**/ );
 			AutoAddMethod( OnPointerCursor   /**/ );
+
+			AutoAddMethod( OnDragEnter /**/ );
+			AutoAddMethod( OnDragMove  /**/ );
+			AutoAddMethod( OnDragLeave /**/ );
+			AutoAddMethod( OnDragDrop  /**/ );
+			AutoAddMethod( OnDragEnd   /**/ );
+
+			AutoAddMethod( OnChangeFocus );
+			AutoAddMethod( OnChangeSize );
+			AutoAddMethod( OnPaintPost );
 
 #		undef AutoAddMethod
 		}
@@ -186,6 +208,8 @@ namespace Nav
 
 		void					__ListenEvent();
 		void					__OnMessagePost( Ui::IControl& sender, Ui::ControlMessage nMsg, const Ui::MessageParam& mp );
+		void					__OnChangeFocus( Ui::IControl& sender, U1 bFocus );
+		void					__OnPaintPost( Ui::IControl& sender, Ui::IPainter& painter, Ui::IPainterTyped& paintert, const S32_R& rcClient );
 
 	private:
 		AveInline WrapPointer<UiControl> __GetUiControl()
@@ -197,6 +221,9 @@ namespace Nav
 		using OnKey_t			/**/ = JsFuncSafe<void( UiControl* sender, const WrapData<Ui::MessageKey>& mk )>;
 		using OnPointer_t		/**/ = JsFuncSafe<void( UiControl* sender, const WrapData<UiMessagePointer>& mp )>;
 		using OnPointerCursor_t /**/ = JsFuncSafe<Ui::CursorType( UiControl* sender, const WrapData<UiMessagePointer>& mp )>;
+		using OnChangeFocus_t	/**/ = JsFuncSafe<void( UiControl* sender, U1 bFocus )>;
+		using OnChangeSize_t	/**/ = JsFuncSafe<void( UiControl* sender, const WrapData<S32_2>& vSize )>;
+		using OnPaintPost_t		/**/ = JsFuncSafe<void( UiControl* sender, UiPainter* painter, const WrapData<S32_R>& rc )>;
 
 		OnKey_t					m_OnKeyPress   /**/;
 		OnKey_t					m_OnKeyRelease /**/;
@@ -212,6 +239,18 @@ namespace Nav
 		OnPointer_t				m_OnPointerHover    /**/;
 		OnPointer_t				m_OnPointerLost     /**/;
 		OnPointerCursor_t		m_OnPointerCursor   /**/;
+
+		OnDrag_t				m_OnDragEnter /**/;
+		OnDrag_t				m_OnDragMove  /**/;
+		OnDrag_t				m_OnDragLeave /**/;
+		OnDrag_t				m_OnDragDrop  /**/;
+		OnDragEnd_t				m_OnDragEnd   /**/;
+
+		OnChangeFocus_t			m_OnChangeFocus;
+		OnChangeSize_t			m_OnChangeSize;
+		OnPaintPost_t			m_OnPaintPost;
+
+		JsObject<UiPainter>		m_Painter;
 
 	private:
 		WrapPointer<UiControl>	SetVisible( U1 b ) { GetControl().SetVisible( b ); return __GetUiControl(); }
@@ -267,6 +306,53 @@ namespace Nav
 		WrapPointer<UiControl>  OnPointerHover    /**/( OnPointer_t       /**/ && fn ) { m_OnPointerHover    /**/ = std::move( fn ); return __GetUiControl(); }
 		WrapPointer<UiControl>  OnPointerLost     /**/( OnPointer_t       /**/ && fn ) { m_OnPointerLost     /**/ = std::move( fn ); return __GetUiControl(); }
 		WrapPointer<UiControl>  OnPointerCursor   /**/( OnPointerCursor_t /**/ && fn ) { m_OnPointerCursor   /**/ = std::move( fn ); return __GetUiControl(); }
+
+		WrapPointer<UiControl>	OnDragEnter /**/( OnDrag_t    /**/ && fn ) { m_OnDragEnter /**/ = std::move( fn ); return __GetUiControl(); }
+		WrapPointer<UiControl>	OnDragMove  /**/( OnDrag_t    /**/ && fn ) { m_OnDragMove  /**/ = std::move( fn ); return __GetUiControl(); }
+		WrapPointer<UiControl>	OnDragLeave /**/( OnDrag_t    /**/ && fn ) { m_OnDragLeave /**/ = std::move( fn ); return __GetUiControl(); }
+		WrapPointer<UiControl>	OnDragDrop  /**/( OnDrag_t    /**/ && fn ) { m_OnDragDrop  /**/ = std::move( fn ); return __GetUiControl(); }
+		WrapPointer<UiControl>	OnDragEnd   /**/( OnDragEnd_t /**/ && fn ) { m_OnDragEnd   /**/ = std::move( fn ); return __GetUiControl(); }
+
+		WrapPointer<UiControl>	OnChangeFocus( OnChangeFocus_t && fn ) { m_OnChangeFocus = std::move( fn ); return __GetUiControl(); }
+		WrapPointer<UiControl>	OnChangeSize( OnChangeSize_t && fn ) { m_OnChangeSize = std::move( fn ); return __GetUiControl(); }
+		WrapPointer<UiControl>	OnPaintPost( const CallbackInfo& ci, OnPaintPost_t && fn );
+
+
+	public:
+		AveInline void FireDragEnter( UiDragContext* dc )
+		{
+			dc->SetControl( &GetControl() );
+			m_OnDragEnter.BlockAsyncCall( this, dc, [] {} );
+		}
+
+		AveInline void FireDragMove( UiDragContext* dc )
+		{
+			dc->SetControl( &GetControl() );
+			m_OnDragMove.BlockAsyncCall( this, dc, [] {} );
+		}
+
+		AveInline void FireDragLeave( UiDragContext* dc )
+		{
+			dc->SetControl( &GetControl() );
+			m_OnDragLeave.BlockAsyncCall( this, dc, [] {} );
+		}
+
+		AveInline U1 FireDragDrop( UiDragContext* dc )
+		{
+			if ( m_OnDragDrop )
+			{
+				dc->SetControl( &GetControl() );
+				m_OnDragDrop.BlockAsyncCall( this, dc, [] {} );
+				return true;
+			}
+			return false;
+		}
+
+		AveInline void FireDragEnd( UiDragContext* dc, U1 bOk )
+		{
+			dc->SetControl( &GetControl() );
+			m_OnDragEnd.BlockAsyncCall( this, dc, bOk, [] {} );
+		}
 	};
 
 }

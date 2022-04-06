@@ -22,6 +22,12 @@ namespace Nav
 		AutoAddMethod( GetContentSize );
 		AutoAddMethod( GetRealContentSize );
 
+		AutoAddMethod( SetContentHorizontalAlign );
+		AutoAddMethod( GetContentHorizontalAlign );
+
+		AutoAddMethod( SetContentVerticalAlign );
+		AutoAddMethod( GetContentVerticalAlign );
+
 		AutoAddMethod( SetAdjustment );
 		AutoAddMethod( GetAdjustment );
 

@@ -59,7 +59,7 @@ namespace Nav
 		UiKnob*							ValueSetSplit( R64 fSplit ) { GetControlTyped().ValueSetSplit( fSplit ); return this; }
 		R64								ValueGetSplit() const { return GetControlTyped().ValueGetSplit(); }
 
-		UiKnob*							ValueSetTick( const WrapArray<R64> pTick ) { GetControlTyped().ValueSetTick( pTick, pTick.m_Length ); return this; }
+		UiKnob*							ValueSetTick( const WrapArray<R64>& pTick ) { GetControlTyped().ValueSetTick( pTick, pTick.m_Length ); return this; }
 		List<R64>						ValueGetTick() const { return GetControlTyped().ValueGetTick(); }
 
 		UiKnob*							RingSetColor( const WrapData<U8_4>& nColor ) { GetControlTyped().RingSetColor( nColor ); return this; }

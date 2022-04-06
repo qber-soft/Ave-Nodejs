@@ -82,7 +82,7 @@ namespace Nav
 
 		Virtual_t						m_Virtual;
 
-		UiHeader*						m_Header;
+		JsObject<UiHeader>				m_Header;
 
 		void							__OnSelectionChange /**/( Ui::IRichListBox& sender );
 		void							__OnSelectionEnd    /**/( Ui::IRichListBox& sender );
@@ -138,7 +138,7 @@ namespace Nav
 
 		UiRichListBox*					SetTileSize( const WrapData<Ui::DpiSize_2>& ptSize ) { GetControlTyped().SetTileSize( ptSize ); return this; }
 		WrapData<Ui::DpiSize_2>			GetTileSize() const { return GetControlTyped().GetTileSize(); }
-		UiRichListBox*					SetTileColumnPriority( const WrapArray<U32> pOrder ) { GetControlTyped().SetTileColumnPriority( pOrder, (U32) pOrder.m_Length ); return this; }
+		UiRichListBox*					SetTileColumnPriority( const WrapArray<U32>& pOrder ) { GetControlTyped().SetTileColumnPriority( pOrder, (U32) pOrder.m_Length ); return this; }
 		List<U32>						GetTileColumnPriority() const { List<U32> v( GetControlTyped().GetTileColumnPriority( nullptr, 0 ) ); if ( !v.IsEmpty() ) GetControlTyped().GetTileColumnPriority( v.Data(), (U32) v.Size() ); return std::move( v ); }
 
 		UiRichListBox*					SetItemSpace( const WrapData<Ui::DpiSize_2>& ptSize ) { GetControlTyped().SetItemSpace( ptSize ); return this; }

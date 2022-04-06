@@ -70,6 +70,7 @@
     <Folder Include="src\Ave\" />
     <Folder Include="src\Ave\Math\" />
     <Folder Include="src\Ave\Byo2\" />
+    <Folder Include="src\Ave\Io\" />
     <Folder Include="src\Ave\Ui\" />
     <Folder Include="src\Ave\Ui\Control\" />
     <Folder Include="src\Ave\Ui\Ribbon\" />
@@ -144,10 +145,13 @@
     <TypeScriptCompile Include="examples\unit\window\window-opacity.ts" />
     <TypeScriptCompile Include="src\Ave\Ave.ts" />
     <TypeScriptCompile Include="src\Ave\AveLib.ts" />
+    <TypeScriptCompile Include="src\Ave\Byo2\Byo2Font.ts" />
     <TypeScriptCompile Include="src\Ave\Byo2\Byo2Image.ts" />
     <TypeScriptCompile Include="src\Ave\Common.ts" />
     <TypeScriptCompile Include="src\Ave\Culture.ts" />
     <TypeScriptCompile Include="src\Ave\index.ts" />
+    <TypeScriptCompile Include="src\Ave\Io\IoCommon.ts" />
+    <TypeScriptCompile Include="src\Ave\Io\IoStream.ts" />
     <TypeScriptCompile Include="src\Ave\Math\Box.ts" />
     <TypeScriptCompile Include="src\Ave\Math\Camera.ts" />
     <TypeScriptCompile Include="src\Ave\Math\Frustum.ts" />
@@ -201,6 +205,7 @@
     <TypeScriptCompile Include="src\Ave\Ui\UiCommon.ts" />
     <TypeScriptCompile Include="src\Ave\Ui\UiCommonUi.ts" />
     <TypeScriptCompile Include="src\Ave\Ui\UiControl.ts" />
+    <TypeScriptCompile Include="src\Ave\Ui\UiPainter.ts" />
     <TypeScriptCompile Include="src\Ave\Ui\UiPlatform.ts" />
     <TypeScriptCompile Include="src\Ave\Ui\UiVisual.ts" />
     <TypeScriptCompile Include="src\Ave\Ui\Visual\UiAnimFrame.ts" />

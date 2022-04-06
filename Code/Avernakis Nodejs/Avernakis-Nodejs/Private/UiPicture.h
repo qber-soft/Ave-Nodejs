@@ -1,6 +1,7 @@
 ﻿#pragma once
 
 #include "UiVisualHelper.h"
+#include "IoCommon.h"
 
 namespace Nav
 {
@@ -27,7 +28,7 @@ namespace Nav
 		UiPicture*						SetStretchMode( Ui::StretchMode nMode ) { GetControlTyped().SetStretchMode( nMode ); return this; }
 		Ui::StretchMode					GetStretchMode() const { return GetControlTyped().GetStretchMode(); }
 
-		UiPicture*						SetPicture( const WrapData<UiResourceSource>& rs ) { GetControlTyped().SetPicture( rs.ToResourceSource() ); return this; }
+		UiPicture*						SetPicture( const WrapData<IoResourceSource>& rs ) { GetControlTyped().SetPicture( rs.ToResourceSource() ); return this; }
 
 		void							SetImage( Byo2Image* img );
 

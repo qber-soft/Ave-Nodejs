@@ -156,11 +156,14 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Private\App.cpp" />
+    <ClCompile Include="Private\Byo2Font.cpp" />
     <ClCompile Include="Private\CoCamera.cpp" />
+    <ClCompile Include="Private\Common.cpp" />
     <ClCompile Include="Private\Empty.cpp" />
     <ClCompile Include="Private\Example.cpp" />
     <ClCompile Include="Private\ExportAll.cpp" />
     <ClCompile Include="Private\Byo2Image.cpp" />
+    <ClCompile Include="Private\IoStream.cpp" />
     <ClCompile Include="Private\Library.cpp" />
     <ClCompile Include="Private\StdAfx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -180,6 +183,8 @@
     <ClCompile Include="Private\UiCommon.cpp" />
     <ClCompile Include="Private\UiCommonUi.cpp" />
     <ClCompile Include="Private\UiControlManager.cpp" />
+    <ClCompile Include="Private\UiDragContext.cpp" />
+    <ClCompile Include="Private\UiPainter.cpp" />
     <ClCompile Include="Private\UiPlatform.cpp" />
     <ClCompile Include="Private\UiCommonUiWait.cpp" />
     <ClCompile Include="Private\UiContainer3D.cpp" />
@@ -223,6 +228,7 @@
     <ClCompile Include="Private\UiTrackBar.cpp" />
     <ClCompile Include="Private\UiTree.cpp" />
     <ClCompile Include="Private\UiWindow.cpp" />
+    <ClCompile Include="Private\UiWindowDragDrop.cpp" />
     <ClCompile Include="Private\UiWindowFrame.cpp" />
     <ClCompile Include="Private\UiWindowSysTray.cpp" />
     <ClCompile Include="Private\UiWindowTaskbar.cpp" />
@@ -235,10 +241,14 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Private\App.h" />
+    <ClInclude Include="Private\Byo2Font.h" />
     <ClInclude Include="Private\CoCamera.h" />
+    <ClInclude Include="Private\Common.h" />
     <ClInclude Include="Private\Empty.h" />
     <ClInclude Include="Private\Example.h" />
     <ClInclude Include="Private\Byo2Image.h" />
+    <ClInclude Include="Private\IoCommon.h" />
+    <ClInclude Include="Private\IoStream.h" />
     <ClInclude Include="Private\StdAfx.h" />
     <ClInclude Include="Private\Test.h" />
     <ClInclude Include="Private\UiAnimFrame.h" />
@@ -252,6 +262,8 @@
     <ClInclude Include="Private\UiCommon.h" />
     <ClInclude Include="Private\UiCommonUi.h" />
     <ClInclude Include="Private\UiControlManager.h" />
+    <ClInclude Include="Private\UiDragContext.h" />
+    <ClInclude Include="Private\UiPainter.h" />
     <ClInclude Include="Private\UiPlatform.h" />
     <ClInclude Include="Private\UiCommonUiWait.h" />
     <ClInclude Include="Private\UiContainer3D.h" />
@@ -298,6 +310,7 @@
     <ClInclude Include="Private\UiVisual.h" />
     <ClInclude Include="Private\UiVisualHelper.h" />
     <ClInclude Include="Private\UiWindow.h" />
+    <ClInclude Include="Private\UiWindowDragDrop.h" />
     <ClInclude Include="Private\UiWindowFrame.h" />
     <ClInclude Include="Private\UiWindowSysTray.h" />
     <ClInclude Include="Private\UiWindowTaskbar.h" />

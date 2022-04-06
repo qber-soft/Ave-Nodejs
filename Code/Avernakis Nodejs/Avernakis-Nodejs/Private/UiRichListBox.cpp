@@ -96,7 +96,7 @@ namespace Nav
 		if ( !__CreateControl( p, v ) )
 			return false;
 
-		m_Header = ci.NewJsObject<UiHeader>( true );
+		m_Header = ci.NewJsObjectWithOwnership<UiHeader>();
 		if ( !m_Header )
 			return false;
 		m_Header->SetSharedControl( &GetControlTyped().GetHeader() );

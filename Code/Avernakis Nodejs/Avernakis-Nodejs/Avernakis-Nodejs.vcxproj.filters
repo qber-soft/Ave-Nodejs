@@ -200,6 +200,24 @@
     <ClCompile Include="Private\WinLoadLibraryHook.cpp">
       <Filter>Build</Filter>
     </ClCompile>
+    <ClCompile Include="Private\UiWindowDragDrop.cpp">
+      <Filter>Ave\Ui\Control\Window</Filter>
+    </ClCompile>
+    <ClCompile Include="Private\IoStream.cpp">
+      <Filter>Ave\Io</Filter>
+    </ClCompile>
+    <ClCompile Include="Private\Common.cpp">
+      <Filter>Ave</Filter>
+    </ClCompile>
+    <ClCompile Include="Private\UiDragContext.cpp">
+      <Filter>Ave\Ui\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="Private\UiPainter.cpp">
+      <Filter>Ave\Ui\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="Private\Byo2Font.cpp">
+      <Filter>Ave\Byo2\Font</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Build">
@@ -387,6 +405,12 @@
     </Filter>
     <Filter Include="Ave\Common">
       <UniqueIdentifier>{eeb02b42-0ed4-49cc-b9c3-c5c5b474e2d1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Ave\Io">
+      <UniqueIdentifier>{b38acd2f-e2e7-459d-bc07-776de3f791d4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Ave\Byo2\Font">
+      <UniqueIdentifier>{26469b2b-d406-48f6-924b-284b1e55e75b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -604,6 +628,27 @@
     </ClInclude>
     <ClInclude Include="Private\CoCamera.h">
       <Filter>Ave\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Private\UiWindowDragDrop.h">
+      <Filter>Ave\Ui\Control\Window</Filter>
+    </ClInclude>
+    <ClInclude Include="Private\IoStream.h">
+      <Filter>Ave\Io</Filter>
+    </ClInclude>
+    <ClInclude Include="Private\Common.h">
+      <Filter>Ave</Filter>
+    </ClInclude>
+    <ClInclude Include="Private\IoCommon.h">
+      <Filter>Ave\Io</Filter>
+    </ClInclude>
+    <ClInclude Include="Private\UiDragContext.h">
+      <Filter>Ave\Ui\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Private\UiPainter.h">
+      <Filter>Ave\Ui\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Private\Byo2Font.h">
+      <Filter>Ave\Byo2\Font</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

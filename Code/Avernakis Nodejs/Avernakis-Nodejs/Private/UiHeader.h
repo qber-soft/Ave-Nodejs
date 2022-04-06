@@ -71,7 +71,7 @@ namespace Nav
 		UiHeader*						ItemSetCheckValue( U32 nIndex, U1 b ) { GetControlTyped().ItemSetCheckValue( nIndex, b ); return this; }
 		U1								ItemGetCheckValue( U32 nIndex ) const { return GetControlTyped().ItemGetCheckValue( nIndex ); }
 
-		U1								SetOrder( const WrapArray<U32> pOrder ) { return GetControlTyped().SetOrder( pOrder, (U32) pOrder.m_Length ); }
+		U1								SetOrder( const WrapArray<U32>& pOrder ) { return GetControlTyped().SetOrder( pOrder, (U32) pOrder.m_Length ); }
 		List<U32>						GetOrder() const { List<U32> v( GetControlTyped().GetCount() ); if ( !v.IsEmpty() ) GetControlTyped().GetOrder( v.Data(), (U32) v.Size() ); return std::move( v ); }
 
 		UiHeader*						SetSort( S32 nIndex, Ui::HeaderItemSort nOrder, Ui::HeaderItemSort nDefault ) { GetControlTyped().SetSort( nIndex, nOrder, nDefault ); return this; }
