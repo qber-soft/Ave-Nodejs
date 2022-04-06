@@ -59,8 +59,8 @@ export function ExtendControlInstance(instance: IControl) {
 	const createOnDragMethod: (original: OnDragMethod) => OnDragMethod = (original) => {
 		return (fn) =>
 			original((sender: IControl, dc: IDragContext) => {
-				const OriginalGetPosition = sender.GetPosition.bind(sender);
-				sender.GetPosition = () => Vec2.FromNative(OriginalGetPosition());
+				const OriginalGetPosition = dc.GetPosition.bind(sender);
+				dc.GetPosition = () => Vec2.FromNative(OriginalGetPosition());
 				return fn(sender, dc);
 			});
 	};
