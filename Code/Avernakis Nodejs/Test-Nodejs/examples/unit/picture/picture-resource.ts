@@ -1,7 +1,6 @@
-import { Window, Picture } from "../../../src";
+import { Window, Picture, ResourceSource } from "../../../src";
 import { getControlDemoContainer } from "../utility";
 import { ResId } from "../ResId";
-import { ResourceSource } from "../../../src/Ave/Io/IoCommon";
 
 export function main(window: Window) {
 	const picture = new Picture(window);

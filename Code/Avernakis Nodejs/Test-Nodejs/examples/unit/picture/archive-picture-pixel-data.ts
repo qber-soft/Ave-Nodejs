@@ -1,8 +1,7 @@
-import { Window, Picture, Byo2Image, Byo2ImageCreation, Byo2ImageDataType, PixFormat, Rect, Button } from "../../../src";
+import { Window, Picture, Byo2Image, Byo2ImageCreation, Byo2ImageDataType, PixFormat, Rect, Button, ResourceSource } from "../../../src";
 import { getControlDemoContainer } from "../utility";
 import * as fs from "fs";
 import * as path from "path";
-import { ResourceSource } from "../../../src/Ave/Io/IoCommon";
 
 export function main(window: Window) {
 	const imgcp = new Byo2ImageCreation();

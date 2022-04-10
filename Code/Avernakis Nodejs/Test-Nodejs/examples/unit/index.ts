@@ -6,4 +6,5 @@ run(main);
 
 // import { run } from "./window/window-basic";
 // import { run } from "./window/window-opacity";
+// import { run } from "./app/app-lang";
 // run();
