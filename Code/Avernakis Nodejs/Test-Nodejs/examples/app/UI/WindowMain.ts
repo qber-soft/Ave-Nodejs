@@ -285,7 +285,8 @@ export class WindowMain implements IWindowMain {
 			this.m_PageCurrent = null;
 		}
 		const nIndex = sender.ItemGetSelection();
-		if (nIndex >= 0 && nIndex < this.m_Page.length) this.m_PageCurrent = this.m_Page[nIndex];
+		if (1 == sender.ItemGetSelectionCount() && nIndex >= 0 && nIndex < this.m_Page.length)
+			this.m_PageCurrent = this.m_Page[nIndex];
 		if (this.m_PageCurrent) {
 			this.m_PageCurrent.OnShow?.call(this.m_PageCurrent);
 			this.m_PageCurrent.Control.SetVisible(true);
