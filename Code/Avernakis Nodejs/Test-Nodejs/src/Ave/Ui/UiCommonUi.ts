@@ -1,52 +1,6 @@
 ﻿import { Vec4 } from "../Math/Vector";
 import { IconCache, CheckValue, DpiSize } from "./UiCommon";
 
-export enum WaitOpState {
-	Started, // The operation is in progress, this is the initial value
-	Paused, // The operation is paused
-	Completed, // The opeartion has been finished without error
-	Failed, // The opeartion has been failed
-	Canceling, // The opeartion is canceling
-	Canceled, // The opeartion is canceled
-}
-
-export interface IWaitOp {
-	// Here "a job" means a call to ICommonUi.Wait which can contains one or more threads
-
-	// Gets the current thread index in range [0, nThreadCount) when call ICommonUi.Wait
-	GetThreadIndex(): number;
-
-	// Blocks the thread until all threads reaches SyncBarrier calls, you must call SyncBarrier on every thread with same times
-	SyncBarrier(): void;
-
-	// Returns whether the whole job is canceled by clicking the cancel button from UI
-	IsCanceled(): boolean;
-
-	// Returns whether the user paused the job by clicking the cancel button which will ask the user to confirm the cancel operation
-	IsPaused(): boolean;
-
-	// Call this method will block the current thread if the job is paused (the cancel confirm dialog is displaying)
-	Pause(): void;
-
-	// Sets the maximum quantified job amount, sets to 0 presents an indetermined state.
-	SetMaximum(n: number): void;
-
-	// Sets the current progress
-	SetPosition(n: number): void;
-
-	// Adds n to the current progress
-	AddPosition(n: number): void;
-
-	// Sets the current state displayed in waiting dialog
-	SetState(s: string): void;
-
-	// Sets the result to failed, you need to stop the job (like break loops)
-	Fail(): void;
-
-	// Updates the waiting dialog immediately, for performance reason the dialog only updates after a period of time
-	UpdateUi(): void;
-}
-
 export enum MessageIcon {
 	None,
 	Infomation,
@@ -137,25 +91,23 @@ export class SysDialogFilter {
 }
 
 export interface ICommonUi {
-	Wait(fn: (op: IWaitOp) => void, nThreadCount: number): WaitOpState;
+	Message(sMain: string, sDetail: string, nIcon: MessageIcon, nButton: MessageButton, sTitle: string): Promise<MessageResult>;
+	MessageEx(sMain: string, sDetail: string, nIcon: MessageIcon, nButton: MessageButton, sTitle: string, extra: MessageExtra): Promise<MessageExResult>;
 
-	Message(sMain: string, sDetail: string, nIcon: MessageIcon, nButton: MessageButton, sTitle: string): MessageResult;
-	MessageEx(sMain: string, sDetail: string, nIcon: MessageIcon, nButton: MessageButton, sTitle: string, extra: MessageExtra): MessageExResult;
+	Input(s: string, sMain: string, sDetail: string, sCue: string, sTitle: string): Promise<string>;
+	InputText(s: string, sMain: string, sDetail: string, sCue: string, sTitle: string, extra: InputText): Promise<string>;
+	InputNumber(f: number, sMain: string, sDetail: string, sCue: string, sTitle: string, extra: InputNumber): Promise<number>;
 
-	Input(s: string, sMain: string, sDetail: string, sCue: string, sTitle: string): string;
-	InputText(s: string, sMain: string, sDetail: string, sCue: string, sTitle: string, extra: InputText): string;
-	InputNumber(f: number, sMain: string, sDetail: string, sCue: string, sTitle: string, extra: InputNumber): number;
+	PickColor(vColor: Vec4, bAllowAlpha: boolean): Promise<Vec4>;
+	PickColorEx(vColor: Vec4, bAllowAlpha: boolean, fnPreview: (vColor: Vec4) => void): Promise<Vec4>;
 
-	PickColor(vColor: Vec4, bAllowAlpha: boolean): Vec4;
-	PickColorEx(vColor: Vec4, bAllowAlpha: boolean, fnPreview: (vColor: Vec4) => void): Vec4;
+	OpenFile(filter: SysDialogFilter[], sDefaultExtension: string, sFolder: string, sFileName: string): Promise<string>;
+	OpenFiles(filter: SysDialogFilter[], sDefaultExtension: string, sFolder: string): Promise<string[]>;
 
-	OpenFile(filter: SysDialogFilter[], sDefaultExtension: string, sFolder: string, sFileName: string): string;
-	OpenFiles(filter: SysDialogFilter[], sDefaultExtension: string, sFolder: string): string[];
+	OpenFolder(sFolder: string, sFileName: string): Promise<string>;
+	OpenFolders(sFolder: string): Promise<string[]>;
 
-	OpenFolder(sFolder: string, sFileName: string): string;
-	OpenFolders(sFolder: string): string[];
-
-	SaveFile(filter: SysDialogFilter[], sDefaultExtension: string, sFolder: string, sFileName: string): string;
+	SaveFile(filter: SysDialogFilter[], sDefaultExtension: string, sFolder: string, sFileName: string): Promise<string>;
 
 	ExploreFolder(sFolder: string, bBackground: boolean): boolean;
 	ExploreFile(sFolder: string, bBackground: boolean): boolean;

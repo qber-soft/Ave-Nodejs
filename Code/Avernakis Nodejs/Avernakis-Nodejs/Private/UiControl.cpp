@@ -36,9 +36,7 @@ namespace Nav
 			if ( m_OnPointerCursor )
 			{
 				msgPointer.FromUiMessage( mp.m_Pointer );
-				m_OnPointerCursor.BlockAsyncCall( this, msgPointer, [&mp]( Ui::CursorType nType ) {
-					*mp.m_Pointer.m_CursorType = nType;
-				} );
+				m_OnPointerCursor.BlockCall( this, msgPointer, *mp.m_Pointer.m_CursorType );
 			}
 			break;
 
@@ -56,7 +54,7 @@ namespace Nav
 	void UiControl::__OnPaintPost( Ui::IControl & sender, Ui::IPainter & painter, Ui::IPainterTyped & paintert, const S32_R & rcClient )
 	{
 		m_Painter->SetPainter( &painter );
-		m_OnPaintPost.BlockAsyncCall( this, m_Painter, rcClient, [] {} );
+		m_OnPaintPost.BlockCall( this, m_Painter, rcClient );
 		m_Painter->SetPainter( nullptr );
 	}
 

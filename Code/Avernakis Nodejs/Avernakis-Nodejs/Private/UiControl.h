@@ -322,19 +322,19 @@ namespace Nav
 		AveInline void FireDragEnter( UiDragContext* dc )
 		{
 			dc->SetControl( &GetControl() );
-			m_OnDragEnter.BlockAsyncCall( this, dc, [] {} );
+			m_OnDragEnter.BlockCall( this, dc );
 		}
 
 		AveInline void FireDragMove( UiDragContext* dc )
 		{
 			dc->SetControl( &GetControl() );
-			m_OnDragMove.BlockAsyncCall( this, dc, [] {} );
+			m_OnDragMove.BlockCall( this, dc );
 		}
 
 		AveInline void FireDragLeave( UiDragContext* dc )
 		{
 			dc->SetControl( &GetControl() );
-			m_OnDragLeave.BlockAsyncCall( this, dc, [] {} );
+			m_OnDragLeave.BlockCall( this, dc );
 		}
 
 		AveInline U1 FireDragDrop( UiDragContext* dc )
@@ -342,7 +342,7 @@ namespace Nav
 			if ( m_OnDragDrop )
 			{
 				dc->SetControl( &GetControl() );
-				m_OnDragDrop.BlockAsyncCall( this, dc, [] {} );
+				m_OnDragDrop.BlockCall( this, dc );
 				return true;
 			}
 			return false;
@@ -351,7 +351,7 @@ namespace Nav
 		AveInline void FireDragEnd( UiDragContext* dc, U1 bOk )
 		{
 			dc->SetControl( &GetControl() );
-			m_OnDragEnd.BlockAsyncCall( this, dc, bOk, [] {} );
+			m_OnDragEnd.BlockCall( this, dc, bOk );
 		}
 	};
 

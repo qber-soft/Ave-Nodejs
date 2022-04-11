@@ -9,6 +9,7 @@ namespace Nav
 {
 
 	class UiApp;
+	class IPromiseCall;
 
 	enum class AppLangType
 	{
@@ -44,17 +45,19 @@ namespace Nav
 		List<U32>								m_IconSizeList{ 16, 32 };
 
 	public:
+		AveInline UiApp*						operator -> () const { return m_App; }
+
 		AveInline AppLangType					GetLangType() const { return m_LangType; }
 		AveInline U1							IsLangSet() const { return AppLangType::Text == m_LangType && m_LangSetText || AppLangType::Binary == m_LangType && m_LangSetBinary; }
 
 		U1										CreateUiApp( UiApp* app );
 		void									DestroyUiApp();
 
-		void									ExecuteInUiThread( Func<void()>&& f, U1 bWait = true );
-		void									BlockCallEnter();
-		void									BlockCallLeave( Sys::IEvent* pEvent );
-
 		void									SetDpiwareSizeList( Ui::IIconManager & im );
+
+		void									ExecuteInUiThread( Func<void()>&& f );
+		void									ExecuteInUiThread( IPromiseCall* p );
+		void									ExecuteInJsThread( Func<void()>&& f, U1 bWait, U1 bUiThread = true );
 
 #	if 1 == AveDebug
 		AveInline void WaitForDebugger()

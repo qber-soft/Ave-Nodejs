@@ -157,13 +157,19 @@ namespace Nav
 	void UiTree::__OnEditBegin( Ui::ITree & sender, Ui::TreeItemHandle pItem, WString & sEdit, U1 & bCanEdit )
 	{
 		UiTreeEdit te{ sEdit, bCanEdit };
-		m_OnEditBegin.BlockAsyncCall( this, Hc2j( pItem ), te, [&]( const WrapData<UiTreeEdit>& r ) { sEdit = r.m_Text; bCanEdit = r.m_CanEdit; } );
+		WrapData<UiTreeEdit> r;
+		m_OnEditBegin.BlockCall( this, Hc2j( pItem ), te, r );
+		sEdit = r.m_Text;
+		bCanEdit = r.m_CanEdit;
 	}
 
 	void UiTree::__OnEditEnd( Ui::ITree & sender, Ui::TreeItemHandle pItem, WString & sEdit, U1 & bCanEdit )
 	{
 		UiTreeEdit te{ sEdit, bCanEdit };
-		m_OnEditEnd.BlockAsyncCall( this, Hc2j( pItem ), te, [&]( const WrapData<UiTreeEdit>& r ) { sEdit = r.m_Text; bCanEdit = r.m_CanEdit; } );
+		WrapData<UiTreeEdit> r;
+		m_OnEditEnd.BlockCall( this, Hc2j( pItem ), te, r );
+		sEdit = r.m_Text;
+		bCanEdit = r.m_CanEdit;
 	}
 
 	void UiTree::__OnEditFinish( Ui::ITree & sender, Ui::TreeItemHandle pItem, const WString & sEdit, U1 bCanceled )
@@ -174,7 +180,7 @@ namespace Nav
 
 	void UiTree::__OnDragBegin( Ui::ITree & sender, U1 & bCanDrag )
 	{
-		m_OnDragBegin.BlockAsyncCall( this, [&]( const U1& b ) { bCanDrag = b; } );
+		m_OnDragBegin.BlockCall( this, bCanDrag );
 	}
 
 }

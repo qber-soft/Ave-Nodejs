@@ -44,7 +44,7 @@ namespace Nav
 
 	void UiRadioBox::__OnChecking( Ui::IRadioBox & sender, U1 & bCanChangeValue )
 	{
-		m_OnChecking.BlockAsyncCall( this, bCanChangeValue, [&bCanChangeValue]( const U1& b ) { bCanChangeValue = b; } );
+		m_OnChecking.BlockCall( this, bCanChangeValue, bCanChangeValue );
 	}
 
 }

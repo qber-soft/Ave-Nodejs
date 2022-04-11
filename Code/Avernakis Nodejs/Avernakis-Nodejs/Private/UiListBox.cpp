@@ -86,10 +86,10 @@ namespace Nav
 
 	void UiListBox::__OnVirtual( Ui::IListBox & sender, Ui::ListBoxItemVirtual & iv )
 	{
-		m_Virtual.BlockAsyncCall( this, iv.m_Item, [&iv]( const UiListBoxItemVirtual_t& r ) {
-			iv.m_Misc = r.m_Misc;
-			iv.m_StringData = r.m_String;
-		} );
+		UiListBoxItemVirtual_t r;
+		m_Virtual.BlockCall( this, iv.m_Item, r );
+		iv.m_Misc = r.m_Misc;
+		iv.m_StringData = r.m_String;
 	}
 
 	UiListBox * UiListBox::SetVirtual( Virtual_t && fn )

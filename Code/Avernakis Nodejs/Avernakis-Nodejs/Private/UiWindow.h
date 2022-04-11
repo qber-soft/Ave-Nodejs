@@ -139,8 +139,6 @@ namespace Nav
 		UiControl*							m_DragControl{ nullptr };
 		JsObject<UiDragContext>				m_DragContext;
 
-		JsFuncSafe<void()>					m_Keep;
-
 		S32									m_OnClosingResult{ 0 };
 
 		U32									m_IconResId{ 0 };

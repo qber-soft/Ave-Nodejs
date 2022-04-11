@@ -15,9 +15,35 @@ namespace Nav
 		ObjectRegister<UiCommonUi> c_obj;
 	}
 
+	class UiCommonUi::WaitCall : public PromiseCall<UiCommonUi, WaitCall, Dee::AsyncOpState( Wait_t&& )>
+	{
+	public:
+		using PromiseCall::PromiseCall;
+
+		virtual void OnPrepare( const CallbackInfo& ci ) override
+		{
+			m_Wait = ci.NewJsObjectWithOwnership<UiCommonUiWait>();
+		}
+
+		Dee::AsyncOpState operator () ( Wait_t && fn )
+		{
+			return m_Owner->m_CommonUi->Wait( [this, &fn]( Ui::IDialogWaitOp& op )
+			{
+				m_Wait->SetOp( &op );
+				App::GetSingleton().ExecuteInJsThread( [this, &fn]
+				{
+					fn.DirectCall( m_Wait );
+				}, true, false );
+			}, 1 );
+		}
+
+	private:
+		JsObject<UiCommonUiWait> m_Wait;
+	};
+
 	void UiCommonUi::DefineObject()
 	{
-		AutoAddMethod( Wait );
+		//AddComplexPromiseMethod<WaitCall>( "Wait" );
 
 		AutoAddMethod( Message );
 		AutoAddMethod( MessageEx );
@@ -37,21 +63,9 @@ namespace Nav
 
 		AutoAddMethod( SaveFile );
 
-		AutoAddMethod( ExploreFolder );
-		AutoAddMethod( ExploreFile );
-		AutoAddMethod( ExploreFiles );
-	}
-
-	Dee::AsyncOpState UiCommonUi::Wait( const CallbackInfo& ci, Wait_t && fn, U32 nThreadCount )
-	{
-		auto uiwait = ci.NewJsObject<UiCommonUiWait>();
-		if ( !uiwait )
-			return Dee::AsyncOpState::Failed;
-		return m_CommonUi->Wait( [uiwait, &fn]( Ui::IDialogWaitOp& op )
-		{
-			uiwait->SetOp( &op );
-			fn.BlockAsyncCall( uiwait, [] {} );
-		}, nThreadCount );
+		AutoAddMethod( ExploreFolder, WrapObjectUi );
+		AutoAddMethod( ExploreFile, WrapObjectUi );
+		AutoAddMethod( ExploreFiles, WrapObjectUi );
 	}
 
 	Ui::DialogMessageResult UiCommonUi::Message( PCWChar szMain, PCWChar szDetail, Ui::DialogMessageIcon nIcon, U32 nButton, PCWChar szTitle )

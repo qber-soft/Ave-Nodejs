@@ -115,6 +115,7 @@ namespace Nav
 	class WrapObjectGeneric;
 	class WrapObjectUi;
 	class WrapObjectMix;
+	class WrapObjectPromise;
 
 	enum class MixCallStage
 	{
@@ -154,6 +155,17 @@ namespace Nav
 		void*			GetUserContext() const { return m_UserContext; }
 	};
 
+	class IPromiseCall
+	{
+	protected:
+		IPromiseCall() {}
+		~IPromiseCall() {}
+
+	public:
+		virtual void	Call() = 0;
+		virtual void	Resolve() = 0;
+	};
+
 	namespace __Detail
 	{
 		AveInline void __MixCall::__NextStage( MixCallContext& cc )
@@ -163,7 +175,89 @@ namespace Nav
 			else if ( MixCallStage::InUi == cc.m_Stage )
 				cc.m_Stage = MixCallStage::PostUi;
 		}
+
+		template<class T, class TObj, class TRet, class... TArg>
+		class __PromiseCall : public CallbackInfo, public IPromiseCall, public AllocObject<>
+		{
+		public:
+			__PromiseCall( T* p, TObj* po, TRet( TObj::* pf )(TArg...), const Napi::CallbackInfo& ci ) : CallbackInfo( ci ), m_Owner( p ), m_Object( po ), m_Func( pf ), m_Promise( Napi::Promise::Deferred::New( ci.Env() ) )
+			{
+				if ( !m_Object )
+					m_Object = (TObj*) this;
+				__PrepareArg( ci, (__Detail::__BuildIndex<sizeof...(TArg)>*) nullptr );
+			}
+
+		protected:
+			T*								m_Owner;
+			TObj*							m_Object;
+			TRet( TObj::*					m_Func )(TArg...);
+			Napi::Promise::Deferred			m_Promise;
+			__Detail::__ArgList<TArg...>	m_Arg{};
+
+		protected:
+			template<USize... N>
+			void __PrepareArg( const Napi::CallbackInfo& ci, __Detail::__Index<N...>* )
+			{
+				(__Detail::__ConvertType<TArg>::ToCpp( &m_Arg.__ArgData<TArg, N>::GetArg(), ci[N] ), ...);
+			}
+
+			template<USize... N>
+			TRet __Call( __Detail::__Index<N...>* )
+			{
+				return (m_Object->*m_Func)(std::forward<TArg>( m_Arg.__ArgData<TArg, N>::GetArg() )...);
+			}
+
+		public:
+			virtual void					OnPrepare( const CallbackInfo& ci ) {}
+
+			__Detail::__ArgList<TArg...>&	GetArg() { return m_Arg; }
+			Napi::Promise					GetPromise() { return m_Promise.Promise(); }
+		};
 	}
+
+	template<class, class, class>
+	class PromiseCall;
+
+	template<class T, class TObj, class TRet, class... TArg>
+	class PromiseCall<T, TObj, TRet( TArg... )> : public __Detail::__PromiseCall<T, TObj, TRet, TArg...>
+	{
+	public:
+		using __Detail::__PromiseCall<T, TObj, TRet, TArg...>::__PromiseCall;
+
+	private:
+		virtual void Call() override
+		{
+			m_Ret = this->__Call( (__Detail::__BuildIndex<sizeof...(TArg)>*) nullptr );
+		}
+
+		virtual void Resolve() override
+		{
+			this->m_Promise.Resolve( __Detail::__ConvertType<TRet>::ToJs( this->m_Promise.Env(), &m_Ret ) );
+			delete this;
+		}
+
+	private:
+		TRet							m_Ret{};
+	};
+
+	template<class T, class TObj, class... TArg>
+	class PromiseCall<T, TObj, void( TArg... )> : public __Detail::__PromiseCall<T, TObj, void, TArg...>
+	{
+	public:
+		using __Detail::__PromiseCall<T, TObj, void, TArg...>::__PromiseCall;
+
+	private:
+		virtual void Call() override
+		{
+			this->__Call( (__Detail::__BuildIndex<sizeof...(TArg)>*) nullptr );
+		}
+
+		virtual void Resolve() override
+		{
+			this->m_Promise.Resolve( this->m_Promise.Env().Undefined() );
+			delete this;
+		}
+	};
 
 	namespace __Detail
 	{
@@ -216,7 +310,7 @@ namespace Nav
 				(__Detail::__ConvertType<TArg>::ToCpp( &arg.__ArgData<TArg, N>::GetArg(), cb[N] ), ...);
 
 				TRet r{};
-				App::GetSingleton().ExecuteInUiThread( [&]
+				App::GetSingleton().ExecuteInUiThread( [&r, &arg, this, p]
 				{
 					r = (((T&) *this).*p)(std::forward<TArg>( arg.__ArgData<TArg, N>::GetArg() )...);
 				} );
@@ -229,7 +323,7 @@ namespace Nav
 				__Detail::__ArgList<TArg...> arg{};
 				(__Detail::__ConvertType<TArg>::ToCpp( &arg.__ArgData<TArg, N>::GetArg(), cb[N] ), ...);
 
-				App::GetSingleton().ExecuteInUiThread( [&]
+				App::GetSingleton().ExecuteInUiThread( [&arg, this, p]
 				{
 					(((T&) *this).*p)(std::forward<TArg>( arg.__ArgData<TArg, N>::GetArg() )...);
 				} );
@@ -248,7 +342,7 @@ namespace Nav
 				(__Detail::__ConvertType<TArg>::ToCpp( &arg.__ArgData<TArg, N>::GetArg(), cb[N] ), ...);
 
 				TRet r{};
-				App::GetSingleton().ExecuteInUiThread( [&]
+				App::GetSingleton().ExecuteInUiThread( [&r, &arg, &cb, this, p]
 				{
 					r = (((T&) *this).*p)(cb, std::forward<TArg>( arg.__ArgData<TArg, N>::GetArg() )...);
 				} );
@@ -261,7 +355,7 @@ namespace Nav
 				__Detail::__ArgList<TArg...> arg{};
 				(__Detail::__ConvertType<TArg>::ToCpp( &arg.__ArgData<TArg, N>::GetArg(), cb[N] ), ...);
 
-				App::GetSingleton().ExecuteInUiThread( [&]
+				App::GetSingleton().ExecuteInUiThread( [&arg, this, p]
 				{
 					(((T&) *this).*p)(cb, std::forward<TArg>( arg.__ArgData<TArg, N>::GetArg() )...);
 				} );
@@ -285,9 +379,9 @@ namespace Nav
 				(__Detail::__ConvertType<TArg>::ToCpp( &arg.__ArgData<TArg, N>::GetArg(), cb[N] ), ...);
 
 				MixCallContext cc( cb );
-				(((T&) *this).*p)( cc, std::forward<TArg>( arg.__ArgData<TArg, N>::GetArg() )...);
+				(((T&) *this).*p)(cc, std::forward<TArg>( arg.__ArgData<TArg, N>::GetArg() )...);
 				__NextStage( cc );
-				App::GetSingleton().ExecuteInUiThread( [&]
+				App::GetSingleton().ExecuteInUiThread( [&arg, &cc, this, p]
 				{
 					(((T&) *this).*p)(cc, std::forward<TArg>( arg.__ArgData<TArg, N>::GetArg() )...);
 				} );
@@ -305,7 +399,7 @@ namespace Nav
 				MixCallContext cc( cb );
 				(((T&) *this).*p)(cc, std::forward<TArg>( arg.__ArgData<TArg, N>::GetArg() )...);
 				__NextStage( cc );
-				App::GetSingleton().ExecuteInUiThread( [&]
+				App::GetSingleton().ExecuteInUiThread( [&arg, &cc, this, p]
 				{
 					(((T&) *this).*p)(cc, std::forward<TArg>( arg.__ArgData<TArg, N>::GetArg() )...);
 				} );
@@ -319,13 +413,47 @@ namespace Nav
 				return __Call( cb, p, (__Detail::__BuildIndex<sizeof...(TArg)>*) nullptr );
 			}
 		};
+
+		template<class T>
+		class __WrapObject<T, WrapObjectPromise>
+		{
+		protected:
+			template<class TRet, class... TArg>
+			AveInline Napi::Value __Call( const Napi::CallbackInfo& cb, TRet( T::*p )(TArg...) )
+			{
+				auto pc = UniPtr( AveNew PromiseCall<T, T, TRet( TArg... )>( (T*) this, (T*) this, p, cb ) );
+				pc->OnPrepare( cb );
+				auto pro = pc->GetPromise();
+				App::GetSingleton().ExecuteInUiThread( pc.Detach() );
+				return pro;
+			}
+
+			template<class TType, class TRet, class... TArg>
+			AveInline Napi::Value __Call( const Napi::CallbackInfo& cb, TRet( TType::*p )(TArg...) )
+			{
+				auto pc = UniPtr( AveNew TType( (T*) this, nullptr, p, cb ) );
+				pc->OnPrepare( cb );
+				auto pro = pc->GetPromise();
+				App::GetSingleton().ExecuteInUiThread( pc.Detach() );
+				return pro;
+			}
+		};
 	}
 
 	template<class T, class Tctor, class TType = WrapObjectGeneric>
 	class WrapObject;
 
+
+	//template<class T>
+	//class ___DebugBreak
+	//{
+	//public:
+	//	static U1 Break( void* p ) { return false; }
+	//};
+
+
 	template<class T, class... Tctor, class TType>
-	class WrapObject<T, void(Tctor...), TType> : public Napi::ObjectWrap<T>, __Detail::__WrapObject<T, WrapObjectGeneric>, __Detail::__WrapObject<T, WrapObjectUi>, __Detail::__WrapObject<T, WrapObjectMix>
+	class WrapObject<T, void( Tctor... ), TType> : public Napi::ObjectWrap<T>, __Detail::__WrapObject<T, WrapObjectGeneric>, __Detail::__WrapObject<T, WrapObjectUi>, __Detail::__WrapObject<T, WrapObjectMix>, __Detail::__WrapObject<T, WrapObjectPromise>
 	{
 		friend class ObjectRegister<T>;
 
@@ -482,15 +610,46 @@ namespace Nav
 			this->__WrapObject<T, WrapObjectMix>::__Call( cb, p );
 		}
 
+		template<class TRet, class... TArg>
+		Napi::Value __MethodProxyPromise( const Napi::CallbackInfo& cb )
+		{
+			if ( !__CheckType<TArg...>( cb ) )
+				return cb.Env().Null();
+
+			auto p = __Detail::__ConvertFunc<T, TRet, TArg...>( cb.Data() );
+			return this->__WrapObject<T, WrapObjectPromise>::__Call( cb, p );
+		}
+
+		template<class TType, class TRet, class... TArg>
+		Napi::Value __MethodProxyPromiseComplex( const Napi::CallbackInfo& cb )
+		{
+			if ( !__CheckType<TArg...>( cb ) )
+				return cb.Env().Null();
+
+			auto p = __Detail::__ConvertFunc<TType, TRet, TArg...>( cb.Data() );
+			return this->__WrapObject<T, WrapObjectPromise>::__Call<TType, TRet, TArg...>( cb, p );
+		}
+
 		template<class, class, class...>
 		class __GetMethodProxy;
 
 		template<class TCallType, class TRet, class... TArg> class __GetMethodProxy<TCallType, TRet, TArg...> { public: static auto __GetMethod() { return &T::template __MethodProxy<TCallType, TRet, TArg...>; } };
 		template<class TCallType, class TRet, class... TArg> class __GetMethodProxy<TCallType, TRet, const CallbackInfo&, TArg...> { public: static auto __GetMethod() { return &T::template __MethodProxyCi<TCallType, TRet, TArg...>; } };
 		template<class TRet, class... TArg> class __GetMethodProxy<WrapObjectMix, TRet, const MixCallContext&, TArg...> { public: static auto __GetMethod() { return &T::template __MethodProxyMix<TRet, TArg...>; } };
+		template<class TRet, class... TArg> class __GetMethodProxy<WrapObjectPromise, TRet, TArg...> { public: static auto __GetMethod() { return &T::template __MethodProxyPromise<TRet, TArg...>; } };
 		template<class TCallType, class... TArg> class __GetMethodProxy<TCallType, void, TArg...> { public: static auto __GetMethod() { return &T::template __VoidMethodProxy<TCallType, TArg...>; } };
 		template<class TCallType, class... TArg> class __GetMethodProxy<TCallType, void, const CallbackInfo&, TArg...> { public: static auto __GetMethod() { return &T::template __VoidMethodProxyCi<TCallType, TArg...>; } };
 		template<class... TArg> class __GetMethodProxy<WrapObjectMix, void, const MixCallContext&, TArg...> { public: static auto __GetMethod() { return &T::template __VoidMethodProxyMix<TArg...>; } };
+
+		template<class TType, class TRet, class... TArg>
+		class __GetComplexPromiseMethodProxy
+		{
+		public:
+			static auto __GetMethod()
+			{
+				return &T::template __MethodProxyPromiseComplex<TType, TRet, TArg...>;
+			}
+		};
 
 	protected:
 		template<class TCallType = TType, class TRet, class... TArg>
@@ -505,6 +664,26 @@ namespace Nav
 		{
 			if ( __m_Property )
 				__m_Property->push_back( Base_t::InstanceMethod( szName, __GetMethodProxy<TCallType, TRet, TArg...>::__GetMethod(), (napi_property_attributes) (napi_property_attributes::napi_writable | napi_property_attributes::napi_configurable), __Detail::__ConvertFunc( p ) ) );
+		}
+
+		template<class TType, class TRet, class... TArg>
+		static void AddComplexPromiseMethod( PCAChar szName, TRet( TType::*p )(TArg...) )
+		{
+			if ( __m_Property )
+				__m_Property->push_back( Base_t::InstanceMethod( szName, __GetComplexPromiseMethodProxy<TType, TRet, TArg...>::__GetMethod(), (napi_property_attributes) (napi_property_attributes::napi_writable | napi_property_attributes::napi_configurable), __Detail::__ConvertFunc( p ) ) );
+		}
+
+		template<class TType, class TRet, class... TArg>
+		static void AddComplexPromiseMethod( PCAChar szName, TRet( TType::*p )(TArg...) const )
+		{
+			if ( __m_Property )
+				__m_Property->push_back( Base_t::InstanceMethod( szName, __GetComplexPromiseMethodProxy<TType, TRet, TArg...>::__GetMethod(), (napi_property_attributes) (napi_property_attributes::napi_writable | napi_property_attributes::napi_configurable), __Detail::__ConvertFunc( p ) ) );
+		}
+
+		template<class TType>
+		static void AddComplexPromiseMethod( PCAChar szName )
+		{
+			AddComplexPromiseMethod( szName, &TType::operator () );
 		}
 	};
 

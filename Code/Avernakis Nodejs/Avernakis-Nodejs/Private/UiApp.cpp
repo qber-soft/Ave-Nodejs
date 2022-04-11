@@ -17,7 +17,7 @@ namespace Nav
 
 	UiApp::UiApp( const Napi::CallbackInfo & cb ) : WrapObject( cb )
 	{
-		__Ctor( cb );
+		__CtorCi( cb );
 	}
 
 	UiApp::~UiApp()
@@ -48,18 +48,31 @@ namespace Nav
 		AutoAddMethod( OnExit );
 	}
 
-	U1 UiApp::Ctor()
+	U1 UiApp::Ctor( const CallbackInfo& ci )
 	{
+		napi_create_threadsafe_function( ci.GetEnv(), nullptr, Napi::Object(), Napi::String::New( ci.GetEnv(), "" ), 0, 1, nullptr, __JsFuncFinalize, this, __JsFuncCall, &m_JsFunc );
+		if ( !m_JsFunc )
+			return false;
+
 		if ( !App::GetSingleton().CreateUiApp( this ) )
 			return false;
 
 		if ( !m_InitFinishEvent.Create( true ) )
 			return false;
 
-		if ( !m_ExecuteFinishEvent.Create( true ) )
+		if ( !m_UiExecuteLock.Create() )
 			return false;
 
-		if ( !m_ExecuteLock.Create() )
+		if ( !m_UiExecuteFinish.Create() )
+			return false;
+
+		if ( !m_JsExecuteLock.Create() )
+			return false;
+
+		if ( !m_JsExecuteFinish.Create() )
+			return false;
+
+		if ( !m_Blocker.Create() )
 			return false;
 
 		m_Thread = AveKak.Create<Sys::IThread>( Sys::IThread::CreationParam( [this] { __UiThread(); }, "Ave Ui" ) );
@@ -67,52 +80,6 @@ namespace Nav
 			return false;
 
 		return true;
-	}
-
-	void UiApp::__UiThread()
-	{
-		m_Object = AveKak.CreateAppScope();
-		if ( !m_Object )
-			return;
-
-		AveKak.GetApp().GetEvent<IApplication::OnWakeup>() += MakeThisFunc( OnAppWakeup );
-
-		m_InitFinishEvent->Set();
-
-		auto n = AveKak.GetApp().Run();
-
-		m_OnExit( n, true );
-
-		__Detail::__EventManger::GetSingleton().ReleaseFuncSafe();
-	}
-
-	void UiApp::__ExecuteQueued()
-	{
-		for ( ;; )
-		{
-			CSize nCount = 0;
-
-			{
-				Sys::RwLockScoped __Lock( *m_ExecuteLock );
-				nCount = m_Execute.Size();
-				if ( nCount > m_ExecuteBuffer.Size() )
-					m_ExecuteBuffer.Resize( nCount );
-				for ( CSize i = 0; i < nCount; ++i )
-					m_Execute.Dequeue( m_ExecuteBuffer[i] );
-			}
-
-			if ( 0 == nCount )
-				break;
-
-			for ( CSize i = 0; i < nCount; ++i )
-				m_ExecuteBuffer[i]();
-		}
-		m_ExecuteFinishEvent->Set();
-	}
-
-	void UiApp::OnAppWakeup( Ave::IApplication & pApplication, const void * pContext )
-	{
-		__ExecuteQueued();
 	}
 
 	U1 UiApp::ResAddPackageIndex( PCWChar szFile, PCWChar szRoot )
@@ -261,71 +228,262 @@ namespace Nav
 		return obj;
 	}
 
-	void UiApp::ExecuteInUiThread( Func<void()>&& f, U1 bWait )
+	void UiApp::OnAppWakeup( Ave::IApplication & pApplication, const void * pContext )
 	{
-		m_InitFinishEvent->Wait();
+		__UiExecuteQueued( true );
+	}
 
-		if ( m_BlockCall )
+	S32 UiApp::OnAppRunStart( Ave::IApplication & pApplication )
+	{
+		if ( m_UiExecuteBlock > 0 )
 		{
-			if ( m_BlockEvent )
+			m_UiExecuteCanceled = true;
+			return -1;
+		}
+		return 0;
+	}
+
+	void UiApp::OnAppRunEnd( Ave::IApplication & pApplication, S32 nExitCode )
+	{
+	}
+
+	void UiApp::__UiThread()
+	{
+		m_Object = AveKak.CreateAppScope();
+		if ( !m_Object )
+			return;
+
+		AveKak.GetApp().GetEvent<IApplication::OnWakeup>() += MakeThisFunc( OnAppWakeup );
+		AveKak.GetApp().GetEvent<IApplication::OnRunStart>() += MakeThisFunc( OnAppRunStart );
+		AveKak.GetApp().GetEvent<IApplication::OnRunEnd>() += MakeThisFunc( OnAppRunEnd );
+
+		m_InitFinishEvent->Set();
+
+		auto n = AveKak.GetApp().Run();
+
+		m_OnExit( n );
+
+		napi_release_threadsafe_function( m_JsFunc, napi_threadsafe_function_release_mode::napi_tsfn_release );
+		m_JsFunc = nullptr;
+	}
+
+	void UiApp::__JsFuncFinalize( napi_env env, void * finalize_data, void * finalize_hint )
+	{
+	}
+
+	void UiApp::__JsFuncCall( napi_env env, napi_value js_callback, void* context, void* data )
+	{
+		auto pApp = (UiApp*) context;
+		pApp->__JsExecuteQueued( true );
+	}
+
+	U1 UiApp::__UiExecuteQueued( U1 bResetCanceled )
+	{
+		List<Work> vExecuteBuffer;
+		U1 bCanceled = false;
+		for ( ;; )
+		{
+			CSize nCount = 0;
+			CSize nExecuted = 0;
+
 			{
-				m_ExecuteFinishEvent->Reset();
+				Sys::RwLockScoped __Lock( *m_UiExecuteLock );
+				nCount = m_UiExecuteFunc.Size();
+				if ( nCount > vExecuteBuffer.Size() )
+					vExecuteBuffer.Resize( nCount );
+				for ( CSize i = 0; i < nCount; ++i )
+					m_UiExecuteFunc.Dequeue( vExecuteBuffer[i] );
+			}
+
+			if ( 0 == nCount )
+				break;
+
+			for ( CSize i = 0; i < nCount; ++i )
+			{
+				auto& w = vExecuteBuffer[i];
+				if ( bResetCanceled )
+					w.m_Canceled = false;
+				if ( w.m_Canceled )
 				{
-					Sys::RwLockScoped __Lock( *m_ExecuteLock );
-					m_Execute.Enqueue( std::move( f ) );
+					Sys::RwLockScoped __Lock( *m_UiExecuteLock );
+					m_UiExecuteFunc.Enqueue( w );
+					continue;
 				}
-				m_BlockExecuteInUi = true;
-				if ( m_BlockEvent )
-					m_BlockEvent->Set();
-				m_ExecuteFinishEvent->Wait();
+				if ( w.m_Promise )
+					w.m_Promise->Call();
+				else
+					w.m_Work();
+				if ( m_UiExecuteCanceled )
+				{
+					w.m_Canceled = true;
+					bCanceled = true;
+					m_UiExecuteCanceled = false;
+					{
+						Sys::RwLockScoped __Lock( *m_UiExecuteLock );
+						m_UiExecuteFunc.Enqueue( w );
+					}
+					continue;
+				}
+				++nExecuted;
+				if ( w.m_Promise )
+					__ExecuteInJsThread( w.m_Promise );
+				m_Blocker.Signal( w.m_Blocker );
+				m_UiExecuteFinish->Set();
 			}
-			else
+
+			if ( 0 == nExecuted )
+				break;
+		}
+
+		return !bCanceled;
+	}
+
+	void UiApp::__JsExecuteQueued( U1 bReleaseCounter )
+	{
+		List<Work> vExecuteBuffer;
+		for ( ;; )
+		{
+			CSize nCount = 0;
+
 			{
-				f();
+				Sys::RwLockScoped __Lock( *m_JsExecuteLock );
+				nCount = m_JsExecuteFunc.Size();
+				if ( nCount > vExecuteBuffer.Size() )
+					vExecuteBuffer.Resize( nCount );
+				for ( CSize i = 0; i < nCount; ++i )
+					m_JsExecuteFunc.Dequeue( vExecuteBuffer[i] );
 			}
+
+			if ( 0 == nCount )
+				break;
+
+			for ( CSize i = 0; i < nCount; ++i )
+			{
+				auto& w = vExecuteBuffer[i];
+				if ( w.m_Promise )
+					w.m_Promise->Resolve();
+				else
+					w.m_Work();
+				m_Blocker.Signal( w.m_Blocker );
+				m_JsExecuteFinish->Set();
+			}
+		}
+
+		//if ( bReleaseCounter )
+		//	--m_JsExecute;
+	}
+
+	void UiApp::__ExecuteInJsThread( IPromiseCall * p )
+	{
+		{
+			Sys::RwLockScoped __Lock( *m_JsExecuteLock );
+			m_JsExecuteFunc.Enqueue( { {}, -1, p } );
+		}
+
+		//S32 nExpected = 0;
+		//if ( m_JsExecute.compare_exchange_strong( nExpected, 1 ) )
+		if ( 0 == m_JsExecute )
+		{
+			napi_call_threadsafe_function( m_JsFunc, nullptr, napi_threadsafe_function_call_mode::napi_tsfn_blocking );
 		}
 		else
 		{
-			m_ExecuteFinishEvent->Reset();
-			{
-				Sys::RwLockScoped __Lock( *m_ExecuteLock );
-				m_Execute.Enqueue( std::move( f ) );
-			}
-			AveKak.GetApp().Wakeup( nullptr );
-			if ( bWait )
-				m_ExecuteFinishEvent->Wait();
+			m_UiExecuteFinish->Set();
 		}
 	}
 
-	void UiApp::BlockCallEnter()
+	// Execute f in UI Thread, this method should be called by JS thread
+	void UiApp::ExecuteInUiThread( Func<void()>&& f )
 	{
-		if ( 0 == m_BlockCall.fetch_add( 1 ) )
+		m_InitFinishEvent->Wait();
+
+		//++m_JsExecute;
+
+		auto nBlocker = m_Blocker.Acquire();
 		{
-			// The UI thread will start waiting for the nodejs thread from this point, and the nodejs is started waiting for the UI thread here
-			// It's safe to execute all queued UI thread executes here
-			__ExecuteQueued();
+			Sys::RwLockScoped __Lock( *m_UiExecuteLock );
+			m_UiExecuteFunc.Enqueue( { std::move( f ), nBlocker } );
 		}
-	}
 
-	void UiApp::BlockCallLeave( Sys::IEvent* pEvent )
-	{
-		m_BlockEvent = pEvent;
+		if ( 0 == m_UiExecuteBlock )
+			AveKak.GetApp().Wakeup( nullptr );
+		else
+			m_JsExecuteFinish->Set();
+
 		for ( ;; )
 		{
-			m_BlockEvent->Wait();
-			if ( m_BlockExecuteInUi )
-			{
-				m_BlockExecuteInUi = false;
-				__ExecuteQueued();
-			}
-			else
+			++m_JsExecute;
+			m_UiExecuteFinish->Wait();
+			--m_JsExecute;
+			__JsExecuteQueued( false );
+			if ( m_Blocker.Release( nBlocker ) )
 				break;
 		}
-		m_BlockEvent = nullptr;
 
-		__ExecuteQueued();
+		//--m_JsExecute;
+	}
 
-		--m_BlockCall;
+	void UiApp::ExecuteInUiThread( IPromiseCall * p )
+	{
+		m_InitFinishEvent->Wait();
+
+		{
+			Sys::RwLockScoped __Lock( *m_UiExecuteLock );
+			m_UiExecuteFunc.Enqueue( { {}, -1, p } );
+		}
+
+		if ( 0 == m_UiExecuteBlock )
+			AveKak.GetApp().Wakeup( nullptr );
+		else
+			m_JsExecuteFinish->Set();
+	}
+
+	// Execute f in JS Thread, this method should be called by UI thread
+	void UiApp::ExecuteInJsThread( Func<void()> && f, U1 bWait, U1 bUiThread )
+	{
+		S32 nBlocker = -1;
+
+		if ( bWait )
+		{
+			if ( bUiThread )
+				++m_UiExecuteBlock;
+			nBlocker = m_Blocker.Acquire();
+		}
+
+		{
+			Sys::RwLockScoped __Lock( *m_JsExecuteLock );
+			m_JsExecuteFunc.Enqueue( { std::move( f ), nBlocker } );
+		}
+
+		//S32 nExpected = 0;
+		//if ( m_JsExecute.compare_exchange_strong( nExpected, 1 ) )
+		if ( 0 == m_JsExecute )
+		{
+			napi_call_threadsafe_function( m_JsFunc, nullptr, napi_threadsafe_function_call_mode::napi_tsfn_blocking );
+		}
+		else
+		{
+			m_UiExecuteFinish->Set();
+		}
+
+		if ( bWait )
+		{
+			for ( ;; )
+			{
+				m_JsExecuteFinish->Wait();
+				if ( bUiThread && !__UiExecuteQueued( false ) )
+				{
+					// Schedule another wakeup, a new app message loop can't be started in an unfinished message processing
+					AveKak.GetApp().Wakeup( nullptr );
+					break;
+				}
+				if ( m_Blocker.Release( nBlocker ) )
+					break;
+			}
+
+			if ( bUiThread )
+				--m_UiExecuteBlock;
+		}
 	}
 
 }

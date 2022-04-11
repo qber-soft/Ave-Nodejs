@@ -320,45 +320,15 @@ namespace Nav
 	void UiWindow::OnWindowDestroy()
 	{
 		App::GetSingleton().OnIniApplyLanguage -= MakeThisFunc( __ApplyLanguage );
-
-		// When this method is called, the window will be destroyed definitely while there is no time to wait the callback to be executed on another (node js engine) thread.
-		// It should simulate an OnClose event on OnWindowClose method instead.
 	}
 
 	U1 UiWindow::OnWindowClose()
 	{
-		auto result = m_OnClosingResult;
-		m_OnClosingResult = 0;
-
-		if ( 0 == result )
-		{
-			if ( m_OnClosing )
-			{
-				m_OnClosing.WaitAsyncCall( this, [this]( const U1& r )
-				{
-					if ( r )
-					{
-						m_OnClosingResult = 1;
-						GetWindow().Close();
-					}
-				} );
-				return false;
-			}
-			else
-				result = 1;
-		}
-
-		if ( 1 == result && m_OnClose )
-		{
-			m_OnClose.WaitAsyncCall( this, [this]
-			{
-				m_OnClosingResult = 2;
-				GetWindow().Close();
-			} );
-			return false;
-		}
-
-		return true;
+		U1 r = true;
+		m_OnClosing.BlockCall( this, r );
+		if ( r )
+			m_OnClose.BlockCall( this );
+		return r;
 	}
 
 	void UiWindow::OnWindowCancel()
@@ -385,7 +355,7 @@ namespace Nav
 	void UiWindow::__OnDragEnter( Ui::IWindowDragContext& sender )
 	{
 		m_DragContext->SetDragContext( &GetWindow(), &sender );
-		m_OnDragEnter.BlockAsyncCall( static_cast<UiControl*>(this), m_DragContext, [] {} );
+		m_OnDragEnter.BlockCall( static_cast<UiControl*>(this), m_DragContext );
 	}
 
 	void UiWindow::__OnDragMove( Ui::IWindowDragContext& sender )
@@ -413,7 +383,7 @@ namespace Nav
 		if ( 0 == m_DragContext->GetBehavior() )
 		{
 			m_DragContext->SetControl( nullptr );
-			m_OnDragMove.BlockAsyncCall( static_cast<UiControl*>(this), m_DragContext, [] {} );
+			m_OnDragMove.BlockCall( static_cast<UiControl*>(this), m_DragContext );
 		}
 	}
 
@@ -425,7 +395,7 @@ namespace Nav
 			m_DragControl->FireDragLeave( m_DragContext );
 
 		m_DragContext->SetControl( nullptr );
-		m_OnDragLeave.BlockAsyncCall( static_cast<UiControl*>(this), m_DragContext, [] {} );
+		m_OnDragLeave.BlockCall( static_cast<UiControl*>(this), m_DragContext );
 	}
 
 	void UiWindow::__OnDragDrop( Ui::IWindowDragContext& sender )
@@ -439,7 +409,7 @@ namespace Nav
 		if ( !b )
 		{
 			m_DragContext->SetControl( nullptr );
-			m_OnDragDrop.BlockAsyncCall( static_cast<UiControl*>(this), m_DragContext, [] {} );
+			m_OnDragDrop.BlockCall( static_cast<UiControl*>(this), m_DragContext );
 		}
 	}
 
@@ -452,7 +422,7 @@ namespace Nav
 		m_DragControl = nullptr;
 
 		m_DragContext->SetControl( nullptr );
-		m_OnDragEnd.BlockAsyncCall( static_cast<UiControl*>(this), m_DragContext, bOk, [] {} );
+		m_OnDragEnd.BlockCall( static_cast<UiControl*>(this), m_DragContext, bOk );
 	}
 
 	void UiWindow::OnSysTrayClick( Ui::IWindowSysTray & sender, const S32_2 & vPos )
@@ -481,7 +451,8 @@ namespace Nav
 		{
 			SetDpiMenuText( "CoUiScaleSys"_ls, "CoUiScaleHw"_ls );
 			SetCommonUiDefaultConfig( App::GetSingleton().IniGetString() );
-			GetNativeWindow().SetTitle( "AppTitle"_ls );
+			if ( auto p = "AppTitle"_ls )
+				GetNativeWindow().SetTitle( p );
 
 			Byo2::FontDesc fd{};
 			fd.m_Res.m_Name = "__FontStd"_ls;
@@ -510,8 +481,6 @@ namespace Nav
 
 		if ( m_OnCreateContent && !m_OnCreateContent( this ) )
 			return false;
-
-		m_Keep.SetEmptyFunc( ci.GetEnv() );
 
 		__ApplyLanguage();
 

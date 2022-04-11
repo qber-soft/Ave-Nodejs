@@ -8,7 +8,7 @@
 
 namespace Nav
 {
-
+	
 	namespace
 	{
 		ObjectRegister<UiRichListBox> c_obj;
@@ -154,12 +154,21 @@ namespace Nav
 
 	void UiRichListBox::__OnVirtual( Ui::IRichListBox & sender, Ui::RichListBoxItemVirtual & iv )
 	{
-		m_Virtual.BlockAsyncCall( this, iv.m_Item, iv.m_SubItem, [&iv]( const UiRichListBoxItemVirtual_t& r ) {
-			iv.m_Icon = r.m_Icon;
-			iv.m_Indent = r.m_Indent;
-			iv.m_Misc = r.m_Misc;
-			iv.m_StringData = r.m_String;
-		} );
+		//if ( !App::GetSingleton().BlockCallTest() )
+		//{
+		//	auto r = m_Virtual.DirectCall( this, iv.m_Item, iv.m_SubItem );
+		//	iv.m_Icon = r.m_Icon;
+		//	iv.m_Indent = r.m_Indent;
+		//	iv.m_Misc = r.m_Misc;
+		//	iv.m_StringData = r.m_String;
+		//	return;
+		//}
+		UiRichListBoxItemVirtual_t r;
+		m_Virtual.BlockCall( this, iv.m_Item, iv.m_SubItem, r );
+		iv.m_Icon = r.m_Icon;
+		iv.m_Indent = r.m_Indent;
+		iv.m_Misc = r.m_Misc;
+		iv.m_StringData = r.m_String;
 	}
 
 	S32 UiRichListBox::ItemInsert( const UiRichListBoxItem_t & pItem, U1 bReserveSelection )
@@ -198,7 +207,7 @@ namespace Nav
 		WChar szText[1024]{};
 		item.m_Text = szText;
 		item.m_TextCharLength = CountOf( szText );
-		
+
 		UiRichListBoxItem_t r{};
 		r.m_Flag = nFlag;
 		r.m_Index = nIndex;

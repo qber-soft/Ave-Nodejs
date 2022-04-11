@@ -121,150 +121,32 @@ namespace Nav
 	namespace __Detail
 	{
 
-		class IFuncSafe
-		{
-		protected:
-			IFuncSafe() {}
-			~IFuncSafe() {}
-
-		public:
-			virtual void					ReleaseFunc() = 0;
-		};
-
-		class __EventManger
-		{
-			List<Sys::Event>				m_EventData;
-			List<Sys::IEvent*>				m_EventValid;
-			U32								m_EventCount{ 0 };
-			Sys::RwLock						m_EventLock;
-
-			Set<IFuncSafe*>					m_FuncSafe;
-			Sys::RwLock						m_FuncLock;
-
-			static __EventManger	c_Blocker;
-
-			__EventManger()
-			{
-				m_EventLock.Create();
-				m_FuncLock.Create();
-			}
-
-		public:
-			AveInline Sys::IEvent* Alloc()
-			{
-				Sys::RwLockScoped __Lock( *m_EventLock );
-				if ( 0 == m_EventCount )
-				{
-					++m_EventCount;
-					if ( m_EventCount >= m_EventValid.Size() )
-						m_EventValid.Resize( m_EventCount );
-					m_EventData.Add( AveKak.Create<Sys::IEvent>() );
-					m_EventValid[m_EventCount - 1] = m_EventData.Last();
-				}
-				return m_EventValid[--m_EventCount];
-			}
-
-			AveInline void Free( Sys::IEvent* evt )
-			{
-				Sys::RwLockScoped __Lock( *m_EventLock );
-				m_EventValid[m_EventCount++] = evt;
-			}
-
-			AveInline void AddFuncSafe( IFuncSafe* fn )
-			{
-				Sys::RwLockScoped __Lock( *m_FuncLock );
-				m_FuncSafe.Add( fn );
-			}
-
-			AveInline void RemoveFuncSafe( IFuncSafe* fn )
-			{
-				Sys::RwLockScoped __Lock( *m_FuncLock );
-				m_FuncSafe.Remove( fn );
-			}
-
-			AveInline void ReplaceFuncSafe( IFuncSafe* pOld, IFuncSafe* pNew )
-			{
-				Sys::RwLockScoped __Lock( *m_FuncLock );
-				m_FuncSafe.Remove( pOld );
-				m_FuncSafe.Add( pNew );
-			}
-
-			AveInline void ReleaseFuncSafe()
-			{
-				Set<IFuncSafe*> v;
-				{
-					Sys::RwLockScoped __Lock( *m_FuncLock );
-					v = std::move( m_FuncSafe );
-				}
-				for ( auto i : v )
-					i->ReleaseFunc();
-			}
-
-			static __EventManger& GetSingleton()
-			{
-				static __EventManger b;
-				return b;
-			}
-		};
-
 		template<class TRet, class... TArg>
-		class __JsFuncSafe : public IFuncSafe
+		class __JsFuncSafe
 		{
 		protected:
-			// Napi::ThreadSafeFunction is not fully implemented the c++ class version, don't use it here
-			//Napi::ThreadSafeFunction m_JsFunc;
-
-			napi_threadsafe_function				m_JsFunc{ nullptr };
-			std::atomic<napi_threadsafe_function>	m_JsFuncNew{ nullptr };
-			std::atomic<U1>							m_IsBusy{ false };
-			Func<void( Napi::Env, Napi::Function )>	m_Target;
+			Napi::FunctionReference					m_JsFuncDir;
+			Napi::FunctionReference					m_JsFuncNew;
+			std::atomic<S32>						m_Calling{ 0 };
 
 			__JsFuncSafe( const __JsFuncSafe& r ) = delete;
 			__JsFuncSafe& operator = ( const __JsFuncSafe& r ) = delete;
 
-			static void __Finalize( napi_env env, void* finalize_data, void* finalize_hint )
+			AveInline void __CallStart()
 			{
-			}
-
-			static void __Call( napi_env env, napi_value js_callback, void* context, void* data )
-			{
-				auto pThis = (__JsFuncSafe*) data;
-				pThis->m_Target( Napi::Env( env ), Napi::Function( env, js_callback ) );
-				pThis->__CallEnd();
-			}
-
-			virtual void ReleaseFunc() override
-			{
-				Reset();
-			}
-
-			AveInline void __Call( Func<void( Napi::Env, Napi::Function )>&& fn )
-			{
-				if ( m_JsFunc )
-				{
-					m_Target = std::move( fn );
-					auto r = napi_call_threadsafe_function( m_JsFunc, this, napi_threadsafe_function_call_mode::napi_tsfn_blocking );
-					if ( napi_ok != r )
-						__CallEnd();
-				}
-			}
-
-			AveInline U1 __CallStart()
-			{
-				U1 bExpected = false;
-				return m_IsBusy.compare_exchange_weak( bExpected, true );
+				++m_Calling;
 			}
 
 			AveInline void __CallEnd()
 			{
-				if ( auto pFuncNew = m_JsFuncNew.exchange( nullptr ) )
+				if ( 1 == m_Calling.fetch_sub( 1 ) )
 				{
-					if ( m_JsFunc )
-						napi_release_threadsafe_function( m_JsFunc, napi_threadsafe_function_release_mode::napi_tsfn_release );
-					m_JsFunc = pFuncNew;
+					if ( m_JsFuncNew )
+					{
+						m_JsFuncDir = std::move( m_JsFuncNew );
+						m_JsFuncNew.Reset();
+					}
 				}
-				U1 bExpected = true;
-				m_IsBusy.compare_exchange_strong( bExpected, false );
 			}
 
 		public:
@@ -282,20 +164,13 @@ namespace Nav
 			{
 				if ( this != &r )
 				{
-					if ( r )
-						__EventManger::GetSingleton().ReplaceFuncSafe( &r, this );
-					if ( m_IsBusy )
+					if ( m_Calling > 0 )
 					{
-						m_JsFuncNew = r.m_JsFunc;
-						r.m_JsFunc = nullptr;
+						m_JsFuncNew = std::move( r.m_JsFuncDir );
 					}
 					else
 					{
-						if ( m_JsFunc )
-							napi_release_threadsafe_function( m_JsFunc, napi_threadsafe_function_release_mode::napi_tsfn_release );
-						m_JsFunc = r.m_JsFunc;
-						m_IsBusy.exchange( r.m_IsBusy );
-						r.m_JsFunc = nullptr;
+						m_JsFuncDir = std::move( r.m_JsFuncDir );
 					}
 				}
 				return *this;
@@ -303,13 +178,8 @@ namespace Nav
 
 			AveInline void Reset()
 			{
-				if ( m_JsFunc )
-				{
-					napi_release_threadsafe_function( m_JsFunc, napi_threadsafe_function_release_mode::napi_tsfn_release );
-					m_JsFunc = nullptr;
-					m_IsBusy = false;
-					__EventManger::GetSingleton().RemoveFuncSafe( this );
-				}
+				m_JsFuncDir.Reset();
+				m_JsFuncNew.Reset();
 			}
 
 			AveInline void SetFunc( const Napi::Value& v )
@@ -317,23 +187,13 @@ namespace Nav
 				Reset();
 				if ( !v.IsNull() )
 				{
-					napi_create_threadsafe_function( v.Env(), v.As<Napi::Function>(), Napi::Object(), Napi::String::New( v.Env(), "" ), 0, 1, nullptr, __Finalize, nullptr, __Call, &m_JsFunc );
-					if ( m_JsFunc )
-						__EventManger::GetSingleton().AddFuncSafe( this );
+					m_JsFuncDir = Napi::Persistent( v.As<Napi::Function>() );
 				}
 			}
 
-			AveInline void SetEmptyFunc( Napi::Env env )
-			{
-				Reset();
-				napi_create_threadsafe_function( env, nullptr, Napi::Object(), Napi::String::New( env, "" ), 0, 1, nullptr, __Finalize, nullptr, __Call, &m_JsFunc );
-				if ( m_JsFunc )
-					__EventManger::GetSingleton().AddFuncSafe( this );
-			}
+			AveInline operator U1 () const { return m_JsFuncDir; }
 
-			AveInline operator U1 () const { return m_JsFunc; }
-
-			AveInline void operator () ( TArg... p, U1 bWait = false );
+			AveInline void operator () ( TArg... p );
 		};
 
 		template<class TRet, class... TArg>
@@ -387,8 +247,8 @@ namespace Nav
 	public:
 		using __Detail::__JsFuncSafe<TRet, TArg...>::__JsFuncSafe;
 
-		AveInline void WaitAsyncCall( TArg... p, Func<void( const TRet& )>&& fnWait );
-		AveInline void BlockAsyncCall( TArg... p, Func<void( const TRet& )>&& fnWait );
+		AveInline void BlockCall( TArg... p, TRet& r );
+		AveInline void DirectCall( TArg... p, TRet& r );
 	};
 
 	template<class... TArg>
@@ -397,8 +257,8 @@ namespace Nav
 	public:
 		using __Detail::__JsFuncSafe<void, TArg...>::__JsFuncSafe;
 
-		AveInline void WaitAsyncCall( TArg... p, Func<void()>&& fnWait );
-		AveInline void BlockAsyncCall( TArg... p, Func<void()>&& fnWait );
+		AveInline void BlockCall( TArg... p );
+		AveInline void DirectCall( TArg... p );
 	};
 
 	template<class>
@@ -623,13 +483,13 @@ namespace Nav
 		template<class T, class TEnable = void>
 		class __ConvertType;
 
-		template<class T, class U, U (Napi::Number::*TMember)() const>
+		template<class T, class U, U( Napi::Number::*TMember )() const>
 		class __ConvertNumber
 		{
 		public:
 			using TargetType_t = T;
 			static AveInline void ToCpp( void* p, const Napi::Value& v ) { *(T*) p = (T) (v.As<Napi::Number>().*TMember)(); }
-			static AveInline Napi::Value ToJs( Napi::Env env, const void* v ) { return Napi::Number::New( env, (R64) *(T*) v ); }
+			static AveInline Napi::Value ToJs( Napi::Env env, const void* v ) { return Napi::Number::New( env, (R64) * (T*) v ); }
 		};
 
 		template<> class __ConvertType<S8  /**/> : public __ConvertNumber<S8  /**/, S32, &Napi::Number::Int32Value> {};
@@ -734,7 +594,7 @@ namespace Nav
 		public:
 			using TargetType_t = T;
 			static AveInline void ToCpp( void* p, const Napi::Value& v ) { *(TargetType_t*) p = (T) (v.As<Napi::Number>().Uint32Value()); }
-			static AveInline Napi::Value ToJs( Napi::Env env, const void* v ) { return Napi::Number::New( env, (R64) (U32) *(T*) v ); }
+			static AveInline Napi::Value ToJs( Napi::Env env, const void* v ) { return Napi::Number::New( env, (R64) (U32) * (T*) v ); }
 		};
 
 		template<>
@@ -915,111 +775,74 @@ namespace Nav
 	}
 
 	template<class TRet, class... TArg>
-	AveInline void __Detail::__JsFuncSafe<TRet, TArg...>::operator () ( TArg... p, U1 bWait )
+	AveInline void __Detail::__JsFuncSafe<TRet, TArg...>::operator () ( TArg... p )
 	{
-		if ( m_JsFunc )
+		if ( m_JsFuncDir )
 		{
-			if ( __CallStart() )
+			App::GetSingleton().ExecuteInJsThread( [this, p...]
 			{
-				Sys::Event evt;
-				if ( bWait )
-					evt = __Detail::__EventManger::GetSingleton().Alloc();
-				__Call( [&evt, bWait, p...]( Napi::Env env, Napi::Function fn )
-				{
-					fn.Call( { __Detail::__ConvertType<TArg>::ToJs( env, &p )... } );
-					if ( bWait )
-						evt->Set();
-				} );
-				if ( bWait )
-				{
-					evt->Wait();
-					__Detail::__EventManger::GetSingleton().Free( evt );
-				}
-			}
+				__CallStart();
+				auto env = m_JsFuncDir.Env();
+				m_JsFuncDir.Call( { __Detail::__ConvertType<TArg>::ToJs( env, &p )... } );
+				__CallEnd();
+			}, false );
 		}
 	}
 
 	template<class TRet, class... TArg>
-	AveInline void JsFuncSafe<TRet( TArg... )>::WaitAsyncCall( TArg... p, Func<void( const TRet& )>&& fnWait )
+	AveInline void JsFuncSafe<TRet( TArg... )>::BlockCall( TArg... p, TRet& r )
 	{
-		if ( this->m_JsFunc )
+		if ( this->m_JsFuncDir )
 		{
-			if ( this->__CallStart() )
+			App::GetSingleton().ExecuteInJsThread( [&r, this, p...]
 			{
-				this->__Call( [=]( Napi::Env env, Napi::Function fn )
-				{
-					auto val = fn.Call( { __Detail::__ConvertType<TArg>::ToJs( env, &p )... } );
-					TRet r{};
-					__Detail::__ConvertType<TRet>::ToCpp( &r, val );
-					App::GetSingleton().ExecuteInUiThread( [r, &fnWait]
-					{
-						fnWait( r );
-					}, false );
-				} );
-			}
+				this->__CallStart();
+				auto env = this->m_JsFuncDir.Env();
+				auto val = this->m_JsFuncDir.Call( { __Detail::__ConvertType<TArg>::ToJs( env, &p )... } );
+				__Detail::__ConvertType<TRet>::ToCpp( &r, val );
+				this->__CallEnd();
+			}, true );
 		}
 	}
 
 	template<class TRet, class... TArg>
-	AveInline void JsFuncSafe<TRet( TArg... )>::BlockAsyncCall( TArg... p, Func<void( const TRet& )>&& fnWait )
+	AveInline void JsFuncSafe<TRet( TArg... )>::DirectCall( TArg... p, TRet& r )
 	{
-		if ( this->m_JsFunc )
+		if ( this->m_JsFuncDir )
 		{
-			if ( this->__CallStart() )
+			this->__CallStart();
+			auto env = this->m_JsFuncDir.Env();
+			auto val = this->m_JsFuncDir.Call( { __Detail::__ConvertType<TArg>::ToJs( env, &p )... } );
+			__Detail::__ConvertType<TRet>::ToCpp( &r, val );
+			this->__CallEnd();
+		}
+		return r;
+	}
+
+	template<class... TArg>
+	AveInline void JsFuncSafe<void( TArg... )>::BlockCall( TArg... p )
+	{
+		if ( this->m_JsFuncDir )
+		{
+			this->__CallStart();
+			App::GetSingleton().ExecuteInJsThread( [this, p...]
 			{
-				auto evt = __Detail::__EventManger::GetSingleton().Alloc();
-				TRet r{};
-				App::GetSingleton().BlockCallEnter();
-				this->__Call( [&]( Napi::Env env, Napi::Function fn )
-				{
-					auto val = fn.Call( { __Detail::__ConvertType<TArg>::ToJs( env, &p )... } );
-					__Detail::__ConvertType<TRet>::ToCpp( &r, val );
-					evt->Set();
-				} );
-				App::GetSingleton().BlockCallLeave( evt );
-				__Detail::__EventManger::GetSingleton().Free( evt );
-				fnWait( r );
-			}
+				auto env = this->m_JsFuncDir.Env();
+				this->m_JsFuncDir.Call( { __Detail::__ConvertType<TArg>::ToJs( env, &p )... } );
+			}, true );
+			this->__CallEnd();
 		}
 	}
 
 	template<class... TArg>
-	AveInline void JsFuncSafe<void( TArg... )>::WaitAsyncCall( TArg... p, Func<void()>&& fnWait )
+	AveInline void JsFuncSafe<void( TArg... )>::DirectCall( TArg... p )
 	{
-		if ( this->m_JsFunc )
+		if ( this->m_JsFuncDir )
 		{
-			if ( this->__CallStart() )
-			{
-				this->__Call( [=]( Napi::Env env, Napi::Function fn )
-				{
-					fn.Call( { __Detail::__ConvertType<TArg>::ToJs( env, &p )... } );
-					App::GetSingleton().ExecuteInUiThread( [fnWait]
-					{
-						fnWait();
-					}, false );
-				} );
-			}
-		}
-	}
-
-	template<class... TArg>
-	AveInline void JsFuncSafe<void( TArg... )>::BlockAsyncCall( TArg... p, Func<void()>&& fnWait )
-	{
-		if ( this->m_JsFunc )
-		{
-			if ( this->__CallStart() )
-			{
-				auto evt = __Detail::__EventManger::GetSingleton().Alloc();
-				App::GetSingleton().BlockCallEnter();
-				this->__Call( [&]( Napi::Env env, Napi::Function fn )
-				{
-					fn.Call( { __Detail::__ConvertType<TArg>::ToJs( env, &p )... } );
-					evt->Set();
-				} );
-				App::GetSingleton().BlockCallLeave( evt );
-				__Detail::__EventManger::GetSingleton().Free( evt );
-				fnWait();
-			}
+			this->__CallStart();
+			auto env = this->m_JsFuncDir.Env();
+			this->m_JsFuncDir.Call( { __Detail::__ConvertType<TArg>::ToJs( env, &p )... } );
+			this->__CallEnd();
 		}
 	}
 

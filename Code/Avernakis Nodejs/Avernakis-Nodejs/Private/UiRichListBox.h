@@ -95,6 +95,7 @@ namespace Nav
 		void							__OnVirtual( Ui::IRichListBox& sender, Ui::RichListBoxItemVirtual& iv );
 
 	private:
+	public:
 		S32								ItemInsert( const UiRichListBoxItem_t& pItem, U1 bReserveSelection );
 		U1								ItemRemove( S32 nIndex, U1 bReserveSelection ) { return GetControlTyped().ItemRemove( nIndex, bReserveSelection ); }
 		UiRichListBox*					ItemClear() { GetControlTyped().ItemClear(); return this; }
@@ -169,4 +170,5 @@ namespace Nav
 		UiRichListBox*					OnGlyphClick      /**/( OnCallback1_t&& fn ) { m_OnGlyphClick      /**/ = std::move( fn ); return this; }
 		UiRichListBox*					OnItemCheck       /**/( OnCallback1_t&& fn ) { m_OnItemCheck       /**/ = std::move( fn ); return this; }
 	};
+
 }
