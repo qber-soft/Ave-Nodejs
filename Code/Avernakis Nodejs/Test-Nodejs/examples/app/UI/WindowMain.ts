@@ -1,6 +1,4 @@
-﻿import { DpiSize, Grid, HeaderItem, HeaderItemFormat, RichListBox, RichListBoxItemVirtual, ThemeImage, ThemePredefined_Dark, Window, WindowCreation, WindowFlag, Ribbon, RibbonTab, RibbonGroup, RibbonButton, IconSource, ButtonType, ToolBar, ToolBarItem, ToolBarItemType, RibbonGallery, RibbonGalleryItem, RibbonGalleryViewMode, StringKey, Menu, MenuItem, MenuType, StatusBar, Vec4, Byo2ImageCreation, Byo2ImageDataType, AppPath, Byo2Image, Vec2, MessageIcon, MessageButton, SysDialogFilter } from "../../../src";
-import { ResourceSource } from "../../../src/Ave/Io/IoCommon";
-import { DrawImageFlag, DrawImageParam } from "../../../src/Ave/Ui/UiPainter";
+﻿import { DpiSize, Grid, HeaderItem, HeaderItemFormat, RichListBox, RichListBoxItemVirtual, ThemeImage, ThemePredefined_Dark, Window, WindowCreation, WindowFlag, Ribbon, RibbonTab, RibbonGroup, RibbonButton, IconSource, ButtonType, ToolBar, ToolBarItem, ToolBarItemType, RibbonGallery, RibbonGalleryItem, RibbonGalleryViewMode, StringKey, Menu, MenuItem, MenuType, StatusBar, Vec4, Byo2ImageCreation, Byo2ImageDataType, AppPath, Byo2Image, Vec2, MessageIcon, MessageButton, SysDialogFilter, AveGetSDKVersion } from "../../../src";
 import { DefaultString } from "../DefaultString";
 import { ResId } from "../ResId";
 import { IPage, PageRegister } from "./Page";

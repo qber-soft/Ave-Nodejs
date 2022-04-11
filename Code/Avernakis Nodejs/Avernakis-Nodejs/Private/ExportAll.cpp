@@ -3,10 +3,26 @@
 #include "WrapObject.h"
 #include "App.h"
 
+namespace
+{
+	Napi::Object AveGetSDKVersion( const Napi::CallbackInfo& ci )
+	{
+		auto obj = Napi::Object::New( ci.Env() );
+		auto& ver = Ave::AveGetSdkVersion();
+		obj.Set( "Major", ver.m_Version[0] );
+		obj.Set( "Minor", ver.m_Version[1] );
+		obj.Set( "Patch", ver.m_Version[2] );
+		obj.Set( "Private", ver.m_Version[3] );
+		return obj;
+	}
+}
+
 Napi::Object ExportAll( Napi::Env env, Napi::Object exports )
 {
 	// These did nothing but forcing the symbols to be included when compiling
 	Nav::App::GetSingleton().Initialize( false );
+
+	exports.Set( "AveGetSDKVersion", Napi::Function::New( env, AveGetSDKVersion ) );
 
 	Nav::ObjectFactory::GetSingleton().ExportJsObject( env, exports );
 

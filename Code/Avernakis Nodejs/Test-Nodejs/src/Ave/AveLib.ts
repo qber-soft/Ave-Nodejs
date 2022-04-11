@@ -325,5 +325,33 @@ const AveLib = RequireAveLib();
 	AveLib[controlName] = AddControlExtension(AveLib[controlName]);
 });
 
+export class AveVersion {
+	Major: number = 0;
+	Minor: number = 0;
+	Patch: number = 0;
+	Private: number = 0;
+
+	static FromNative(r: AveVersion) {
+		const v = new AveVersion();
+		v.Major = r.Major;
+		v.Minor = r.Minor;
+		v.Patch = r.Patch;
+		v.Private = r.Private;
+		return v;
+	}
+
+	get IsPrivateVersion() {
+		return 0 == this.Major && 0 == this.Minor;
+	}
+
+	get VersionString() {
+		return `${this.Major}.${this.Minor}.${this.Patch}.${this.Private}`;
+	}
+}
+
+export function AveGetSDKVersion(): AveVersion {
+	return AveVersion.FromNative(AveLib.AveGetSDKVersion());
+}
+
 export { AveLib };
 export { AppPath };
