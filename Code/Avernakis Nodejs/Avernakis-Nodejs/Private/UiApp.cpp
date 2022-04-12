@@ -415,7 +415,8 @@ namespace Nav
 			++m_JsExecute;
 			m_UiExecuteFinish->Wait();
 			--m_JsExecute;
-			__JsExecuteQueued( false );
+			if ( m_UiExecuteBlock )
+				__JsExecuteQueued( false );
 			if ( m_Blocker.Release( nBlocker ) )
 				break;
 		}
