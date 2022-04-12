@@ -1,5 +1,5 @@
 import { run } from "./utility";
-import { main } from "./color-picker/color-picker-basic";
+import { main } from "./version/index";
 run(main);
 
 // ---
