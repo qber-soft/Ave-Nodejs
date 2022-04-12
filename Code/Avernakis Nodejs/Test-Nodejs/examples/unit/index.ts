@@ -1,5 +1,5 @@
 import { run } from "./utility";
-import { main } from "./mouse-event/event-basic";
+import { main } from "./color-picker/color-picker-basic";
 run(main);
 
 // ---
