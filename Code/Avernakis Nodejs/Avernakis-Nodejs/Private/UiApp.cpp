@@ -501,7 +501,7 @@ namespace Nav
 
 			m_JsExecuteFunc.Enqueue( { std::move( f ), nBlocker, nullptr, bWait && nJsExecute > 0 } );
 
-			if ( !bWait || 0 == nJsExecute && 0 == m_JsExecuteDepth )
+			if ( 0 == nJsExecute && 0 == m_JsExecuteDepth )
 			{
 				++m_JsExecuteDepth;
 				napi_call_threadsafe_function( m_JsFunc, nullptr, napi_threadsafe_function_call_mode::napi_tsfn_blocking );
@@ -517,7 +517,21 @@ namespace Nav
 		{
 			for ( ;; )
 			{
-				m_JsExecuteFinish->Wait();
+				while ( !m_JsExecuteFinish->Wait( 100 ) )
+				{
+					Sys::RwLockScoped __Lock( *m_JsExecuteLock );
+					if ( 0 == nJsExecute && 0 == m_JsExecuteDepth )
+					{
+						++m_JsExecuteDepth;
+						napi_call_threadsafe_function( m_JsFunc, nullptr, napi_threadsafe_function_call_mode::napi_tsfn_blocking );
+					}
+					else
+					{
+						m_UiExecuteBreak = true;
+						m_UiExecuteFinish->Set();
+					}
+				}
+
 				U1 bJsBreak = true;
 				if ( bUiThread && m_JsExecuteBreak.compare_exchange_strong( bJsBreak, false ) && !__UiExecuteQueued( false ) )
 				{
