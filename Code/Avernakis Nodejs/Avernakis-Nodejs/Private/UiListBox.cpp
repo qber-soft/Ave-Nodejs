@@ -33,6 +33,7 @@ namespace Nav
 		AutoAddMethod( GetNextSelection );
 
 		AutoAddMethod( Ensure );
+		AutoAddMethod( SetTopIndex );
 		AutoAddMethod( GetTopIndex );
 		AutoAddMethod( ItemIsVisible );
 		AutoAddMethod( ItemGetRect );

@@ -62,6 +62,9 @@ namespace Nav
 		UiTextBox*						SetValue( R64 fValue ) { GetControlTyped().SetValue( fValue ); return this; }
 		R64								GetValue() const { return GetControlTyped().GetValue(); }
 
+		UiTextBox*						SetInvalid( PCWChar szText ) { GetControlTyped().SetInvalid( szText ); return this; }
+		WString							GetInvalid() const { return GetControlTyped().GetInvalid(); }
+
 		UiTextBox*						SetValid( PCWChar szText ) { GetControlTyped().SetValid( szText ? szText : AveWide( "" ) ); return this; }
 		WString							GetValid() const { return GetControlTyped().GetValid(); }
 

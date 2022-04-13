@@ -107,6 +107,9 @@ export interface IWindowTaskbar {
 	SetStep(n: number): IWindowTaskbar;
 	GetStep(): number;
 	Step(): IWindowTaskbar;
+	
+	SetForceBigIconSize100(n: number): IWindowTaskbar;
+	GetForceBigIconSize100(): number;
 }
 
 /* Localized control manager, support these controls

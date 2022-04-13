@@ -2,6 +2,9 @@
 #include "UiControl.h"
 #include "UiPainter.h"
 
+#include "UiWindow.h"
+#include "Byo2Font.h"
+
 #define MakeThisFunc($x) MakeFunc( this, &UiControl::$x )
 
 namespace Nav
@@ -18,19 +21,19 @@ namespace Nav
 		UiMessagePointer msgPointer;
 		switch ( nMsg )
 		{
-		case Ui::ControlMessage::KeyPress   /**/: m_OnKeyPress   /**/( this, mp.m_Key ); break;
-		case Ui::ControlMessage::KeyRelease /**/: m_OnKeyRelease /**/( this, mp.m_Key ); break;
+		case Ui::ControlMessage::KeyPress   /**/: m_OnKeyPress   /**/.BlockCall( this, mp.m_Key ); break;
+		case Ui::ControlMessage::KeyRelease /**/: m_OnKeyRelease /**/.BlockCall( this, mp.m_Key ); break;
 
-		case Ui::ControlMessage::PointerEnter    /**/: msgPointer.FromUiMessage( mp.m_Pointer ); m_OnPointerEnter    /**/( this, msgPointer ); break;
-		case Ui::ControlMessage::PointerLeave    /**/: msgPointer.FromUiMessage( mp.m_Pointer ); m_OnPointerLeave    /**/( this, msgPointer ); break;
-		case Ui::ControlMessage::PointerPress    /**/: msgPointer.FromUiMessage( mp.m_Pointer ); m_OnPointerPress    /**/( this, msgPointer ); break;
-		case Ui::ControlMessage::PointerRelease  /**/: msgPointer.FromUiMessage( mp.m_Pointer ); m_OnPointerRelease  /**/( this, msgPointer ); break;
+		case Ui::ControlMessage::PointerEnter    /**/: msgPointer.FromUiMessage( mp.m_Pointer ); m_OnPointerEnter    /**/.BlockCall( this, msgPointer ); break;
+		case Ui::ControlMessage::PointerLeave    /**/: msgPointer.FromUiMessage( mp.m_Pointer ); m_OnPointerLeave    /**/.BlockCall( this, msgPointer ); break;
+		case Ui::ControlMessage::PointerPress    /**/: msgPointer.FromUiMessage( mp.m_Pointer ); m_OnPointerPress    /**/.BlockCall( this, msgPointer ); break;
+		case Ui::ControlMessage::PointerRelease  /**/: msgPointer.FromUiMessage( mp.m_Pointer ); m_OnPointerRelease  /**/.BlockCall( this, msgPointer ); break;
 		case Ui::ControlMessage::PointerClickNdc /**/: msgPointer.FromUiMessage( mp.m_Pointer ); m_OnPointerClickNdc /**/( this, msgPointer ); break;
-		case Ui::ControlMessage::PointerMove     /**/: msgPointer.FromUiMessage( mp.m_Pointer ); m_OnPointerMove     /**/( this, msgPointer ); break;
+		case Ui::ControlMessage::PointerMove     /**/: msgPointer.FromUiMessage( mp.m_Pointer ); m_OnPointerMove     /**/.BlockCall( this, msgPointer ); break;
 		case Ui::ControlMessage::PointerVWheel   /**/: msgPointer.FromUiMessage( mp.m_Pointer ); m_OnPointerVWheel   /**/( this, msgPointer ); break;
 		case Ui::ControlMessage::PointerHWheel   /**/: msgPointer.FromUiMessage( mp.m_Pointer ); m_OnPointerHWheel   /**/( this, msgPointer ); break;
 		case Ui::ControlMessage::PointerHover    /**/: msgPointer.FromUiMessage( mp.m_Pointer ); m_OnPointerHover    /**/( this, msgPointer ); break;
-		case Ui::ControlMessage::PointerLost     /**/: msgPointer.FromUiMessage( mp.m_Pointer ); m_OnPointerLost     /**/( this, msgPointer ); break;
+		case Ui::ControlMessage::PointerLost     /**/: msgPointer.FromUiMessage( mp.m_Pointer ); m_OnPointerLost     /**/.BlockCall( this, msgPointer ); break;
 
 		case Ui::ControlMessage::PointerCursor:
 			if ( m_OnPointerCursor )
@@ -56,6 +59,12 @@ namespace Nav
 		m_Painter->SetPainter( &painter );
 		m_OnPaintPost.BlockCall( this, m_Painter, rcClient );
 		m_Painter->SetPainter( nullptr );
+	}
+
+	WrapPointer<UiControl> UiControl::SetFont( WrapPointer<Byo2Font> pFont )
+	{
+		GetControl().SetFont( pFont->CloneFont() );
+		return __GetUiControl();
 	}
 
 	WrapPointer<UiControl> UiControl::OnPaintPost( const CallbackInfo& ci, OnPaintPost_t && fn )

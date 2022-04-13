@@ -24,7 +24,7 @@ export enum MenuType {
 
 export enum MenuState {
 	Enabled /**/ = 0x00,
-	Grayed /**/ = 0x01,
+	Disabled /**/ = 0x01,
 	Checked /**/ = 0x02,
 	Radio /**/ = 0x04,
 	Default /**/ = 0x08,

@@ -39,6 +39,9 @@ namespace Nav
 		U64								GetStep() const { return m_Taskbar->GetStep(); }
 		UiWindowTaskbar*				Step() { m_Taskbar->Step(); return this; }
 
+		UiWindowTaskbar*				SetForceBigIconSize100( U32 nSize ) { m_Taskbar->SetForceBigIconSize100( nSize ); return this; }
+		U32								GetForceBigIconSize100() const { return m_Taskbar->GetForceBigIconSize100(); }
+
 	public:
 		AveInline UiWindowTaskbar*		SetTaskbar( UiWindow* pWindow, Ui::IWindowTaskbar* pTaskbar ) { m_Window = pWindow; m_Taskbar = pTaskbar; return this; }
 	};

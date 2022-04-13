@@ -13,23 +13,24 @@ export enum PointerVisibility {
 	Suppressed, // Visible but not drawing by system because the user is providing input through touch or pen instead of the mouse
 }
 
+// prettier-ignore
 export enum MonitorConnectorType {
-	Unknown /**/ = -2,
-	Other /**/ = -1,
-	HD15 /**/ = 0, // VGA
-	SVideo /**/ = 1, // S-Video
-	Composite /**/ = 2, // Composite Video
-	Component /**/ = 3, // Component Video
-	DVI /**/ = 4, // Digital Video Interface
-	HDMI /**/ = 5, // High-Definition Multimedia Interface
-	LVDS /**/ = 6, // Low Voltage Differential Swing
-	JapaneseD /**/ = 8, // Japanese D
-	SDI /**/ = 9, // SDI
+	Unknown              /**/ = -2,
+	Other                /**/ = -1,
+	HD15                 /**/ = 0, // VGA
+	SVideo               /**/ = 1, // S-Video
+	Composite            /**/ = 2, // Composite Video
+	Component            /**/ = 3, // Component Video
+	DVI                  /**/ = 4, // Digital Video Interface
+	HDMI                 /**/ = 5, // High-Definition Multimedia Interface
+	LVDS                 /**/ = 6, // Low Voltage Differential Swing
+	JapaneseD            /**/ = 8, // Japanese D
+	SDI                  /**/ = 9, // SDI
 	DisplayPort_External /**/ = 10, // External DP
 	DisplayPort_Embedded /**/ = 11, // Embedded DP
-	UDI_External /**/ = 12, // Unified Display Interface
-	UDI_Embedded /**/ = 13, // Unified Display Interface
-	SDTV /**/ = 14, // Standard Definition Television
+	UDI_External         /**/ = 12, // Unified Display Interface
+	UDI_Embedded         /**/ = 13, // Unified Display Interface
+	SDTV                 /**/ = 14, // Standard Definition Television
 }
 
 export class MonitorItem {

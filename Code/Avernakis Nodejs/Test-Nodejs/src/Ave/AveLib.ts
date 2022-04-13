@@ -2,12 +2,14 @@
 import { Vec2, Vec4 } from "./Math/Vector";
 import { CursorType, Rect } from "./Ui/UiCommon";
 import * as fs from "fs";
+import { Byo2Font } from "./Byo2/Byo2Font";
 
 export interface IControlExtension {
 	SetKeyTip(tip: string, nIndex?: number): IControl;
 	GetPosition(): Vec2;
 	GetSize(): Vec2;
 	GetEnableWithParent(): boolean;
+    GetFont(): Byo2Font;
 }
 
 export function ExtendControlInstance(instance: IControl) {
@@ -51,6 +53,16 @@ export function ExtendControlInstance(instance: IControl) {
 		let p: IControl = instance;
 		for (; p && p.GetEnable(); p = p.GetParent());
 		return !p;
+	};
+
+	const SetFont = instance.SetFont.bind(instance);
+	instance.SetFont = (pFont: Byo2Font): IControl => {
+		(instance as any).m_Font = pFont;
+		SetFont(pFont);
+		return instance;
+	};
+	instance.GetFont = (): Byo2Font => {
+		return (instance as any).m_Font;
 	};
 
 	//

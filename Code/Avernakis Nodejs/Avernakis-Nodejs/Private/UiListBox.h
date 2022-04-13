@@ -68,6 +68,7 @@ namespace Nav
 		S32								GetNextSelection( S32 nIndex ) const { return GetControlTyped().GetNextSelection( nIndex ); }
 
 		UiListBox*						Ensure( S32 nIndex ) { GetControlTyped().Ensure( nIndex ); return this; }
+		UiListBox*						SetTopIndex( S32 nIndex ) { GetControlTyped().SetTopIndex( nIndex ); return this; }
 		S32								GetTopIndex() const { return GetControlTyped().GetTopIndex(); }
 		U1								ItemIsVisible( S32 nIndex ) const { return GetControlTyped().ItemIsVisible( nIndex ); }
 		WrapData<S32_R>					ItemGetRect( S32 nIndex ) const { S32_R rc{}; GetControlTyped().ItemGetRect( nIndex, rc ); return rc; }

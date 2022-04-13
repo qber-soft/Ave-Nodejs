@@ -128,8 +128,10 @@ namespace Nav
 		UiRichListBox*					SetHeaderAutoWidth( U1 b ) { GetControlTyped().SetHeaderAutoWidth( b ); return this; }
 		U1								GetHeaderAutoWidth() const { return GetControlTyped().GetHeaderAutoWidth(); }
 
-		UiRichListBox*					SetScrollPosition( const WrapData<S32_2>& pt ) { GetControlTyped().SetScrollPosition( pt ); return this; }
+		UiRichListBox*					SetScrollPosition( const WrapData<S32_2>& pt, U1 bScroll ) { GetControlTyped().SetScrollPosition( pt, bScroll ); return this; }
 		WrapData<S32_2>					GetScrollPosition() const { return GetControlTyped().GetScrollPosition(); }
+		WrapData<S32_2>					GetScrollSize() const { return GetControlTyped().GetScrollSize(); }
+		WrapData<S32_2>					GetScrollMax() const;
 
 		UiRichListBox*					SetSelectionMode( Ui::RichListBoxSelectionMode nSelMode ) { GetControlTyped().SetSelectionMode( nSelMode ); return this; }
 		Ui::RichListBoxSelectionMode	GetSelectionMode() const { return GetControlTyped().GetSelectionMode(); }

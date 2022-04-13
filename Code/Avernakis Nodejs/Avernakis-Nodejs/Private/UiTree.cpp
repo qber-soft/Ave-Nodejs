@@ -46,12 +46,20 @@ namespace Nav
 		AutoAddMethod( GetAutoEdit );
 		AutoAddMethod( SetAutoScrollOnHover );
 		AutoAddMethod( GetAutoScrollOnHover );
+		AutoAddMethod( SetNodeLine );
+		AutoAddMethod( GetNodeLine );
+		AutoAddMethod( SetNodeLineHighlight );
+		AutoAddMethod( GetNodeLineHighlight );
+		AutoAddMethod( SetSingleClickExpand );
+		AutoAddMethod( GetSingleClickExpand );
 		AutoAddMethod( SetSelectionMode );
 		AutoAddMethod( GetSelectionMode );
 		AutoAddMethod( SetIndentWidth );
 		AutoAddMethod( GetIndentWidth );
 		AutoAddMethod( SetScrollPosition );
 		AutoAddMethod( GetScrollPosition );
+		AutoAddMethod( GetScrollSize );
+		AutoAddMethod( GetScrollMax );
 		AutoAddMethod( OnSelectionChange );
 		AutoAddMethod( OnDoubleClick );
 		AutoAddMethod( OnRightClick );
@@ -137,6 +145,16 @@ namespace Nav
 		WrapData<UiTreeHitTestResult> r{};
 		r.m_Item = Hc2j( GetControlTyped().ItemHitTest( pt, &r.m_Part, &r.m_Place, &r.m_PlaceAb ) );
 		return r;
+	}
+
+	WrapData<S32_2> UiTree::GetScrollMax() const
+	{
+		S32_2 v{};
+		if ( GetControlTyped().GetScrollH().GetVisible() )
+			v.x = GetControlTyped().GetScrollH().GetMaximum();
+		if ( GetControlTyped().GetScrollV().GetVisible() )
+			v.y = GetControlTyped().GetScrollV().GetMaximum();
+		return v;
 	}
 
 	void UiTree::__OnSelectionChange( Ui::ITree & sender )

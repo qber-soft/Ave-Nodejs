@@ -50,7 +50,7 @@ namespace Nav
 
 	U1 UiApp::Ctor( const CallbackInfo& ci )
 	{
-		napi_create_threadsafe_function( ci.GetEnv(), nullptr, Napi::Object(), Napi::String::New( ci.GetEnv(), "" ), 0, 1, nullptr, __JsFuncFinalize, this, __JsFuncCall, &m_JsFunc );
+		napi_create_threadsafe_function( ci.GetEnv(), nullptr, Napi::Object(), Napi::String::New( ci.GetEnv(), "" ), 0, 1, this, __JsFuncFinalize, this, __JsFuncCall, &m_JsFunc );
 		if ( !m_JsFunc )
 			return false;
 
@@ -255,7 +255,7 @@ namespace Nav
 
 		AveKak.GetApp().GetEvent<IApplication::OnWakeup>() += MakeThisFunc( OnAppWakeup );
 		AveKak.GetApp().GetEvent<IApplication::OnRunStart>() += MakeThisFunc( OnAppRunStart );
-		AveKak.GetApp().GetEvent<IApplication::OnRunEnd>() += MakeThisFunc( OnAppRunEnd );
+		//AveKak.GetApp().GetEvent<IApplication::OnRunEnd>() += MakeThisFunc( OnAppRunEnd );
 
 		m_InitFinishEvent->Set();
 
@@ -275,9 +275,13 @@ namespace Nav
 	{
 		auto pApp = (UiApp*) context;
 		pApp->__JsExecuteQueued( true );
+		{
+			Sys::RwLockScoped __Lock( *pApp->m_JsExecuteLock );
+			--pApp->m_JsExecuteDepth;
+		}
 	}
 
-	U1 UiApp::__UiExecuteQueued( U1 bResetCanceled )
+	U1 UiApp::__UiExecuteQueued( U1 bAll )
 	{
 		List<Work> vExecuteBuffer;
 		U1 bCanceled = false;
@@ -301,8 +305,10 @@ namespace Nav
 			for ( CSize i = 0; i < nCount; ++i )
 			{
 				auto& w = vExecuteBuffer[i];
-				if ( bResetCanceled )
+				if ( bAll )
 					w.m_Canceled = false;
+				else if ( !w.m_Wakeup )
+					continue;
 				if ( w.m_Canceled )
 				{
 					Sys::RwLockScoped __Lock( *m_UiExecuteLock );
@@ -331,6 +337,21 @@ namespace Nav
 				m_UiExecuteFinish->Set();
 			}
 
+			if ( !bAll )
+			{
+				Sys::RwLockScoped __Lock( *m_UiExecuteLock );
+				auto f = std::move( m_UiExecuteFunc );
+				for ( CSize i = 0; i < nCount; ++i )
+				{
+					auto& w = vExecuteBuffer[i];
+					if ( !w.m_Wakeup )
+						m_UiExecuteFunc.Enqueue( w );
+				}
+				while ( !f.IsEmpty() )
+					m_UiExecuteFunc.Enqueue( f.Dequeue() );
+				break;
+			}
+
 			if ( 0 == nExecuted )
 				break;
 		}
@@ -338,7 +359,7 @@ namespace Nav
 		return !bCanceled;
 	}
 
-	void UiApp::__JsExecuteQueued( U1 bReleaseCounter )
+	void UiApp::__JsExecuteQueued( U1 bAll )
 	{
 		List<Work> vExecuteBuffer;
 		for ( ;; )
@@ -360,6 +381,8 @@ namespace Nav
 			for ( CSize i = 0; i < nCount; ++i )
 			{
 				auto& w = vExecuteBuffer[i];
+				if ( !bAll && !w.m_Wakeup )
+					continue;
 				if ( w.m_Promise )
 					w.m_Promise->Resolve();
 				else
@@ -367,27 +390,39 @@ namespace Nav
 				m_Blocker.Signal( w.m_Blocker );
 				m_JsExecuteFinish->Set();
 			}
-		}
 
-		//if ( bReleaseCounter )
-		//	--m_JsExecute;
+			if ( !bAll )
+			{
+				Sys::RwLockScoped __Lock( *m_JsExecuteLock );
+				auto f = std::move( m_JsExecuteFunc );
+				for ( CSize i = 0; i < nCount; ++i )
+				{
+					auto& w = vExecuteBuffer[i];
+					if ( !w.m_Wakeup )
+						m_JsExecuteFunc.Enqueue( w );
+				}
+				while ( !f.IsEmpty() )
+					m_JsExecuteFunc.Enqueue( f.Dequeue() );
+				break;
+			}
+		}
 	}
 
 	void UiApp::__ExecuteInJsThread( IPromiseCall * p )
 	{
-		{
-			Sys::RwLockScoped __Lock( *m_JsExecuteLock );
-			m_JsExecuteFunc.Enqueue( { {}, -1, p } );
-		}
+		Sys::RwLockScoped __Lock( *m_JsExecuteLock );
+		const auto nJsExecute = m_JsExecute;
 
-		//S32 nExpected = 0;
-		//if ( m_JsExecute.compare_exchange_strong( nExpected, 1 ) )
-		if ( 0 == m_JsExecute )
+		m_JsExecuteFunc.Enqueue( { {}, -1, p, nJsExecute > 0 } );
+
+		if ( 0 == m_JsExecute && 0 == m_JsExecuteDepth )
 		{
+			++m_JsExecuteDepth;
 			napi_call_threadsafe_function( m_JsFunc, nullptr, napi_threadsafe_function_call_mode::napi_tsfn_blocking );
 		}
 		else
 		{
+			m_UiExecuteBreak = true;
 			m_UiExecuteFinish->Set();
 		}
 	}
@@ -397,31 +432,42 @@ namespace Nav
 	{
 		m_InitFinishEvent->Wait();
 
-		//++m_JsExecute;
+		const auto nBlocker = m_Blocker.Acquire();
+		const auto nUiExecute = m_UiExecuteBlock;
 
-		auto nBlocker = m_Blocker.Acquire();
 		{
 			Sys::RwLockScoped __Lock( *m_UiExecuteLock );
-			m_UiExecuteFunc.Enqueue( { std::move( f ), nBlocker } );
+			m_UiExecuteFunc.Enqueue( { std::move( f ), nBlocker, nullptr, m_UiExecuteBlock > 0 } );
 		}
 
-		if ( 0 == m_UiExecuteBlock )
+		if ( 0 == nUiExecute )
 			AveKak.GetApp().Wakeup( nullptr );
 		else
+		{
+			m_JsExecuteBreak = true;
 			m_JsExecuteFinish->Set();
+		}
+
+		{
+			Sys::RwLockScoped __Lock( *m_JsExecuteLock );
+			++m_JsExecute;
+		}
 
 		for ( ;; )
 		{
-			++m_JsExecute;
 			m_UiExecuteFinish->Wait();
-			--m_JsExecute;
-			if ( m_UiExecuteBlock )
+			U1 bUiBreak = true;
+			if ( m_UiExecuteBreak.compare_exchange_strong( bUiBreak, false ) )
 				__JsExecuteQueued( false );
 			if ( m_Blocker.Release( nBlocker ) )
 				break;
 		}
 
-		//--m_JsExecute;
+		S32 nJsExecute;
+		{
+			Sys::RwLockScoped __Lock( *m_JsExecuteLock );
+			nJsExecute = --m_JsExecute;
+		}
 	}
 
 	void UiApp::ExecuteInUiThread( IPromiseCall * p )
@@ -433,10 +479,7 @@ namespace Nav
 			m_UiExecuteFunc.Enqueue( { {}, -1, p } );
 		}
 
-		if ( 0 == m_UiExecuteBlock )
-			AveKak.GetApp().Wakeup( nullptr );
-		else
-			m_JsExecuteFinish->Set();
+		AveKak.GetApp().Wakeup( nullptr );
 	}
 
 	// Execute f in JS Thread, this method should be called by UI thread
@@ -451,20 +494,23 @@ namespace Nav
 			nBlocker = m_Blocker.Acquire();
 		}
 
+		S32 nJsExecute;
 		{
 			Sys::RwLockScoped __Lock( *m_JsExecuteLock );
-			m_JsExecuteFunc.Enqueue( { std::move( f ), nBlocker } );
-		}
+			nJsExecute = m_JsExecute;
 
-		//S32 nExpected = 0;
-		//if ( m_JsExecute.compare_exchange_strong( nExpected, 1 ) )
-		if ( 0 == m_JsExecute )
-		{
-			napi_call_threadsafe_function( m_JsFunc, nullptr, napi_threadsafe_function_call_mode::napi_tsfn_blocking );
-		}
-		else
-		{
-			m_UiExecuteFinish->Set();
+			m_JsExecuteFunc.Enqueue( { std::move( f ), nBlocker, nullptr, bWait && nJsExecute > 0 } );
+
+			if ( !bWait || 0 == nJsExecute && 0 == m_JsExecuteDepth )
+			{
+				++m_JsExecuteDepth;
+				napi_call_threadsafe_function( m_JsFunc, nullptr, napi_threadsafe_function_call_mode::napi_tsfn_blocking );
+			}
+			else
+			{
+				m_UiExecuteBreak = true;
+				m_UiExecuteFinish->Set();
+			}
 		}
 
 		if ( bWait )
@@ -472,7 +518,8 @@ namespace Nav
 			for ( ;; )
 			{
 				m_JsExecuteFinish->Wait();
-				if ( bUiThread && !__UiExecuteQueued( false ) )
+				U1 bJsBreak = true;
+				if ( bUiThread && m_JsExecuteBreak.compare_exchange_strong( bJsBreak, false ) && !__UiExecuteQueued( false ) )
 				{
 					// Schedule another wakeup, a new app message loop can't be started in an unfinished message processing
 					AveKak.GetApp().Wakeup( nullptr );

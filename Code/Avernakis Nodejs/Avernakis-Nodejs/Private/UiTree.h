@@ -152,14 +152,25 @@ namespace Nav
 		UiTree*							SetAutoScrollOnHover( U1 b ) { GetControlTyped().SetAutoScrollOnHover( b ); return this; }
 		U1								GetAutoScrollOnHover() const { return GetControlTyped().GetAutoScrollOnHover(); }
 
+		UiTree*							SetNodeLine( U1 b ) { GetControlTyped().SetNodeLine( b ); return this; }
+		U1								GetNodeLine() const { return GetControlTyped().GetNodeLine(); }
+
+		UiTree*							SetNodeLineHighlight( U1 b ) { GetControlTyped().SetNodeLineHighlight( b ); return this; }
+		U1								GetNodeLineHighlight() const { return GetControlTyped().GetNodeLineHighlight(); }
+
+		UiTree*							SetSingleClickExpand( U1 b ) { GetControlTyped().SetSingleClickExpand( b ); return this; }
+		U1								GetSingleClickExpand() const { return GetControlTyped().GetSingleClickExpand(); }
+
 		UiTree*							SetSelectionMode( Ui::TreeSelectionMode nSelMode ) { GetControlTyped().SetSelectionMode( nSelMode ); return this; }
 		Ui::TreeSelectionMode			GetSelectionMode() const { return GetControlTyped().GetSelectionMode(); }
 
 		UiTree*							SetIndentWidth( const WrapData<Ui::DpiSize>& nWidth ) { GetControlTyped().SetIndentWidth( nWidth ); return this; }
 		WrapData<Ui::DpiSize>			GetIndentWidth() const { return GetControlTyped().GetIndentWidth(); }
 
-		UiTree*							SetScrollPosition( const WrapData<S32_2>& pt ) { GetControlTyped().SetScrollPosition( pt ); return this; }
+		UiTree*							SetScrollPosition( const WrapData<S32_2>& pt, U1 bScroll ) { GetControlTyped().SetScrollPosition( pt, bScroll ); return this; }
 		WrapData<S32_2>					GetScrollPosition() const { return GetControlTyped().GetScrollPosition(); }
+		WrapData<S32_2>					GetScrollSize() const { return GetControlTyped().GetScrollSize(); }
+		WrapData<S32_2>					GetScrollMax() const;
 
 		UiTree*							OnSelectionChange /**/( OnSelectionChange_t /**/ && fn ) { m_OnSelectionChange /**/ = std::move( fn ); return this; }
 		UiTree*							OnDoubleClick     /**/( OnClick_t           /**/ && fn ) { m_OnDoubleClick     /**/ = std::move( fn ); return this; }

@@ -19,7 +19,7 @@
 #	error Ave SDK version is too old.
 #endif
 
-#if !AveCheckSdkCompileVersion( 0, 8, 2, 0 ) && !AveCheckSdkCompileVersionPrivate( 2022, 411 ) && ( 0 != __AveVersion_Major || 0 != __AveVersion_Minor || 0 != __AveVersion_Build || 0 != __AveVersion_Private )
+#if !AveCheckSdkCompileVersion( 0, 8, 2, 0 ) && !AveCheckSdkCompileVersionPrivate( 2022, 413 ) && ( 0 != __AveVersion_Major || 0 != __AveVersion_Minor || 0 != __AveVersion_Build || 0 != __AveVersion_Private )
 #	error This node addon needs Ave SDK 0.8.2 or private version 2022.411 at least, or an experimental build.
 #endif
 

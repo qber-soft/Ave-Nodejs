@@ -95,6 +95,7 @@ namespace Nav
 			Func<void()>					m_Work;
 			S32								m_Blocker;
 			IPromiseCall*					m_Promise;
+			U1								m_Wakeup;
 			U1								m_Canceled;
 		};
 
@@ -113,14 +114,17 @@ namespace Nav
 		Sys::RwLock							m_UiExecuteLock;
 		Sys::Event							m_UiExecuteFinish;
 		Queue<Work>							m_UiExecuteFunc;
-		std::atomic<S32>					m_UiExecuteBlock{ 0 };
+		S32									m_UiExecuteBlock{ 0 };
+		std::atomic<U1>						m_UiExecuteBreak{ false };
 		U1									m_UiExecuteCanceled{ false };
 
 		napi_threadsafe_function			m_JsFunc{ nullptr };
 		Sys::RwLock							m_JsExecuteLock;
 		Sys::Event							m_JsExecuteFinish;
 		Queue<Work>							m_JsExecuteFunc;
-		std::atomic<S32>					m_JsExecute{ 0 };
+		S32									m_JsExecute{ 0 };
+		std::atomic<U1>						m_JsExecuteBreak{ false };
+		S32									m_JsExecuteDepth{ 0 };
 
 		ExecuteBlocker						m_Blocker;
 
@@ -152,8 +156,8 @@ namespace Nav
 		static void							__JsFuncFinalize( napi_env env, void* finalize_data, void* finalize_hint );
 		static void							__JsFuncCall( napi_env env, napi_value js_callback, void* context, void* data );
 
-		U1									__UiExecuteQueued( U1 bResetCanceled );
-		void								__JsExecuteQueued( U1 bReleaseCounter );
+		U1									__UiExecuteQueued( U1 bAll );
+		void								__JsExecuteQueued( U1 bAll );
 
 		void								__ExecuteInJsThread( IPromiseCall* p );
 

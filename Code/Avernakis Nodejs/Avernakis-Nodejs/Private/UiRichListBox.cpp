@@ -50,6 +50,8 @@ namespace Nav
 
 		AutoAddMethod( SetScrollPosition );
 		AutoAddMethod( GetScrollPosition );
+		AutoAddMethod( GetScrollSize );
+		AutoAddMethod( GetScrollMax );
 
 		AutoAddMethod( SetSelectionMode );
 		AutoAddMethod( GetSelectionMode );
@@ -242,6 +244,16 @@ namespace Nav
 		else
 			GetControlTyped().SetVirtual( {} );
 		return this;
+	}
+
+	WrapData<S32_2> UiRichListBox::GetScrollMax() const
+	{
+		S32_2 v{};
+		if ( GetControlTyped().GetScrollH().GetVisible() )
+			v.x = GetControlTyped().GetScrollH().GetMaximum();
+		if ( GetControlTyped().GetScrollV().GetVisible() )
+			v.y = GetControlTyped().GetScrollV().GetMaximum();
+		return v;
 	}
 
 }

@@ -125,14 +125,25 @@ export interface ITree extends IControl {
 	SetAutoScrollOnHover(b: boolean): Tree;
 	GetAutoScrollOnHover(): boolean;
 
+	SetNodeLine(b: boolean): Tree;
+	GetNodeLine(): boolean;
+
+	SetNodeLineHighlight(b: boolean): Tree;
+	GetNodeLineHighlight(): boolean;
+
+	SetSingleClickExpand(b: boolean): Tree;
+	GetSingleClickExpand(): boolean;
+
 	SetSelectionMode(nSelMode: TreeSelectionMode): Tree;
 	GetSelectionMode(): TreeSelectionMode;
 
 	SetIndentWidth(nWidth: DpiSize): Tree;
 	GetIndentWidth(): DpiSize;
 
-	SetScrollPosition(pt: Vec2): Tree;
+	SetScrollPosition(pt: Vec2, bScroll: boolean): Tree;
 	GetScrollPosition(): Vec2;
+	GetScrollSize(): Vec2;
+	GetScrollMax(): Vec2;
 
 	OnSelectionChange(fn: (sender: Tree) => void): Tree;
 	OnDoubleClick(fn: (sender: Tree, pItem: TreeItemHandle) => void): Tree;
@@ -150,5 +161,13 @@ export class Tree extends (AveLib.UiTree as ITree) {
 
 	GetScrollPosition(): Vec2 {
 		return Vec2.FromNative(super.GetScrollPosition());
+	}
+	
+	GetScrollSize(): Vec2 {
+		return Vec2.FromNative(super.GetScrollSize());
+	}
+	
+	GetScrollMax(): Vec2 {
+		return Vec2.FromNative(super.GetScrollMax());
 	}
 }

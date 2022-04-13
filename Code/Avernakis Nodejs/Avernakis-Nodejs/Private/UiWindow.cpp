@@ -451,7 +451,7 @@ namespace Nav
 		{
 			SetDpiMenuText( "CoUiScaleSys"_ls, "CoUiScaleHw"_ls );
 			SetCommonUiDefaultConfig( App::GetSingleton().IniGetString() );
-			if ( auto p = "AppTitle"_ls )
+			if ( auto p = "AppTitle"_ls; p && *p )
 				GetNativeWindow().SetTitle( p );
 
 			Byo2::FontDesc fd{};

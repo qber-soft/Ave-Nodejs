@@ -111,8 +111,10 @@ export interface IRichListBox extends IControl {
 	SetHeaderAutoWidth(b: boolean): RichListBox;
 	GetHeaderAutoWidth(): boolean;
 
-	SetScrollPosition(vPos: Vec2): RichListBox;
+	SetScrollPosition(vPos: Vec2, bScroll: boolean): RichListBox;
 	GetScrollPosition(): Vec2;
+	GetScrollSize(): Vec2;
+	GetScrollMax(): Vec2;
 
 	SetSelectionMode(nSelMode: RichListBoxSelectionMode): RichListBox;
 	GetSelectionMode(): RichListBoxSelectionMode;
@@ -167,6 +169,14 @@ export class RichListBox extends (AveLib.UiRichListBox as IRichListBox) {
 		return Vec2.FromNative(super.GetScrollPosition());
 	}
 
+	GetScrollSize(): Vec2 {
+		return Vec2.FromNative(super.GetScrollSize());
+	}
+	
+	GetScrollMax(): Vec2 {
+		return Vec2.FromNative(super.GetScrollMax());
+	}
+	
 	GetHeader(): Header {
 		const header = super.GetHeader();
 		ExtendControlInstance(header as any as IControl);

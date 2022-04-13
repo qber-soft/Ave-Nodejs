@@ -5,8 +5,16 @@
 
 namespace Nav
 {
+	
+	class Byo2Font;
 
+	class UiControl;
 	class UiVisual;
+	class UiDragContext;
+	class UiPainter;
+
+	using OnDrag_t = JsFuncSafe<void( UiControl* sender, UiDragContext* dc )>;
+	using OnDragEnd_t = JsFuncSafe<void( UiControl* sender, UiDragContext* dc, U1 bOk )>;
 
 	class UiMessagePointerMouse
 	{
@@ -75,13 +83,6 @@ namespace Nav
 
 	NavDefineDataByMember_( Ui::MessageKey, Key, Modifier );
 
-	class UiControl;
-	class UiDragContext;
-	class UiPainter;
-
-	using OnDrag_t = JsFuncSafe<void( UiControl* sender, UiDragContext* dc )>;
-	using OnDragEnd_t = JsFuncSafe<void( UiControl* sender, UiDragContext* dc, U1 bOk )>;
-
 	class UiControl
 	{
 	protected:
@@ -109,6 +110,11 @@ namespace Nav
 			AutoAddMethod( SetEnable );
 			AutoAddMethod( GetEnable );
 
+			AutoAddMethod( GetRect );
+			AutoAddMethod( GetRectClient );
+
+			AutoAddMethod( GetIdealSize );
+
 			AutoAddMethod( GetParent );
 
 			AutoAddMethod( SetFocusEnable );
@@ -125,6 +131,8 @@ namespace Nav
 			AutoAddMethod( SetStyle );
 			AutoAddMethod( GetStyle );
 
+			AutoAddMethod( SetFont );
+
 			AutoAddMethod( SetTextColor );
 			AutoAddMethod( GetTextColor );
 
@@ -139,8 +147,12 @@ namespace Nav
 			AutoAddMethod( GetTabStop );
 
 			AutoAddMethod( MapRect );
-			AutoAddMethod( GetRect );
 			AutoAddMethod( Redraw );
+
+			AutoAddMethod( GetLastInputType );
+			AutoAddMethod( GetLastPointerType );
+			AutoAddMethod( GetLastMessageTime );
+			AutoAddMethod( IsVisual );
 
 #		undef AutoAddMethod
 
@@ -259,6 +271,11 @@ namespace Nav
 		WrapPointer<UiControl>	SetEnable( U1 b ) { GetControl().SetEnable( b ); return __GetUiControl(); }
 		U1						GetEnable() { return GetControl().GetEnable(); }
 
+		WrapData<S32_R>			GetRect() { return GetControl().GetRect(); }
+		WrapData<S32_R>			GetRectClient() { return GetControl().GetRectClient(); }
+
+		WrapData<Ui::DpiSize_2>	GetIdealSize() { return GetControl().GetIdealSize(); }
+
 		WrapPointer<UiControl>	GetParent() { if ( auto p = GetControl().GetParent() ) return { (UiControl*) p->GetUserContext() }; return {}; }
 
 		WrapPointer<UiControl>	SetFocusEnable( U1 b ) { GetControl().SetFocusEnable( b ); return __GetUiControl(); }
@@ -275,6 +292,8 @@ namespace Nav
 		WrapPointer<UiControl>	SetStyle( U32 nStyle ) { GetControl().SetStyle( nStyle ); return __GetUiControl(); }
 		U32						GetStyle() { return GetControl().GetStyle(); }
 
+		WrapPointer<UiControl>	SetFont( WrapPointer<Byo2Font> pFont );
+
 		WrapPointer<UiControl>	SetTextColor( const WrapData<U8_4>& v ) { GetControl().SetTextColor( v.a > 0 ? &v : nullptr ); return __GetUiControl(); }
 		WrapData<U8_4>			GetTextColor() { if ( auto p = GetControl().GetTextColor() ) return *p; else return {}; }
 
@@ -289,8 +308,12 @@ namespace Nav
 		U1						GetTabStop() { return GetControl().GetTabStop(); }
 
 		WrapData<S32_R>			MapRect( const WrapData<S32_R>& rc, U1 bClient ) { S32_R r = rc; GetControl().MapRect( r, bClient ); return r; }
-		WrapData<S32_R>			GetRect() { return GetControl().GetRect(); }
 		WrapPointer<UiControl>	Redraw() { GetControl().Redraw(); return __GetUiControl(); }
+
+		Ui::InputType			GetLastInputType() { return GetControl().GetLastInputType(); }
+		Ui::PointerType			GetLastPointerType() { return GetControl().GetLastPointerType(); }
+		R64						GetLastMessageTime() { return GetControl().GetLastMessageTime(); }
+		U1						IsVisual() { return GetControl().IsVisual(); }
 
 		WrapPointer<UiControl>  OnKeyPress   /**/( OnKey_t&& fn ) { m_OnKeyPress   /**/ = std::move( fn ); return __GetUiControl(); }
 		WrapPointer<UiControl>  OnKeyRelease /**/( OnKey_t&& fn ) { m_OnKeyRelease /**/ = std::move( fn ); return __GetUiControl(); }
