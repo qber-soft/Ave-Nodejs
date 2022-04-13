@@ -15,8 +15,8 @@ namespace Nav
 
 	void UiCommonUiWait::DefineObject()
 	{
-		AutoAddMethod( GetThreadIndex );
-		AutoAddMethod( SyncBarrier );
+		//AutoAddMethod( GetThreadIndex );
+		//AutoAddMethod( SyncBarrier );
 		AutoAddMethod( IsCanceled );
 		AutoAddMethod( IsPaused );
 		AutoAddMethod( Pause );

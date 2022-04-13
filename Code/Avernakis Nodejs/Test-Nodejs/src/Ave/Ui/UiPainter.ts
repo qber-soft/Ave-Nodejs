@@ -78,7 +78,7 @@ export interface IPainter {
 
 	PushViewport(rc: Rect, vOffset: Vec2, fOpacity: number, fRotation: number): void;
 	PopViewport(): void;
-	GetViewportRect: Rect;
+	GetViewportRect(): Rect;
 
 	SetPenFillMode(n: FillMode): void;
 	GetPenFillMode(): FillMode;

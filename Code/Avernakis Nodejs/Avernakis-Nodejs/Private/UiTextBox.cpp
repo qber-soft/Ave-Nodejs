@@ -42,6 +42,9 @@ namespace Nav
 		AutoAddMethod( SetValue );
 		AutoAddMethod( GetValue );
 
+		AutoAddMethod( SetInvalid );
+		AutoAddMethod( GetInvalid );
+
 		AutoAddMethod( SetValid );
 		AutoAddMethod( GetValid );
 

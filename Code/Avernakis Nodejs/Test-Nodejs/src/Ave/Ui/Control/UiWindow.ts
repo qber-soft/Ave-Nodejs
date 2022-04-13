@@ -107,6 +107,9 @@ export interface IWindowTaskbar {
 	SetStep(n: number): IWindowTaskbar;
 	GetStep(): number;
 	Step(): IWindowTaskbar;
+	
+	SetForceBigIconSize100(n: number): IWindowTaskbar;
+	GetForceBigIconSize100(): number;
 }
 
 /* Localized control manager, support these controls
@@ -276,11 +279,11 @@ export class Window extends (AveLib.UiWindow as IWindow) {
 	GetCommonUi(): ICommonUi {
 		const commonUi = super.GetCommonUi();
 
-		const OriginalPickColor = commonUi.PickColor.bind(commonUi);
-		commonUi.PickColor = (vColor: Vec4, bAllowAlpha: boolean) => Vec4.FromNative(OriginalPickColor(vColor, bAllowAlpha));
+		const OriginalPickColor = commonUi.PickColor.bind(commonUi) as typeof commonUi.PickColor;
+		commonUi.PickColor = async (vColor: Vec4, bAllowAlpha: boolean) => Vec4.FromNative(await OriginalPickColor(vColor, bAllowAlpha));
 
-		const OriginalPickColorEx = commonUi.PickColorEx.bind(commonUi);
-		commonUi.PickColorEx = (vColor: Vec4, bAllowAlpha: boolean, fnPreview: (vColor: Vec4) => void) => Vec4.FromNative(OriginalPickColorEx(vColor, bAllowAlpha, (vColor: Vec4) => fnPreview(Vec4.FromNative(vColor))));
+		const OriginalPickColorEx = commonUi.PickColorEx.bind(commonUi) as typeof commonUi.PickColorEx;
+		commonUi.PickColorEx = async (vColor: Vec4, bAllowAlpha: boolean, fnPreview: (vColor: Vec4) => void) => Vec4.FromNative(await OriginalPickColorEx(vColor, bAllowAlpha, (vColor: Vec4) => fnPreview(Vec4.FromNative(vColor))));
 
 		return commonUi;
 	}

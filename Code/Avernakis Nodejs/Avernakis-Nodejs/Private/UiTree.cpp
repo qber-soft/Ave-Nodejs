@@ -46,12 +46,20 @@ namespace Nav
 		AutoAddMethod( GetAutoEdit );
 		AutoAddMethod( SetAutoScrollOnHover );
 		AutoAddMethod( GetAutoScrollOnHover );
+		AutoAddMethod( SetNodeLine );
+		AutoAddMethod( GetNodeLine );
+		AutoAddMethod( SetNodeLineHighlight );
+		AutoAddMethod( GetNodeLineHighlight );
+		AutoAddMethod( SetSingleClickExpand );
+		AutoAddMethod( GetSingleClickExpand );
 		AutoAddMethod( SetSelectionMode );
 		AutoAddMethod( GetSelectionMode );
 		AutoAddMethod( SetIndentWidth );
 		AutoAddMethod( GetIndentWidth );
 		AutoAddMethod( SetScrollPosition );
 		AutoAddMethod( GetScrollPosition );
+		AutoAddMethod( GetScrollSize );
+		AutoAddMethod( GetScrollMax );
 		AutoAddMethod( OnSelectionChange );
 		AutoAddMethod( OnDoubleClick );
 		AutoAddMethod( OnRightClick );
@@ -139,6 +147,16 @@ namespace Nav
 		return r;
 	}
 
+	WrapData<S32_2> UiTree::GetScrollMax() const
+	{
+		S32_2 v{};
+		if ( GetControlTyped().GetScrollH().GetVisible() )
+			v.x = GetControlTyped().GetScrollH().GetMaximum();
+		if ( GetControlTyped().GetScrollV().GetVisible() )
+			v.y = GetControlTyped().GetScrollV().GetMaximum();
+		return v;
+	}
+
 	void UiTree::__OnSelectionChange( Ui::ITree & sender )
 	{
 		m_OnSelectionChange( this );
@@ -157,13 +175,19 @@ namespace Nav
 	void UiTree::__OnEditBegin( Ui::ITree & sender, Ui::TreeItemHandle pItem, WString & sEdit, U1 & bCanEdit )
 	{
 		UiTreeEdit te{ sEdit, bCanEdit };
-		m_OnEditBegin.BlockAsyncCall( this, Hc2j( pItem ), te, [&]( const WrapData<UiTreeEdit>& r ) { sEdit = r.m_Text; bCanEdit = r.m_CanEdit; } );
+		WrapData<UiTreeEdit> r;
+		m_OnEditBegin.BlockCall( this, Hc2j( pItem ), te, r );
+		sEdit = r.m_Text;
+		bCanEdit = r.m_CanEdit;
 	}
 
 	void UiTree::__OnEditEnd( Ui::ITree & sender, Ui::TreeItemHandle pItem, WString & sEdit, U1 & bCanEdit )
 	{
 		UiTreeEdit te{ sEdit, bCanEdit };
-		m_OnEditEnd.BlockAsyncCall( this, Hc2j( pItem ), te, [&]( const WrapData<UiTreeEdit>& r ) { sEdit = r.m_Text; bCanEdit = r.m_CanEdit; } );
+		WrapData<UiTreeEdit> r;
+		m_OnEditEnd.BlockCall( this, Hc2j( pItem ), te, r );
+		sEdit = r.m_Text;
+		bCanEdit = r.m_CanEdit;
 	}
 
 	void UiTree::__OnEditFinish( Ui::ITree & sender, Ui::TreeItemHandle pItem, const WString & sEdit, U1 bCanceled )
@@ -174,7 +198,7 @@ namespace Nav
 
 	void UiTree::__OnDragBegin( Ui::ITree & sender, U1 & bCanDrag )
 	{
-		m_OnDragBegin.BlockAsyncCall( this, [&]( const U1& b ) { bCanDrag = b; } );
+		m_OnDragBegin.BlockCall( this, bCanDrag );
 	}
 
 }

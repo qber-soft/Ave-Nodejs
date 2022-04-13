@@ -36,6 +36,11 @@ namespace Nav
 
 		AutoAddMethod( SetPointerScroll );
 		AutoAddMethod( GetPointerScroll );
+
+		AutoAddMethod( SetScrollPosition );
+		AutoAddMethod( GetScrollPosition );
+		AutoAddMethod( GetScrollSize );
+		AutoAddMethod( GetScrollMax );
 	}
 
 	U1 UiPager::Ctor( UiWindow * p, Napi::Value v )
@@ -44,6 +49,16 @@ namespace Nav
 			return false;
 
 		return true;
+	}
+
+	WrapData<S32_2> UiPager::GetScrollMax() const
+	{
+		S32_2 v{};
+		if ( GetControlTyped().GetScrollH().GetEnable() )
+			v.x = GetControlTyped().GetScrollH().GetMaximum();
+		if ( GetControlTyped().GetScrollV().GetEnable() )
+			v.y = GetControlTyped().GetScrollV().GetMaximum();
+		return v;
 	}
 
 }

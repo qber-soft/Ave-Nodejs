@@ -71,6 +71,9 @@ export interface ITextBox extends IControl {
 	SetValue(f: number): TextBox;
 	GetValue(): number;
 
+	SetInvalid(s: string): TextBox;
+	GetInvalid(): string;
+	
 	SetValid(s: string): TextBox;
 	GetValid(): string;
 

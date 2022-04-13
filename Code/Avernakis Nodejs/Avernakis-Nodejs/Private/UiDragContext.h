@@ -63,7 +63,7 @@ namespace Nav
 		{
 			m_Window = pWindow;
 			m_DragContext = pDragDrop;
-			m_Modifier = m_DragContext->GetModifer();
+			m_Modifier = 0;// m_DragContext->GetModifer();
 			m_PosOri = m_DragContext->GetPosition();
 			m_Behavior = 0;
 

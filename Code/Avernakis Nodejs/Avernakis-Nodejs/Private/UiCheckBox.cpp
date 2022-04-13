@@ -51,17 +51,7 @@ namespace Nav
 
 	void UiCheckBox::__OnChecking( Ui::ICheckBox & sender, U1 & bCanCheck )
 	{
-		if ( m_OnChecking )
-		{
-			m_OnChecking.WaitAsyncCall( this, [this]( const U1& r )
-			{
-				if ( r )
-					GetControlTyped().SetValue( GetControlTyped().GetNextValue() );
-			} );
-			bCanCheck = false;
-		}
-		else
-			bCanCheck = true;
+		m_OnChecking.BlockCall( this, bCanCheck );
 	}
 
 }

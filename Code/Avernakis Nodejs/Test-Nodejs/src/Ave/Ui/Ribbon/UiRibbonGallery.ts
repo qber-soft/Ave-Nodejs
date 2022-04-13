@@ -22,7 +22,7 @@ export enum RibbonGalleryMenuFlag {
 
 export enum RibbonGalleryMenuState {
 	Enabled /**/ = 0x00,
-	Grayed /**/ = 0x01,
+	Disabled /**/ = 0x01,
 }
 
 export enum RibbonGalleryViewMode {

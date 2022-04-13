@@ -26,6 +26,8 @@ namespace Nav
 		AutoAddMethod( SetStep );
 		AutoAddMethod( GetStep );
 		AutoAddMethod( Step );
+		AutoAddMethod( SetForceBigIconSize100 );
+		AutoAddMethod( GetForceBigIconSize100 );
 	}
 
 }

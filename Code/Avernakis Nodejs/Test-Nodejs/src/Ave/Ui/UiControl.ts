@@ -1,9 +1,10 @@
 ﻿import { Vec2, Vec4 } from "../Math/Vector";
-import { CursorType, InputModifier, KbKey, PointerButton, PointerType, Rect } from "./UiCommon";
+import { CursorType, DpiSize_2, InputModifier, InputType, KbKey, PointerButton, PointerType, Rect } from "./UiCommon";
 import { IControlExtension } from "../AveLib";
 import { FileFindItem } from "../Io/IoCommon";
 import { IAveStream } from "../Io/IoStream";
 import { IPainter } from "./UiPainter";
+import { Byo2Font } from "../Byo2/Byo2Font";
 
 export enum DropBehavior {
 	None = 0b0000,
@@ -97,6 +98,8 @@ export interface IControl extends IControlExtension {
     GetRect(): Rect;
     GetRectClient(): Rect;
 
+    GetIdealSize(): DpiSize_2;
+    
     GetParent(): IControl;
 
     SetFocusEnable(b: boolean): IControl;
@@ -113,6 +116,8 @@ export interface IControl extends IControlExtension {
     SetStyle(nStyle: number): IControl;
     GetStyle(): number;
 
+    SetFont(pFont: Byo2Font): IControl;
+
     SetTextColor(vColor: Vec4): IControl;
     GetTextColor(): Vec4;
 
@@ -128,6 +133,11 @@ export interface IControl extends IControlExtension {
 
     MapRect(rc: Rect, bClient: boolean): Rect;
     Redraw(): IControl;
+
+    GetLastInputType(): InputType;
+    GetLastPointerType(): PointerType;
+    GetLastMessageTime(): number;
+    IsVisual(): boolean;
 
     SetDropEnable(b: boolean): IControl;
     GetDropEnable(): boolean;

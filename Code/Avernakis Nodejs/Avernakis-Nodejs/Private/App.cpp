@@ -65,26 +65,27 @@ namespace Nav
 		m_App = nullptr;
 	}
 
-	void __App::ExecuteInUiThread( Func<void()>&& f, U1 bWait )
-	{
-		if ( m_App )
-			m_App->ExecuteInUiThread( std::move( f ), bWait );
-	}
-
-	void __App::BlockCallEnter()
-	{
-		if ( m_App )
-			m_App->BlockCallEnter();
-	}
-
-	void __App::BlockCallLeave( Sys::IEvent* pEvent )
-	{
-		if ( m_App )
-			m_App->BlockCallLeave( pEvent );
-	}
-
 	void __App::SetDpiwareSizeList( Ui::IIconManager & im )
 	{
 		im.SetSizeList( m_IconSizeList );
 	}
+
+	void __App::ExecuteInUiThread( Func<void()> && f )
+	{
+		if ( m_App )
+			m_App->ExecuteInUiThread( std::move( f ) );
+	}
+
+	void __App::ExecuteInUiThread( IPromiseCall * p )
+	{
+		if ( m_App )
+			m_App->ExecuteInUiThread( p );
+	}
+
+	void __App::ExecuteInJsThread( Func<void()> && f, U1 bWait, U1 bUiThread )
+	{
+		if ( m_App )
+			m_App->ExecuteInJsThread( std::move( f ), bWait, bUiThread );
+	}
+
 }

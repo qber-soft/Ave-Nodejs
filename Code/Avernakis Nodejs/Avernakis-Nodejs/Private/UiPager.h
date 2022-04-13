@@ -43,5 +43,10 @@ namespace Nav
 
 		UiPager*						SetPointerScroll( U1 b ) { GetControlTyped().SetPointerScroll( b ); return this; }
 		U1								GetPointerScroll() const { return GetControlTyped().GetPointerScroll(); }
+
+		UiPager*						SetScrollPosition( const WrapData<S32_2>& vPos, U1 bScroll ) { GetControlTyped().SetScrollPosition( vPos, bScroll ); return this; }
+		WrapData<S32_2>					GetScrollPosition() const { return GetControlTyped().GetScrollPosition(); }
+		WrapData<S32_2>					GetScrollSize() const { return GetControlTyped().GetScrollSize(); }
+		WrapData<S32_2>					GetScrollMax() const;
 	};
 }

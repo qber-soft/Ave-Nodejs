@@ -1,6 +1,4 @@
-﻿import { DpiSize, Grid, HeaderItem, HeaderItemFormat, RichListBox, RichListBoxItemVirtual, ThemeImage, ThemePredefined_Dark, Window, WindowCreation, WindowFlag, Ribbon, RibbonTab, RibbonGroup, RibbonButton, IconSource, ButtonType, ToolBar, ToolBarItem, ToolBarItemType, RibbonGallery, RibbonGalleryItem, RibbonGalleryViewMode, StringKey, Menu, MenuItem, MenuType, StatusBar, Vec4, Byo2ImageCreation, Byo2ImageDataType, AppPath, Byo2Image, Vec2 } from "../../../src";
-import { ResourceSource } from "../../../src/Ave/Io/IoCommon";
-import { DrawImageFlag, DrawImageParam } from "../../../src/Ave/Ui/UiPainter";
+﻿import { DpiSize, Grid, HeaderItem, HeaderItemFormat, RichListBox, RichListBoxItemVirtual, ThemeImage, ThemePredefined_Dark, Window, WindowCreation, WindowFlag, Ribbon, RibbonTab, RibbonGroup, RibbonButton, IconSource, ButtonType, ToolBar, ToolBarItem, ToolBarItemType, RibbonGallery, RibbonGalleryItem, RibbonGalleryViewMode, StringKey, Menu, MenuItem, MenuType, StatusBar, Vec4, Byo2ImageCreation, Byo2ImageDataType, AppPath, Byo2Image, Vec2, MessageIcon, MessageButton, SysDialogFilter, AveGetSDKVersion } from "../../../src";
 import { DefaultString } from "../DefaultString";
 import { ResId } from "../ResId";
 import { IPage, PageRegister } from "./Page";
@@ -88,6 +86,8 @@ export class WindowMain implements IWindowMain {
 
 		const pHomeEditPaste = this.CreateUIRibbonButton("RibHomeClipPaste", ResId.Icon_Paste_png);
 		pHomeEditPaste.SetButtonType(ButtonType.Split);
+		pHomeEditPaste.OnClick(() => {
+		});
 		pHomeClip.ControlAdd(pHomeEditPaste);
 
 		const pHomeEditCut = this.CreateUIRibbonButton("RibHomeClipCut", ResId.Icon_Cut_png, true);
@@ -283,7 +283,8 @@ export class WindowMain implements IWindowMain {
 			this.m_PageCurrent = null;
 		}
 		const nIndex = sender.ItemGetSelection();
-		if (nIndex >= 0 && nIndex < this.m_Page.length) this.m_PageCurrent = this.m_Page[nIndex];
+		if (1 == sender.ItemGetSelectionCount() && nIndex >= 0 && nIndex < this.m_Page.length)
+			this.m_PageCurrent = this.m_Page[nIndex];
 		if (this.m_PageCurrent) {
 			this.m_PageCurrent.OnShow?.call(this.m_PageCurrent);
 			this.m_PageCurrent.Control.SetVisible(true);

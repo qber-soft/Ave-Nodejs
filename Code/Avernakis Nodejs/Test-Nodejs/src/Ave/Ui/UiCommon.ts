@@ -82,6 +82,12 @@ export enum ExpandAction {
 	Toggle,
 }
 
+export enum InputType {
+	Pointer,
+	Keyboard,
+	Unknown,
+}
+
 export enum PointerType {
 	Mouse,
 	Touch,

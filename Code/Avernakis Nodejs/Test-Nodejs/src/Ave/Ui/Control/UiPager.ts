@@ -34,6 +34,11 @@ export interface IPager extends IControl {
 
 	SetPointerScroll(b: boolean): Pager;
 	GetPointerScroll(): boolean;
+
+	SetScrollPosition(vPos: Vec2, bScroll: boolean): Pager;
+	GetScrollPosition(): Vec2;
+	GetScrollSize(): Vec2;
+	GetScrollMax(): Vec2;
 }
 
 export class Pager extends (AveLib.UiPager as IPager) {
@@ -50,5 +55,17 @@ export class Pager extends (AveLib.UiPager as IPager) {
 
 	GetRealContentSize(): Vec2 {
 		return Vec2.FromNative(super.GetRealContentSize());
+	}
+
+	GetScrollPosition(): Vec2 {
+		return Vec2.FromNative(super.GetScrollPosition());
+	}
+	
+	GetScrollSize(): Vec2 {
+		return Vec2.FromNative(super.GetScrollSize());
+	}
+
+	GetScrollMax(): Vec2 {
+		return Vec2.FromNative(super.GetScrollMax());
 	}
 }

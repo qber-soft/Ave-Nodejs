@@ -68,22 +68,24 @@ namespace Nav
 
 	void UiMatrixEditorDoc::OnVirtualUnit( Ui::IMatrixEditorDoc & sender, S32 x, S32 y, Ui::MatrixUnit & u )
 	{
-		m_VirtualUnit.BlockAsyncCall( this, x, y, [&u]( const WrapData<Ui::MatrixUnit>& r ) { u = r; } );
+		WrapData<Ui::MatrixUnit> r;
+		m_VirtualUnit.BlockCall( this, x, y, r );
+		u = r;
 	}
 
 	void UiMatrixEditorDoc::OnVirtualCol( Ui::IMatrixEditorDoc & sender, S32 n, WString & s )
 	{
-		m_VirtualCol.BlockAsyncCall( this, n, [&s]( const WString& r ) { s = r; } );
+		m_VirtualCol.BlockCall( this, n, s );
 	}
 
 	void UiMatrixEditorDoc::OnVirtualRow( Ui::IMatrixEditorDoc & sender, S32 n, WString & s )
 	{
-		m_VirtualRow.BlockAsyncCall( this, n, [&s]( const WString& r ) { s = r; } );
+		m_VirtualRow.BlockCall( this, n, s );
 	}
 
 	void UiMatrixEditorDoc::OnVirtualFormat( Ui::IMatrixEditorDoc & sender, S32 x, S32 y, R32 v, WString & s )
 	{
-		m_VirtualFormat.BlockAsyncCall( this, x, y, v, [&s]( const WString& r ) { s = r; } );
+		m_VirtualFormat.BlockCall( this, x, y, v, s );
 	}
 
 	UiMatrixEditorDoc * UiMatrixEditorDoc::SetVirtualUnit( VirtualUnit_t && unit )

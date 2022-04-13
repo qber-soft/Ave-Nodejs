@@ -5,7 +5,7 @@
 namespace Nav
 {
 
-	class UiCommonUiWait : public WrapObject<UiCommonUiWait, void(), WrapObjectUi>
+	class UiCommonUiWait : public WrapObject<UiCommonUiWait, void(), WrapObjectGeneric>
 	{
 	public:
 		AveWrapObject( UiCommonUiWait );
@@ -20,8 +20,8 @@ namespace Nav
 		Ui::IDialogWaitOp*				m_Op;
 
 	private:
-		U32								GetThreadIndex() { return m_Op->GetThreadIndex(); }
-		void							SyncBarrier() { m_Op->SyncBarrier(); }
+		//U32								GetThreadIndex() { return m_Op->GetThreadIndex(); }
+		//void							SyncBarrier() { m_Op->SyncBarrier(); }
 		U1								IsCanceled() { return m_Op->GetAsyncOp().IsCanceled(); }
 		U1								IsPaused() { return m_Op->GetAsyncOp().IsPaused(); }
 		void							Pause() { m_Op->GetAsyncOp().Pause(); }

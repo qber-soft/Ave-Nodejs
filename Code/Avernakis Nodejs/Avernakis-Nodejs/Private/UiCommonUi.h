@@ -73,7 +73,7 @@ namespace Nav
 	NavDefineDataByMember_( UiCommonUiInputText, MinLength, MaxLength, Ime, Valid );
 	NavDefineDataByMember_( Ui::DialogInputTypeNumber, Frac, Min, Max, Default, Step );
 
-	class UiCommonUi : public WrapObject<UiCommonUi, void(), WrapObjectUi>
+	class UiCommonUi : public WrapObject<UiCommonUi, void(), WrapObjectPromise>
 	{
 	public:
 		AveWrapObject( UiCommonUi );
@@ -91,9 +91,9 @@ namespace Nav
 		Ui::IWindow*						m_Window;
 		AppHelper::IWindowCommonUi*			m_CommonUi;
 
-	private:
-		Dee::AsyncOpState					Wait( const CallbackInfo& ci, Wait_t&& fn, U32 nThreadCount );
+		class WaitCall;
 
+	private:
 		Ui::DialogMessageResult				Message( PCWChar szMain, PCWChar szDetail, Ui::DialogMessageIcon nIcon, U32 nButton, PCWChar szTitle );
 		WrapData<UiCommonUiMessageResult>	MessageEx( PCWChar szMain, PCWChar szDetail, Ui::DialogMessageIcon nIcon, U32 nButton, PCWChar szTitle, const WrapData<UiCommonUiMessage>& extra );
 

@@ -95,6 +95,7 @@ namespace Nav
 		void							__OnVirtual( Ui::IRichListBox& sender, Ui::RichListBoxItemVirtual& iv );
 
 	private:
+	public:
 		S32								ItemInsert( const UiRichListBoxItem_t& pItem, U1 bReserveSelection );
 		U1								ItemRemove( S32 nIndex, U1 bReserveSelection ) { return GetControlTyped().ItemRemove( nIndex, bReserveSelection ); }
 		UiRichListBox*					ItemClear() { GetControlTyped().ItemClear(); return this; }
@@ -127,8 +128,10 @@ namespace Nav
 		UiRichListBox*					SetHeaderAutoWidth( U1 b ) { GetControlTyped().SetHeaderAutoWidth( b ); return this; }
 		U1								GetHeaderAutoWidth() const { return GetControlTyped().GetHeaderAutoWidth(); }
 
-		UiRichListBox*					SetScrollPosition( const WrapData<S32_2>& pt ) { GetControlTyped().SetScrollPosition( pt ); return this; }
+		UiRichListBox*					SetScrollPosition( const WrapData<S32_2>& pt, U1 bScroll ) { GetControlTyped().SetScrollPosition( pt, bScroll ); return this; }
 		WrapData<S32_2>					GetScrollPosition() const { return GetControlTyped().GetScrollPosition(); }
+		WrapData<S32_2>					GetScrollSize() const { return GetControlTyped().GetScrollSize(); }
+		WrapData<S32_2>					GetScrollMax() const;
 
 		UiRichListBox*					SetSelectionMode( Ui::RichListBoxSelectionMode nSelMode ) { GetControlTyped().SetSelectionMode( nSelMode ); return this; }
 		Ui::RichListBoxSelectionMode	GetSelectionMode() const { return GetControlTyped().GetSelectionMode(); }
@@ -169,4 +172,5 @@ namespace Nav
 		UiRichListBox*					OnGlyphClick      /**/( OnCallback1_t&& fn ) { m_OnGlyphClick      /**/ = std::move( fn ); return this; }
 		UiRichListBox*					OnItemCheck       /**/( OnCallback1_t&& fn ) { m_OnItemCheck       /**/ = std::move( fn ); return this; }
 	};
+
 }

@@ -126,9 +126,9 @@ namespace Nav
 
 	void UiMatrixEditor::__OnUnitChangeEnd( Ui::IMatrixEditor & sender, S32 x, S32 y, const Ui::MatrixUnit & u, U1 & bCanceled )
 	{
-		m_OnUnitChangeEnd.BlockAsyncCall( this, x, y, u, bCanceled, [&bCanceled]( const U1& r ) {
-			bCanceled = !r;
-		} );
+		U1 r = true;
+		m_OnUnitChangeEnd.BlockCall( this, x, y, u, bCanceled, r );
+		bCanceled = !r;
 	}
 
 	UiMatrixEditor * UiMatrixEditor::DocNew()
