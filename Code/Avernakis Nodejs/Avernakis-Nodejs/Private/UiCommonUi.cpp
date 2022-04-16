@@ -33,7 +33,7 @@ namespace Nav
 				App::GetSingleton().ExecuteInJsThread( [this, &fn]
 				{
 					fn.DirectCall( m_Wait );
-				}, true, false );
+				}, true );
 			}, 1 );
 		}
 

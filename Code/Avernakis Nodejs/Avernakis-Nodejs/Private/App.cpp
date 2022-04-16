@@ -49,6 +49,9 @@ namespace Nav
 #elif AvePlatform == AvePlatformMac
 		AveKak.StaticRegister<Ave::Byo2::IDeviceCg>();
 #endif
+
+		m_JsThreadId = GetSysInfo().GetCurrentThreadId();
+
 		return true;
 	}
 
@@ -82,10 +85,10 @@ namespace Nav
 			m_App->ExecuteInUiThread( p );
 	}
 
-	void __App::ExecuteInJsThread( Func<void()> && f, U1 bWait, U1 bUiThread )
+	void __App::ExecuteInJsThread( Func<void()> && f, U1 bWait )
 	{
 		if ( m_App )
-			m_App->ExecuteInJsThread( std::move( f ), bWait, bUiThread );
+			m_App->ExecuteInJsThread( std::move( f ), bWait);
 	}
 
 }

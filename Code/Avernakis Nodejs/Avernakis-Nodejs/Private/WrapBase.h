@@ -667,7 +667,7 @@ namespace Nav
 			static AveInline void ToCpp( void* p, const Napi::Value& v )
 			{
 				auto& arr = *(TargetType_t*) p;
-				if ( v.IsNull() || v.IsUndefined() )
+				if ( v.IsNull() || v.IsUndefined() || !v.IsArrayBuffer() )
 				{
 					arr = {};
 					return;
@@ -697,6 +697,16 @@ namespace Nav
 
 			static AveInline void ToCpp( void* p, const Napi::Value& v )
 			{
+				auto& rb = *(TargetType_t*) p;
+				rb.m_Data.Clear();
+				if ( v.IsNull() || v.IsUndefined() || !v.IsArrayBuffer() )
+				{
+					rb.m_Null = true;
+					return;
+				}
+				auto ab = v.As<Napi::ArrayBuffer>();
+				rb.m_Data.Resize( ab.ByteLength() );
+				AveCopyMemory( rb.m_Data.Data(), ab.Data(), ab.ByteLength() );
 			}
 
 			static AveInline Napi::Value ToJs( Napi::Env env, const void* v )

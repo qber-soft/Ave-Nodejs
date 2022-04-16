@@ -43,12 +43,16 @@ namespace Nav
 		IInitializeDpiware mutable*				m_InitDpiware{ nullptr };
 		IInitializeDefaultStringIni mutable*	m_InitStringIni{ nullptr };
 		List<U32>								m_IconSizeList{ 16, 32 };
+		
+		U64										m_JsThreadId{ 0 };
 
 	public:
 		AveInline UiApp*						operator -> () const { return m_App; }
 
 		AveInline AppLangType					GetLangType() const { return m_LangType; }
 		AveInline U1							IsLangSet() const { return AppLangType::Text == m_LangType && m_LangSetText || AppLangType::Binary == m_LangType && m_LangSetBinary; }
+
+		AveInline U64							GetJsThreadId() const { return m_JsThreadId; }
 
 		U1										CreateUiApp( UiApp* app );
 		void									DestroyUiApp();
@@ -57,7 +61,7 @@ namespace Nav
 
 		void									ExecuteInUiThread( Func<void()>&& f );
 		void									ExecuteInUiThread( IPromiseCall* p );
-		void									ExecuteInJsThread( Func<void()>&& f, U1 bWait, U1 bUiThread = true );
+		void									ExecuteInJsThread( Func<void()>&& f, U1 bWait );
 
 #	if 1 == AveDebug
 		AveInline void WaitForDebugger()

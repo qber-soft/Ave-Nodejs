@@ -29,6 +29,7 @@ namespace Nav
 	{
 		AutoAddMethod( ResAddPackageIndex );
 		AutoAddMethod( ResAddPackage );
+		AutoAddMethod( ResAddResourceProvider );
 		AutoAddMethod( ResSetIconSizeList );
 
 		AutoAddMethod( LangSetDefaultString );
@@ -50,6 +51,8 @@ namespace Nav
 
 	U1 UiApp::Ctor( const CallbackInfo& ci )
 	{
+		m_JsThreadId = App::GetSingleton().GetJsThreadId();
+
 		napi_create_threadsafe_function( ci.GetEnv(), nullptr, Napi::Object(), Napi::String::New( ci.GetEnv(), "" ), 0, 1, this, __JsFuncFinalize, this, __JsFuncCall, &m_JsFunc );
 		if ( !m_JsFunc )
 			return false;
@@ -75,11 +78,42 @@ namespace Nav
 		if ( !m_Blocker.Create() )
 			return false;
 
-		m_Thread = AveKak.Create<Sys::IThread>( Sys::IThread::CreationParam( [this] { __UiThread(); }, "Ave Ui" ) );
-		if ( !m_Thread )
+		m_UiThread = AveKak.Create<Sys::IThread>( Sys::IThread::CreationParam( [this] { __UiThread(); }, "Ave Ui" ) );
+		if ( !m_UiThread )
 			return false;
 
+		App::GetSingleton().m_InitDpiware->AddResourceProvider( this );
+
 		return true;
+	}
+
+	U1 UiApp::IsExist( Io::ResourceId nId ) const
+	{
+		return false;
+	}
+
+	U32 UiApp::GetAll( Io::ResourceId * pId, U32 nMaxId ) const
+	{
+		return false;
+	}
+
+	Io::StreamSize_t UiApp::GetSize( Io::ResourceId nId ) const
+	{
+		return 0;
+	}
+
+	Io::AveStream UiApp::Open( Io::ResourceId nId ) const
+	{
+		const U32 nIdFinal = nId >> 32 | (0xffffffff & nId);
+		for ( auto& i : const_cast<UiApp&>(*this).m_ResProvider.RangeRevAll() )
+		{
+			ReturnBuffer buf;
+			i.m_Open.BlockCall( nIdFinal, buf );
+			if ( buf.m_Null )
+				continue;
+			return AveKak.Create<Io::IStreamList>( std::move( buf.m_Data ) );
+		}
+		return nullptr;
 	}
 
 	U1 UiApp::ResAddPackageIndex( PCWChar szFile, PCWChar szRoot )
@@ -105,6 +139,18 @@ namespace Nav
 			return false;
 		App::GetSingleton().m_InitDpiware->AddResourcePackage( std::move( res ) );
 		return true;
+	}
+
+	U1 UiApp::ResAddResourceProvider( Napi::Value v )
+	{
+		JsResourceProvider jrp{};
+		if ( v.IsFunction() )
+		{
+			jrp.m_Open.SetFunc( v );
+			m_ResProvider.Add( std::move( jrp ) );
+			return true;
+		}
+		return false;
 	}
 
 	UiApp * UiApp::ResSetIconSizeList( const List<U32>& v )
@@ -482,9 +528,19 @@ namespace Nav
 		AveKak.GetApp().Wakeup( nullptr );
 	}
 
-	// Execute f in JS Thread, this method should be called by UI thread
-	void UiApp::ExecuteInJsThread( Func<void()> && f, U1 bWait, U1 bUiThread )
+	// Execute f in JS Thread, this method can be called in any thread
+	void UiApp::ExecuteInJsThread( Func<void()> && f, U1 bWait )
 	{
+		const auto nThreadId = App::GetSingleton().GetSysInfo().GetCurrentThreadId();
+
+		if ( m_JsThreadId == nThreadId )
+		{
+			f();
+			return;
+		}
+
+		const auto bUiThread = nThreadId == m_UiThread->GetId();
+
 		S32 nBlocker = -1;
 
 		if ( bWait )
@@ -527,6 +583,7 @@ namespace Nav
 					}
 					else
 					{
+						AveKak.GetApp().Wakeup( nullptr );
 						m_UiExecuteBreak = true;
 						m_UiExecuteFinish->Set();
 					}
