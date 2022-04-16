@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg version="1.1" id="レイヤー_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px"
+	 y="0px" viewBox="0 0 256 256" style="enable-background:new 0 0 256 256;" xml:space="preserve">
+<style type="text/css">
+	.st0{fill:#FFFFFF;}
+	.st1{fill:#231815;}
+	.st2{fill:none;stroke:#FFFFFF;stroke-width:8;stroke-miterlimit:10;}
+</style>
+<circle cx="128" cy="128" r="127"/>
+<polygon class="st0" points="70.73,119 128,29 185.27,119 172.55,119 128,49 83.45,119 "/>
+<polygon class="st0" points="104,119 128,81.29 152,119 "/>
+<path class="st1" d="M172,138"/>
+<circle class="st2" cx="128" cy="128" r="116"/>
+<polygon class="st0" points="70.73,137 128,227 185.27,137 172.55,137 128,207 83.45,137 "/>
+<polygon class="st0" points="104,137 108.8,145 147.2,145 152,137 "/>
+<polygon class="st0" points="113.6,153 118.4,161 137.6,161 142.4,153 "/>
+</svg>
