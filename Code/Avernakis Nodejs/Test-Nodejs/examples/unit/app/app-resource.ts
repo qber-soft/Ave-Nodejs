@@ -1,6 +1,5 @@
 import { App, WindowCreation, WindowFlag, Window, Button, VisualTextLayout, IconSource, ResourceSource } from "../../../src";
 import { getControlDemoContainer } from "../utility";
-import * as fs from "fs";
 import * as path from "path";
 
 export function run() {
@@ -9,7 +8,7 @@ export function run() {
 	const iconDataMap = {
 		Open: [path.resolve(__dirname, "./FileOpen#0.png")],
 	};
-	const resMap = createResourceMap(app, [16], iconDataMap);
+	const resMap = app.CreateResourceMap(app, [16], iconDataMap);
 
 	globalThis.app = app;
 
@@ -38,29 +37,4 @@ export function run() {
 
 	window.SetVisible(true);
 	window.Activate();
-}
-
-function createResourceMap<IconDataMap extends Record<string, string[]>, Name extends string = keyof IconDataMap & string>(app: App, sizeList: number[], iconDataMap: IconDataMap): Record<Name, number> {
-	const map = {} as Record<Name, number>;
-	const provider: Record<number, string> = {};
-
-	const subIdCount = sizeList.length;
-	const baseId = subIdCount;
-
-	if (sizeList.length < 1 || sizeList.length > 1024) throw new Error("Invalid sizeList length.");
-	if (sizeList[0] <= 0) throw new Error("Invalid sizeList data.");
-	for (let i = 1; i < sizeList.length; ++i) if (sizeList[i] <= sizeList[i - 1]) throw new Error("Invalid sizeList data.");
-
-	Object.keys(iconDataMap).forEach((name, iconIndex) => {
-		const dataList = iconDataMap[name];
-		if (sizeList.length != dataList.length) throw new Error("Length of each item in iconDataMap must equals to sizeList's.");
-		const primaryId = baseId + iconIndex * subIdCount;
-		map[name] = primaryId;
-		dataList.forEach((filepath, dataIndex) => (provider[primaryId + dataIndex] = filepath));
-	});
-
-	app.ResSetIconSizeList(sizeList);
-	app.ResAddResourceProvider((id) => ResourceSource.ToArrayBuffer(fs.readFileSync(provider[id])));
-
-	return map;
 }

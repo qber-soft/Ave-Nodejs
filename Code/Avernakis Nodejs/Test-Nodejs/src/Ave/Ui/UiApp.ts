@@ -1,7 +1,8 @@
 ﻿import { AveLib } from "../AveLib";
 import { CultureId } from "../Culture";
-import { IResourceProvider } from "../Io";
+import { IResourceProvider, ResourceSource } from "../Io";
 import { Window } from "./Control/UiWindow";
+import * as fs from "fs";
 
 // You can use your own language files but you also need to apply the text for each control too when the user change the language
 // AveUI does support apply language for many standard controls so you can take this advantage for convenient
@@ -83,4 +84,29 @@ export interface IApp {
 	OnLanguageChange(fn: () => void): void;
 }
 
-export class App extends (AveLib.UiApp as IApp) {}
+export class App extends (AveLib.UiApp as IApp) {
+	CreateResourceMap<IconDataMap extends Record<string, string[]>, Name extends string = keyof IconDataMap & string>(app: App, sizeList: number[], iconDataMap: IconDataMap): Record<Name, number> {
+		const map = {} as Record<Name, number>;
+		const provider: Record<number, string> = {};
+
+		const subIdCount = sizeList.length;
+		const baseId = subIdCount;
+
+		if (sizeList.length < 1 || sizeList.length > 1024) throw new Error("Invalid sizeList length.");
+		if (sizeList[0] <= 0) throw new Error("Invalid sizeList data.");
+		for (let i = 1; i < sizeList.length; ++i) if (sizeList[i] <= sizeList[i - 1]) throw new Error("Invalid sizeList data.");
+
+		Object.keys(iconDataMap).forEach((name, iconIndex) => {
+			const dataList = iconDataMap[name];
+			if (sizeList.length != dataList.length) throw new Error("Length of each item in iconDataMap must equals to sizeList's.");
+			const primaryId = baseId + iconIndex * subIdCount;
+			map[name] = primaryId;
+			dataList.forEach((filepath, dataIndex) => (provider[primaryId + dataIndex] = filepath));
+		});
+
+		app.ResSetIconSizeList(sizeList);
+		app.ResAddResourceProvider((id) => ResourceSource.ToArrayBuffer(fs.readFileSync(provider[id])));
+
+		return map;
+	}
+}
