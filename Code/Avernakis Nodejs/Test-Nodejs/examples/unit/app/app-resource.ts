@@ -6,11 +6,10 @@ import * as path from "path";
 export function run() {
 	const app = new App();
 
-	app.ResSetIconSizeList([16]);
 	const iconDataMap = {
-		Open: [fs.readFileSync(path.resolve(__dirname, "./FileOpen#0.png"))],
+		Open: [path.resolve(__dirname, "./FileOpen#0.png")],
 	};
-	const resMap = createResourceMap(app, iconDataMap);
+	const resMap = createResourceMap(app, [16], iconDataMap);
 
 	globalThis.app = app;
 
@@ -53,25 +52,32 @@ class ResourceMap<Name extends string = string> {
 	}
 }
 
-function createResourceMap<IconDataMap extends Record<string, Buffer[]>, Name extends string = keyof IconDataMap & string>(app: App, iconDataMap: IconDataMap): ResourceMap<Name> {
+function createResourceMap<IconDataMap extends Record<string, string[]>, Name extends string = keyof IconDataMap & string>(app: App, sizeList: number[], iconDataMap: IconDataMap): ResourceMap<Name> {
 	const map: Record<string, number> = {};
-	const provider: Record<number, Buffer> = {};
+	const provider: Record<number, string> = {};
 
-	const baseId = 0x10;
-	const deltaId = 0x10;
+	const subIdCount = sizeList.length;
+	const baseId = subIdCount;
 
+	if (sizeList.length < 1 || sizeList.length > 1024)
+		throw new Error("Invalid sizeList length.");
+	if (sizeList[0] <= 0)
+		throw new Error("Invalid sizeList data.");
+	for (let i = 1; i < sizeList.length; ++i)
+		if (sizeList[i] <= sizeList[i - 1])
+			throw new Error("Invalid sizeList data.");
+			
 	Object.keys(iconDataMap).forEach((name, iconIndex) => {
 		const dataList = iconDataMap[name];
-		dataList.forEach((buffer, dataIndex) => {
-			const id = baseId + iconIndex * deltaId + dataIndex;
-			if (dataIndex === 0) {
-				map[name] = id;
-			}
-			provider[id] = buffer;
-		});
+		if (sizeList.length != dataList.length)
+			throw new Error("Length of each item in iconDataMap must equals to sizeList's.");
+		const primaryId = baseId + iconIndex * subIdCount;
+		map[name] = primaryId;
+		dataList.forEach((filepath, dataIndex) => provider[primaryId + dataIndex] = filepath);
 	});
 
-	app.ResAddResourceProvider((id) => ResourceSource.ToArrayBuffer(provider[id]));
+	app.ResSetIconSizeList(sizeList);
+	app.ResAddResourceProvider((id) => ResourceSource.ToArrayBuffer(fs.readFileSync(provider[id])));
 
 	const resMap = new ResourceMap(map);
 	return resMap;
