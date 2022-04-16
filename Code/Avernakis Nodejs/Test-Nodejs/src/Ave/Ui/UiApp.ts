@@ -1,5 +1,6 @@
 ﻿import { AveLib } from "../AveLib";
 import { CultureId } from "../Culture";
+import { IResourceProvider } from "../Io";
 import { Window } from "./Control/UiWindow";
 
 // You can use your own language files but you also need to apply the text for each control too when the user change the language
@@ -32,6 +33,9 @@ export interface IApp {
 
 	// Add a packaged resource file
 	ResAddPackage(sFile: string): boolean;
+
+	// Add a resource provider, IResourceProvider is not supported yet
+	ResAddResourceProvider(p: (nId: number) => ArrayBuffer | IResourceProvider): void;
 
 	// Set the supported icon sizes
 	ResSetIconSizeList(n: number[]): App;

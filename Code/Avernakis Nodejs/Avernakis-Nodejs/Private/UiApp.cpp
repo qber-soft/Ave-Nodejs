@@ -29,6 +29,7 @@ namespace Nav
 	{
 		AutoAddMethod( ResAddPackageIndex );
 		AutoAddMethod( ResAddPackage );
+		AutoAddMethod( ResAddResourceProvider );
 		AutoAddMethod( ResSetIconSizeList );
 
 		AutoAddMethod( LangSetDefaultString );
@@ -79,7 +80,38 @@ namespace Nav
 		if ( !m_Thread )
 			return false;
 
+		App::GetSingleton().m_InitDpiware->AddResourceProvider( this );
+
 		return true;
+	}
+
+	U1 UiApp::IsExist( Io::ResourceId nId ) const
+	{
+		return false;
+	}
+
+	U32 UiApp::GetAll( Io::ResourceId * pId, U32 nMaxId ) const
+	{
+		return false;
+	}
+
+	Io::StreamSize_t UiApp::GetSize( Io::ResourceId nId ) const
+	{
+		return 0;
+	}
+
+	Io::AveStream UiApp::Open( Io::ResourceId nId ) const
+	{
+		const U32 nIdFinal = nId >> 32 | (0xffffffff & nId);
+		for ( auto& i : const_cast<UiApp&>(*this).m_ResProvider.RangeRevAll() )
+		{
+			ReturnBuffer buf;
+			i.m_Open.BlockCall( nIdFinal, buf );
+			if ( buf.m_Null )
+				continue;
+			return AveKak.Create<Io::IStreamList>( std::move( buf.m_Data ) );
+		}
+		return nullptr;
 	}
 
 	U1 UiApp::ResAddPackageIndex( PCWChar szFile, PCWChar szRoot )
@@ -105,6 +137,18 @@ namespace Nav
 			return false;
 		App::GetSingleton().m_InitDpiware->AddResourcePackage( std::move( res ) );
 		return true;
+	}
+
+	U1 UiApp::ResAddResourceProvider( Napi::Value v )
+	{
+		JsResourceProvider jrp{};
+		if ( v.IsFunction() )
+		{
+			jrp.m_Open.SetFunc( v );
+			m_ResProvider.Add( std::move( jrp ) );
+			return true;
+		}
+		return false;
 	}
 
 	UiApp * UiApp::ResSetIconSizeList( const List<U32>& v )

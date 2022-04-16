@@ -12,6 +12,16 @@ export class InMemoryData {
 	}
 }
 
+export interface IAveStream {
+}
+
+export interface IResourceProvider {
+	IsExist(nId: number): boolean;
+	GetAll(): number[];
+	GetSize(nId: number): number;
+	Open(nId: number): IAveStream;
+}
+
 export enum ResourceSourceType {
 	Resource,
 	FilePath,

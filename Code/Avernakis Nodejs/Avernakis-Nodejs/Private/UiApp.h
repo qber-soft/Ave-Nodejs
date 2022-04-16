@@ -18,26 +18,32 @@ namespace Nav
 
 	class UiWindow;
 
-	class UiApp : public WrapObject<UiApp, void()>
+	class UiApp : public WrapObject<UiApp, void()>, Io::IResourceProvider
 	{
 	public:
 		UiApp( const Napi::CallbackInfo& cb );
 		~UiApp();
 
-		static PCAChar						GetExportName() { return "UiApp"; }
-		static void							DefineObject();
+		static PCAChar								GetExportName() { return "UiApp"; }
+		static void									DefineObject();
 
-		U1									Ctor( const CallbackInfo& ci );
-		Napi::Value							GetObjectValue( Napi::Env env ) { return __GetObjectValue( env ); }
+		U1											Ctor( const CallbackInfo& ci );
+		Napi::Value									GetObjectValue( Napi::Env env ) { return __GetObjectValue( env ); }
+
+	private:
+		virtual U1									IsExist( Io::ResourceId nId ) const override;
+		virtual U32									GetAll( Io::ResourceId* pId, U32 nMaxId ) const override;
+		virtual Io::StreamSize_t					GetSize( Io::ResourceId nId ) const override;
+		virtual Io::AveStream						Open( Io::ResourceId nId ) const override;
 
 	private:
 		class ExecuteBlocker
 		{
 		public:
-			Sys::RwLock						m_Lock;
-			List<U8>						m_Blocker;
-			List<S32>						m_Free;
-			U32								m_FreeCount;
+			Sys::RwLock								m_Lock;
+			List<U8>								m_Blocker;
+			List<S32>								m_Free;
+			U32										m_FreeCount;
 
 			U1 Create()
 			{
@@ -92,79 +98,87 @@ namespace Nav
 		class Work
 		{
 		public:
-			Func<void()>					m_Work;
-			S32								m_Blocker;
-			IPromiseCall*					m_Promise;
-			U1								m_Wakeup;
-			U1								m_Canceled;
+			Func<void()>							m_Work;
+			S32										m_Blocker;
+			IPromiseCall*							m_Promise;
+			U1										m_Wakeup;
+			U1										m_Canceled;
+		};
+
+		class JsResourceProvider
+		{
+		public:
+			JsFuncSafe<ReturnBuffer( U32 )>			m_Open;
 		};
 
 	private:
 		using Callback_t = JsFuncSafe<void( S32 )>;
 
-		ApplicationScope					m_Object;
+		ApplicationScope							m_Object;
 
-		Sys::Thread							m_Thread;
-		Sys::Event							m_InitFinishEvent;
-		List<WChar>							m_DefaultStringData;
-		List<PCWChar[2]>					m_DefaultString;
+		Sys::Thread									m_Thread;
+		Sys::Event									m_InitFinishEvent;
+		List<WChar>									m_DefaultStringData;
+		List<PCWChar[2]>							m_DefaultString;
+		List<JsResourceProvider>					m_ResProvider;
 
-		Callback_t							m_OnExit;
+		Callback_t									m_OnExit;
 
-		Sys::RwLock							m_UiExecuteLock;
-		Sys::Event							m_UiExecuteFinish;
-		Queue<Work>							m_UiExecuteFunc;
-		S32									m_UiExecuteBlock{ 0 };
-		std::atomic<U1>						m_UiExecuteBreak{ false };
-		U1									m_UiExecuteCanceled{ false };
+		Sys::RwLock									m_UiExecuteLock;
+		Sys::Event									m_UiExecuteFinish;
+		Queue<Work>									m_UiExecuteFunc;
+		S32											m_UiExecuteBlock{ 0 };
+		std::atomic<U1>								m_UiExecuteBreak{ false };
+		U1											m_UiExecuteCanceled{ false };
 
-		napi_threadsafe_function			m_JsFunc{ nullptr };
-		Sys::RwLock							m_JsExecuteLock;
-		Sys::Event							m_JsExecuteFinish;
-		Queue<Work>							m_JsExecuteFunc;
-		S32									m_JsExecute{ 0 };
-		std::atomic<U1>						m_JsExecuteBreak{ false };
-		S32									m_JsExecuteDepth{ 0 };
+		napi_threadsafe_function					m_JsFunc{ nullptr };
+		Sys::RwLock									m_JsExecuteLock;
+		Sys::Event									m_JsExecuteFinish;
+		Queue<Work>									m_JsExecuteFunc;
+		S32											m_JsExecute{ 0 };
+		std::atomic<U1>								m_JsExecuteBreak{ false };
+		S32											m_JsExecuteDepth{ 0 };
 
-		ExecuteBlocker						m_Blocker;
-
-	private:
-		U1									ResAddPackageIndex( PCWChar szFile, PCWChar szRoot );
-		U1									ResAddPackage( PCWChar szFile );
-		UiApp*								ResSetIconSizeList( const List<U32>& v );
-
-		UiApp*								LangSetType( AppLangType nType );
-		UiApp*								LangSetFileRoot( PCWChar szFolder, PCWChar szExt );
-		UiApp*								LangSetDefaultString( CultureId cid, Napi::Value v );
-		UiApp*								LangRefresh();
-		List<WrapData<AppLanguageItem>>		LangGet() const;
-		void*								LangCreateMenu( UiWindow* window, U1 bIncludeExportMenuItem ) const;
-		void								LangExport( UiWindow* window ) const;
-		UiApp*								LangSetCurrent( CultureId cid );
-		CultureId							LangGetCurrent() const;
-		WString								LangGetString( Napi::Value key );
-		Napi::Value							LangGetStringTable( const CallbackInfo& ci );
-
-		void								OnExit( Callback_t&& fn ) { m_OnExit = std::move( fn ); }
-		void								OnAppWakeup( Ave::IApplication& pApplication, const void* pContext );
-		S32									OnAppRunStart( Ave::IApplication& pApplication );
-		void								OnAppRunEnd( Ave::IApplication& pApplication, S32 nExitCode );
+		ExecuteBlocker								m_Blocker;
 
 	private:
-		void								__UiThread();
+		U1											ResAddPackageIndex( PCWChar szFile, PCWChar szRoot );
+		U1											ResAddPackage( PCWChar szFile );
+		U1											ResAddResourceProvider( Napi::Value v );
+		UiApp*										ResSetIconSizeList( const List<U32>& v );
 
-		static void							__JsFuncFinalize( napi_env env, void* finalize_data, void* finalize_hint );
-		static void							__JsFuncCall( napi_env env, napi_value js_callback, void* context, void* data );
+		UiApp*										LangSetType( AppLangType nType );
+		UiApp*										LangSetFileRoot( PCWChar szFolder, PCWChar szExt );
+		UiApp*										LangSetDefaultString( CultureId cid, Napi::Value v );
+		UiApp*										LangRefresh();
+		List<WrapData<AppLanguageItem>>				LangGet() const;
+		void*										LangCreateMenu( UiWindow* window, U1 bIncludeExportMenuItem ) const;
+		void										LangExport( UiWindow* window ) const;
+		UiApp*										LangSetCurrent( CultureId cid );
+		CultureId									LangGetCurrent() const;
+		WString										LangGetString( Napi::Value key );
+		Napi::Value									LangGetStringTable( const CallbackInfo& ci );
 
-		U1									__UiExecuteQueued( U1 bAll );
-		void								__JsExecuteQueued( U1 bAll );
+		void										OnExit( Callback_t&& fn ) { m_OnExit = std::move( fn ); }
+		void										OnAppWakeup( Ave::IApplication& pApplication, const void* pContext );
+		S32											OnAppRunStart( Ave::IApplication& pApplication );
+		void										OnAppRunEnd( Ave::IApplication& pApplication, S32 nExitCode );
 
-		void								__ExecuteInJsThread( IPromiseCall* p );
+	private:
+		void										__UiThread();
+
+		static void									__JsFuncFinalize( napi_env env, void* finalize_data, void* finalize_hint );
+		static void									__JsFuncCall( napi_env env, napi_value js_callback, void* context, void* data );
+
+		U1											__UiExecuteQueued( U1 bAll );
+		void										__JsExecuteQueued( U1 bAll );
+
+		void										__ExecuteInJsThread( IPromiseCall* p );
 
 	public:
-		void								ExecuteInUiThread( Func<void()>&& f );
-		void								ExecuteInUiThread( IPromiseCall* p );
-		void								ExecuteInJsThread( Func<void()>&& f, U1 bWait, U1 bUiThread );
+		void										ExecuteInUiThread( Func<void()>&& f );
+		void										ExecuteInUiThread( IPromiseCall* p );
+		void										ExecuteInJsThread( Func<void()>&& f, U1 bWait, U1 bUiThread );
 
 	};
 }
