@@ -12,8 +12,7 @@ export class InMemoryData {
 	}
 }
 
-export interface IAveStream {
-}
+export interface IAveStream {}
 
 export interface IResourceProvider {
 	IsExist(nId: number): boolean;
@@ -47,10 +46,15 @@ export class ResourceSource {
 		return r;
 	}
 
+	static ToArrayBuffer(buffer: Buffer) {
+		const ab = buffer.buffer.slice(buffer.byteOffset, buffer.byteOffset + buffer.byteLength);
+		return ab;
+	}
+
 	// https://stackoverflow.com/a/22165328
 	static FromBuffer(buffer: Buffer, rowPitch: number = 0, slicePitch: number = 0) {
-		const ab = buffer.buffer.slice(buffer.byteOffset, buffer.byteOffset + buffer.byteLength);
-		return this.FromArrayBuffer(ab, rowPitch, slicePitch);
+		const ab = ResourceSource.ToArrayBuffer(buffer);
+		return ResourceSource.FromArrayBuffer(ab, rowPitch, slicePitch);
 	}
 
 	static FromArrayBuffer(ab: ArrayBuffer, rowPitch: number = 0, slicePitch: number = 0) {
