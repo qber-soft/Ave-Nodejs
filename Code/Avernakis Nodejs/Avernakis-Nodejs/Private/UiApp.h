@@ -116,7 +116,6 @@ namespace Nav
 
 		ApplicationScope							m_Object;
 
-		Sys::Thread									m_Thread;
 		Sys::Event									m_InitFinishEvent;
 		List<WChar>									m_DefaultStringData;
 		List<PCWChar[2]>							m_DefaultString;
@@ -124,6 +123,7 @@ namespace Nav
 
 		Callback_t									m_OnExit;
 
+		Sys::Thread									m_UiThread;
 		Sys::RwLock									m_UiExecuteLock;
 		Sys::Event									m_UiExecuteFinish;
 		Queue<Work>									m_UiExecuteFunc;
@@ -138,6 +138,7 @@ namespace Nav
 		S32											m_JsExecute{ 0 };
 		std::atomic<U1>								m_JsExecuteBreak{ false };
 		S32											m_JsExecuteDepth{ 0 };
+		U64											m_JsThreadId{ 0 };
 
 		ExecuteBlocker								m_Blocker;
 
@@ -178,7 +179,7 @@ namespace Nav
 	public:
 		void										ExecuteInUiThread( Func<void()>&& f );
 		void										ExecuteInUiThread( IPromiseCall* p );
-		void										ExecuteInJsThread( Func<void()>&& f, U1 bWait, U1 bUiThread );
+		void										ExecuteInJsThread( Func<void()>&& f, U1 bWait );
 
 	};
 }

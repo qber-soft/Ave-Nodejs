@@ -51,6 +51,8 @@ namespace Nav
 
 	U1 UiApp::Ctor( const CallbackInfo& ci )
 	{
+		m_JsThreadId = App::GetSingleton().GetJsThreadId();
+
 		napi_create_threadsafe_function( ci.GetEnv(), nullptr, Napi::Object(), Napi::String::New( ci.GetEnv(), "" ), 0, 1, this, __JsFuncFinalize, this, __JsFuncCall, &m_JsFunc );
 		if ( !m_JsFunc )
 			return false;
@@ -76,8 +78,8 @@ namespace Nav
 		if ( !m_Blocker.Create() )
 			return false;
 
-		m_Thread = AveKak.Create<Sys::IThread>( Sys::IThread::CreationParam( [this] { __UiThread(); }, "Ave Ui" ) );
-		if ( !m_Thread )
+		m_UiThread = AveKak.Create<Sys::IThread>( Sys::IThread::CreationParam( [this] { __UiThread(); }, "Ave Ui" ) );
+		if ( !m_UiThread )
 			return false;
 
 		App::GetSingleton().m_InitDpiware->AddResourceProvider( this );
@@ -526,9 +528,19 @@ namespace Nav
 		AveKak.GetApp().Wakeup( nullptr );
 	}
 
-	// Execute f in JS Thread, this method should be called by UI thread
-	void UiApp::ExecuteInJsThread( Func<void()> && f, U1 bWait, U1 bUiThread )
+	// Execute f in JS Thread, this method can be called in any thread
+	void UiApp::ExecuteInJsThread( Func<void()> && f, U1 bWait )
 	{
+		const auto nThreadId = App::GetSingleton().GetSysInfo().GetCurrentThreadId();
+
+		if ( m_JsThreadId == nThreadId )
+		{
+			f();
+			return;
+		}
+
+		const auto bUiThread = nThreadId == m_UiThread->GetId();
+
 		S32 nBlocker = -1;
 
 		if ( bWait )
@@ -571,6 +583,7 @@ namespace Nav
 					}
 					else
 					{
+						AveKak.GetApp().Wakeup( nullptr );
 						m_UiExecuteBreak = true;
 						m_UiExecuteFinish->Set();
 					}

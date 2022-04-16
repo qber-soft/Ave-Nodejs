@@ -30,7 +30,6 @@ namespace Nav
 		}
 #	endif
 
-		// These did nothing but forcing the symbols to be included when compiling
 		App::GetSingleton().Initialize( false );
 
 		exports.Set( "AveGetSDKVersion", Napi::Function::New( env, AveGetSDKVersion ) );
