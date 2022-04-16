@@ -24,7 +24,7 @@ export function run() {
 		const button = new Button(window);
 		button.SetText("Open");
 		button.SetVisualTextLayout(VisualTextLayout.HorzVisualText);
-		const iconSource = new IconSource(resMap.get("Open"), 16);
+		const iconSource = new IconSource(resMap.Open, 16);
 		const icon = window.CreateManagedIcon(iconSource);
 		button.SetVisual(icon);
 
@@ -40,45 +40,27 @@ export function run() {
 	window.Activate();
 }
 
-class ResourceMap<Name extends string = string> {
-	private map: Record<Name, number>;
-
-	constructor(map: Record<Name, number>) {
-		this.map = map;
-	}
-
-	get(name: Name): number {
-		return this.map[name];
-	}
-}
-
-function createResourceMap<IconDataMap extends Record<string, string[]>, Name extends string = keyof IconDataMap & string>(app: App, sizeList: number[], iconDataMap: IconDataMap): ResourceMap<Name> {
-	const map: Record<string, number> = {};
+function createResourceMap<IconDataMap extends Record<string, string[]>, Name extends string = keyof IconDataMap & string>(app: App, sizeList: number[], iconDataMap: IconDataMap): Record<Name, number> {
+	const map = {} as Record<Name, number>;
 	const provider: Record<number, string> = {};
 
 	const subIdCount = sizeList.length;
 	const baseId = subIdCount;
 
-	if (sizeList.length < 1 || sizeList.length > 1024)
-		throw new Error("Invalid sizeList length.");
-	if (sizeList[0] <= 0)
-		throw new Error("Invalid sizeList data.");
-	for (let i = 1; i < sizeList.length; ++i)
-		if (sizeList[i] <= sizeList[i - 1])
-			throw new Error("Invalid sizeList data.");
-			
+	if (sizeList.length < 1 || sizeList.length > 1024) throw new Error("Invalid sizeList length.");
+	if (sizeList[0] <= 0) throw new Error("Invalid sizeList data.");
+	for (let i = 1; i < sizeList.length; ++i) if (sizeList[i] <= sizeList[i - 1]) throw new Error("Invalid sizeList data.");
+
 	Object.keys(iconDataMap).forEach((name, iconIndex) => {
 		const dataList = iconDataMap[name];
-		if (sizeList.length != dataList.length)
-			throw new Error("Length of each item in iconDataMap must equals to sizeList's.");
+		if (sizeList.length != dataList.length) throw new Error("Length of each item in iconDataMap must equals to sizeList's.");
 		const primaryId = baseId + iconIndex * subIdCount;
 		map[name] = primaryId;
-		dataList.forEach((filepath, dataIndex) => provider[primaryId + dataIndex] = filepath);
+		dataList.forEach((filepath, dataIndex) => (provider[primaryId + dataIndex] = filepath));
 	});
 
 	app.ResSetIconSizeList(sizeList);
 	app.ResAddResourceProvider((id) => ResourceSource.ToArrayBuffer(fs.readFileSync(provider[id])));
 
-	const resMap = new ResourceMap(map);
-	return resMap;
+	return map;
 }
