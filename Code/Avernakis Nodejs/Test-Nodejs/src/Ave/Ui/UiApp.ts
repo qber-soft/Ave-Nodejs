@@ -1,8 +1,9 @@
 ﻿import { AveLib } from "../AveLib";
-import { CultureId } from "../Culture";
+import { Codepage, CultureId, CultureInfo } from "../Culture";
 import { IResourceProvider, ResourceSource } from "../Io";
 import { Window } from "./Control/UiWindow";
 import * as fs from "fs";
+import { IImageCodec } from "../Image";
 
 // You can use your own language files but you also need to apply the text for each control too when the user change the language
 // AveUI does support apply language for many standard controls so you can take this advantage for convenient
@@ -77,6 +78,16 @@ export interface IApp {
 
 	// Get the whole localized string table
 	LangGetStringTable(): any;
+
+	//----------------------------------------------------------------------------------------------------
+	// Multilingual related
+	GetSystemAcp(): Codepage;
+	GetSystemCultureId(): CultureId;
+	GetCultureInfo(cid: CultureId): CultureInfo;
+
+	//----------------------------------------------------------------------------------------------------
+	// Image
+	GetImageCodec(): IImageCodec;
 
 	//----------------------------------------------------------------------------------------------------
 	// Events

@@ -138,30 +138,30 @@ namespace Nav
 	class DateTimeFormat
 	{
 	public:
-		WString					m_DateSeparator               /**/;
-		WString					m_TimeSeparator               /**/;
-		List<WString>			m_DayNameFull                 /**/;
-		List<WString>			m_DayNameAbbreviated          /**/;
-		List<WString>			m_MonthNameFull               /**/;
-		List<WString>			m_MonthNameAbbreviated        /**/;
-		WString					m_AmDesignator                /**/;
-		WString					m_PmDesignator                /**/;
-		U32						m_FirstDayOfWeek              /**/;
-		WString					m_PatternFullDateTime         /**/; // U
-		WString					m_PatternShortDate            /**/; // d
-		WString					m_PatternLongDate             /**/; // D
-		WString					m_PatternShortTime            /**/; // t
-		WString					m_PatternLongTime             /**/; // T
-		WString					m_PatternMonthDay             /**/; // M/m
-		WString					m_PatternYearMonthAbbreviated /**/; // y
-		WString					m_PatternYearMonthFull        /**/; // Y
-		WString					m_PatternLongDateShortTime    /**/; // f
-		WString					m_PatternLongDateLongTime     /**/; // F
-		WString					m_PatternShortDateShortTime   /**/; // g
-		WString					m_PatternShortDateLongTime    /**/; // G
-		WString					m_PatternSortableDateTime     /**/; // s
-		WString					m_PatternRfc1123              /**/; // R/r
-		WString					m_PatternUniversalSortable    /**/; // u
+		WString						m_DateSeparator               /**/;
+		WString						m_TimeSeparator               /**/;
+		List<WString>				m_DayNameFull                 /**/;
+		List<WString>				m_DayNameAbbreviated          /**/;
+		List<WString>				m_MonthNameFull               /**/;
+		List<WString>				m_MonthNameAbbreviated        /**/;
+		WString						m_AmDesignator                /**/;
+		WString						m_PmDesignator                /**/;
+		U32							m_FirstDayOfWeek              /**/;
+		WString						m_PatternFullDateTime         /**/; // U
+		WString						m_PatternShortDate            /**/; // d
+		WString						m_PatternLongDate             /**/; // D
+		WString						m_PatternShortTime            /**/; // t
+		WString						m_PatternLongTime             /**/; // T
+		WString						m_PatternMonthDay             /**/; // M/m
+		WString						m_PatternYearMonthAbbreviated /**/; // y
+		WString						m_PatternYearMonthFull        /**/; // Y
+		WString						m_PatternLongDateShortTime    /**/; // f
+		WString						m_PatternLongDateLongTime     /**/; // F
+		WString						m_PatternShortDateShortTime   /**/; // g
+		WString						m_PatternShortDateLongTime    /**/; // G
+		WString						m_PatternSortableDateTime     /**/; // s
+		WString						m_PatternRfc1123              /**/; // R/r
+		WString						m_PatternUniversalSortable    /**/; // u
 
 		void ToCultureInfo( CultureInfoDateTime& cidt ) const
 		{
@@ -187,16 +187,14 @@ namespace Nav
 			cidt.m_AmPmDesignator[1] = m_PmDesignator.c_str();
 			cidt.m_FirstDayOfWeek = (DayOfWeek) m_FirstDayOfWeek;
 
-			for ( S32 i = 0; i < 7; ++i )
-			{
+			for ( S32 i = 0; i < Math::Min( 7, (S32) m_DayNameFull.Size() ); ++i )
 				cidt.m_DayNameFull[i] = m_DayNameFull[i].c_str();
+			for ( S32 i = 0; i < Math::Min( 7, (S32) m_DayNameAbbreviated.Size() ); ++i )
 				cidt.m_DayNameAbbreviated[i] = m_DayNameAbbreviated[i].c_str();
-			}
-			for ( S32 i = 0; i < 12; ++i )
-			{
+			for ( S32 i = 0; i < Math::Min( 12, (S32) m_MonthNameFull.Size() ); ++i )
 				cidt.m_MonthNameFull[i] = m_MonthNameFull[i].c_str();
+			for ( S32 i = 0; i < Math::Min( 12, (S32) m_MonthNameAbbreviated.Size() ); ++i )
 				cidt.m_MonthNameAbbreviated[i] = m_MonthNameAbbreviated[i].c_str();
-			}
 		}
 
 		void FromCultureInfo( const CultureInfoDateTime& cidt )
@@ -223,6 +221,10 @@ namespace Nav
 			m_PmDesignator = cidt.m_AmPmDesignator[1];
 			m_FirstDayOfWeek = (U32) m_FirstDayOfWeek;
 
+			m_DayNameFull.Resize( 7 );
+			m_DayNameAbbreviated.Resize( 7 );
+			m_MonthNameFull.Resize( 12 );
+			m_MonthNameAbbreviated.Resize( 12 );
 			for ( S32 i = 0; i < 7; ++i )
 			{
 				m_DayNameFull[i] = cidt.m_DayNameFull[i];
@@ -237,5 +239,101 @@ namespace Nav
 	};
 
 	NavDefineDataByMember_( DateTimeFormat, DateSeparator, TimeSeparator, DayNameFull, DayNameAbbreviated, MonthNameFull, MonthNameAbbreviated, AmDesignator, PmDesignator, FirstDayOfWeek, PatternFullDateTime, PatternShortDate, PatternLongDate, PatternShortTime, PatternLongTime, PatternMonthDay, PatternYearMonthAbbreviated, PatternYearMonthFull, PatternLongDateShortTime, PatternLongDateLongTime, PatternShortDateShortTime, PatternShortDateLongTime, PatternSortableDateTime, PatternRfc1123, PatternUniversalSortable );
+
+	class NumberFormatInfo
+	{
+	public:
+		WString						m_Symbol;
+		WString						m_DecimalSeparator;
+		U32							m_DecimalDigits;
+		WString						m_GroupSeparator;
+		List<U32>					m_GroupSize; // Size() == 4
+		U32							m_PositivePattern;
+		U32							m_NegativePattern;
+
+		void FromCultureInfo( const CultureInfoNumberInfo& ci )
+		{
+			if ( ci.m_Symbol )
+				m_Symbol = ci.m_Symbol;
+			else
+				m_Symbol.clear();
+			m_DecimalSeparator.clear();
+			m_DecimalSeparator.push_back( ci.m_DecimalSeparator );
+			m_DecimalDigits = ci.m_DecimalDigits;
+			m_GroupSeparator.clear();
+			m_GroupSeparator.push_back( ci.m_GroupSeparator );
+			m_GroupSize.Resize( CountOf( ci.m_GroupSize ) );
+			AveCopyMemory( m_GroupSize.Data(), ci.m_GroupSize, sizeof( ci.m_GroupSize ) );
+			m_PositivePattern = ci.m_PositivePattern;
+			m_NegativePattern = ci.m_NegativePattern;
+		}
+	};
+
+	NavDefineDataByMember_( NumberFormatInfo, Symbol, DecimalSeparator, DecimalDigits, GroupSeparator, GroupSize, PositivePattern, NegativePattern );
+
+	class NumberFormat
+	{
+	public:
+		WrapData<NumberFormatInfo>	m_Currency;
+		WrapData<NumberFormatInfo>	m_Number;
+		WrapData<NumberFormatInfo>	m_Percent;
+
+		void FromCultureInfo( const CultureInfoNumber& ci )
+		{
+			m_Currency.FromCultureInfo( ci.m_Currency );
+			m_Number.FromCultureInfo( ci.m_Number );
+			m_Percent.FromCultureInfo( ci.m_Percent );
+		}
+	};
+
+	NavDefineDataByMember_( NumberFormat, Currency, Number, Percent );
+
+	class TextFormat
+	{
+	public:
+		U1							m_IsRtl;
+		StringCp					m_AnsiCp;
+		StringCp					m_MacCp;
+		StringCp					m_OemCp;
+
+		void FromCultureInfo( const CultureInfoText& ci )
+		{
+			m_IsRtl = ci.m_IsRtl;
+			m_AnsiCp = ci.m_AnsiCp;
+			m_MacCp = ci.m_MacCp;
+			m_OemCp = ci.m_OemCp;
+		}
+	};
+
+	NavDefineDataByMember_( TextFormat, IsRtl, AnsiCp, MacCp, OemCp );
+
+	class NavCultureInfo
+	{
+	public:
+		CultureId					m_Id          /**/;
+		LanguageId					m_Lid         /**/;
+		RegionId					m_Rid         /**/;
+		S32							m_Lcid        /**/;
+		WString						m_NameEnglish /**/;
+		WString						m_NameNative  /**/;
+		WrapData<DateTimeFormat>	m_DateTime    /**/;
+		WrapData<NumberFormat>		m_Number      /**/;
+		WrapData<TextFormat>		m_Text        /**/;
+
+		void FromCultureInfo( const CultureInfo& ci )
+		{
+			m_Id = ci.m_Id;
+			m_Lid = ci.m_Lid;
+			m_Rid = ci.m_Rid;
+			m_Lcid = ci.m_Lcid;
+			m_NameEnglish = ci.m_NameEnglish;
+			m_NameNative = ci.m_NameNative;
+			m_DateTime.FromCultureInfo( ci.m_DateTime );
+			m_Number.FromCultureInfo( ci.m_Number );
+			m_Text.FromCultureInfo( ci.m_Text );
+		}
+	};
+
+	NavDefineDataByMember_( NavCultureInfo, Id, Lid, Rid, Lcid, NameEnglish, NameNative, DateTime, Number, Text );
 
 }

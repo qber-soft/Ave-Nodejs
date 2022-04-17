@@ -18,7 +18,7 @@ namespace Nav
 	};
 
 	class __App : public AppFeature::AppCore
-		< AppFeature::AppService<Sys::IInformation, Io::IFileSystem, Ui::ISysDialog>
+		< AppFeature::AppService<Sys::IInformation, Io::IFileSystem, Ui::ISysDialog, Img::ILoader, Dee::IClipboard>
 		, AppFeature::AppDpiware
 		, AppFeature::AppLocalStringIni
 		>

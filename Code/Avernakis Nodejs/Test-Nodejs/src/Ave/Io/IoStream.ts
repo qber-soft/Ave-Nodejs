@@ -1,5 +1,4 @@
-﻿import { Duplex } from "stream";
-import { SeekMode } from "./IoCommon";
+﻿import { SeekMode } from "./IoCommon";
 
 export interface IAveStreamExtension {
 	Tell(): number;

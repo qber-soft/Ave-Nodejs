@@ -6,7 +6,7 @@ import { DpiSize_2 } from "../UiCommon";
 import { Vec3 } from "../../Math/Vector";
 import { Quat } from "../../Math/Quaternion";
 import { Mat44 } from "../../Math/Matrix";
-import { PixFormat } from "../../Common";
+import { PixFormat } from "../../Image";
 
 export class Container3DMesh {
 	Position: ArrayBuffer; // use Float32Array; [p0.x, p0.y, p0.z, p1.x, p1.y, p1.z, ...]

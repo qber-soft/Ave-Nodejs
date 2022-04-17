@@ -29,7 +29,7 @@ namespace Nav
 		Io::StreamSize_t					Size() const { return m_Stream->Size(); }
 		Io::StreamSize_t					Seek( Io::StreamSize_t nPos, Io::SeekMode nSeekMode ) const { return m_Stream->Seek( nPos, nSeekMode ); }
 
-		ReturnBuffer						ReadBinary( U32 nSize );
+		ArrayBuffer							ReadBinary( U32 nSize );
 		U32									WriteBinary( const WrapArray<U8>& pData );
 
 	public:

@@ -17,6 +17,7 @@ namespace Nav
 	NavDefineDataByMember_( AppLanguageItem, Path, Cid, NameEnglish, NameNative );
 
 	class UiWindow;
+	class ImgCodec;
 
 	class UiApp : public WrapObject<UiApp, void()>, Io::IResourceProvider
 	{
@@ -108,7 +109,7 @@ namespace Nav
 		class JsResourceProvider
 		{
 		public:
-			JsFuncSafe<ReturnBuffer( U32 )>			m_Open;
+			JsFuncSafe<ArrayBuffer( U32 )>			m_Open;
 		};
 
 	private:
@@ -142,6 +143,8 @@ namespace Nav
 
 		ExecuteBlocker								m_Blocker;
 
+		JsObject<ImgCodec>							m_ImageCodec;
+
 	private:
 		U1											ResAddPackageIndex( PCWChar szFile, PCWChar szRoot );
 		U1											ResAddPackage( PCWChar szFile );
@@ -159,6 +162,12 @@ namespace Nav
 		CultureId									LangGetCurrent() const;
 		WString										LangGetString( Napi::Value key );
 		Napi::Value									LangGetStringTable( const CallbackInfo& ci );
+
+		StringCp									GetSystemAcp() const { return AveKak.GetSystemAcp(); }
+		CultureId									GetSystemCultureId() const { return AveKak.GetSystemCultureId(); }
+		WrapData<NavCultureInfo>					GetCultureInfo( CultureId cid ) const;
+
+		ImgCodec*									GetImageCodec() const { return m_ImageCodec; }
 
 		void										OnExit( Callback_t&& fn ) { m_OnExit = std::move( fn ); }
 		void										OnAppWakeup( Ave::IApplication& pApplication, const void* pContext );

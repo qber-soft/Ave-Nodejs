@@ -5,8 +5,7 @@
 
 import * as fs from "fs";
 
-import { App, CultureId } from "../../src";
-import { AppPath } from "../../src";
+import { App, CultureId, AppPath } from "../../src";
 import { DefaultString } from "./DefaultString";
 
 import { WindowMain } from "./UI/WindowMain";

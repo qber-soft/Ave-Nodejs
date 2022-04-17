@@ -30,7 +30,7 @@ namespace Nav
 		AveInline const TData& operator [] ( USize nIndex ) const { return m_Pointer[nIndex]; }
 	};
 
-	class ReturnBuffer
+	class ArrayBuffer
 	{
 	public:
 		List<U8>		m_Data;
@@ -444,6 +444,9 @@ namespace Nav
 		template<> class __CheckType<const WrapArray<R32_3 /**/>&> : public __CheckArrayHelper {};
 		template<> class __CheckType<const WrapArray<R32_4 /**/>&> : public __CheckArrayHelper {};
 
+		template<> class __CheckType<ArrayBuffer> : public __CheckArrayHelper {};
+		template<> class __CheckType<const ArrayBuffer&>: public __CheckArrayHelper {};
+
 		template<USize TIndex, class... T>
 		class __ObjectWrapperCheckType
 		{
@@ -690,10 +693,10 @@ namespace Nav
 		class __ConvertType<WrapArray<T>> : public __ConvertArray<T> {};
 
 		template<>
-		class __ConvertType<ReturnBuffer>
+		class __ConvertType<ArrayBuffer>
 		{
 		public:
-			using TargetType_t = ReturnBuffer;
+			using TargetType_t = ArrayBuffer;
 
 			static AveInline void ToCpp( void* p, const Napi::Value& v )
 			{
@@ -711,7 +714,7 @@ namespace Nav
 
 			static AveInline Napi::Value ToJs( Napi::Env env, const void* v )
 			{
-				auto& rb = *(ReturnBuffer*) v;
+				auto& rb = *(ArrayBuffer*) v;
 				if ( rb.m_Null )
 					return env.Undefined();
 				auto buf = Napi::ArrayBuffer::New( env, rb.m_Data.Size() );

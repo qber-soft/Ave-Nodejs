@@ -1,4 +1,5 @@
 ﻿import { TimePoint } from "../TimePoint";
+import { IAveStream } from "./IoStream";
 
 export class InMemoryData {
 	Data: ArrayBuffer = null;
@@ -11,8 +12,6 @@ export class InMemoryData {
 		this.SlicePitch = slicePitch;
 	}
 }
-
-export interface IAveStream {}
 
 export interface IResourceProvider {
 	IsExist(nId: number): boolean;
