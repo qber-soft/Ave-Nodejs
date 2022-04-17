@@ -39,6 +39,12 @@ namespace Nav
 		AutoAddMethod( SetContentByIndex );
 		AutoAddMethod( GetContentById );
 		AutoAddMethod( GetContentByIndex );
+
+		AutoAddMethod( OnClick       /**/ );
+		AutoAddMethod( OnRightClick  /**/ );
+		AutoAddMethod( OnMiddleClick /**/ );
+		AutoAddMethod( OnShow        /**/ );
+		AutoAddMethod( OnHide        /**/ );
 	}
 
 	U1 UiMenu::Ctor( UiWindow * p, Napi::Value v )

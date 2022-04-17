@@ -23,9 +23,9 @@ namespace Nav
 		AutoAddMethod( WriteBinary );
 	}
 
-	ReturnBuffer IoStream::ReadBinary( U32 nSize )
+	ArrayBuffer IoStream::ReadBinary( U32 nSize )
 	{
-		ReturnBuffer rb;
+		ArrayBuffer rb;
 		rb.m_Data.Resize( nSize );
 		if ( !rb.m_Data.IsEmpty() )
 		{

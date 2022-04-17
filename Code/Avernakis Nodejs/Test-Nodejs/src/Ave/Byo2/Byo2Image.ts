@@ -1,6 +1,6 @@
 ﻿import { Rect } from "../Ave";
 import { AveLib } from "../AveLib";
-import { PixFormat } from "../Common";
+import { PixFormat } from "../Image";
 import { InMemoryData, ResourceSource } from "../Io/IoCommon";
 import { Window } from "../Ui/Control/UiWindow";
 

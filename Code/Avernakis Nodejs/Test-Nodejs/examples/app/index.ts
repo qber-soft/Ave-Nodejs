@@ -5,7 +5,7 @@
 
 import * as fs from "fs";
 
-import { App, CultureId } from "../../src";
+import { App, AveGetClipboard, CultureId, ImageContainerType, ResourceSource } from "../../src";
 import { AppPath } from "../../src";
 import { DefaultString } from "./DefaultString";
 

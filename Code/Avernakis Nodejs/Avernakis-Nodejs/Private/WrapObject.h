@@ -508,13 +508,23 @@ namespace Nav
 		}
 
 	private:
+		class GlobalMethod
+		{
+		public:
+			AString m_Name;
+			Napi::Value( *m_Func ) (const Napi::CallbackInfo& ci);
+			void* m_Data;
+		};
+
 		static std::vector<Napi::ClassPropertyDescriptor<T>>* __m_Property;
+		static List<GlobalMethod>* __m_GlobalMethod;
+
 	public:
 		static Napi::FunctionReference* ctor;
 
 	private:
 		template<class... TArg>
-		AveInline U1 __CheckType( const Napi::CallbackInfo& cb )
+		static AveInline U1 __CheckType( const Napi::CallbackInfo& cb )
 		{
 			if constexpr ( (... && __Detail::__CheckCount<TArg>::Value) )
 			{
@@ -536,14 +546,21 @@ namespace Nav
 		static void ExportJsObject( Napi::Env env, Napi::Object exports, __Detail::IObjectFactoryHost& host )
 		{
 			std::vector<Napi::ClassPropertyDescriptor<T>> vProperty;
+			List<GlobalMethod> vGlobalMethod;
+
 			__m_Property = &vProperty;
+			__m_GlobalMethod = &vGlobalMethod;
 			T::DefineObject();
 			__m_Property = nullptr;
+			__m_GlobalMethod = nullptr;
 
 			Napi::Function func = Base_t::DefineClass( env, T::GetExportName(), vProperty );
 			ctor = host.AllocateFuncRef( env );
 			*ctor = Napi::Persistent( func );
 			exports.Set( T::GetExportName(), func );
+
+			for ( auto& i : vGlobalMethod )
+				exports.Set( i.m_Name.c_str(), Napi::Function::New( env, i.m_Func, nullptr, i.m_Data ) );
 		}
 
 	private:
@@ -630,6 +647,78 @@ namespace Nav
 			return this->__WrapObject<T, WrapObjectPromise>::__Call<TType, TRet, TArg...>( cb, p );
 		}
 
+		template<class TRet, class... TArg, USize... N>
+		static AveInline TRet __CallGlobalMethod( const Napi::CallbackInfo& cb, TRet( *p )(TArg...), __Detail::__Index<N...>* )
+		{
+			__Detail::__ArgList<TArg...> arg{};
+			(__Detail::__ConvertType<TArg>::ToCpp( &arg.__ArgData<TArg, N>::GetArg(), cb[N] ), ...);
+			return (*p)(std::forward<TArg>( arg.__ArgData<TArg, N>::GetArg() )...);
+		}
+
+		template<class TRet, class... TArg>
+		static AveInline TRet __CallGlobalMethod( const Napi::CallbackInfo& cb, TRet( *p )(TArg...) )
+		{
+			return __CallGlobalMethod( cb, p, (__Detail::__BuildIndex<sizeof...(TArg)>*) nullptr );
+		}
+
+		template<class TRet, class... TArg, USize... N>
+		static AveInline TRet __CallGlobalMethodCi( const Napi::CallbackInfo& cb, TRet( *p )(const CallbackInfo&, TArg...), __Detail::__Index<N...>* )
+		{
+			__Detail::__ArgList<TArg...> arg{};
+			(__Detail::__ConvertType<TArg>::ToCpp( &arg.__ArgData<TArg, N>::GetArg(), cb[N] ), ...);
+			return (*p)(cb, std::forward<TArg>( arg.__ArgData<TArg, N>::GetArg() )...);
+		}
+
+		template<class TRet, class... TArg>
+		static AveInline TRet __CallGlobalMethodCi( const Napi::CallbackInfo& cb, TRet( *p )(const CallbackInfo&, TArg...) )
+		{
+			return __CallGlobalMethodCi( cb, p, (__Detail::__BuildIndex<sizeof...(TArg)>*) nullptr );
+		}
+
+		template<class TRet, class... TArg>
+		static Napi::Value __GlobalMethodProxy( const Napi::CallbackInfo& cb )
+		{
+			if ( !__CheckType<TArg...>( cb ) )
+				return cb.Env().Null();
+
+			auto p = (TRet( * )(TArg...)) cb.Data();
+			auto r = __CallGlobalMethod<TRet, TArg...>( cb, p );
+			return __Detail::__ConvertType<TRet>::ToJs( cb.Env(), &r );
+		}
+
+		template<class TRet, class... TArg>
+		static Napi::Value __GlobalMethodProxyCi( const Napi::CallbackInfo& cb )
+		{
+			if ( !__CheckType<TArg...>( cb ) )
+				return cb.Env().Null();
+
+			auto p = (TRet( * )(const CallbackInfo&, TArg...)) cb.Data();
+			auto r = __CallGlobalMethodCi<TRet, TArg...>( cb, p );
+			return __Detail::__ConvertType<TRet>::ToJs( cb.Env(), &r );
+		}
+
+		template<class... TArg>
+		static Napi::Value __GlobalVoidMethodProxy( const Napi::CallbackInfo& cb )
+		{
+			if ( !__CheckType<TArg...>( cb ) )
+				return cb.Env().Null();
+
+			auto p = (void(*)(TArg...)) cb.Data();
+			__CallGlobalMethod<void, TArg...>( cb, p );
+			return cb.Env().Undefined();
+		}
+
+		template<class... TArg>
+		static Napi::Value __GlobalVoidMethodProxyCi( const Napi::CallbackInfo& cb )
+		{
+			if ( !__CheckType<TArg...>( cb ) )
+				return cb.Env().Null();
+
+			auto p = (void(*)(const CallbackInfo&, TArg...)) cb.Data();
+			__CallGlobalMethodCi<void, TArg...>( cb, p );
+			return cb.Env().Undefined();
+		}
+
 		template<class, class, class...>
 		class __GetMethodProxy;
 
@@ -650,6 +739,13 @@ namespace Nav
 				return &T::template __MethodProxyPromiseComplex<TType, TRet, TArg...>;
 			}
 		};
+
+		template<class, class...>
+		class __GetGlobalMethodProxy;
+		template<class TRet, class... TArg> class __GetGlobalMethodProxy<TRet, TArg...> { public: static auto __GetMethod() { return &T::template __GlobalMethodProxy<TRet, TArg...>; } };
+		template<class TRet, class... TArg> class __GetGlobalMethodProxy<TRet, const CallbackInfo&, TArg...> { public: static auto __GetMethod() { return &T::template __GlobalMethodProxyCi<TRet, TArg...>; } };
+		template<class... TArg> class __GetGlobalMethodProxy<void, TArg...> { public: static auto __GetMethod() { return &T::template __GlobalVoidMethodProxy<TArg...>; } };
+		template<class... TArg> class __GetGlobalMethodProxy<void, const CallbackInfo&, TArg...> { public: static auto __GetMethod() { return &T::template __GlobalVoidMethodProxyCi<TArg...>; } };
 
 	protected:
 		template<class TCallType = TType, class TRet, class... TArg>
@@ -685,10 +781,20 @@ namespace Nav
 		{
 			AddComplexPromiseMethod( szName, &TType::operator () );
 		}
+		
+		template<class TRet, class... TArg>
+		static void AddGlobalMethod( PCAChar szName, TRet( *p )(TArg...) )
+		{
+			if ( __m_GlobalMethod )
+				__m_GlobalMethod->Add( { szName, __GetGlobalMethodProxy<TRet, TArg...>::__GetMethod(), p } );
+		}
 	};
 
 	template<class T, class... Tctor, class TType>
 	std::vector<Napi::ClassPropertyDescriptor<T>>* WrapObject<T, void( Tctor... ), TType>::__m_Property;
+
+	template<class T, class... Tctor, class TType>
+	List<typename WrapObject<T, void( Tctor... ), TType>::GlobalMethod>* WrapObject<T, void( Tctor... ), TType>::__m_GlobalMethod;
 
 	template<class T, class... Tctor, class TType>
 	Napi::FunctionReference* WrapObject<T, void( Tctor... ), TType>::ctor;

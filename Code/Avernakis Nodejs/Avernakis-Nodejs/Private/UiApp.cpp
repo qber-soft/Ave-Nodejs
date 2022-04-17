@@ -3,6 +3,8 @@
 #include "UiWindow.h"
 #include "App.h"
 
+#include "ImgCodec.h"
+
 #define ThisMethod($x) &UiApp::$x
 #define AutoAddMethod($x, ...) AddMethod<__VA_ARGS__>( #$x, ThisMethod( $x ) )
 #define MakeThisFunc($x) MakeFunc( this, ThisMethod( $x ) )
@@ -46,6 +48,12 @@ namespace Nav
 		AutoAddMethod( LangGetString );
 		AutoAddMethod( LangGetStringTable );
 
+		AutoAddMethod( GetSystemAcp );
+		AutoAddMethod( GetSystemCultureId );
+		AutoAddMethod( GetCultureInfo );
+
+		AutoAddMethod( GetImageCodec );
+
 		AutoAddMethod( OnExit );
 	}
 
@@ -82,6 +90,10 @@ namespace Nav
 		if ( !m_UiThread )
 			return false;
 
+		m_ImageCodec = ci.NewJsObjectWithOwnership<ImgCodec>();
+		if ( !m_ImageCodec || !m_ImageCodec->Ctor() )
+			return false;
+
 		App::GetSingleton().m_InitDpiware->AddResourceProvider( this );
 
 		return true;
@@ -107,7 +119,7 @@ namespace Nav
 		const U32 nIdFinal = nId >> 32 | (0xffffffff & nId);
 		for ( auto& i : const_cast<UiApp&>(*this).m_ResProvider.RangeRevAll() )
 		{
-			ReturnBuffer buf;
+			ArrayBuffer buf;
 			i.m_Open.BlockCall( nIdFinal, buf );
 			if ( buf.m_Null )
 				continue;
@@ -246,6 +258,7 @@ namespace Nav
 	UiApp * UiApp::LangSetCurrent( CultureId cid )
 	{
 		App::GetSingleton().IniApplyLanguage( cid );
+		AveKak.SetAppCultureId( cid );
 		return this;
 	}
 
@@ -272,6 +285,14 @@ namespace Nav
 				obj.Set( AveStr.Utf16ToUtf8( i ), Napi::String::New( ci.GetEnv(), (const char16_t*) str.GetString( i ) ) );
 		}
 		return obj;
+	}
+
+	WrapData<NavCultureInfo> UiApp::GetCultureInfo( CultureId cid ) const
+	{
+		auto& ci = AveStr.GetCultureInfo( cid );
+		NavCultureInfo nci;
+		nci.FromCultureInfo( ci );
+		return nci;
 	}
 
 	void UiApp::OnAppWakeup( Ave::IApplication & pApplication, const void * pContext )

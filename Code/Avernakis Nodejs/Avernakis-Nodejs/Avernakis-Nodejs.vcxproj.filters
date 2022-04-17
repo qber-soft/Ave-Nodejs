@@ -218,6 +218,15 @@
     <ClCompile Include="Private\Byo2Font.cpp">
       <Filter>Ave\Byo2\Font</Filter>
     </ClCompile>
+    <ClCompile Include="Private\ImgImage.cpp">
+      <Filter>Ave\Image</Filter>
+    </ClCompile>
+    <ClCompile Include="Private\ImgCodec.cpp">
+      <Filter>Ave\Image</Filter>
+    </ClCompile>
+    <ClCompile Include="Private\DeeClipboard.cpp">
+      <Filter>Ave\Dee</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Build">
@@ -411,6 +420,12 @@
     </Filter>
     <Filter Include="Ave\Byo2\Font">
       <UniqueIdentifier>{26469b2b-d406-48f6-924b-284b1e55e75b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Ave\Image">
+      <UniqueIdentifier>{913bc4f2-72b3-4408-9cc7-8eada8761494}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Ave\Dee">
+      <UniqueIdentifier>{5d72e95c-d1dc-4ed6-a2ed-deb952ec9be1}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -649,6 +664,18 @@
     </ClInclude>
     <ClInclude Include="Private\Byo2Font.h">
       <Filter>Ave\Byo2\Font</Filter>
+    </ClInclude>
+    <ClInclude Include="Private\ImgImage.h">
+      <Filter>Ave\Image</Filter>
+    </ClInclude>
+    <ClInclude Include="Private\ImgCommon.h">
+      <Filter>Ave\Image</Filter>
+    </ClInclude>
+    <ClInclude Include="Private\ImgCodec.h">
+      <Filter>Ave\Image</Filter>
+    </ClInclude>
+    <ClInclude Include="Private\DeeClipboard.h">
+      <Filter>Ave\Dee</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

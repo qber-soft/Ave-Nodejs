@@ -1,4 +1,4 @@
-import { Window, Picture, Byo2Image, Byo2ImageCreation, Byo2ImageDataType, PixFormat, Rect, Button, ResourceSource } from "../../../src";
+import { Window, Picture, Byo2Image, Byo2ImageCreation, Byo2ImageDataType, Rect, Button, ResourceSource, PixFormat } from "../../../src";
 import { getControlDemoContainer } from "../utility";
 import * as fs from "fs";
 import * as path from "path";

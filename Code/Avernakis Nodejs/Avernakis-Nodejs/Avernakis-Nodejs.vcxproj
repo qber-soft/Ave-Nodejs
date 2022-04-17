@@ -159,10 +159,13 @@
     <ClCompile Include="Private\Byo2Font.cpp" />
     <ClCompile Include="Private\CoCamera.cpp" />
     <ClCompile Include="Private\Common.cpp" />
+    <ClCompile Include="Private\DeeClipboard.cpp" />
     <ClCompile Include="Private\Empty.cpp" />
     <ClCompile Include="Private\Example.cpp" />
     <ClCompile Include="Private\ExportAll.cpp" />
     <ClCompile Include="Private\Byo2Image.cpp" />
+    <ClCompile Include="Private\ImgImage.cpp" />
+    <ClCompile Include="Private\ImgCodec.cpp" />
     <ClCompile Include="Private\IoStream.cpp" />
     <ClCompile Include="Private\Library.cpp" />
     <ClCompile Include="Private\StdAfx.cpp">
@@ -244,9 +247,13 @@
     <ClInclude Include="Private\Byo2Font.h" />
     <ClInclude Include="Private\CoCamera.h" />
     <ClInclude Include="Private\Common.h" />
+    <ClInclude Include="Private\DeeClipboard.h" />
     <ClInclude Include="Private\Empty.h" />
     <ClInclude Include="Private\Example.h" />
     <ClInclude Include="Private\Byo2Image.h" />
+    <ClInclude Include="Private\ImgCommon.h" />
+    <ClInclude Include="Private\ImgImage.h" />
+    <ClInclude Include="Private\ImgCodec.h" />
     <ClInclude Include="Private\IoCommon.h" />
     <ClInclude Include="Private\IoStream.h" />
     <ClInclude Include="Private\StdAfx.h" />

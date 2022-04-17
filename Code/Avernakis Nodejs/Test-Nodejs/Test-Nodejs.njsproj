@@ -71,6 +71,8 @@
     <Folder Include="src\Ave\Math\" />
     <Folder Include="src\Ave\Byo2\" />
     <Folder Include="src\Ave\Io\" />
+    <Folder Include="src\Ave\Image\" />
+    <Folder Include="src\Ave\Dee\" />
     <Folder Include="src\Ave\Ui\" />
     <Folder Include="src\Ave\Ui\Control\" />
     <Folder Include="src\Ave\Ui\Ribbon\" />
@@ -149,12 +151,20 @@
     <TypeScriptCompile Include="src\Ave\Byo2\Byo2Image.ts" />
     <TypeScriptCompile Include="src\Ave\Common.ts" />
     <TypeScriptCompile Include="src\Ave\Culture.ts" />
+    <TypeScriptCompile Include="src\Ave\Dee\DeeClipboard.ts" />
+    <TypeScriptCompile Include="src\Ave\Dee\index.ts" />
+    <TypeScriptCompile Include="src\Ave\Image\ImgCommon.ts" />
+    <TypeScriptCompile Include="src\Ave\Image\ImgImage.ts" />
+    <TypeScriptCompile Include="src\Ave\Image\ImgCodec.ts" />
+    <TypeScriptCompile Include="src\Ave\Image\index.ts" />
     <TypeScriptCompile Include="src\Ave\index.ts" />
     <TypeScriptCompile Include="src\Ave\Io\IoCommon.ts" />
     <TypeScriptCompile Include="src\Ave\Io\IoStream.ts" />
     <TypeScriptCompile Include="src\Ave\Math\Box.ts" />
     <TypeScriptCompile Include="src\Ave\Math\Camera.ts" />
     <TypeScriptCompile Include="src\Ave\Math\Frustum.ts" />
+    <TypeScriptCompile Include="src\Ave\Math\index.ts" />
+    <TypeScriptCompile Include="src\Ave\Math\Math.ts" />
     <TypeScriptCompile Include="src\Ave\Math\Matrix.ts" />
     <TypeScriptCompile Include="src\Ave\Math\Plane.ts" />
     <TypeScriptCompile Include="src\Ave\Math\Quaternion.ts" />
@@ -214,7 +224,6 @@
     <TypeScriptCompile Include="src\Ave\Ui\Visual\UiLabel.ts" />
     <TypeScriptCompile Include="src\Ave\Ui\Visual\UiPicture.ts" />
     <TypeScriptCompile Include="src\index.ts" />
-    <TypeScriptCompile Include="src\ResId.ts" />
     <TypeScriptCompile Include="src\Tools\index.ts" />
   </ItemGroup>
   <Import Project="$(VSToolsPath)\Node.js Tools\Microsoft.NodejsToolsV2.targets" />
