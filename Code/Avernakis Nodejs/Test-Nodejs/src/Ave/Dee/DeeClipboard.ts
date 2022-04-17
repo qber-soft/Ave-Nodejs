@@ -10,7 +10,7 @@ export interface IClipboardVirtualFile {
 
 export interface IClipboardCopy {
 	Commit(): boolean;
-	
+
 	SetText(text: string): void;
 	SetImage(img: AveImage): void;
 	SetFile(file: string[]): void;
@@ -39,5 +39,10 @@ export interface IClipboard {
 }
 
 export function AveGetClipboard(): IClipboard {
-	return AveLib.AveGetClipboard();
+	const clipboard = AveLib.AveGetClipboard() as IClipboard;
+
+	const OriginalGetImage = clipboard.GetImage.bind(clipboard);
+	clipboard.GetImage = () => AveImage.FromNative(OriginalGetImage());
+
+	return clipboard;
 }

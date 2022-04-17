@@ -52,21 +52,16 @@ export class ImageMetadata {
 	}
 
 	ComputeSubresourceCount() {
-		if (ImageDimension.Texture3D != this.Dimension)
-			return this.DepthOrArraySize * this.MipLevel;
-		else
-			return this.MipLevel;
+		if (ImageDimension.Texture3D != this.Dimension) return this.DepthOrArraySize * this.MipLevel;
+		else return this.MipLevel;
 	}
 
 	ComputeSubresourceIndex(mipIndex: number, arrayIndex: number) {
-		if (mipIndex >= this.MipLevel)
-			return -1;
+		if (mipIndex >= this.MipLevel) return -1;
 		if (ImageDimension.Texture3D != this.Dimension) {
-			if (arrayIndex >= this.DepthOrArraySize)
-				return -1;
+			if (arrayIndex >= this.DepthOrArraySize) return -1;
 		} else {
-			if (0 != arrayIndex)
-				return -1;
+			if (0 != arrayIndex) return -1;
 		}
 		return arrayIndex * this.MipLevel + mipIndex;
 	}
@@ -100,7 +95,7 @@ export enum BlendType {
 	Src_Alpha_Sat    /**/ = 11,
 	Blend_Factor     /**/ = 14,
 	Inv_Blend_Factor /**/ = 15,
-};
+}
 
 // prettier-ignore
 export enum BlendOp {
@@ -109,7 +104,7 @@ export enum BlendOp {
 	Rev_Subtract /**/ = 3,
 	Min          /**/ = 4,
 	Max          /**/ = 5,
-};
+}
 
 export enum ColorWriteFlag {
 	None = 0,
@@ -304,11 +299,11 @@ export class ImageData {
 
 	private G_B5G6R5_UNORM                /**/(x, y, z) { const d = this.View.getUint32(z * this.SlicePitch + y * this.RowPitch + x * 2); return new Vec4((0x1f & (d >> 11)) / 31, (0x3f & (d >> 5)) / 63, (0x1f & d) / 31, 0); }
 	private G_B5G5R5A1_UNORM              /**/(x, y, z) { const d = this.View.getUint32(z * this.SlicePitch + y * this.RowPitch + x * 2); return new Vec4((0x1f & (d >> 10)) / 31, (0x1f & (d >> 5)) / 31, (0x1f & d) / 31, 1 & (d >> 15)); }
-	private G_B8G8R8A8_UNORM              /**/(x, y, z) { const d = this.G_U8_4(x, y, z); return new Vec4(d.b, d.g, d.r, d.a); }
-	private G_B8G8R8X8_UNORM              /**/(x, y, z) { const d = this.G_U8_4(x, y, z); return new Vec4(d.b, d.g, d.r, 0); }
+	private G_B8G8R8A8_UNORM              /**/(x, y, z) { const d = this.G_U8_4(x, y, z).Div(255); return new Vec4(d.b, d.g, d.r, d.a); }
+	private G_B8G8R8X8_UNORM              /**/(x, y, z) { const d = this.G_U8_4(x, y, z).Div(255); return new Vec4(d.b, d.g, d.r, 1); }
 	// private G_R10G10B10_XR_BIAS_A2_UNORM  /**/(x, y, z) { return Vec4.Zero; } // TODO: Implement R10G10B10_XR_BIAS_A2_UNORM
-	private G_B8G8R8A8_UNORM_SRGB         /**/(x, y, z) { const d = this.G_U8_4(x, y, z); return new Vec4(d.b, d.g, d.r, d.a); }
-	private G_B8G8R8X8_UNORM_SRGB         /**/(x, y, z) { const d = this.G_U8_4(x, y, z); return new Vec4(d.b, d.g, d.r, 0); }
+	private G_B8G8R8A8_UNORM_SRGB         /**/(x, y, z) { const d = this.G_U8_4(x, y, z).Div(255); return new Vec4(d.b, d.g, d.r, d.a); }
+	private G_B8G8R8X8_UNORM_SRGB         /**/(x, y, z) { const d = this.G_U8_4(x, y, z).Div(255); return new Vec4(d.b, d.g, d.r, 1); }
 
 	private G_P8                          /**/(x, y, z) { return new Vec4(this.View.getUint8(z * this.SlicePitch + y * this.RowPitch + x) / 255, 0, 0, 0); }
 	private G_A8P8                        /**/(x, y, z) { return this.G_U8_2(x, y, z).Div(255); }

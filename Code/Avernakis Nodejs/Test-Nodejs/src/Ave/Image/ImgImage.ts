@@ -46,4 +46,13 @@ export interface IAveImage {
 	GenerateMipMaps(nLevelCount: number, nFilter: ImageFilterType, bIndependent3DSlice: boolean): AveImage;
 }
 
-export class AveImage extends (AveLib.ImgImage as IAveImage) {}
+export class AveImage extends (AveLib.ImgImage as IAveImage) {
+	static FromNative(aveImage: AveImage) {
+		const OriginalGetImage = aveImage.GetImage.bind(aveImage);
+		aveImage.GetImage = (...args) => ImageData.FromNative(OriginalGetImage(...args));
+
+		const OriginalCopyTo = aveImage.CopyTo.bind(aveImage);
+		aveImage.CopyTo = (...args) => ImageData.FromNative(OriginalCopyTo(...args));
+		return aveImage;
+	}
+}
