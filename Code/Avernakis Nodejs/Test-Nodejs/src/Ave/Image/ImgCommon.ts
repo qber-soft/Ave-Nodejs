@@ -203,7 +203,10 @@ export class ImageData {
 
 	SetPixel(v: Vec4, x: number, y: number = 0, z: number = 0) {
 		const isSafe = x>=0 && x < this.Width && y>=0 && y < this.Height && z>=0 && z< this.Depth;
-		return isSafe ? this.m_Set(x, y, z, v): this.m_Set(0,0,0,0);
+		if(!isSafe)
+			return;
+
+		return this.m_Set(x, y, z, v);
 	}
 
 	UnsafeSetPixel(v: Vec4, x: number, y: number = 0, z: number = 0) {
