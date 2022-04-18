@@ -34,8 +34,6 @@ namespace Nav
 		AutoAddMethod( ResAddResourceProvider );
 		AutoAddMethod( ResSetIconSizeList );
 
-		AutoAddMethod( LangSetDefaultString );
-
 		AutoAddMethod( LangSetType );
 		AutoAddMethod( LangSetFileRoot );
 		AutoAddMethod( LangSetDefaultString );
@@ -43,7 +41,7 @@ namespace Nav
 		AutoAddMethod( LangGet );
 		//AutoAddMethod( LangCreateMenu );
 		AutoAddMethod( LangExport, WrapObjectUi );
-		AutoAddMethod( LangSetCurrent );
+		AutoAddMethod( LangSetCurrent, WrapObjectUi );
 		AutoAddMethod( LangGetCurrent );
 		AutoAddMethod( LangGetString );
 		AutoAddMethod( LangGetStringTable );
@@ -221,7 +219,7 @@ namespace Nav
 			}
 			m_DefaultString = std::move( vPointer );
 			App::GetSingleton().m_InitStringIni->SetDefault( m_DefaultString.Data(), m_DefaultString.Size(), cid );
-			LangSetCurrent( cid );
+			//LangSetCurrent( cid );
 			App::GetSingleton().m_LangSetText = true;
 		}
 		return this;
