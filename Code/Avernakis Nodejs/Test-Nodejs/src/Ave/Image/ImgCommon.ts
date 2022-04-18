@@ -192,21 +192,21 @@ export class ImageData {
 		return data;
 	}
 
-	SafeGetPixel(x: number, y: number = 0, z: number = 0): Vec4 {
+	GetPixel(x: number, y: number = 0, z: number = 0): Vec4 {
 		const isSafe = x>=0 && x < this.Width && y>=0 && y < this.Height && z>=0 && z< this.Depth;
 		return isSafe ? this.m_Get(x, y, z) : new Vec4(0,0,0,0);
 	}
 
-	GetPixel(x: number, y: number = 0, z: number = 0): Vec4 {
+	UnsafeGetPixel(x: number, y: number = 0, z: number = 0): Vec4 {
 		return this.m_Get(x, y, z);
 	}
 
-	SafeSetPixel(v: Vec4, x: number, y: number = 0, z: number = 0) {
+	SetPixel(v: Vec4, x: number, y: number = 0, z: number = 0) {
 		const isSafe = x>=0 && x < this.Width && y>=0 && y < this.Height && z>=0 && z< this.Depth;
 		return isSafe ? this.m_Set(x, y, z, v): this.m_Set(0,0,0,0);
 	}
 
-	SetPixel(v: Vec4, x: number, y: number = 0, z: number = 0) {
+	UnsafeSetPixel(v: Vec4, x: number, y: number = 0, z: number = 0) {
 		return this.m_Set(x, y, z, v);
 	}
 
