@@ -18,9 +18,9 @@ export interface IImageCodecExtension {
 	OpenArrayBuffer(buffer: ArrayBuffer): AveImage;
 	OpenResource(nId: number): AveImage;
 
-	GetMetadataFile(file: string): AveImage;
-	GetMetadataArrayBuffer(buffer: ArrayBuffer): AveImage;
-	GetMetadataResource(nId: number): AveImage;
+	GetMetadataFile(file: string): ImageMetadata;
+	GetMetadataArrayBuffer(buffer: ArrayBuffer): ImageMetadata;
+	GetMetadataResource(nId: number): ImageMetadata;
 }
 
 export interface IImageCodec extends IImageCodecExtension {

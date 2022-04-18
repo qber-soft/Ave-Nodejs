@@ -3,7 +3,7 @@ import { Codepage, CultureId, CultureInfo } from "../Culture";
 import { IResourceProvider, ResourceSource } from "../Io";
 import { Window } from "./Control/UiWindow";
 import * as fs from "fs";
-import { IImageCodec } from "../Image";
+import { AveImage, IImageCodec, ImageMetadata } from "../Image";
 
 // You can use your own language files but you also need to apply the text for each control too when the user change the language
 // AveUI does support apply language for many standard controls so you can take this advantage for convenient
@@ -96,6 +96,27 @@ export interface IApp {
 }
 
 export class App extends (AveLib.UiApp as IApp) {
+	GetImageCodec(): IImageCodec {
+		const codec = super.GetImageCodec();
+
+		const OriginalOpen = codec.Open.bind(codec);
+		codec.Open = (...args) => AveImage.FromNative(OriginalOpen(...args));
+
+		const OriginalGetMetadata = codec.GetMetadata.bind(codec);
+		codec.GetMetadata = (...args) => ImageMetadata.FromNative(OriginalGetMetadata(...args));
+
+		// extension
+		codec.OpenFile = (file: string) => codec.Open(ResourceSource.FromFilePath(file));
+		codec.OpenArrayBuffer = (ab: ArrayBuffer) => codec.Open(ResourceSource.FromArrayBuffer(ab));
+		codec.OpenResource = (id: number) => codec.Open(ResourceSource.FromResource(id));
+
+		codec.GetMetadataFile = (file: string) => codec.GetMetadata(ResourceSource.FromFilePath(file));
+		codec.GetMetadataArrayBuffer = (ab: ArrayBuffer) => codec.GetMetadata(ResourceSource.FromArrayBuffer(ab));
+		codec.GetMetadataResource = (id: number) => codec.GetMetadata(ResourceSource.FromResource(id));
+
+		return codec;
+	}
+
 	CreateResourceMap<IconDataMap extends Record<string, string[]>, Name extends string = keyof IconDataMap & string>(app: App, sizeList: number[], iconDataMap: IconDataMap): Record<Name, number> {
 		const map = {} as Record<Name, number>;
 		const provider: Record<number, string> = {};
