@@ -52,21 +52,16 @@ export class ImageMetadata {
 	}
 
 	ComputeSubresourceCount() {
-		if (ImageDimension.Texture3D != this.Dimension)
-			return this.DepthOrArraySize * this.MipLevel;
-		else
-			return this.MipLevel;
+		if (ImageDimension.Texture3D != this.Dimension) return this.DepthOrArraySize * this.MipLevel;
+		else return this.MipLevel;
 	}
 
 	ComputeSubresourceIndex(mipIndex: number, arrayIndex: number) {
-		if (mipIndex >= this.MipLevel)
-			return -1;
+		if (mipIndex >= this.MipLevel) return -1;
 		if (ImageDimension.Texture3D != this.Dimension) {
-			if (arrayIndex >= this.DepthOrArraySize)
-				return -1;
+			if (arrayIndex >= this.DepthOrArraySize) return -1;
 		} else {
-			if (0 != arrayIndex)
-				return -1;
+			if (0 != arrayIndex) return -1;
 		}
 		return arrayIndex * this.MipLevel + mipIndex;
 	}
@@ -100,7 +95,7 @@ export enum BlendType {
 	Src_Alpha_Sat    /**/ = 11,
 	Blend_Factor     /**/ = 14,
 	Inv_Blend_Factor /**/ = 15,
-};
+}
 
 // prettier-ignore
 export enum BlendOp {
@@ -109,7 +104,7 @@ export enum BlendOp {
 	Rev_Subtract /**/ = 3,
 	Min          /**/ = 4,
 	Max          /**/ = 5,
-};
+}
 
 export enum ColorWriteFlag {
 	None = 0,
@@ -197,8 +192,18 @@ export class ImageData {
 		return data;
 	}
 
+	SafeGetPixel(x: number, y: number = 0, z: number = 0): Vec4 {
+		const isSafe = x>=0 && x < this.Width && y>=0 && y < this.Height && z>=0 && z< this.Depth;
+		return isSafe ? this.m_Get(x, y, z) : new Vec4(0,0,0,0);
+	}
+
 	GetPixel(x: number, y: number = 0, z: number = 0): Vec4 {
 		return this.m_Get(x, y, z);
+	}
+
+	SafeSetPixel(v: Vec4, x: number, y: number = 0, z: number = 0) {
+		const isSafe = x>=0 && x < this.Width && y>=0 && y < this.Height && z>=0 && z< this.Depth;
+		return isSafe ? this.m_Set(x, y, z, v): this.m_Set(0,0,0,0);
 	}
 
 	SetPixel(v: Vec4, x: number, y: number = 0, z: number = 0) {
