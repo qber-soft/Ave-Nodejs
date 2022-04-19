@@ -356,9 +356,11 @@ interface IDialogInternal {
 	CloseDialog(nCode: number): void;
 }
 
+type CreateDialog_t = (pByoLinker: WindowLike) => boolean;
+
 export class Dialog extends (WindowBase as any as IWindowConstructor<Dialog, IDialogInternal>) {
 	ShowDialog(pByoLinker: WindowLike): Promise<number> {
-		if (!super["CreateDialog"](pByoLinker)) return null;
+		if (!(super["CreateDialog"] as CreateDialog_t)(pByoLinker)) return null;
 		return super.ShowDialog();
 	}
 
