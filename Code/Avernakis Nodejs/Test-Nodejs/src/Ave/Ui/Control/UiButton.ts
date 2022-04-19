@@ -2,10 +2,10 @@
 import { AveLib } from "../../AveLib";
 import { ButtonType, ButtonStyle, AlignType, VisualTextLayout } from "../UiCommon";
 import { IVisual } from "../UiVisual";
-import { Window } from "./UiWindow";
+import { WindowLike } from "./UiWindow";
 
 export interface IButton extends IControl {
-	new (window: Window, key?: string | number): IButton;
+	new (window: WindowLike, key?: string | number): IButton;
 
 	SetText(s: string): Button;
 	GetText(): string;

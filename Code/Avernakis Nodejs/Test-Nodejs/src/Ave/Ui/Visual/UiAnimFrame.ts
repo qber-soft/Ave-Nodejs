@@ -1,7 +1,7 @@
 import { AveLib } from "../../AveLib";
 import { IControl } from "../UiControl";
 import { Vec2 } from "../../Math/Vector";
-import { Window } from "../Control/UiWindow";
+import { WindowLike } from "../Control/UiWindow";
 import { ResourceSource } from "../../Io/IoCommon";
 import { StretchMode } from "../UiCommon";
 
@@ -17,7 +17,7 @@ export class AnimFrameInfo {
 }
 
 export interface IAnimFrame extends IControl {
-	new (window: Window): IAnimFrame;
+	new (window: WindowLike): IAnimFrame;
 
 	SetStretchMode(n: StretchMode): AnimFrame;
 	GetStretchMode(): StretchMode;

@@ -1,10 +1,10 @@
 ﻿import { IControl } from "../UiControl";
 import { AveLib } from "../../AveLib";
-import { Window } from "../Control/UiWindow";
+import { WindowLike } from "../Control/UiWindow";
 import { IVisual } from "../UiVisual";
 
 export interface IRibbonGroup extends IControl {
-	new (window: Window, key?: string | number): IRibbonGroup;
+	new (window: WindowLike, key?: string | number): IRibbonGroup;
 
 	SetText(s: string): RibbonGroup;
 	GetText(): string;

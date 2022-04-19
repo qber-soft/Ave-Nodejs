@@ -1,9 +1,9 @@
 ﻿import { IControl } from "../UiControl";
 import { AveLib } from "../../AveLib";
-import { Window } from "./UiWindow";
+import { WindowLike } from "./UiWindow";
 
 export interface IRadioBox extends IControl {
-	new (window: Window, key?: string | number): IRadioBox;
+	new (window: WindowLike, key?: string | number): IRadioBox;
 
 	SetText(s: string): RadioBox;
 	GetText(): string;

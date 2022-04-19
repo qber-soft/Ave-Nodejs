@@ -1,9 +1,9 @@
 ﻿import { IControl } from "../UiControl";
 import { AveLib } from "../../AveLib";
-import { Window } from "./UiWindow";
+import { WindowLike } from "./UiWindow";
 
 export interface ISpin extends IControl {
-	new (window: Window): ISpin;
+	new (window: WindowLike): ISpin;
 
 	OnClick(fn: (sender: Spin, nDelta: number) => void): Spin;
 	OnSpinStart(fn: (sender: Spin) => void): Spin;

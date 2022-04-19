@@ -1,6 +1,6 @@
 ﻿import { IControl } from "../UiControl";
 import { AveLib } from "../../AveLib";
-import { Window, IWindow } from "./UiWindow";
+import { WindowLike } from "./UiWindow";
 import { DpiSize, DpiSize_2, DpiMargin } from "../UiCommon";
 import { Vec4 } from "../../Math/Vector";
 
@@ -56,7 +56,7 @@ export interface IGridControl<T extends IControl = IControl> {
 }
 
 export interface IGrid extends IControl {
-	new (x: IWindow): IGrid;
+	new (x: WindowLike): IGrid;
 
 	SetBackground(b: boolean): Grid;
 	GetBackground(): boolean;
@@ -101,7 +101,7 @@ export class Grid extends (AveLib.UiGrid as IGrid) {
 	// prevent gc
 	private children: Set<IControl>;
 
-	constructor(window: Window) {
+	constructor(window: WindowLike) {
 		super(window);
 		this.children = new Set();
 	}

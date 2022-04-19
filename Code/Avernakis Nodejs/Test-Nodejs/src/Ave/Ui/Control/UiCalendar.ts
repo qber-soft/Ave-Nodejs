@@ -1,6 +1,6 @@
 ﻿import { IControl } from "../UiControl";
 import { AveLib } from "../../AveLib";
-import { Window } from "./UiWindow";
+import { WindowLike } from "./UiWindow";
 import { TimePoint } from "../../TimePoint";
 import { CultureId, CultureInfoDateTime } from "../../Culture";
 
@@ -13,7 +13,7 @@ export enum CalendarRangeLevel {
 }
 
 export interface ICalendar extends IControl {
-	new (window: Window): ICalendar;
+	new (window: WindowLike): ICalendar;
 
 	SetRange(tpFrom: TimePoint, tpTo: TimePoint): Calendar;
 	GetRange(): TimePoint[];

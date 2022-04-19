@@ -1,9 +1,9 @@
 ﻿import { IControl } from "../UiControl";
 import { AveLib } from "../../AveLib";
-import { Window } from "./UiWindow";
+import { WindowLike } from "./UiWindow";
 
 export interface IListBox extends IControl {
-	new (window: Window): IListBox;
+	new (window: WindowLike): IListBox;
 
 	Append(text: string): ListBox;
 	OnSelectionEnd(fn: (sender: ListBox) => void): ListBox;

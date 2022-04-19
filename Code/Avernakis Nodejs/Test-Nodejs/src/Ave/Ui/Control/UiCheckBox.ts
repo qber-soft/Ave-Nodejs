@@ -1,7 +1,7 @@
 ﻿import { IControl } from "../UiControl";
 import { AveLib } from "../../AveLib";
 import { CheckValue, VisualTextLayout } from "../UiCommon";
-import { Window } from "./UiWindow";
+import { WindowLike } from "./UiWindow";
 import { IVisual } from "../UiVisual";
 
 export enum CheckBoxStyle {
@@ -10,7 +10,7 @@ export enum CheckBoxStyle {
 }
 
 export interface ICheckBox extends IControl {
-	new (window: Window, key?: string | number): ICheckBox;
+	new (window: WindowLike, key?: string | number): ICheckBox;
 
 	SetText(s: string): CheckBox;
 	GetText(): string;

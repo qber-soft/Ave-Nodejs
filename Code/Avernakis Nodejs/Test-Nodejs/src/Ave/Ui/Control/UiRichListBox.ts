@@ -1,6 +1,6 @@
 ﻿import { IControl } from "../UiControl";
 import { AveLib, ExtendControlInstance } from "../../AveLib";
-import { Window } from "./UiWindow";
+import { WindowLike } from "./UiWindow";
 import { DpiSize, DpiSize_2, IconCache, Rect } from "../UiCommon";
 import { Vec2 } from "../../Math/Vector";
 import { Header } from "./UiHeader";
@@ -77,7 +77,7 @@ export class RichListBoxItemVirtual {
 }
 
 export interface IRichListBox extends IControl {
-	new (window: Window): IRichListBox;
+	new (window: WindowLike): IRichListBox;
 
 	ItemInsert(item: RichListBoxItem, bReserveSelection: boolean): number;
 	ItemRemove(nIndex: number, bReserveSelection: boolean): boolean;
@@ -172,11 +172,11 @@ export class RichListBox extends (AveLib.UiRichListBox as IRichListBox) {
 	GetScrollSize(): Vec2 {
 		return Vec2.FromNative(super.GetScrollSize());
 	}
-	
+
 	GetScrollMax(): Vec2 {
 		return Vec2.FromNative(super.GetScrollMax());
 	}
-	
+
 	GetHeader(): Header {
 		const header = super.GetHeader();
 		ExtendControlInstance(header as any as IControl);

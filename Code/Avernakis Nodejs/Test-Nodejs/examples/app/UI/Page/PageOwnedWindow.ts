@@ -21,13 +21,12 @@ class PageOwnedWindow extends PageHelper<PageOwnedWindow> {
 				cp.Layout.Size = new Vec2(320, 180);
 				this.m_Window = new Window(cp);
 			}
-			if (!this.m_Window.IsWindowCreated())
-				this.m_Window.CreateWindow(this.WindowMain.WindowObject);
+			if (!this.m_Window.IsWindowCreated()) this.m_Window.CreateWindow(this.WindowMain.WindowObject);
 			if (this.m_Window.IsWindowCreated()) {
 				this.m_Window.SetVisible(true);
 				this.m_Window.Activate();
 			}
-		})
+		});
 
 		ctl = grid.ControlAdd(new Button(window)).SetGrid(0, 2).GetControl();
 		ctl.SetText("Show Dialog");
@@ -44,18 +43,18 @@ class PageOwnedWindow extends PageHelper<PageOwnedWindow> {
 
 				const btn0 = grid.ControlAdd(new Button(sender)).SetGrid(1, 1).GetControl();
 				btn0.SetText("OK");
-				btn0.OnClick(() => dlg.CloseDialog(1));
+				btn0.OnClick(() => sender.CloseDialog(1));
 
 				const btn1 = grid.ControlAdd(new Button(sender)).SetGrid(3, 1).GetControl();
 				btn1.SetText("Confirm");
-				btn1.OnClick(() => dlg.CloseDialog(2));
+				btn1.OnClick(() => sender.CloseDialog(2));
 
 				sender.SetContent(grid);
 				return true;
-			})
+			});
 			const result = await dlg.ShowDialog(this.WindowMain.WindowObject);
 			console.log(`Dialog Result: ${result}`);
-		})
+		});
 
 		return grid;
 	}

@@ -1,6 +1,6 @@
 ﻿import { IControl } from "../UiControl";
 import { AveLib } from "../../AveLib";
-import { Window } from "./UiWindow";
+import { WindowLike } from "./UiWindow";
 import { CrossDirection, IconCache, DpiSize, StringKey } from "../UiCommon";
 import { Vec2 } from "../../Math/Vector";
 
@@ -44,7 +44,7 @@ export class ToolBarItem {
 }
 
 export interface IToolBar extends IControl {
-	new (window: Window, key?: StringKey): IToolBar;
+	new (window: WindowLike, key?: StringKey): IToolBar;
 
 	ToolInsert(item: ToolBarItem, nIndexBefore: number): boolean;
 	ToolRemove(nIndex: number): boolean;

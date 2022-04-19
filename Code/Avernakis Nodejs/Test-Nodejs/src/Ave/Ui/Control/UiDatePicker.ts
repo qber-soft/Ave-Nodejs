@@ -1,11 +1,11 @@
 ﻿import { IControl } from "../UiControl";
 import { AveLib } from "../../AveLib";
-import { Window } from "./UiWindow";
+import { WindowLike } from "./UiWindow";
 import { TimePoint } from "../../TimePoint";
 import { CultureId, CultureInfoDateTime } from "../../Culture";
 
 export interface IDatePicker extends IControl {
-	new (window: Window): IDatePicker;
+	new (window: WindowLike): IDatePicker;
 
 	SetRange(tpFrom: TimePoint, tpTo: TimePoint): DatePicker;
 	GetRange(): TimePoint[];

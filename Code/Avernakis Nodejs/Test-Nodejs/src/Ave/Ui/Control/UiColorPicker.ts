@@ -1,7 +1,7 @@
 ﻿import { AveLib } from "../../AveLib";
 import { Vec3 } from "../../Math/Vector";
 import { IControl } from "../UiControl";
-import { Window } from "./UiWindow";
+import { WindowLike } from "./UiWindow";
 
 export enum ColorPickerType {
 	Cube,
@@ -18,7 +18,7 @@ export enum ColorPickerCubePrimary {
 }
 
 export interface IColorPicker extends IControl {
-	new (window: Window): IColorPicker;
+	new (window: WindowLike): IColorPicker;
 
 	SetPickerType(nType: ColorPickerType): ColorPicker;
 	GetPickerType(): ColorPickerType;

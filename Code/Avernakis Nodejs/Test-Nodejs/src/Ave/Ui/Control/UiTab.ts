@@ -1,6 +1,6 @@
 ﻿import { IControl } from "../UiControl";
 import { AveLib } from "../../AveLib";
-import { Window } from "./UiWindow";
+import { WindowLike } from "./UiWindow";
 import { AxisDirection, ExpandAction, IconCache, Rect, DpiSize, DpiSize_2, StringKey } from "../UiCommon";
 import { Vec4, Vec2 } from "../../Math/Vector";
 
@@ -64,7 +64,7 @@ export class TabGroup {
 }
 
 export interface ITab extends IControl {
-	new (window: Window, key?: StringKey): ITab;
+	new (window: WindowLike, key?: StringKey): ITab;
 
 	TabInsert(pTab: TabItem): boolean;
 	TabGetAll(): number[];

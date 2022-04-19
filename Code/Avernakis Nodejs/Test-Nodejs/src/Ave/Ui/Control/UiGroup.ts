@@ -1,11 +1,11 @@
 ﻿import { IControl } from "../UiControl";
 import { AveLib } from "../../AveLib";
 import { IVisual } from "../UiVisual";
-import { Window } from "./UiWindow";
+import { WindowLike } from "./UiWindow";
 import { Vec2 } from "../../Math/Vector";
 
 export interface IGroup extends IControl {
-	new (window: Window, key?: string | number): IGroup;
+	new (window: WindowLike, key?: string | number): IGroup;
 
 	SetText(s: string): Group;
 	GetText(): string;

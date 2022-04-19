@@ -1,11 +1,11 @@
 import { AveLib } from "../../AveLib";
 import { IVisual } from "../UiVisual";
-import { Window } from "../Control/UiWindow";
+import { WindowLike } from "../Control/UiWindow";
 import { Vec4 } from "../../Math/Vector";
 import { DpiSize } from "../UiCommon";
 
 export interface IColorView extends IVisual {
-	new (window: Window): IColorView;
+	new (window: WindowLike): IColorView;
 
 	SetSolidColor(vColor: Vec4): ColorView;
 	GetSolidColor(): Vec4;

@@ -151,9 +151,11 @@ export class WindowCreation {
 	Device: WindowDevice = WindowDevice.Default2D;
 }
 
-interface IWindow<T> extends IControl {
-	new(cp: WindowCreation): IWindow<T>;
+export interface IWindowConstructor<T, Internal = any> {
+	new (cp: WindowCreation): IWindow<T> & IControl & Internal;
+}
 
+export type IWindow<T> = {
 	IsWindowCreated(): boolean;
 	GetDeviceType(): WindowDevice;
 
@@ -250,9 +252,9 @@ interface IWindow<T> extends IControl {
 	OnLanguageChange(fn: (sender: T) => void): T;
 
 	OnDeviceChange(fn: (sender: T) => void): T;
-}
+};
 
-class WindowBase<T> extends (AveLib.UiWindow as IWindow<T>) {
+class WindowBase extends (AveLib.UiWindow as IWindowConstructor<WindowBase>) {
 	protected m_Content: IControl;
 
 	// prevent gc
@@ -332,33 +334,36 @@ class WindowBase<T> extends (AveLib.UiWindow as IWindow<T>) {
 	}
 }
 
-interface IWindowBase {
-	CreateWindow(pByoLinker: IWindow<Window>): boolean;
-	CloseWindow(): void;
+export type WindowLike = Window | Dialog;
 
-	CreateDialog(pByoLinker: IWindow<Dialog>): boolean;
-	ShowDialog(pByoLinker: IWindow<Dialog>): Promise<number>;
-	CloseDialog(nCode: number): void;
+interface IWindowInternal {
+	CreateWindow(pByoLinker: WindowLike, bIndependent?: boolean): boolean;
+	CloseWindow(): void;
 }
 
-export class Window extends WindowBase<Window> {
-	CreateWindow<T>(pByoLinker: IWindow<T> = null, bIndependent = false): boolean {
-		return super["CreateWindow"](pByoLinker, bIndependent);
+export class Window extends (WindowBase as any as IWindowConstructor<Window, IWindowInternal>) {
+	CreateWindow(pByoLinker: Window = null, bIndependent = false): boolean {
+		return super.CreateWindow(pByoLinker, bIndependent);
 	}
 
 	CloseWindow(): void {
-		super["CloseWindow"]();
+		super.CloseWindow();
 	}
 }
 
-export class Dialog extends WindowBase<Dialog> {
-	ShowDialog<T>(pByoLinker: IWindow<T>): Promise<number> {
-		if (!super["CreateDialog"](pByoLinker))
-			return null;
-		return super["ShowDialog"]();
+interface IDialogInternal {
+	CreateDialog(pByoLinker: WindowLike): boolean;
+	ShowDialog(pByoLinker?: WindowLike): Promise<number>;
+	CloseDialog(nCode: number): void;
+}
+
+export class Dialog extends (WindowBase as any as IWindowConstructor<Dialog, IDialogInternal>) {
+	ShowDialog(pByoLinker: WindowLike): Promise<number> {
+		if (!super.CreateDialog(pByoLinker)) return null;
+		return super.ShowDialog();
 	}
 
 	CloseDialog(nCode: number): void {
-		return super["CloseDialog"](nCode);
+		return super.CloseDialog(nCode);
 	}
 }

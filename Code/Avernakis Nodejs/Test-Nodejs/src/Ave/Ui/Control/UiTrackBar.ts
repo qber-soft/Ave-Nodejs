@@ -1,6 +1,6 @@
 ﻿import { IControl } from "../UiControl";
 import { AveLib } from "../../AveLib";
-import { Window } from "./UiWindow";
+import { WindowLike } from "./UiWindow";
 
 export enum TrackBarOrientation {
 	Auto,
@@ -9,7 +9,7 @@ export enum TrackBarOrientation {
 }
 
 export interface ITrackBar extends IControl {
-	new (window: Window, key?: string | number): ITrackBar;
+	new (window: WindowLike, key?: string | number): ITrackBar;
 
 	SetOrientation(nOrient: TrackBarOrientation): TrackBar;
 	GetOrientation(): TrackBarOrientation;

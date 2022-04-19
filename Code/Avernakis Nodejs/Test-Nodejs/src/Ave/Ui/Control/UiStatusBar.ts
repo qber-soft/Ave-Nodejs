@@ -1,11 +1,11 @@
 ﻿import { IControl } from "../UiControl";
 import { AveLib } from "../../AveLib";
-import { Window } from "./UiWindow";
+import { WindowLike } from "./UiWindow";
 import { DpiSize, AlignType, IconCache, Rect, StringKey } from "../UiCommon";
 import { Vec2, Vec4 } from "../../Math/Vector";
 
 export interface IStatusBar extends IControl {
-	new (window: Window, key?: StringKey): IStatusBar;
+	new (window: WindowLike, key?: StringKey): IStatusBar;
 
 	SetPart(vPartWidth: DpiSize[]): StatusBar;
 	GetPart(): DpiSize[];
