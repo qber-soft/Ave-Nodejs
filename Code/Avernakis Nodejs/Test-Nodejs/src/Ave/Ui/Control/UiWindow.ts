@@ -151,8 +151,8 @@ export class WindowCreation {
 	Device: WindowDevice = WindowDevice.Default2D;
 }
 
-export interface IWindowConstructor<T> {
-	new (cp: WindowCreation): IWindowFactory<T> & IControl;
+export interface IWindowConstructor<T, Internal = any> {
+	new (cp: WindowCreation): IWindowFactory<T> & IControl & Internal;
 }
 
 export type IWindowFactory<T> = {
@@ -334,34 +334,36 @@ class WindowBase extends (AveLib.UiWindow as IWindowConstructor<WindowBase>) {
 	}
 }
 
-// interface IWindowBase {
-// 	CreateWindow(pByoLinker: IWindow): boolean;
-// 	CloseWindow(): void;
-
-// 	CreateDialog(pByoLinker: IWindow): boolean;
-// 	ShowDialog(pByoLinker: IWindow): Promise<number>;
-// 	CloseDialog(nCode: number): void;
-// }
-
 export type WindowLike = Window | Dialog;
 
-export class Window extends (WindowBase as any as IWindowConstructor<Window>) {
+interface IWindowInternal {
+	CreateWindow(pByoLinker: WindowLike, bIndependent?: boolean): boolean;
+	CloseWindow(): void;
+}
+
+export class Window extends (WindowBase as any as IWindowConstructor<Window, IWindowInternal>) {
 	CreateWindow(pByoLinker: Window = null, bIndependent = false): boolean {
-		return super["CreateWindow"](pByoLinker, bIndependent);
+		return super.CreateWindow(pByoLinker, bIndependent);
 	}
 
 	CloseWindow(): void {
-		super["CloseWindow"]();
+		super.CloseWindow();
 	}
 }
 
-export class Dialog extends (WindowBase as any as IWindowConstructor<Dialog>) {
-	ShowDialog(pByoLinker: Window): Promise<number> {
-		if (!super["CreateDialog"](pByoLinker)) return null;
-		return super["ShowDialog"]();
+interface IDialogInternal {
+	CreateDialog(pByoLinker: WindowLike): boolean;
+	ShowDialog(pByoLinker?: WindowLike): Promise<number>;
+	CloseDialog(nCode: number): void;
+}
+
+export class Dialog extends (WindowBase as any as IWindowConstructor<Dialog, IDialogInternal>) {
+	ShowDialog(pByoLinker: WindowLike): Promise<number> {
+		if (!super.CreateDialog(pByoLinker)) return null;
+		return super.ShowDialog();
 	}
 
 	CloseDialog(nCode: number): void {
-		return super["CloseDialog"](nCode);
+		return super.CloseDialog(nCode);
 	}
 }
