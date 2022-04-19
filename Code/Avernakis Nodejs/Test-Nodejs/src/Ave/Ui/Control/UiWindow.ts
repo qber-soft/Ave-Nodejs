@@ -152,7 +152,7 @@ export class WindowCreation {
 }
 
 export interface IWindowConstructor<T> {
-	new (cp: WindowCreation): IWindowFactory<T>;
+	new (cp: WindowCreation): IWindowFactory<T> & IControl;
 }
 
 export type IWindowFactory<T> = {
