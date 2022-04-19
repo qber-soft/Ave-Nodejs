@@ -77,7 +77,7 @@ namespace Nav
 		virtual Ui::Control		TakeOwnership() override { return std::move( __m_ControlData ); }
 		virtual void			GiveOwnership( Ui::Control c ) { __m_ControlData = std::move( c ); }
 
-		virtual void			SetSharedControl( Ui::IControl* c ) { if ( !__m_Control ) __m_Control = (TControl*) c; }
+		virtual void			SetSharedControl( Ui::IControl* c ) { __m_Control = (TControl*) c; }
 
 	private:
 		TControl*				__m_Control{ nullptr };

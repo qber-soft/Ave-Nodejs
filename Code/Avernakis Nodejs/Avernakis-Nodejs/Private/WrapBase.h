@@ -829,7 +829,6 @@ namespace Nav
 			__Detail::__ConvertType<TRet>::ToCpp( &r, val );
 			this->__CallEnd();
 		}
-		return r;
 	}
 
 	template<class... TArg>

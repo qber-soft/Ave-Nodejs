@@ -36,6 +36,7 @@ class MyApp {
 		// Config localized strings
 		this.m_App.LangSetFileRoot(AppPath.AppPath + "Language", "ini");
 		this.m_App.LangSetDefaultString(CultureId.en_us, DefaultString);
+		this.m_App.LangSetCurrent(CultureId.en_us);
 
 		this.m_Window = new WindowMain();
 		this.m_Window.CreateAndShow();

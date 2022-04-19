@@ -39,7 +39,7 @@ export class WindowMain implements IWindowMain {
 		lstPage.SetVirtual((s, nIndex, nSubIndex) => {
 			let r = new RichListBoxItemVirtual();
 			if (nIndex >= 0 && nIndex < this.m_Page.length && 0 == nSubIndex) {
-				r.String = DefaultString[this.m_Page[nIndex].NameKey];
+				r.String = DefaultString[this.m_Page[nIndex].NameKey] ?? "<NoString>";
 			}
 			return r;
 		});

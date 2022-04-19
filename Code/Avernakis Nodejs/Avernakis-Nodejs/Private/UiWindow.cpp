@@ -30,8 +30,14 @@ namespace Nav
 	{
 		__DefineObject<UiWindow>();
 
-		AutoAddMethod( CreateWindow, WrapObjectGeneric );
-		AutoAddMethod( CloseWindow );
+		AddMethod<WrapObjectGeneric>( "CreateWindow", ThisMethod( __CreateWindow ) );
+		AddMethod<>( "CloseWindow", ThisMethod( __CloseWindow ) );
+
+		AddMethod<WrapObjectGeneric>( "CreateDialog", ThisMethod( __CreateDialog ) );
+		AddMethod<WrapObjectPromise>( "ShowDialog", ThisMethod( __ShowDialog ) );
+		AddMethod<>( "CloseDialog", ThisMethod( __CloseDialog ) );
+
+		AddMethod<WrapObjectGeneric>( "IsWindowCreated", ThisMethod( __IsWindowCreated ) );
 
 		AutoAddMethod( GetDeviceType );
 
@@ -156,20 +162,6 @@ namespace Nav
 #		endif
 		}
 
-		if ( m_Param.m_Theme )
-		{
-			m_Theme = m_Param.m_Theme;
-		}
-		else
-		{
-			m_ThemeDefaultData = ci.NewJsObjectWithOwnership<UiThemeImage>();
-			if ( !m_ThemeDefaultData->Ctor() )
-				return false;
-			m_Theme.m_Pointer = m_ThemeDefaultData;
-		}
-		if ( !m_Theme )
-			return false;
-
 		m_Frame = ci.NewJsObjectWithOwnership<UiWindowFrame>();
 		if ( !m_Frame )
 			return false;
@@ -213,43 +205,54 @@ namespace Nav
 
 	U1 UiWindow::OnCreate( Ui::IWindow::CreationParam & cp )
 	{
-		auto theme = m_Theme->CloneTheme();
-		if ( !theme )
-			return false;
-		theme->GetResourceManager().ProviderAdd( App::GetSingleton().GetDpiResourceProvider() );
-
 		cp.m_Window.m_Title = m_Param.m_Title.c_str();
 		cp.m_Window.m_Layout = m_Param.m_Layout;
-		cp.m_Window.m_Flag = m_Param.m_Flag;
-		cp.m_Window.m_Flag &= ~Ui::IWindowNative::CreationParam::Flag_ParentHandle;
-		cp.m_Window.m_Flag |= Ui::IWindowNative::CreationParam::Flag_Render;
-		cp.m_Window.m_Flag |= Ui::IWindowNative::CreationParam::Flag_CustomFrame;
+
+		if ( !m_ByoLinked )
+		{
+			cp.m_Window.m_Flag = m_Param.m_Flag;
+			cp.m_Window.m_Flag &= ~Ui::IWindowNative::CreationParam::Flag_ParentHandle;
+			cp.m_Window.m_Flag |= Ui::IWindowNative::CreationParam::Flag_Render;
+			cp.m_Window.m_Flag |= Ui::IWindowNative::CreationParam::Flag_CustomFrame;
+
+			auto theme = m_Theme->CloneTheme();
+			if ( !theme )
+				return false;
+			theme->GetResourceManager().ProviderAdd( App::GetSingleton().GetDpiResourceProvider() );
+			cp.m_Theme = std::move( theme );
+
+			switch ( m_Param.m_Device )
+			{
+#		if AvePlatform == AvePlatformWinDesktop
+			case UiWindowDevice::GDI: cp.m_Device.m_DeviceType = Ui::WindowDeviceType::Byo2; cp.m_Device.m_DeviceId = AveGuidOf( Byo2::IDeviceGdi ); break;
+			case UiWindowDevice::D2D1: cp.m_Device.m_DeviceType = Ui::WindowDeviceType::Byo2; cp.m_Device.m_DeviceId = AveGuidOf( Byo2::IDeviceD2D1 ); break;
+			case UiWindowDevice::D3D11: cp.m_Device.m_DeviceType = Ui::WindowDeviceType::Byo3; cp.m_Device.m_DeviceId = AveGuidOf( Byo3::IDeviceD3D11 ); break;
+			case UiWindowDevice::D3D12: cp.m_Device.m_DeviceType = Ui::WindowDeviceType::Byo3; cp.m_Device.m_DeviceId = AveGuidOf( Byo3::IDeviceD3D12 ); break;
+#		elif AvePlatform == AvePlatformMac
+			case UiWindowDevice::CG: cp.m_Device.m_DeviceType = Ui::WindowDeviceType::Byo2; cp.m_Device.m_DeviceId = AveGuidOf( Byo2::IDeviceCg ); break;
+			case UiWindowDevice::Metal: cp.m_Device.m_DeviceType = Ui::WindowDeviceType::Byo3; cp.m_Device.m_DeviceId = AveGuidOf( Byo3::IDeviceMetal ); break;
+#		endif
+
+			default:
+				return false;
+			}
+			if ( AveGuidNull == cp.m_Device.m_DeviceId )
+				return false;
+
+			cp.m_Device.m_Debug = Ui::WindowDeviceDebug::Auto;
+			cp.m_Device.m_Multithreaded = true;
+			cp.m_Device.m_TouchSupport = false;
+			cp.m_Device.m_Msaa = 0;
+			cp.m_Device.m_SyncInterval = 1;
+		}
+		else
+		{
+			if ( !m_IsDialog )
+				cp.m_Window.m_Flag &= ~Ui::IWindowNative::CreationParam::Flag_MainWindow;
+		}
+
 		if ( m_Param.m_ParentWindow && m_Param.m_ParentWindow->IsWindowCreated() )
 			cp.m_Window.m_Parent = &m_Param.m_ParentWindow->GetNativeWindow();
-		cp.m_Theme = std::move( theme );
-		switch ( m_Param.m_Device )
-		{
-#	if AvePlatform == AvePlatformWinDesktop
-		case UiWindowDevice::GDI: cp.m_Device.m_DeviceType = Ui::WindowDeviceType::Byo2; cp.m_Device.m_DeviceId = AveGuidOf( Byo2::IDeviceGdi ); break;
-		case UiWindowDevice::D2D1: cp.m_Device.m_DeviceType = Ui::WindowDeviceType::Byo2; cp.m_Device.m_DeviceId = AveGuidOf( Byo2::IDeviceD2D1 ); break;
-		case UiWindowDevice::D3D11: cp.m_Device.m_DeviceType = Ui::WindowDeviceType::Byo3; cp.m_Device.m_DeviceId = AveGuidOf( Byo3::IDeviceD3D11 ); break;
-		case UiWindowDevice::D3D12: cp.m_Device.m_DeviceType = Ui::WindowDeviceType::Byo3; cp.m_Device.m_DeviceId = AveGuidOf( Byo3::IDeviceD3D12 ); break;
-#	elif AvePlatform == AvePlatformMac
-		case UiWindowDevice::CG: cp.m_Device.m_DeviceType = Ui::WindowDeviceType::Byo2; cp.m_Device.m_DeviceId = AveGuidOf( Byo2::IDeviceCg ); break;
-		case UiWindowDevice::Metal: cp.m_Device.m_DeviceType = Ui::WindowDeviceType::Byo3; cp.m_Device.m_DeviceId = AveGuidOf( Byo3::IDeviceMetal ); break;
-#	endif
-
-		default:
-			return false;
-		}
-		if ( AveGuidNull == cp.m_Device.m_DeviceId )
-			return false;
-
-		cp.m_Device.m_Debug = Ui::WindowDeviceDebug::Auto;
-		cp.m_Device.m_Multithreaded = true;
-		cp.m_Device.m_TouchSupport = false;
-		cp.m_Device.m_Msaa = 0;
-		cp.m_Device.m_SyncInterval = 1;
 
 		return true;
 	}
@@ -260,7 +263,8 @@ namespace Nav
 		App::GetSingleton().SetDpiwareSizeList( GetIconManager() );
 		SetStringProvider( App::GetSingleton().IniGetProvider() );
 		SetDpiId( AppHelper::DpiId::SystemDefault );
-		GetWindow().SetBackground( 0 != (Ui::IWindowNative::CreationParam::Flag_Layered & m_Param.m_Flag) );
+		//GetWindow().SetBackground( 0 != (Ui::IWindowNative::CreationParam::Flag_Layered & m_Param.m_Flag) );
+		GetWindow().SetBackground( true );
 		GetCommonUiOrigin().SetIconManager( CloneIconManager() );
 		if ( AppLangType::Text == App::GetSingleton().GetLangType() )
 			GetControlManager().SetStringProvider( &App::GetSingleton().IniGetString() );
@@ -313,6 +317,19 @@ namespace Nav
 			m_Taskbar->SetTaskbar( this, pTaskbar );
 		else
 			m_Taskbar = nullptr;
+
+		if ( m_IsDialog )
+		{
+			if ( m_OnCreateContent )
+			{
+				U1 b = true;
+				m_OnCreateContent.BlockCall( this, b );
+				if ( !b )
+					return false;
+			}
+
+			__ApplyLanguage();
+		}
 
 		return true;
 	}
@@ -449,42 +466,104 @@ namespace Nav
 
 		if ( AppLangType::Text == App::GetSingleton().GetLangType() )
 		{
-			SetDpiMenuText( "CoUiScaleSys"_ls, "CoUiScaleHw"_ls );
-			SetCommonUiDefaultConfig( App::GetSingleton().IniGetString() );
-			if ( auto p = "AppTitle"_ls; p && *p )
-				GetNativeWindow().SetTitle( p );
+			if ( !m_ByoLinked )
+			{
+				SetDpiMenuText( "CoUiScaleSys"_ls, "CoUiScaleHw"_ls );
+				SetCommonUiDefaultConfig( App::GetSingleton().IniGetString() );
+				if ( auto p = "AppTitle"_ls; p && *p )
+					GetNativeWindow().SetTitle( p );
 
-			Byo2::FontDesc fd{};
-			fd.m_Res.m_Name = "__FontStd"_ls;
-			fd.m_Size = 9;
-			if ( fd.m_Res.m_Name && *fd.m_Res.m_Name )
-				GetWindow().GetTheme().SetFont( fd );
-			GetWindow().UpdateLayout( true );
+				Byo2::FontDesc fd{};
+				fd.m_Res.m_Name = "__FontStd"_ls;
+				fd.m_Size = 9;
+				if ( fd.m_Res.m_Name && *fd.m_Res.m_Name )
+					GetWindow().GetTheme().SetFont( fd );
+			}
 		}
+		GetWindow().UpdateLayout( true );
 
 		m_OnLanguageChange( this );
 	}
 
-	U1 UiWindow::CreateWindow( const CallbackInfo& ci )
+	U1 UiWindow::__PreCreateWindow( const CallbackInfo & ci, UiWindow * pByoLinker )
 	{
-		//App::GetSingleton().GetSysInfo().DebugWaitDebugger( 10000 );
+		//App::GetSingleton().WaitForDebugger();
+
+		m_ByoLinked = nullptr != pByoLinker;
+
+		if ( !m_ByoLinked )
+		{
+			if ( m_Param.m_Theme )
+			{
+				m_Theme = m_Param.m_Theme;
+			}
+			else
+			{
+				m_ThemeDefaultData = ci.NewJsObjectWithOwnership<UiThemeImage>();
+				if ( !m_ThemeDefaultData->Ctor() )
+					return false;
+				m_Theme.m_Pointer = m_ThemeDefaultData;
+			}
+			if ( !m_Theme )
+				return false;
+		}
+		else
+		{
+			m_Theme = pByoLinker->m_Theme;
+		}
+
+		return true;
+	}
+
+	U1 UiWindow::__CreateWindow( const CallbackInfo& ci, UiWindow* pByoLinker, U1 bIndependent )
+	{
+		if ( !__PreCreateWindow( ci, pByoLinker ) )
+			return false;
 
 		U1 b = false;
 		App::GetSingleton().ExecuteInUiThread( [&]
 		{
-			if ( Window::CreateWindow() )
+			if ( CreateWindow( pByoLinker ? &pByoLinker->GetByoLinker() : nullptr, pByoLinker && bIndependent ) )
 			{
 				GetWindow().SetUserContext( static_cast<UiControl*>(this) );
 				b = true;
 			}
 		} );
-
-		if ( m_OnCreateContent && !m_OnCreateContent( this ) )
+		if ( !b )
 			return false;
+
+		if ( m_OnCreateContent )
+		{
+			m_OnCreateContent.DirectCall( this, b );
+			if ( !b )
+				return false;
+		}
 
 		__ApplyLanguage();
 
-		return b;
+		return true;
+	}
+
+	U1 UiWindow::__CreateDialog( const CallbackInfo& ci, UiWindow* pByoLinker )
+	{
+		m_IsDialog = true;
+
+		if ( !__PreCreateWindow( ci, pByoLinker ) )
+			return false;
+
+		U1 b = false;
+		App::GetSingleton().ExecuteInUiThread( [&]
+		{
+			if ( CreateDialog( pByoLinker ? &pByoLinker->GetByoLinker() : nullptr ) )
+			{
+				GetWindow().SetUserContext( static_cast<UiControl*>(this) );
+				b = true;
+			}
+		} );
+		if ( !b )
+			return false;
+
+		return true;
 	}
 
 	UiWindow * UiWindow::SetDeviceNotification( U1 b )
