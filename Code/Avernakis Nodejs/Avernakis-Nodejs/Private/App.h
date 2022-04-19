@@ -10,6 +10,7 @@ namespace Nav
 
 	class UiApp;
 	class IPromiseCall;
+	class IoResourceSource;
 
 	enum class AppLangType
 	{
@@ -62,6 +63,8 @@ namespace Nav
 		void									ExecuteInUiThread( Func<void()>&& f );
 		void									ExecuteInUiThread( IPromiseCall* p );
 		void									ExecuteInJsThread( Func<void()>&& f, U1 bWait );
+
+		Io::AveStream							OpenResourceAsStream( const IoResourceSource& rs );
 
 #	if 1 == AveDebug
 		AveInline void WaitForDebugger()

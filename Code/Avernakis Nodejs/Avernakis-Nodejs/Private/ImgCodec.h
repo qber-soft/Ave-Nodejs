@@ -1,7 +1,5 @@
 ﻿#pragma once
 
-#include "WrapObject.h"
-#include "WrapData.h"
 #include "IoCommon.h"
 
 namespace Nav
@@ -54,9 +52,6 @@ namespace Nav
 
 		U1									SaveFile( PCWChar szFile, ImgImage* img, ImgContainerType nType );
 		ArrayBuffer							SaveArrayBuffer( PCWChar szFile, ImgImage* img, ImgContainerType nType );
-
-	public:
-		Io::AveStream						__Open( const IoResourceSource& rs );
 
 	};
 

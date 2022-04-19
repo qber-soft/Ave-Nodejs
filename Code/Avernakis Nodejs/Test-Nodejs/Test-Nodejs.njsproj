@@ -240,6 +240,7 @@
     <TypeScriptCompile Include="src\Ave\Ui\Ribbon\UiRibbonGroup.ts" />
     <TypeScriptCompile Include="src\Ave\Ui\Ribbon\UiRibbonTab.ts" />
     <TypeScriptCompile Include="src\Ave\Ui\Theme\UiTheme.ts" />
+    <TypeScriptCompile Include="src\Ave\Ui\Theme\UiThemeFile.ts" />
     <TypeScriptCompile Include="src\Ave\Ui\Theme\UiThemePredefined.ts" />
     <TypeScriptCompile Include="src\Ave\Ui\UiApp.ts" />
     <TypeScriptCompile Include="src\Ave\Ui\UiCommon.ts" />

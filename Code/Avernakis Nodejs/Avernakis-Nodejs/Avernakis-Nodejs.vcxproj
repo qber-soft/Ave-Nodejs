@@ -225,7 +225,9 @@
     <ClCompile Include="Private\UiTab.cpp" />
     <ClCompile Include="Private\UiTextBox.cpp" />
     <ClCompile Include="Private\UiTheme.cpp" />
+    <ClCompile Include="Private\UiThemeFile.cpp" />
     <ClCompile Include="Private\UiThemeImage.cpp" />
+    <ClCompile Include="Private\UiThemeFileImage.cpp" />
     <ClCompile Include="Private\UiThemeImagePredefined.cpp" />
     <ClCompile Include="Private\UiToolBar.cpp" />
     <ClCompile Include="Private\UiTrackBar.cpp" />
@@ -309,7 +311,9 @@
     <ClInclude Include="Private\UiTab.h" />
     <ClInclude Include="Private\UiTextBox.h" />
     <ClInclude Include="Private\UiTheme.h" />
+    <ClInclude Include="Private\UiThemeFile.h" />
     <ClInclude Include="Private\UiThemeImage.h" />
+    <ClInclude Include="Private\UiThemeFileImage.h" />
     <ClInclude Include="Private\UiThemeImagePredefined.h" />
     <ClInclude Include="Private\UiToolBar.h" />
     <ClInclude Include="Private\UiTrackBar.h" />

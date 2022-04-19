@@ -17,6 +17,7 @@ class PageOwnedWindow extends PageHelper<PageOwnedWindow> {
 		ctl.OnClick(() => {
 			if (!this.m_Window) {
 				const cp = new WindowCreation();
+				cp.Flag &= ~WindowFlag.Minimum;
 				cp.Title = "Owned Window";
 				cp.Layout.Size = new Vec2(320, 180);
 				this.m_Window = new Window(cp);
@@ -32,10 +33,11 @@ class PageOwnedWindow extends PageHelper<PageOwnedWindow> {
 		ctl.SetText("Show Dialog");
 		ctl.OnClick(async () => {
 			const cp = new WindowCreation();
+			cp.Flag &= ~(WindowFlag.Minimum | WindowFlag.Sizable);
 			cp.Title = "Dialog";
 			cp.Layout.Size = new Vec2(320, 180);
 			const dlg = new Dialog(cp);
-			dlg.OnWindowCancel(() => dlg.CloseDialog(0));
+			dlg.OnWindowCancel((sender) => sender.CloseDialog(0));
 			dlg.OnCreateContent((sender) => {
 				const grid = new Grid(sender);
 				grid.RowAddSlice(1).RowAddDpx(32).RowAddSlice(1);

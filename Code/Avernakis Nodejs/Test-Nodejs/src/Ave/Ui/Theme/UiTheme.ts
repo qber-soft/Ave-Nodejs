@@ -2,7 +2,8 @@
 import { DpiSize, FontDescription } from "../UiCommon";
 
 export enum ThemeType {
-	ImageBased,
+	Unknown = 0,
+	ImageBased = 1,
 }
 
 export interface ITheme {

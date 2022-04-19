@@ -42,7 +42,7 @@ namespace Nav
 
 	ImgImage * ImgCodec::Open( const CallbackInfo & ci, const WrapData<IoResourceSource>& rs )
 	{
-		if ( auto ps = __Open( rs ) )
+		if ( auto ps = App::GetSingleton().OpenResourceAsStream( rs ) )
 		{
 			if ( auto img = m_Loader->Open( *ps ) )
 			{
@@ -58,7 +58,7 @@ namespace Nav
 
 	WrapData<Img::Metadata> ImgCodec::GetMetadata( const WrapData<IoResourceSource>& rs )
 	{
-		if ( auto ps = __Open( rs ) )
+		if ( auto ps = App::GetSingleton().OpenResourceAsStream( rs ) )
 		{
 			Img::Metadata md;
 			if ( m_Loader->GetMetadata( *ps, md ) )
@@ -99,18 +99,6 @@ namespace Nav
 			return std::move( ab );
 		ab.m_Null = false;
 		return std::move( ab );
-	}
-
-	Io::AveStream ImgCodec::__Open( const IoResourceSource & rs )
-	{
-		if ( IoResourceSourceType::Resource == rs.m_Type )
-			return App::GetSingleton().GetDpiResourceProvider()->Open( rs.m_ResourceId );
-		else if ( IoResourceSourceType::FilePath == rs.m_Type )
-			return AveKak.Create<Io::IStreamFile>( rs.m_FilePath.c_str() );
-		else if ( IoResourceSourceType::InMemory == rs.m_Type )
-			return AveKak.Create<Io::IStreamMemory>( (void*) rs.m_InMemory.m_Data.m_Pointer, (Io::StreamSize_t) rs.m_InMemory.m_Data.m_Length );
-		else
-			return nullptr;
 	}
 
 }

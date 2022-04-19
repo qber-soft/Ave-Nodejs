@@ -249,6 +249,18 @@ namespace Nav
 		{
 			if ( !m_IsDialog )
 				cp.m_Window.m_Flag &= ~Ui::IWindowNative::CreationParam::Flag_MainWindow;
+
+			constexpr static auto c_ValidFlag = 0
+				| Ui::IWindowNative::CreationParam::Flag_FullScreen
+				| Ui::IWindowNative::CreationParam::Flag_Sizable
+				| Ui::IWindowNative::CreationParam::Flag_Minimum
+				| Ui::IWindowNative::CreationParam::Flag_TopMost
+				| Ui::IWindowNative::CreationParam::Flag_ToolWindow
+				| Ui::IWindowNative::CreationParam::Flag_Indicator
+				| Ui::IWindowNative::CreationParam::Flag_Transparent
+				| Ui::IWindowNative::CreationParam::Flag_WindowSize
+				;
+			cp.m_Window.m_Flag = ~c_ValidFlag & cp.m_Window.m_Flag | c_ValidFlag & m_Param.m_Flag;
 		}
 
 		if ( m_Param.m_ParentWindow && m_Param.m_ParentWindow->IsWindowCreated() )

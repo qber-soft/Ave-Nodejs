@@ -34,15 +34,7 @@ namespace Nav
 		if ( !m_Object )
 			return false;
 
-		m_Object->QueryInterface( &m_Animation );
-		m_Object->QueryInterface( &m_Infection );
-
-		Ui::IThemeAnimation* pAni;
-		if ( m_Object->QueryInterface( &pAni ) )
-		{
-			pAni->SetFps( 30 );
-			pAni->SetDuration( 300 );
-		}
+		__Init();
 
 		return true;
 	}
@@ -104,6 +96,25 @@ namespace Nav
 			r.m_InfectionActiveRatio = ti.m_InfectionActiveRatio;
 		}
 		return r;
+	}
+
+	void UiThemeImage::__Init()
+	{
+		m_Object->QueryInterface( &m_Animation );
+		m_Object->QueryInterface( &m_Infection );
+
+		Ui::IThemeAnimation* pAni;
+		if ( m_Object->QueryInterface( &pAni ) )
+		{
+			pAni->SetFps( 30 );
+			pAni->SetDuration( 300 );
+		}
+	}
+
+	void UiThemeImage::SetTheme( Ui::ThemeImage && theme )
+	{
+		m_Object = std::move( theme );
+		__Init();
 	}
 
 }

@@ -28,7 +28,7 @@ namespace Nav
 		}
 
 	private:
-		void					SetStyle( UiThemeImage* p, U32 nStyle ) { if ( p->GetTheme() ) GetPredefined().SetStyle( *p->GetTheme(), nStyle, {} ); }
+		void					SetStyle( UiThemeImage* p, U32 nStyle ) { if ( auto t = p->PublicGetTheme() ) GetPredefined().SetStyle( *t, nStyle, {} ); }
 	};
 
 	template<class T, class TStyle>
