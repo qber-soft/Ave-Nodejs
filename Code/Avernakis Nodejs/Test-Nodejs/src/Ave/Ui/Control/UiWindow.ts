@@ -152,10 +152,10 @@ export class WindowCreation {
 }
 
 export interface IWindowConstructor<T, Internal = any> {
-	new (cp: WindowCreation): IWindowFactory<T> & IControl & Internal;
+	new (cp: WindowCreation): IWindow<T> & IControl & Internal;
 }
 
-export type IWindowFactory<T> = {
+export type IWindow<T> = {
 	IsWindowCreated(): boolean;
 	GetDeviceType(): WindowDevice;
 

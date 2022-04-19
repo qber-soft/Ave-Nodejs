@@ -2,10 +2,10 @@ import { AveLib } from "../../AveLib";
 import { AlignType } from "../UiCommon";
 import { Vec4 } from "../../Math/Vector";
 import { IVisual } from "../UiVisual";
-import { Window } from "../Control/UiWindow";
+import { WindowLike } from "../Control/UiWindow";
 
 export interface ILabel extends IVisual {
-	new (window: Window, key?: string | number): ILabel;
+	new (window: WindowLike, key?: string | number): ILabel;
 
 	SetText(s: string): Label;
 	GetText(): string;

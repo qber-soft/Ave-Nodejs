@@ -1,6 +1,6 @@
 ﻿import { IControl } from "../UiControl";
 import { AveLib } from "../../AveLib";
-import { Window } from "./UiWindow";
+import { Window, WindowLike } from "./UiWindow";
 import { Camera } from "../../Math/Camera";
 import { DpiSize_2 } from "../UiCommon";
 import { Vec3 } from "../../Math/Vector";
@@ -49,7 +49,7 @@ export interface IContainer3DControl<T extends IControl = IControl> {
 }
 
 export interface IContainer3D extends IControl {
-	new (window: Window): IContainer3D;
+	new (window: WindowLike): IContainer3D;
 
 	ControlAdd(c: IControl): any;
 	ControlRemove(c: IControl): IControl;
@@ -72,7 +72,7 @@ export class Container3D extends (AveLib.UiContainer3D as IContainer3D) {
 	private m_Child: Set<IControl>;
 	private m_Content2D: IControl;
 
-	constructor(window: Window) {
+	constructor(window: WindowLike) {
 		super(window);
 		this.m_Child = new Set();
 	}

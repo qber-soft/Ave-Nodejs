@@ -1,6 +1,6 @@
 ﻿import { IControl } from "../UiControl";
 import { AveLib } from "../../AveLib";
-import { Window } from "./UiWindow";
+import { WindowLike } from "./UiWindow";
 import { Vec2 } from "../../Math/Vector";
 import { AlignType } from "../UiCommon";
 
@@ -11,7 +11,7 @@ export enum PagerAdjustment {
 }
 
 export interface IPager extends IControl {
-	new (window: Window): IPager;
+	new (window: WindowLike): IPager;
 
 	SetContent(pControl: IControl): IControl;
 	GetContent(): IControl;
@@ -60,7 +60,7 @@ export class Pager extends (AveLib.UiPager as IPager) {
 	GetScrollPosition(): Vec2 {
 		return Vec2.FromNative(super.GetScrollPosition());
 	}
-	
+
 	GetScrollSize(): Vec2 {
 		return Vec2.FromNative(super.GetScrollSize());
 	}

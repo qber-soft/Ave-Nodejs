@@ -1,6 +1,6 @@
 ﻿import { IControl } from "../UiControl";
 import { AveLib, ExtendControlInstance } from "../../AveLib";
-import { Window } from "./UiWindow";
+import { WindowLike } from "./UiWindow";
 import { DpiSize, DpiSize_2, KnobControlType, Rect, IconCache } from "../UiCommon";
 import { Vec4, Vec2 } from "../../Math/Vector";
 
@@ -86,7 +86,7 @@ export interface IMatrixEditorDoc {
 }
 
 export interface IMatrixEditor extends IControl {
-	new (window: Window): IMatrixEditor;
+	new (window: WindowLike): IMatrixEditor;
 
 	DocNew(): MatrixEditor;
 	DocGet(): IMatrixEditorDoc;

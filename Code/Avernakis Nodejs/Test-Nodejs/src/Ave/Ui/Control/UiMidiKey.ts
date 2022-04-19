@@ -1,6 +1,6 @@
 ﻿import { IControl } from "../UiControl";
 import { AveLib } from "../../AveLib";
-import { Window } from "./UiWindow";
+import { WindowLike } from "./UiWindow";
 import { Vec2, Vec4 } from "../../Math/Vector";
 import { DpiSize_2, DpiSize, IconCache, DpiMargin, Rect, InputModifier } from "../UiCommon";
 
@@ -201,7 +201,7 @@ export class MidiKeyItem {
 }
 
 export interface IMidiKey extends IControl {
-	new (window: Window): IMidiKey;
+	new (window: WindowLike): IMidiKey;
 
 	SetRange(v: NoteRange): MidiKey; // range [v.x, v.y]
 	GetRange(): NoteRange;

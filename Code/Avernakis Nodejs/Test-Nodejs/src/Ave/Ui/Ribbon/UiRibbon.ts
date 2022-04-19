@@ -1,13 +1,13 @@
 ﻿import { IControl } from "../UiControl";
 import { AveLib, ExtendControlInstance } from "../../AveLib";
-import { Window } from "../Control/UiWindow";
+import { WindowLike } from "../Control/UiWindow";
 import { RibbonApp } from "./UiRibbonApp";
 import { ToolBar } from "../Control/UiToolBar";
 import { RibbonTab } from "./UiRibbonTab";
 import { Rect } from "../UiCommon";
 
 export interface IRibbon extends IControl {
-	new (window: Window): IRibbon;
+	new (window: WindowLike): IRibbon;
 
 	GetApp(): RibbonApp;
 	GetToolBar(): ToolBar;

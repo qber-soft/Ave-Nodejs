@@ -1,6 +1,6 @@
 ﻿import { IControl } from "../UiControl";
 import { AveLib } from "../../AveLib";
-import { Window } from "./UiWindow";
+import { WindowLike } from "./UiWindow";
 import { IconCache, Rect, ExpandAction, DpiSize } from "../UiCommon";
 import { Vec2 } from "../../Math/Vector";
 
@@ -89,7 +89,7 @@ export class TreeEditFinish {
 }
 
 export interface ITree extends IControl {
-	new (window: Window): ITree;
+	new (window: WindowLike): ITree;
 
 	ItemInsert(pInsert: TreeInsert): TreeItemHandle;
 	ItemRemove(pItem: TreeItemHandle): boolean;
@@ -162,11 +162,11 @@ export class Tree extends (AveLib.UiTree as ITree) {
 	GetScrollPosition(): Vec2 {
 		return Vec2.FromNative(super.GetScrollPosition());
 	}
-	
+
 	GetScrollSize(): Vec2 {
 		return Vec2.FromNative(super.GetScrollSize());
 	}
-	
+
 	GetScrollMax(): Vec2 {
 		return Vec2.FromNative(super.GetScrollMax());
 	}

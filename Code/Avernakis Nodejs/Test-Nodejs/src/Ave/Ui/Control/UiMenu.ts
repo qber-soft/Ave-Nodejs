@@ -1,6 +1,6 @@
 ﻿import { IControl } from "../UiControl";
 import { AveLib, ExtendControlInstance } from "../../AveLib";
-import { Window } from "./UiWindow";
+import { WindowLike } from "./UiWindow";
 import { IconCache, DpiSize, StringKey, DpiSize_2 } from "../UiCommon";
 
 export enum MenuFlag {
@@ -57,7 +57,7 @@ export class MenuItem {
 }
 
 export interface IMenu extends IControl {
-	new (window: Window, key?: StringKey): IMenu;
+	new (window: WindowLike, key?: StringKey): IMenu;
 
 	InsertItem(pItem: MenuItem): number;
 	InsertSubMenu(pItem: MenuItem): Menu;

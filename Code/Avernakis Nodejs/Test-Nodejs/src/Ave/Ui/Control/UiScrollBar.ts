@@ -1,6 +1,6 @@
 ﻿import { IControl } from "../UiControl";
 import { AveLib } from "../../AveLib";
-import { Window } from "./UiWindow";
+import { WindowLike } from "./UiWindow";
 
 export enum ScrollOrientation {
 	Auto,
@@ -9,7 +9,7 @@ export enum ScrollOrientation {
 }
 
 export interface IScrollBar extends IControl {
-	new (window: Window): IScrollBar;
+	new (window: WindowLike): IScrollBar;
 
 	SetOrientation(n: ScrollOrientation): ScrollBar;
 	GetOrientation(): ScrollOrientation;

@@ -2,7 +2,7 @@
 import { AveLib } from "../AveLib";
 import { PixFormat } from "../Image";
 import { InMemoryData, ResourceSource } from "../Io/IoCommon";
-import { Window } from "../Ui/Control/UiWindow";
+import { WindowLike } from "../Ui/Control/UiWindow";
 
 export enum Byo2ImageDataType {
 	Coded,
@@ -18,7 +18,7 @@ export class Byo2ImageCreation {
 }
 
 export interface IByo2Image {
-	new (window: Window, cp: Byo2ImageCreation): IByo2Image;
+	new (window: WindowLike, cp: Byo2ImageCreation): IByo2Image;
 
 	GetWidth(): number;
 	GetHeight(): number;

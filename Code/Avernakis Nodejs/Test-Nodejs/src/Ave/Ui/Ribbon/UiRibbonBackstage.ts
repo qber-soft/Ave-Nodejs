@@ -1,10 +1,10 @@
 ﻿import { IControl } from "../UiControl";
 import { AveLib } from "../../AveLib";
-import { Window } from "../Control/UiWindow";
+import { WindowLike } from "../Control/UiWindow";
 import { IconCache, Rect, DpiSize } from "../UiCommon";
 
 export interface IRibbonBackstage extends IControl {
-	new (window: Window, key?: string | number): IRibbonBackstage;
+	new (window: WindowLike, key?: string | number): IRibbonBackstage;
 
 	SetText(s: string): RibbonBackstage;
 	GetText(): string;
