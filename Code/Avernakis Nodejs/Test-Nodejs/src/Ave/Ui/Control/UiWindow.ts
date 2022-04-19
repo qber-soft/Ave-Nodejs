@@ -352,14 +352,13 @@ export class Window extends (WindowBase as any as IWindowConstructor<Window, IWi
 }
 
 interface IDialogInternal {
-	CreateDialog(pByoLinker: WindowLike): boolean;
 	ShowDialog(pByoLinker?: WindowLike): Promise<number>;
 	CloseDialog(nCode: number): void;
 }
 
 export class Dialog extends (WindowBase as any as IWindowConstructor<Dialog, IDialogInternal>) {
 	ShowDialog(pByoLinker: WindowLike): Promise<number> {
-		if (!super.CreateDialog(pByoLinker)) return null;
+		if (!super["CreateDialog"](pByoLinker)) return null;
 		return super.ShowDialog();
 	}
 
