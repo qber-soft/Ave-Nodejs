@@ -343,6 +343,8 @@ class WindowBase extends (AveLib.UiWindow as IWindowConstructor<WindowBase>) {
 // 	CloseDialog(nCode: number): void;
 // }
 
+export type WindowLike = Window | Dialog;
+
 export class Window extends (WindowBase as any as IWindowConstructor<Window>) {
 	CreateWindow(pByoLinker: Window = null, bIndependent = false): boolean {
 		return super["CreateWindow"](pByoLinker, bIndependent);
