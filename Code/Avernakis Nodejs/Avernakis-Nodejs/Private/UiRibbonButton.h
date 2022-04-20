@@ -50,7 +50,7 @@ namespace Nav
 		WrapPointer<UiVisual>			SetSmallVisual( WrapPointer<UiVisual> v ) { return __ChangeContent( GetControlTyped().SetSmallVisual( v->TakeVisual() ) ); }
 		WrapPointer<UiVisual>			GetSmallVisual() const { return __ReturnContent( GetControlTyped().GetSmallVisual() ); }
 
-		UiRibbonButton*					OnClick( Callback_t&& fn ) { m_OnClick = std::move( fn ); return this; }
-		UiRibbonButton*					OnDrop( Callback_t&& fn ) { m_OnDrop = std::move( fn ); return this; }
+		UiRibbonButton*					OnClick /**/( Callback_t&& fn );
+		UiRibbonButton*					OnDrop  /**/( Callback_t&& fn );
 	};
 }

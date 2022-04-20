@@ -16,60 +16,56 @@ namespace Nav
 	void UiKnob::DefineControl()
 	{
 		AutoAddMethod( SetText );
-		AutoAddMethod( GetText );
+		AutoAddMethod( GetText, WrapObjectGeneric );
 
 		AutoAddMethod( ValueSetRange );
-		AutoAddMethod( ValueGetRange );
+		AutoAddMethod( ValueGetRange, WrapObjectGeneric );
 
 		AutoAddMethod( ValueSetDefault );
-		AutoAddMethod( ValueGetDefault );
+		AutoAddMethod( ValueGetDefault, WrapObjectGeneric );
 
 		AutoAddMethod( ValueSet );
-		AutoAddMethod( ValueGet );
+		AutoAddMethod( ValueGet, WrapObjectGeneric );
 
 		AutoAddMethod( StepSetUnlimited );
-		AutoAddMethod( StepGetUnlimited );
+		AutoAddMethod( StepGetUnlimited, WrapObjectGeneric );
 
 		AutoAddMethod( ValueSetCycle );
-		AutoAddMethod( ValueGetCycle );
+		AutoAddMethod( ValueGetCycle, WrapObjectGeneric );
 
 		AutoAddMethod( StepSetLarge );
-		AutoAddMethod( StepGetLarge );
+		AutoAddMethod( StepGetLarge, WrapObjectGeneric );
 
 		AutoAddMethod( StepSetSmall );
-		AutoAddMethod( StepGetSmall );
+		AutoAddMethod( StepGetSmall, WrapObjectGeneric );
 
 		AutoAddMethod( ValueSetSplit );
-		AutoAddMethod( ValueGetSplit );
+		AutoAddMethod( ValueGetSplit, WrapObjectGeneric );
 
 		AutoAddMethod( ValueSetTick );
-		AutoAddMethod( ValueGetTick );
+		AutoAddMethod( ValueGetTick, WrapObjectGeneric );
 
 		AutoAddMethod( RingSetColor );
-		AutoAddMethod( RingGetColor );
+		AutoAddMethod( RingGetColor, WrapObjectGeneric );
 
 		AutoAddMethod( RingSetDefaultColor );
-		AutoAddMethod( RingGetDefaultColor );
+		AutoAddMethod( RingGetDefaultColor, WrapObjectGeneric );
 
 		AutoAddMethod( RingSetTickColor );
-		AutoAddMethod( RingGetTickColor );
+		AutoAddMethod( RingGetTickColor, WrapObjectGeneric );
 
 		AutoAddMethod( RingSetVisual );
-		AutoAddMethod( RingGetVisual );
+		AutoAddMethod( RingGetVisual, WrapObjectGeneric );
 
-		AutoAddMethod( OnChange );
-		AutoAddMethod( OnRotateBegin );
-		AutoAddMethod( OnRotateEnd );
+		AutoAddMethod( OnChange, WrapObjectGeneric );
+		AutoAddMethod( OnRotateBegin, WrapObjectGeneric );
+		AutoAddMethod( OnRotateEnd, WrapObjectGeneric );
 	}
 
 	U1 UiKnob::Ctor( UiWindow * p, Napi::Value v )
 	{
 		if ( !__CreateControl( p, v ) )
 			return false;
-
-		GetControlTyped().GetEvent<Ui::IKnob::OnChange>() += MakeThisFunc( __OnChange );
-		GetControlTyped().GetEvent<Ui::IKnob::OnRotateBegin>() += MakeThisFunc( __OnRotateBegin );
-		GetControlTyped().GetEvent<Ui::IKnob::OnRotateEnd>() += MakeThisFunc( __OnRotateEnd );
 
 		return true;
 	}
@@ -88,5 +84,9 @@ namespace Nav
 	{
 		m_OnRotateEnd( this, bCanceled );
 	}
+
+	UiKnob* UiKnob::OnChange      /**/( OnGeneric_t   /**/ && fn ) { m_OnChange      /**/ = SetEventCallback<Ui::IKnob::OnChange      /**/>( std::move( fn ), MakeThisFunc( __OnChange      /**/ ) ); return this; }
+	UiKnob* UiKnob::OnRotateBegin /**/( OnGeneric_t   /**/ && fn ) { m_OnRotateBegin /**/ = SetEventCallback<Ui::IKnob::OnRotateBegin /**/>( std::move( fn ), MakeThisFunc( __OnRotateBegin /**/ ) ); return this; }
+	UiKnob* UiKnob::OnRotateEnd   /**/( OnRotateEnd_t /**/ && fn ) { m_OnRotateEnd   /**/ = SetEventCallback<Ui::IKnob::OnRotateEnd   /**/>( std::move( fn ), MakeThisFunc( __OnRotateEnd   /**/ ) ); return this; }
 
 }

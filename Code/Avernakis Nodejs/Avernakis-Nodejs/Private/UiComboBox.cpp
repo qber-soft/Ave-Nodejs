@@ -21,30 +21,30 @@ namespace Nav
 		AutoAddMethod( Clear );
 		AutoAddMethod( Select );
 		AutoAddMethod( Sort );
-		AutoAddMethod( Find );
+		AutoAddMethod( Find, WrapObjectGeneric );
 		AutoAddMethod( Set );
-		AutoAddMethod( Get );
-		AutoAddMethod( GetCount );
-		AutoAddMethod( GetSelection );
+		AutoAddMethod( Get, WrapObjectGeneric );
+		AutoAddMethod( GetCount, WrapObjectGeneric );
+		AutoAddMethod( GetSelection, WrapObjectGeneric );
 
 		AutoAddMethod( SetCount );
 
 		AutoAddMethod( SetMode );
-		AutoAddMethod( GetMode );
+		AutoAddMethod( GetMode, WrapObjectGeneric );
 
 		AutoAddMethod( SetDropHeight );
-		AutoAddMethod( GetDropHeight );
+		AutoAddMethod( GetDropHeight, WrapObjectGeneric );
 
 		AutoAddMethod( SetFindExact );
-		AutoAddMethod( GetFindExact );
+		AutoAddMethod( GetFindExact, WrapObjectGeneric );
 
 		AutoAddMethod( SetFindCaseInsensitive );
-		AutoAddMethod( GetFindCaseInsensitive );
+		AutoAddMethod( GetFindCaseInsensitive, WrapObjectGeneric );
 
 		AutoAddMethod( SetBorder );
-		AutoAddMethod( GetBorder );
+		AutoAddMethod( GetBorder, WrapObjectGeneric );
 
-		AutoAddMethod( OnSelectionChange );
+		AutoAddMethod( OnSelectionChange, WrapObjectGeneric );
 	}
 
 	U1 UiComboBox::Ctor( UiWindow * p, Napi::Value v )
@@ -52,14 +52,18 @@ namespace Nav
 		if ( !__CreateControl( p, v ) )
 			return false;
 
-		GetControlTyped().GetEvent<Ui::IComboBox::OnSelectionChange>() += MakeThisFunc( __OnSelectionChange );
-
 		return true;
 	}
 
 	void UiComboBox::__OnSelectionChange( Ui::IComboBox & sender )
 	{
 		m_OnSelectionChange( this );
+	}
+
+	UiComboBox * UiComboBox::OnSelectionChange( OnSelectionChange_t && fn )
+	{
+		m_OnSelectionChange = SetEventCallback<Ui::IComboBox::OnSelectionChange>( std::move( fn ), MakeThisFunc( __OnSelectionChange ) );
+		return this;
 	}
 
 }

@@ -16,30 +16,27 @@ namespace Nav
 	void UiRibbonButton::DefineControl()
 	{
 		AutoAddMethod( SetText );
-		AutoAddMethod( GetText );
+		AutoAddMethod( GetText, WrapObjectGeneric );
 		AutoAddMethod( SetSmall );
-		AutoAddMethod( GetSmall );
+		AutoAddMethod( GetSmall, WrapObjectGeneric );
 		AutoAddMethod( SetCheck );
-		AutoAddMethod( GetCheck );
+		AutoAddMethod( GetCheck, WrapObjectGeneric );
 		AutoAddMethod( SetButtonType );
-		AutoAddMethod( GetButtonType );
+		AutoAddMethod( GetButtonType, WrapObjectGeneric );
 		AutoAddMethod( SetDrop );
-		AutoAddMethod( GetDrop );
+		AutoAddMethod( GetDrop, WrapObjectGeneric );
 		AutoAddMethod( SetBigVisual );
-		AutoAddMethod( GetBigVisual );
+		AutoAddMethod( GetBigVisual, WrapObjectGeneric );
 		AutoAddMethod( SetSmallVisual );
-		AutoAddMethod( GetSmallVisual );
-		AutoAddMethod( OnClick );
-		AutoAddMethod( OnDrop );
+		AutoAddMethod( GetSmallVisual, WrapObjectGeneric );
+		AutoAddMethod( OnClick, WrapObjectGeneric );
+		AutoAddMethod( OnDrop, WrapObjectGeneric );
 	}
 
 	U1 UiRibbonButton::Ctor( UiWindow * p, Napi::Value v )
 	{
 		if ( !__CreateControl( p, v ) )
 			return false;
-
-		GetControlTyped().GetEvent<Ui::IRibbonButton::OnClick>() += MakeThisFunc( __OnClick );
-		GetControlTyped().GetEvent<Ui::IRibbonButton::OnDrop>() += MakeThisFunc( __OnDrop );
 
 		return true;
 	}
@@ -54,4 +51,6 @@ namespace Nav
 		m_OnDrop( this );
 	}
 
+	UiRibbonButton* UiRibbonButton::OnClick /**/( Callback_t&& fn ) { m_OnClick /**/ = SetEventCallback<Ui::IRibbonButton::OnClick /**/>( std::move( fn ), MakeThisFunc( __OnClick /**/ ) ); return this; }
+	UiRibbonButton* UiRibbonButton::OnDrop  /**/( Callback_t&& fn ) { m_OnDrop  /**/ = SetEventCallback<Ui::IRibbonButton::OnDrop  /**/>( std::move( fn ), MakeThisFunc( __OnDrop  /**/ ) ); return this; }
 }

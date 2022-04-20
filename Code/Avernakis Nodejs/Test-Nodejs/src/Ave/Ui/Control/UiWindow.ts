@@ -107,7 +107,7 @@ export interface IWindowTaskbar {
 	SetStep(n: number): IWindowTaskbar;
 	GetStep(): number;
 	Step(): IWindowTaskbar;
-	
+
 	SetForceBigIconSize100(n: number): IWindowTaskbar;
 	GetForceBigIconSize100(): number;
 }
@@ -151,68 +151,67 @@ export class WindowCreation {
 	Device: WindowDevice = WindowDevice.Default2D;
 }
 
-export interface IWindow extends IControl {
-	new (cp: WindowCreation): IWindow;
+export interface IWindowConstructor<T, Internal = any> {
+	new (cp: WindowCreation): IWindow<T> & IControl & Internal;
+}
 
-	// Window methods
-	CreateWindow(): boolean;
-	CloseWindow(): void;
-
+export type IWindow<T> = {
+	IsWindowCreated(): boolean;
 	GetDeviceType(): WindowDevice;
 
-	Activate(): Window;
+	Activate(): T;
 	IsActive(): boolean;
 
-	SetTitle(s: string): Window;
+	SetTitle(s: string): T;
 	GetTitle(): string;
 
-	SetPosition(vPos: Vec2): Window;
-	SetSize(vSize: Vec2): Window;
+	SetPosition(vPos: Vec2): T;
+	SetSize(vSize: Vec2): T;
 
-	SetClientPosition(vPos: Vec2): Window;
+	SetClientPosition(vPos: Vec2): T;
 	GetClientPosition(): Vec2;
 
-	SetClientSize(vSize: Vec2): Window;
+	SetClientSize(vSize: Vec2): T;
 	GetClientSize(): Vec2;
 
-	SetMinimumSize(vSize: DpiSize_2): Window;
+	SetMinimumSize(vSize: DpiSize_2): T;
 	SetMinimumSize(): DpiSize_2;
 
-	SetSizeState(n: WindowSizeState): Window;
+	SetSizeState(n: WindowSizeState): T;
 	GetSizeState(): WindowSizeState;
 	IsMinimizable(): boolean;
 	IsSizeable(): boolean;
 
-	SetTopMost(b: boolean): Window;
+	SetTopMost(b: boolean): T;
 	GetTopMost(): boolean;
 
-	SetIme(b: boolean): Window;
+	SetIme(b: boolean): T;
 	GetIme(): boolean;
 
-	SetBackground(b: boolean): Window;
+	SetBackground(b: boolean): T;
 	GetBackground(): boolean;
 
-	SetRtl(b: boolean): Window;
+	SetRtl(b: boolean): T;
 	GetRtl(): boolean;
 
-	SetScale(n: WindowScale): Window;
+	SetScale(n: WindowScale): T;
 	GetScale(): WindowScale;
 
-	SetKeyTipEnable(b: boolean): Window;
+	SetKeyTipEnable(b: boolean): T;
 	GetKeyTipEnable(): boolean;
 
-	SetDirectKeyTip(b: boolean): Window;
+	SetDirectKeyTip(b: boolean): T;
 	GetDirectKeyTip(): boolean;
 
 	SetContent(c: IControl): IControl; // returns the previous content
 	GetContent(): IControl;
 
-	SetIcon(nResId: number): Window;
+	SetIcon(nResId: number): T;
 	GetIcon(): number;
 
-	SetAppId(s: string): Window;
+	SetAppId(s: string): T;
 
-	SetDeviceNotification(b: boolean): Window;
+	SetDeviceNotification(b: boolean): T;
 	GetDeviceNotification(): boolean;
 
 	GetTheme(): Theme;
@@ -233,35 +232,35 @@ export interface IWindow extends IControl {
 	// Hotkey
 	HotkeyRegister(key: KbKey, n: InputModifier): number;
 	HotkeyDeregister(nId: number): boolean;
-	HotkeySetEnable(b: boolean): Window;
+	HotkeySetEnable(b: boolean): T;
 	HotkeyGetEnable(): boolean;
-	HotkeyClear(): Window;
+	HotkeyClear(): T;
 
 	// Window events
-	OnCreateContent(fn: (sender: Window) => boolean): Window;
-	OnClosing(fn: (sender: Window) => boolean): Window;
-	OnClose(fn: (sender: Window) => void): Window;
+	OnCreateContent(fn: (sender: T) => boolean): T;
+	OnClosing(fn: (sender: T) => boolean): T;
+	OnClose(fn: (sender: T) => void): T;
 
 	// Occurs when press Enter key is pressed if there was no other control process it
-	OnWindowOk(fn: (sender: Window) => void): Window;
+	OnWindowOk(fn: (sender: T) => void): T;
 	// Occurs when press Esc key is pressed if there was no other control process it
-	OnWindowCancel(fn: (sender: Window) => void): Window;
+	OnWindowCancel(fn: (sender: T) => void): T;
 
-	OnWindowHotkey(fn: (sender: Window, nId: number, key: KbKey, n: InputModifier) => void): Window;
+	OnWindowHotkey(fn: (sender: T, nId: number, key: KbKey, n: InputModifier) => void): T;
 
-	OnScaleChange(fn: (sender: Window) => void): Window;
-	OnLanguageChange(fn: (sender: Window) => void): Window;
+	OnScaleChange(fn: (sender: T) => void): T;
+	OnLanguageChange(fn: (sender: T) => void): T;
 
-	OnDeviceChange(fn: (sender: Window) => void): Window;
-}
+	OnDeviceChange(fn: (sender: T) => void): T;
+};
 
-export class Window extends (AveLib.UiWindow as IWindow) {
-	private m_Content: IControl;
+class WindowBase extends (AveLib.UiWindow as IWindowConstructor<WindowBase>) {
+	protected m_Content: IControl;
 
 	// prevent gc
-	private m_Frame: IWindowFrame;
-	private m_FrameToolBarLeft: IControl;
-	private m_FrameToolBarRight: IControl;
+	protected m_Frame: IWindowFrame;
+	protected m_FrameToolBarLeft: IControl;
+	protected m_FrameToolBarRight: IControl;
 
 	SetContent(c: IControl) {
 		this.m_Content = c;
@@ -332,5 +331,40 @@ export class Window extends (AveLib.UiWindow as IWindow) {
 		}
 
 		return this.m_Frame;
+	}
+}
+
+export type WindowLike = Window | Dialog;
+
+interface IWindowInternal {
+	CreateWindow(pByoLinker: WindowLike, bIndependent?: boolean): boolean;
+	CloseWindow(): void;
+}
+
+export class Window extends (WindowBase as any as IWindowConstructor<Window, IWindowInternal>) {
+	CreateWindow(pByoLinker: Window = null, bIndependent = false): boolean {
+		return super.CreateWindow(pByoLinker, bIndependent);
+	}
+
+	CloseWindow(): void {
+		super.CloseWindow();
+	}
+}
+
+interface IDialogInternal {
+	ShowDialog(pByoLinker?: WindowLike): Promise<number>;
+	CloseDialog(nCode: number): void;
+}
+
+type CreateDialog_t = (pByoLinker: WindowLike) => boolean;
+
+export class Dialog extends (WindowBase as any as IWindowConstructor<Dialog, IDialogInternal>) {
+	ShowDialog(pByoLinker: WindowLike): Promise<number> {
+		if (!(super["CreateDialog"] as CreateDialog_t)(pByoLinker)) return null;
+		return super.ShowDialog();
+	}
+
+	CloseDialog(nCode: number): void {
+		return super.CloseDialog(nCode);
 	}
 }

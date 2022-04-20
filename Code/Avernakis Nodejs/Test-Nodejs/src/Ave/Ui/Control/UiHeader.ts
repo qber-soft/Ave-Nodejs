@@ -1,6 +1,6 @@
 ﻿import { IControl } from "../UiControl";
 import { AveLib } from "../../AveLib";
-import { Window } from "./UiWindow";
+import { WindowLike } from "./UiWindow";
 import { DpiSize, Rect, StringKey } from "../UiCommon";
 
 export enum HeaderItemFlag {
@@ -54,7 +54,7 @@ export enum HeaderItemSort {
 }
 
 export interface IHeader extends Omit<IControl, "GetRect"> {
-	new (window: Window, key?: StringKey): IHeader;
+	new (window: WindowLike, key?: StringKey): IHeader;
 
 	Add(item: HeaderItem): Header;
 	Insert(nInsertBefore: number, item: HeaderItem): boolean;

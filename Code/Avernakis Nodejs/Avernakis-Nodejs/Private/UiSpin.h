@@ -36,9 +36,9 @@ namespace Nav
 		void							__OnSpin      /**/( Ui::ISpin& sender, S32 nDelta );
 
 	private:
-		UiSpin*							OnClick     /**/( OnClick_t     /**/ && fn ) { m_OnClick     /**/ = std::move( fn ); return this; }
-		UiSpin*							OnSpinStart /**/( OnSpinStart_t /**/ && fn ) { m_OnSpinStart /**/ = std::move( fn ); return this; }
-		UiSpin*							OnSpinEnd   /**/( OnSpinEnd_t   /**/ && fn ) { m_OnSpinEnd   /**/ = std::move( fn ); return this; }
-		UiSpin*							OnSpin      /**/( OnSpin_t      /**/ && fn ) { m_OnSpin      /**/ = std::move( fn ); return this; }
+		UiSpin*							OnClick     /**/( OnClick_t     /**/ && fn );
+		UiSpin*							OnSpinStart /**/( OnSpinStart_t /**/ && fn );
+		UiSpin*							OnSpinEnd   /**/( OnSpinEnd_t   /**/ && fn );
+		UiSpin*							OnSpin      /**/( OnSpin_t      /**/ && fn );
 	};
 }

@@ -98,12 +98,12 @@ namespace Nav
 
 	void UiContainer3DControl::DefineObject()
 	{
-#	define __AutoAddMethod($x) AddMethod( #$x, &UiContainer3DControl::$x )
-		__AutoAddMethod( GetControl );
+#	define __AutoAddMethod($x, ...) AddMethod<__VA_ARGS__>( #$x, &UiContainer3DControl::$x )
+		__AutoAddMethod( GetControl, WrapObjectGeneric );
 		__AutoAddMethod( SetSize );
-		__AutoAddMethod( GetSize );
+		__AutoAddMethod( GetSize, WrapObjectGeneric );
 		__AutoAddMethod( SetCustomObject );
-		__AutoAddMethod( GetCustomObject );
+		__AutoAddMethod( GetCustomObject, WrapObjectGeneric );
 
 		__AutoAddMethod( SetPosition );
 		__AutoAddMethod( SetRotation );
@@ -114,11 +114,11 @@ namespace Nav
 		__AutoAddMethod( Scale );
 		__AutoAddMethod( Transform );
 
-		__AutoAddMethod( GetPosition );
-		__AutoAddMethod( GetRotation );
-		__AutoAddMethod( GetScaling );
-		__AutoAddMethod( GetTransform );
-		__AutoAddMethod( GetTransformT );
+		__AutoAddMethod( GetPosition, WrapObjectGeneric );
+		__AutoAddMethod( GetRotation, WrapObjectGeneric );
+		__AutoAddMethod( GetScaling, WrapObjectGeneric );
+		__AutoAddMethod( GetTransform, WrapObjectGeneric );
+		__AutoAddMethod( GetTransformT, WrapObjectGeneric );
 #	undef __AutoAddMethod
 	}
 
@@ -129,9 +129,9 @@ namespace Nav
 		AutoAddMethod( ControlRemoveAll );
 		AutoAddMethod( GetContainerControl, WrapObjectMix );
 		AutoAddMethod( SetContent2D );
-		AutoAddMethod( GetContent2D );
+		AutoAddMethod( GetContent2D, WrapObjectGeneric );
 		AutoAddMethod( SetDepthFormat );
-		AutoAddMethod( GetDepthFormat );
+		AutoAddMethod( GetDepthFormat, WrapObjectGeneric );
 		AutoAddMethod( GetCamera, WrapObjectGeneric );
 		AutoAddMethod( CreateCustom3DObject, WrapObjectGeneric );
 	}

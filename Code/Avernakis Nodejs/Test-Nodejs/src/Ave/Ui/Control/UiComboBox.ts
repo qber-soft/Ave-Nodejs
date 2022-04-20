@@ -1,7 +1,7 @@
 ﻿import { IControl } from "../UiControl";
 import { AveLib } from "../../AveLib";
 import { DpiSize, StringKey } from "../UiCommon";
-import { Window } from "./UiWindow";
+import { WindowLike } from "./UiWindow";
 
 export enum ComboBoxMode {
 	DropDown,
@@ -10,7 +10,7 @@ export enum ComboBoxMode {
 }
 
 export interface IComboBox extends IControl {
-	new (window: Window, key?: StringKey): IComboBox;
+	new (window: WindowLike, key?: StringKey): IComboBox;
 
 	Append(s: string): ComboBox;
 	Insert(s: string, nInsertBefore: number): ComboBox;

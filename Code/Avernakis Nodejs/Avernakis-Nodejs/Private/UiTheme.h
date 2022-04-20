@@ -25,6 +25,7 @@ namespace Nav
 	public:
 		virtual Napi::Value		GetObjectValue( Napi::Env env ) = 0;
 
+		virtual Ui::ITheme&		GetTheme() = 0;
 		virtual Ui::Theme		CloneTheme() = 0;
 
 	protected:

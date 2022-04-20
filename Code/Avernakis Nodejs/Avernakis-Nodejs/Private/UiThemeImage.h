@@ -15,9 +15,11 @@ namespace Nav
 
 		U1							Ctor();
 
-	private:
+	public:
 		virtual Napi::Value			GetObjectValue( Napi::Env env ) override { return __GetObjectValue( env ); }
 
+	private:
+		virtual Ui::ITheme&			GetTheme() override { return *m_Object; }
 		virtual Ui::Theme			CloneTheme() override { return m_Object; }
 
 	private:
@@ -38,8 +40,13 @@ namespace Nav
 		void						InfectionSet( const WrapData<UiThemeInfection>& pi );
 		WrapData<UiThemeInfection>	InfectionGet();
 
+	private:
+		void						__Init();
+
 	public:
-		Ui::IThemeImage*			GetTheme() const { return m_Object; }
+		Ui::IThemeImage*			PublicGetTheme() const { return m_Object; }
+
+		void						SetTheme( Ui::ThemeImage&& theme );
 	};
 
 }

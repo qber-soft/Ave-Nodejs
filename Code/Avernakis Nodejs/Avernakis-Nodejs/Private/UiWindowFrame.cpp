@@ -17,29 +17,29 @@ namespace Nav
 	void UiWindowFrame::DefineControl()
 	{
 		AutoAddMethod( SetIcon );
-		AutoAddMethod( GetIcon );
+		AutoAddMethod( GetIcon, WrapObjectGeneric );
 
 		AutoAddMethod( SetToolBarLeft );
-		AutoAddMethod( GetToolBarLeft );
+		AutoAddMethod( GetToolBarLeft, WrapObjectGeneric );
 
 		AutoAddMethod( SetToolBarRight );
-		AutoAddMethod( GetToolBarRight );
+		AutoAddMethod( GetToolBarRight, WrapObjectGeneric );
 
-		AutoAddMethod( GetCaptionRect );
-		AutoAddMethod( GetIconRect );
-		AutoAddMethod( GetTextRect );
-		AutoAddMethod( GetNonBorderRect );
+		AutoAddMethod( GetCaptionRect, WrapObjectGeneric );
+		AutoAddMethod( GetIconRect, WrapObjectGeneric );
+		AutoAddMethod( GetTextRect, WrapObjectGeneric );
+		AutoAddMethod( GetNonBorderRect, WrapObjectGeneric );
 
 		AutoAddMethod( SetBorderVisible );
-		AutoAddMethod( GetBorderVisible );
+		AutoAddMethod( GetBorderVisible, WrapObjectGeneric );
 
 		AutoAddMethod( SetCaptionVisible );
-		AutoAddMethod( GetCaptionVisible );
+		AutoAddMethod( GetCaptionVisible, WrapObjectGeneric );
 
 		AutoAddMethod( SysMenuReset );
 		AutoAddMethod( SysMenuAppend );
 
-		AutoAddMethod( OnSysMenuClick );
+		AutoAddMethod( OnSysMenuClick, WrapObjectGeneric );
 	}
 
 	U1 UiWindowFrame::Ctor( UiWindow * p, Napi::Value v )
@@ -63,9 +63,6 @@ namespace Nav
 		return GetControlTyped().SysMenuAppend( mi );
 	}
 
-	void UiWindowFrame::InitCallback()
-	{
-		GetControlTyped().GetEvent<Ui::IWindowFrame::OnSysMenuClick>() += MakeThisFunc( __OnSysMenuClick );
-	}
+	UiWindowFrame* UiWindowFrame::OnSysMenuClick( OnSysMenuClick_t&& fn ) { m_OnSysMenuClick = SetEventCallback<Ui::IWindowFrame::OnSysMenuClick>( std::move( fn ), MakeThisFunc( __OnSysMenuClick ) ); return this; }
 
 }

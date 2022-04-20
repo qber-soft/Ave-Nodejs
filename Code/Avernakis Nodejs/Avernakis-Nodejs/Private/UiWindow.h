@@ -102,7 +102,7 @@ namespace Nav
 		virtual void						OnDpiChange() override;
 
 	private:
-		using OnCreateContent_t				/**/ = JsFuncDirect<U1( UiWindow* sender )>;
+		using OnCreateContent_t				/**/ = JsFuncSafe<U1( UiWindow* sender )>;
 		using OnHotkey_t					/**/ = JsFuncSafe<void( UiWindow* sender, U32 nId, Ui::Key nKey, U32 nInputModifier )>;
 
 		using CallbackBool_t				/**/ = JsFuncSafe<U1( UiWindow* sender )>;
@@ -155,6 +155,9 @@ namespace Nav
 		JsObject<UiWindowTaskbar>			m_Taskbar;
 		JsObject<UiPlatform>				m_Platform;
 
+		U1									m_ByoLinked{ false };
+		U1									m_IsDialog{ false };
+
 	private:
 		void								__OnDragEnter( Ui::IWindowDragContext& sender );
 		void								__OnDragMove( Ui::IWindowDragContext& sender );
@@ -170,8 +173,17 @@ namespace Nav
 		void								__ApplyLanguage();
 
 	private:
-		U1									CreateWindow( const CallbackInfo& ci );
-		void								CloseWindow() { GetWindow().Close(); }
+		U1									__PreCreateWindow( const CallbackInfo& ci, UiWindow* pByoLinker );
+		U1									__PostCreateWindow();
+
+		U1									__CreateWindow( const CallbackInfo& ci, UiWindow* pByoLinker, U1 bIndependent );
+		void								__CloseWindow() { GetWindow().Close(); }
+
+		U1									__CreateDialog( const CallbackInfo& ci, UiWindow* pByoLinker );
+		S32									__ShowDialog() { return ShowDialog(); }
+		void								__CloseDialog( S32 nCode ) { return CloseDialog( nCode ); }
+
+		U1									__IsWindowCreated() { return IsWindowCreated(); }
 
 		UiWindowDevice						GetDeviceType() const { return m_Param.m_Device; }
 

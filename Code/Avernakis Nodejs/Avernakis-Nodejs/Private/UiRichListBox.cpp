@@ -23,20 +23,20 @@ namespace Nav
 		AutoAddMethod( ItemSetSelect );
 		AutoAddMethod( ItemSetSelectRange );
 		AutoAddMethod( ItemSort );
-		AutoAddMethod( ItemFind );
+		AutoAddMethod( ItemFind, WrapObjectGeneric );
 		AutoAddMethod( ItemSet );
-		AutoAddMethod( ItemGet );
-		AutoAddMethod( ItemGetCount );
-		AutoAddMethod( ItemGetCountPerPage );
-		AutoAddMethod( ItemGetSelectionCount );
-		AutoAddMethod( ItemGetSelection );
-		AutoAddMethod( ItemIsSelected );
-		AutoAddMethod( ItemGetNextSelection );
+		AutoAddMethod( ItemGet, WrapObjectGeneric );
+		AutoAddMethod( ItemGetCount, WrapObjectGeneric );
+		AutoAddMethod( ItemGetCountPerPage, WrapObjectGeneric );
+		AutoAddMethod( ItemGetSelectionCount, WrapObjectGeneric );
+		AutoAddMethod( ItemGetSelection, WrapObjectGeneric );
+		AutoAddMethod( ItemIsSelected, WrapObjectGeneric );
+		AutoAddMethod( ItemGetNextSelection, WrapObjectGeneric );
 		AutoAddMethod( ItemEnsure );
-		AutoAddMethod( ItemGetTopIndex );
-		AutoAddMethod( ItemIsVisible );
-		AutoAddMethod( ItemGetRect );
-		AutoAddMethod( ItemHitTest );
+		AutoAddMethod( ItemGetTopIndex, WrapObjectGeneric );
+		AutoAddMethod( ItemIsVisible, WrapObjectGeneric );
+		AutoAddMethod( ItemGetRect, WrapObjectGeneric );
+		AutoAddMethod( ItemHitTest, WrapObjectGeneric );
 		AutoAddMethod( ItemSetCount );
 		AutoAddMethod( ItemSetHighlight );
 		AutoAddMethod( ItemSetMinimumHeight );
@@ -44,53 +44,53 @@ namespace Nav
 
 		AutoAddMethod( SetVirtual );
 
-		AutoAddMethod( GetHeader );
+		AutoAddMethod( GetHeader, WrapObjectGeneric );
 		AutoAddMethod( SetHeaderAutoWidth );
-		AutoAddMethod( GetHeaderAutoWidth );
+		AutoAddMethod( GetHeaderAutoWidth, WrapObjectGeneric );
 
 		AutoAddMethod( SetScrollPosition );
-		AutoAddMethod( GetScrollPosition );
-		AutoAddMethod( GetScrollSize );
-		AutoAddMethod( GetScrollMax );
+		AutoAddMethod( GetScrollPosition, WrapObjectGeneric );
+		AutoAddMethod( GetScrollSize, WrapObjectGeneric );
+		AutoAddMethod( GetScrollMax, WrapObjectGeneric );
 
 		AutoAddMethod( SetSelectionMode );
-		AutoAddMethod( GetSelectionMode );
+		AutoAddMethod( GetSelectionMode, WrapObjectGeneric );
 
 		AutoAddMethod( SetViewMode );
-		AutoAddMethod( GetViewMode );
+		AutoAddMethod( GetViewMode, WrapObjectGeneric );
 
 		AutoAddMethod( SetTileSize );
-		AutoAddMethod( GetTileSize );
+		AutoAddMethod( GetTileSize, WrapObjectGeneric );
 		AutoAddMethod( SetTileColumnPriority );
-		AutoAddMethod( GetTileColumnPriority );
+		AutoAddMethod( GetTileColumnPriority, WrapObjectGeneric );
 
 		AutoAddMethod( SetItemSpace );
-		AutoAddMethod( GetItemSpace );
+		AutoAddMethod( GetItemSpace, WrapObjectGeneric );
 
 		AutoAddMethod( SetTreeStyle );
-		AutoAddMethod( GetTreeStyle );
+		AutoAddMethod( GetTreeStyle, WrapObjectGeneric );
 
 		AutoAddMethod( SetItemCheck );
-		AutoAddMethod( GetItemCheck );
+		AutoAddMethod( GetItemCheck, WrapObjectGeneric );
 
 		AutoAddMethod( SetIconSize );
-		AutoAddMethod( GetIconSize );
+		AutoAddMethod( GetIconSize, WrapObjectGeneric );
 
 		AutoAddMethod( SetIconNameColumn );
-		AutoAddMethod( GetIconNameColumn );
+		AutoAddMethod( GetIconNameColumn, WrapObjectGeneric );
 
 		AutoAddMethod( SetListItemWidth );
-		AutoAddMethod( GetListItemWidth );
+		AutoAddMethod( GetListItemWidth, WrapObjectGeneric );
 
-		AutoAddMethod( GetListRect );
+		AutoAddMethod( GetListRect, WrapObjectGeneric );
 
-		AutoAddMethod( OnSelectionChange /**/ );
-		AutoAddMethod( OnSelectionEnd    /**/ );
-		AutoAddMethod( OnDoubleClick     /**/ );
-		AutoAddMethod( OnRightClick      /**/ );
-		AutoAddMethod( OnDragBegin       /**/ );
-		AutoAddMethod( OnGlyphClick      /**/ );
-		AutoAddMethod( OnItemCheck       /**/ );
+		AutoAddMethod( OnSelectionChange /**/, WrapObjectGeneric );
+		AutoAddMethod( OnSelectionEnd    /**/, WrapObjectGeneric );
+		AutoAddMethod( OnDoubleClick     /**/, WrapObjectGeneric );
+		AutoAddMethod( OnRightClick      /**/, WrapObjectGeneric );
+		AutoAddMethod( OnDragBegin       /**/, WrapObjectGeneric );
+		AutoAddMethod( OnGlyphClick      /**/, WrapObjectGeneric );
+		AutoAddMethod( OnItemCheck       /**/, WrapObjectGeneric );
 	}
 
 	U1 UiRichListBox::Ctor( const CallbackInfo& ci, UiWindow * p, Napi::Value v )
@@ -107,14 +107,6 @@ namespace Nav
 		GetControlTyped().SetIconManager( Ui::RichListBoxViewMode::Tile, p->PublicCloneIconManager() );
 		GetControlTyped().SetIconManager( Ui::RichListBoxViewMode::Icon, p->PublicCloneIconManager() );
 		GetControlTyped().SetIconManager( Ui::RichListBoxViewMode::List, p->PublicCloneIconManager() );
-
-		GetControlTyped().GetEvent<Ui::IRichListBox::OnSelectionChange /**/>() += MakeThisFunc( __OnSelectionChange /**/ );
-		GetControlTyped().GetEvent<Ui::IRichListBox::OnSelectionEnd    /**/>() += MakeThisFunc( __OnSelectionEnd    /**/ );
-		GetControlTyped().GetEvent<Ui::IRichListBox::OnDoubleClick     /**/>() += MakeThisFunc( __OnDoubleClick     /**/ );
-		GetControlTyped().GetEvent<Ui::IRichListBox::OnRightClick      /**/>() += MakeThisFunc( __OnRightClick      /**/ );
-		GetControlTyped().GetEvent<Ui::IRichListBox::OnDragBegin       /**/>() += MakeThisFunc( __OnDragBegin       /**/ );
-		GetControlTyped().GetEvent<Ui::IRichListBox::OnGlyphClick      /**/>() += MakeThisFunc( __OnGlyphClick      /**/ );
-		GetControlTyped().GetEvent<Ui::IRichListBox::OnItemCheck       /**/>() += MakeThisFunc( __OnItemCheck       /**/ );
 
 		return true;
 	}
@@ -256,4 +248,11 @@ namespace Nav
 		return v;
 	}
 
+	UiRichListBox* UiRichListBox::OnSelectionChange /**/( OnCallback0_t&& fn ) { m_OnSelectionChange /**/ = SetEventCallback<Ui::IRichListBox::OnSelectionChange /**/>( std::move( fn ), MakeThisFunc( __OnSelectionChange /**/ ) ); return this; }
+	UiRichListBox* UiRichListBox::OnSelectionEnd    /**/( OnCallback0_t&& fn ) { m_OnSelectionEnd    /**/ = SetEventCallback<Ui::IRichListBox::OnSelectionEnd    /**/>( std::move( fn ), MakeThisFunc( __OnSelectionEnd    /**/ ) ); return this; }
+	UiRichListBox* UiRichListBox::OnDoubleClick     /**/( OnCallback1_t&& fn ) { m_OnDoubleClick     /**/ = SetEventCallback<Ui::IRichListBox::OnDoubleClick     /**/>( std::move( fn ), MakeThisFunc( __OnDoubleClick     /**/ ) ); return this; }
+	UiRichListBox* UiRichListBox::OnRightClick      /**/( OnCallback1_t&& fn ) { m_OnRightClick      /**/ = SetEventCallback<Ui::IRichListBox::OnRightClick      /**/>( std::move( fn ), MakeThisFunc( __OnRightClick      /**/ ) ); return this; }
+	UiRichListBox* UiRichListBox::OnDragBegin       /**/( OnCallback0_t&& fn ) { m_OnDragBegin       /**/ = SetEventCallback<Ui::IRichListBox::OnDragBegin       /**/>( std::move( fn ), MakeThisFunc( __OnDragBegin       /**/ ) ); return this; }
+	UiRichListBox* UiRichListBox::OnGlyphClick      /**/( OnCallback1_t&& fn ) { m_OnGlyphClick      /**/ = SetEventCallback<Ui::IRichListBox::OnGlyphClick      /**/>( std::move( fn ), MakeThisFunc( __OnGlyphClick      /**/ ) ); return this; }
+	UiRichListBox* UiRichListBox::OnItemCheck       /**/( OnCallback1_t&& fn ) { m_OnItemCheck       /**/ = SetEventCallback<Ui::IRichListBox::OnItemCheck       /**/>( std::move( fn ), MakeThisFunc( __OnItemCheck       /**/ ) ); return this; }
 }

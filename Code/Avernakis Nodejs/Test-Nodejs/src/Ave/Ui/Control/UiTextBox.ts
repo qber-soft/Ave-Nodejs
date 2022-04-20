@@ -1,6 +1,6 @@
 ﻿import { IControl } from "../UiControl";
 import { AveLib } from "../../AveLib";
-import { Window } from "./UiWindow";
+import { WindowLike } from "./UiWindow";
 import { Vec2 } from "../../Math/Vector";
 import { Hotkey } from "../UiCommon";
 
@@ -42,7 +42,7 @@ export enum TextBoxChangeReason {
 }
 
 export interface ITextBox extends IControl {
-	new (window: Window, key?: string | number): ITextBox;
+	new (window: WindowLike, key?: string | number): ITextBox;
 
 	SetText(s: string): TextBox;
 	GetText(): string;
@@ -73,7 +73,7 @@ export interface ITextBox extends IControl {
 
 	SetInvalid(s: string): TextBox;
 	GetInvalid(): string;
-	
+
 	SetValid(s: string): TextBox;
 	GetValid(): string;
 

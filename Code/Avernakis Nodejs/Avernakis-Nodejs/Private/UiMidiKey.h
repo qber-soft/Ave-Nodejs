@@ -90,7 +90,7 @@ namespace Nav
 		U1								KeyGetPress( Ons::NoteIndex_t nKey ) const { return GetControlTyped().KeyGetPress( nKey ); }
 		UiMidiKey*						KeyClearPress() { GetControlTyped().KeyClearPress(); return this; }
 
-		UiMidiKey*						OnMidiKeyPress( Callback_t&& fn ) { m_OnMidiKeyPress = std::move( fn ); return this; }
-		UiMidiKey*						OnMidiKeyRelease( Callback_t&& fn ) { m_OnMidiKeyRelease = std::move( fn ); return this; }
+		UiMidiKey*						OnMidiKeyPress( Callback_t&& fn );
+		UiMidiKey*						OnMidiKeyRelease( Callback_t&& fn );
 	};
 }

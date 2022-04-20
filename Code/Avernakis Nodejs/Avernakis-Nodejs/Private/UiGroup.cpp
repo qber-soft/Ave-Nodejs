@@ -16,15 +16,15 @@ namespace Nav
 	void UiGroup::DefineControl()
 	{
 		AutoAddMethod( SetText );
-		AutoAddMethod( GetText );
+		AutoAddMethod( GetText, WrapObjectGeneric );
 
 		AutoAddMethod( SetHeader );
-		AutoAddMethod( GetHeader );
+		AutoAddMethod( GetHeader, WrapObjectGeneric );
 
 		AutoAddMethod( SetContent );
-		AutoAddMethod( GetContent );
+		AutoAddMethod( GetContent, WrapObjectGeneric );
 
-		AutoAddMethod( GetContentSize );
+		AutoAddMethod( GetContentSize, WrapObjectGeneric );
 	}
 
 	U1 UiGroup::Ctor( UiWindow * p, Napi::Value v )

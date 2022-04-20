@@ -1,4 +1,4 @@
-﻿import { FontDescription, Window } from "../Ave";
+﻿import { FontDescription, WindowLike } from "../Ave";
 import { AveLib } from "../AveLib";
 
 export enum Byo2ReadingDirection {
@@ -16,7 +16,7 @@ export enum Byo2FlowDirection {
 }
 
 export interface IByo2Font {
-	new (window: Window, cp: FontDescription): IByo2Font;
+	new (window: WindowLike, cp: FontDescription): IByo2Font;
 
 	GetAscent(): number;
 	GetDescent(): number;

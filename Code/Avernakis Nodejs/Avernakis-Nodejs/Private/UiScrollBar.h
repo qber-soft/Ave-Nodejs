@@ -76,8 +76,8 @@ namespace Nav
 
 		UiScrollBar*					Scroll() { GetControlTyped().Scroll(); return this; }
 
-		UiScrollBar*					OnScroll( OnScroll_t&& fn ) { m_OnScroll = std::move( fn ); return this; }
-		UiScrollBar*					OnScrolling( OnScrolling_t&& fn ) { m_OnScrolling = std::move( fn ); return this; }
-		UiScrollBar*					OnPageChange( OnPageChange_t&& fn ) { m_OnPageChange = std::move( fn ); return this; }
+		UiScrollBar*					OnScroll     /**/( OnScroll_t     /**/ && fn );
+		UiScrollBar*					OnScrolling  /**/( OnScrolling_t  /**/ && fn );
+		UiScrollBar*					OnPageChange /**/( OnPageChange_t /**/ && fn );
 	};
 }

@@ -16,39 +16,39 @@ namespace Nav
 	void UiScrollBar::DefineControl()
 	{
 		AutoAddMethod( SetOrientation );
-		AutoAddMethod( GetOrientation );
-		AutoAddMethod( GetOrientationActually );
+		AutoAddMethod( GetOrientation, WrapObjectGeneric );
+		AutoAddMethod( GetOrientationActually, WrapObjectGeneric );
 		AutoAddMethod( SetShrink );
-		AutoAddMethod( GetShrink );
+		AutoAddMethod( GetShrink, WrapObjectGeneric );
 		AutoAddMethod( SetArrowVisible );
-		AutoAddMethod( GetArrowVisible );
+		AutoAddMethod( GetArrowVisible, WrapObjectGeneric );
 		AutoAddMethod( SetDynamicPage );
-		AutoAddMethod( GetDynamicPage );
+		AutoAddMethod( GetDynamicPage, WrapObjectGeneric );
 		AutoAddMethod( SetMinimumExtend );
-		AutoAddMethod( GetMinimumExtend );
+		AutoAddMethod( GetMinimumExtend, WrapObjectGeneric );
 		AutoAddMethod( SetMaximumExtend );
-		AutoAddMethod( GetMaximumExtend );
+		AutoAddMethod( GetMaximumExtend, WrapObjectGeneric );
 		AutoAddMethod( SetMinimum );
-		AutoAddMethod( GetMinimum );
-		AutoAddMethod( GetMinimumVirtual );
+		AutoAddMethod( GetMinimum, WrapObjectGeneric );
+		AutoAddMethod( GetMinimumVirtual, WrapObjectGeneric );
 		AutoAddMethod( SetMaximum );
-		AutoAddMethod( GetMaximum );
-		AutoAddMethod( GetMaximumVirtual );
+		AutoAddMethod( GetMaximum, WrapObjectGeneric );
+		AutoAddMethod( GetMaximumVirtual, WrapObjectGeneric );
 		AutoAddMethod( SetValue );
 		AutoAddMethod( SetValueForce );
-		AutoAddMethod( GetValue );
-		AutoAddMethod( GetValueFinal );
-		AutoAddMethod( GetValuePercent );
-		AutoAddMethod( GetValuePercentFinal );
+		AutoAddMethod( GetValue, WrapObjectGeneric );
+		AutoAddMethod( GetValueFinal, WrapObjectGeneric );
+		AutoAddMethod( GetValuePercent, WrapObjectGeneric );
+		AutoAddMethod( GetValuePercentFinal, WrapObjectGeneric );
 		AutoAddMethod( SetPage );
-		AutoAddMethod( GetPage );
+		AutoAddMethod( GetPage, WrapObjectGeneric );
 		AutoAddMethod( SetStep );
-		AutoAddMethod( GetStep );
+		AutoAddMethod( GetStep, WrapObjectGeneric );
 		AutoAddMethod( Scroll );
 
-		AutoAddMethod( OnScroll );
-		AutoAddMethod( OnScrolling );
-		AutoAddMethod( OnPageChange );
+		AutoAddMethod( OnScroll, WrapObjectGeneric );
+		AutoAddMethod( OnScrolling, WrapObjectGeneric );
+		AutoAddMethod( OnPageChange, WrapObjectGeneric );
 
 	}
 
@@ -56,10 +56,6 @@ namespace Nav
 	{
 		if ( !__CreateControl( p, v ) )
 			return false;
-
-		GetControlTyped().GetEvent<Ui::IScrollBar::OnScroll>() += MakeThisFunc( __OnScroll );
-		GetControlTyped().GetEvent<Ui::IScrollBar::OnScrolling>() += MakeThisFunc( __OnScrolling );
-		GetControlTyped().GetEvent<Ui::IScrollBar::OnPageChange>() += MakeThisFunc( __OnPageChange );
 
 		return true;
 	}
@@ -79,4 +75,7 @@ namespace Nav
 		m_OnPageChange( this, fPagePercent );
 	}
 
+	UiScrollBar* UiScrollBar::OnScroll     /**/( OnScroll_t     /**/ && fn ) { m_OnScroll     /**/ = SetEventCallback<Ui::IScrollBar::OnScroll     /**/>( std::move( fn ), MakeThisFunc( __OnScroll     /**/ ) ); return this; }
+	UiScrollBar* UiScrollBar::OnScrolling  /**/( OnScrolling_t  /**/ && fn ) { m_OnScrolling  /**/ = SetEventCallback<Ui::IScrollBar::OnScrolling  /**/>( std::move( fn ), MakeThisFunc( __OnScrolling  /**/ ) ); return this; }
+	UiScrollBar* UiScrollBar::OnPageChange /**/( OnPageChange_t /**/ && fn ) { m_OnPageChange /**/ = SetEventCallback<Ui::IScrollBar::OnPageChange /**/>( std::move( fn ), MakeThisFunc( __OnPageChange /**/ ) ); return this; }
 }

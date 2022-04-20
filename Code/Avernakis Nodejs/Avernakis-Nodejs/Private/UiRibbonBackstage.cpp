@@ -17,27 +17,27 @@ namespace Nav
 	void UiRibbonBackstage::DefineControl()
 	{
 		AutoAddMethod( SetCount );
-		AutoAddMethod( GetCount );
+		AutoAddMethod( GetCount, WrapObjectGeneric );
 		AutoAddMethod( Add );
 		AutoAddMethod( Select );
-		AutoAddMethod( GetSelection );
-		AutoAddMethod( GetHighlight );
+		AutoAddMethod( GetSelection, WrapObjectGeneric );
+		AutoAddMethod( GetHighlight, WrapObjectGeneric );
 		AutoAddMethod( SetText );
-		AutoAddMethod( GetText );
+		AutoAddMethod( GetText, WrapObjectGeneric );
 		AutoAddMethod( SetIcon );
-		AutoAddMethod( GetIcon );
+		AutoAddMethod( GetIcon, WrapObjectGeneric );
 		AutoAddMethod( SetContent );
-		AutoAddMethod( GetContent );
+		AutoAddMethod( GetContent, WrapObjectGeneric );
 		AutoAddMethod( SetItemEnable );
-		AutoAddMethod( GetItemEnable );
-		AutoAddMethod( GetItemRect );
+		AutoAddMethod( GetItemEnable, WrapObjectGeneric );
+		AutoAddMethod( GetItemRect, WrapObjectGeneric );
 		AutoAddMethod( SetBannerWidth );
-		AutoAddMethod( GetBannerWidth );
+		AutoAddMethod( GetBannerWidth, WrapObjectGeneric );
 		AutoAddMethod( SetTextVisible );
-		AutoAddMethod( GetTextVisible );
+		AutoAddMethod( GetTextVisible, WrapObjectGeneric );
 		AutoAddMethod( ClearHighlight );
-		AutoAddMethod( OnSelect );
-		AutoAddMethod( OnHighlight );
+		AutoAddMethod( OnSelect, WrapObjectGeneric );
+		AutoAddMethod( OnHighlight, WrapObjectGeneric );
 	}
 
 	U1 UiRibbonBackstage::Ctor( UiWindow * p, Napi::Value v )
@@ -47,9 +47,6 @@ namespace Nav
 
 		GetControlTyped().SetTrackingWindowActivity( &p->PublicGetWindow() );
 		GetControlTyped().SetIconManager( p->PublicCloneIconManager() );
-
-		GetControlTyped().GetEvent<Ui::IRibbonBackstage::OnSelect>() += MakeThisFunc( __OnSelect );
-		GetControlTyped().GetEvent<Ui::IRibbonBackstage::OnHighlight>() += MakeThisFunc( __OnHighlight );
 
 		return true;
 	}
@@ -63,5 +60,8 @@ namespace Nav
 	{
 		m_OnHighlight( this, nIndex );
 	}
+
+	UiRibbonBackstage* UiRibbonBackstage::OnSelect    /**/( Callback_t&& fn ) { m_OnSelect    /**/ = SetEventCallback<Ui::IRibbonBackstage::OnSelect    /**/>( std::move( fn ), MakeThisFunc( __OnSelect    /**/ ) ); return this; }
+	UiRibbonBackstage* UiRibbonBackstage::OnHighlight /**/( Callback_t&& fn ) { m_OnHighlight /**/ = SetEventCallback<Ui::IRibbonBackstage::OnHighlight /**/>( std::move( fn ), MakeThisFunc( __OnHighlight /**/ ) ); return this; }
 
 }

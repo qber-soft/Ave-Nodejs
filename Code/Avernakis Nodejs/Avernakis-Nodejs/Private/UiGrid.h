@@ -79,7 +79,7 @@ namespace Nav
 		UiGrid*							SetSplitterY( const WrapData<Ui::DpiSize>& v ) { GetControlTyped().GridSetSplitterY( v ); return this; }
 		WrapData<Ui::DpiSize>			GetSplitterY() const { return GetControlTyped().GridGetSplitterY(); }
 
-		UiGrid*							RowGetClear() { GetControlTyped().GridClearRow(); return this; }
+		UiGrid*							RowClear() { GetControlTyped().GridClearRow(); return this; }
 		U32								RowGetCount() const { return GetControlTyped().GridGetRowCount(); }
 		S32								RowGetOffset( U32 nIndex ) const { return GetControlTyped().GridGetRowOffset( nIndex ); }
 		S32								RowGetSize( U32 nIndex ) const { return GetControlTyped().GridGetRowSize( nIndex ); }
@@ -90,7 +90,7 @@ namespace Nav
 		UiGrid*							RowSet( U32 nIndex, const WrapData<Ui::DpiSize>& n ) { GetControlTyped().GridSetRow( nIndex, n ); return this; }
 		UiGrid*							RowSetDef( U32 nIndex, const WrapData<UiGridDef>& def ) { GetControlTyped().GridSetRow( nIndex, def ); return this; }
 
-		UiGrid*							ColGetClear() { GetControlTyped().GridClearColumn(); return this; }
+		UiGrid*							ColClear() { GetControlTyped().GridClearColumn(); return this; }
 		U32								ColGetCount() const { return GetControlTyped().GridGetColumnCount(); }
 		S32								ColGetOffset( U32 nIndex ) const { return GetControlTyped().GridGetColumnOffset( nIndex ); }
 		S32								ColGetSize( U32 nIndex ) const { return GetControlTyped().GridGetColumnSize( nIndex ); }

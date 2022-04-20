@@ -56,6 +56,6 @@ namespace Nav
 		UiComboBox*						SetBorder( U1 b ) { GetControlTyped().SetBorder( b ); return this; }
 		U1								GetBorder() const { return GetControlTyped().GetBorder(); }
 
-		UiComboBox*						OnSelectionChange( OnSelectionChange_t&& fn ) { m_OnSelectionChange = std::move( fn ); return this; }
+		UiComboBox*						OnSelectionChange( OnSelectionChange_t&& fn );
 	};
 }

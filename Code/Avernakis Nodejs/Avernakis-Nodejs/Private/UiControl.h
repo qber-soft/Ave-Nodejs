@@ -83,6 +83,19 @@ namespace Nav
 
 	NavDefineDataByMember_( Ui::MessageKey, Key, Modifier );
 
+	class UiPopupParam
+	{
+	public:
+		WrapData<S32_R>					m_Exclude;
+		Ui::PopupAlign					m_Align;
+		Ui::AlignType					m_VerticalAlign;
+		U1								m_ClipMonitor;
+		U1								m_ScreenSpace;
+		U8								m_CatchClosingClick;
+	};
+
+	NavDefineDataByMember_( UiPopupParam, Exclude, Align, VerticalAlign, ClipMonitor, ScreenSpace, CatchClosingClick );
+
 	class UiControl
 	{
 	protected:
@@ -103,60 +116,48 @@ namespace Nav
 		static void __DefineObject()
 		{
 #		define AutoAddMethod($x) T::AddMethod( #$x, &T::$x )
-
 			AutoAddMethod( SetVisible );
-			AutoAddMethod( GetVisible );
-
 			AutoAddMethod( SetEnable );
-			AutoAddMethod( GetEnable );
-
-			AutoAddMethod( GetRect );
-			AutoAddMethod( GetRectClient );
-
-			AutoAddMethod( GetIdealSize );
-
-			AutoAddMethod( GetParent );
-
+			AutoAddMethod( SetIdealSize );
 			AutoAddMethod( SetFocusEnable );
-			AutoAddMethod( GetFocusEnable );
-			AutoAddMethod( GetFocus );
 			AutoAddMethod( SetFocus );
-
 			AutoAddMethod( SetKeyTip );
-			AutoAddMethod( GetKeyTip );
-
 			AutoAddMethod( SetToolTip );
-			AutoAddMethod( GetToolTip );
-
 			AutoAddMethod( SetStyle );
-			AutoAddMethod( GetStyle );
-
 			AutoAddMethod( SetFont );
-
 			AutoAddMethod( SetTextColor );
-			AutoAddMethod( GetTextColor );
-
 			AutoAddMethod( SetOpacity );
-			AutoAddMethod( GetOpacity );
-
 			AutoAddMethod( SetRotation );
-			AutoAddMethod( GetRotation );
-			AutoAddMethod( HasRotation );
-
 			AutoAddMethod( SetTabStop );
-			AutoAddMethod( GetTabStop );
 
 			AutoAddMethod( MapRect );
 			AutoAddMethod( Redraw );
 
-			AutoAddMethod( GetLastInputType );
-			AutoAddMethod( GetLastPointerType );
-			AutoAddMethod( GetLastMessageTime );
-			AutoAddMethod( IsVisual );
+			AutoAddMethod( HidePopup );
 
 #		undef AutoAddMethod
 
 #		define AutoAddMethod($x) T::template AddMethod<WrapObjectGeneric>( #$x, &T::$x )
+			AutoAddMethod( GetVisible );
+			AutoAddMethod( GetEnable );
+			AutoAddMethod( GetRect );
+			AutoAddMethod( GetRectClient );
+			AutoAddMethod( GetIdealSize );
+			AutoAddMethod( GetParent );
+			AutoAddMethod( GetFocusEnable );
+			AutoAddMethod( GetFocus );
+			AutoAddMethod( GetKeyTip );
+			AutoAddMethod( GetToolTip );
+			AutoAddMethod( GetStyle );
+			AutoAddMethod( GetTextColor );
+			AutoAddMethod( GetOpacity );
+			AutoAddMethod( GetRotation );
+			AutoAddMethod( HasRotation );
+			AutoAddMethod( GetTabStop );
+			AutoAddMethod( GetLastInputType );
+			AutoAddMethod( GetLastPointerType );
+			AutoAddMethod( GetLastMessageTime );
+			AutoAddMethod( IsVisual );
 
 			AutoAddMethod( OnKeyPress   /**/ );
 			AutoAddMethod( OnKeyRelease /**/ );
@@ -182,7 +183,10 @@ namespace Nav
 			AutoAddMethod( OnChangeFocus );
 			AutoAddMethod( OnChangeSize );
 			AutoAddMethod( OnPaintPost );
+#		undef AutoAddMethod
 
+#		define AutoAddMethod($x) T::template AddMethod<WrapObjectPromise>( #$x, &T::$x )
+			AutoAddMethod( ShowPopup );
 #		undef AutoAddMethod
 		}
 
@@ -218,7 +222,13 @@ namespace Nav
 			return { p ? (UiVisual*) p->GetUserContext() : nullptr };
 		}
 
-		void					__ListenEvent();
+		void					AcquirePainter( const CallbackInfo& ci );
+		void					ReleasePainter();
+		UiPainter*				GetPainter( Ui::IPainter* p );
+
+	private:
+		void					__ListenMessagePost( U1 b );
+
 		void					__OnMessagePost( Ui::IControl& sender, Ui::ControlMessage nMsg, const Ui::MessageParam& mp );
 		void					__OnChangeFocus( Ui::IControl& sender, U1 bFocus );
 		void					__OnPaintPost( Ui::IControl& sender, Ui::IPainter& painter, Ui::IPainterTyped& paintert, const S32_R& rcClient );
@@ -236,6 +246,9 @@ namespace Nav
 		using OnChangeFocus_t	/**/ = JsFuncSafe<void( UiControl* sender, U1 bFocus )>;
 		using OnChangeSize_t	/**/ = JsFuncSafe<void( UiControl* sender, const WrapData<S32_2>& vSize )>;
 		using OnPaintPost_t		/**/ = JsFuncSafe<void( UiControl* sender, UiPainter* painter, const WrapData<S32_R>& rc )>;
+
+		// JS is single-threaded, no need to use atomic
+		S32						m_MessagePostRefCount{ 0 };
 
 		OnKey_t					m_OnKeyPress   /**/;
 		OnKey_t					m_OnKeyRelease /**/;
@@ -262,6 +275,8 @@ namespace Nav
 		OnChangeSize_t			m_OnChangeSize;
 		OnPaintPost_t			m_OnPaintPost;
 
+		// JS is single-threaded, no need to use atomic
+		S32						m_PainterRefCount{ 0 };
 		JsObject<UiPainter>		m_Painter;
 
 	private:
@@ -274,6 +289,7 @@ namespace Nav
 		WrapData<S32_R>			GetRect() { return GetControl().GetRect(); }
 		WrapData<S32_R>			GetRectClient() { return GetControl().GetRectClient(); }
 
+		WrapPointer<UiControl>	SetIdealSize( const WrapData<Ui::DpiSize_2>& v ) { GetControl().SetIdealSize( v ); return __GetUiControl(); }
 		WrapData<Ui::DpiSize_2>	GetIdealSize() { return GetControl().GetIdealSize(); }
 
 		WrapPointer<UiControl>	GetParent() { if ( auto p = GetControl().GetParent() ) return { (UiControl*) p->GetUserContext() }; return {}; }
@@ -315,20 +331,23 @@ namespace Nav
 		R64						GetLastMessageTime() { return GetControl().GetLastMessageTime(); }
 		U1						IsVisual() { return GetControl().IsVisual(); }
 
-		WrapPointer<UiControl>  OnKeyPress   /**/( OnKey_t&& fn ) { m_OnKeyPress   /**/ = std::move( fn ); return __GetUiControl(); }
-		WrapPointer<UiControl>  OnKeyRelease /**/( OnKey_t&& fn ) { m_OnKeyRelease /**/ = std::move( fn ); return __GetUiControl(); }
+		U1						ShowPopup( WrapPointer<UiControl> pControl, const WrapData<S32_2>& vPos, const WrapData<UiPopupParam>& pp );
+		void					HidePopup() { GetControl().ProcessMessage( Ui::ControlMessage::RevPopupHide, {} ); }
 
-		WrapPointer<UiControl>  OnPointerEnter    /**/( OnPointer_t       /**/ && fn ) { m_OnPointerEnter    /**/ = std::move( fn ); return __GetUiControl(); }
-		WrapPointer<UiControl>  OnPointerLeave    /**/( OnPointer_t       /**/ && fn ) { m_OnPointerLeave    /**/ = std::move( fn ); return __GetUiControl(); }
-		WrapPointer<UiControl>  OnPointerPress    /**/( OnPointer_t       /**/ && fn ) { m_OnPointerPress    /**/ = std::move( fn ); return __GetUiControl(); }
-		WrapPointer<UiControl>  OnPointerRelease  /**/( OnPointer_t       /**/ && fn ) { m_OnPointerRelease  /**/ = std::move( fn ); return __GetUiControl(); }
-		WrapPointer<UiControl>  OnPointerClickNdc /**/( OnPointer_t       /**/ && fn ) { m_OnPointerClickNdc /**/ = std::move( fn ); return __GetUiControl(); }
-		WrapPointer<UiControl>  OnPointerMove     /**/( OnPointer_t       /**/ && fn ) { m_OnPointerMove     /**/ = std::move( fn ); return __GetUiControl(); }
-		WrapPointer<UiControl>  OnPointerVWheel   /**/( OnPointer_t       /**/ && fn ) { m_OnPointerVWheel   /**/ = std::move( fn ); return __GetUiControl(); }
-		WrapPointer<UiControl>  OnPointerHWheel   /**/( OnPointer_t       /**/ && fn ) { m_OnPointerHWheel   /**/ = std::move( fn ); return __GetUiControl(); }
-		WrapPointer<UiControl>  OnPointerHover    /**/( OnPointer_t       /**/ && fn ) { m_OnPointerHover    /**/ = std::move( fn ); return __GetUiControl(); }
-		WrapPointer<UiControl>  OnPointerLost     /**/( OnPointer_t       /**/ && fn ) { m_OnPointerLost     /**/ = std::move( fn ); return __GetUiControl(); }
-		WrapPointer<UiControl>  OnPointerCursor   /**/( OnPointerCursor_t /**/ && fn ) { m_OnPointerCursor   /**/ = std::move( fn ); return __GetUiControl(); }
+		WrapPointer<UiControl>  OnKeyPress   /**/( OnKey_t&& fn ) { __ListenMessagePost( fn ); m_OnKeyPress   /**/ = std::move( fn ); return __GetUiControl(); }
+		WrapPointer<UiControl>  OnKeyRelease /**/( OnKey_t&& fn ) { __ListenMessagePost( fn ); m_OnKeyRelease /**/ = std::move( fn ); return __GetUiControl(); }
+
+		WrapPointer<UiControl>  OnPointerEnter    /**/( OnPointer_t       /**/ && fn ) { __ListenMessagePost( fn ); m_OnPointerEnter    /**/ = std::move( fn ); return __GetUiControl(); }
+		WrapPointer<UiControl>  OnPointerLeave    /**/( OnPointer_t       /**/ && fn ) { __ListenMessagePost( fn ); m_OnPointerLeave    /**/ = std::move( fn ); return __GetUiControl(); }
+		WrapPointer<UiControl>  OnPointerPress    /**/( OnPointer_t       /**/ && fn ) { __ListenMessagePost( fn ); m_OnPointerPress    /**/ = std::move( fn ); return __GetUiControl(); }
+		WrapPointer<UiControl>  OnPointerRelease  /**/( OnPointer_t       /**/ && fn ) { __ListenMessagePost( fn ); m_OnPointerRelease  /**/ = std::move( fn ); return __GetUiControl(); }
+		WrapPointer<UiControl>  OnPointerClickNdc /**/( OnPointer_t       /**/ && fn ) { __ListenMessagePost( fn ); m_OnPointerClickNdc /**/ = std::move( fn ); return __GetUiControl(); }
+		WrapPointer<UiControl>  OnPointerMove     /**/( OnPointer_t       /**/ && fn ) { __ListenMessagePost( fn ); m_OnPointerMove     /**/ = std::move( fn ); return __GetUiControl(); }
+		WrapPointer<UiControl>  OnPointerVWheel   /**/( OnPointer_t       /**/ && fn ) { __ListenMessagePost( fn ); m_OnPointerVWheel   /**/ = std::move( fn ); return __GetUiControl(); }
+		WrapPointer<UiControl>  OnPointerHWheel   /**/( OnPointer_t       /**/ && fn ) { __ListenMessagePost( fn ); m_OnPointerHWheel   /**/ = std::move( fn ); return __GetUiControl(); }
+		WrapPointer<UiControl>  OnPointerHover    /**/( OnPointer_t       /**/ && fn ) { __ListenMessagePost( fn ); m_OnPointerHover    /**/ = std::move( fn ); return __GetUiControl(); }
+		WrapPointer<UiControl>  OnPointerLost     /**/( OnPointer_t       /**/ && fn ) { __ListenMessagePost( fn ); m_OnPointerLost     /**/ = std::move( fn ); return __GetUiControl(); }
+		WrapPointer<UiControl>  OnPointerCursor   /**/( OnPointerCursor_t /**/ && fn ) { __ListenMessagePost( fn ); m_OnPointerCursor   /**/ = std::move( fn ); return __GetUiControl(); }
 
 		WrapPointer<UiControl>	OnDragEnter /**/( OnDrag_t    /**/ && fn ) { m_OnDragEnter /**/ = std::move( fn ); return __GetUiControl(); }
 		WrapPointer<UiControl>	OnDragMove  /**/( OnDrag_t    /**/ && fn ) { m_OnDragMove  /**/ = std::move( fn ); return __GetUiControl(); }
@@ -336,8 +355,8 @@ namespace Nav
 		WrapPointer<UiControl>	OnDragDrop  /**/( OnDrag_t    /**/ && fn ) { m_OnDragDrop  /**/ = std::move( fn ); return __GetUiControl(); }
 		WrapPointer<UiControl>	OnDragEnd   /**/( OnDragEnd_t /**/ && fn ) { m_OnDragEnd   /**/ = std::move( fn ); return __GetUiControl(); }
 
-		WrapPointer<UiControl>	OnChangeFocus( OnChangeFocus_t && fn ) { m_OnChangeFocus = std::move( fn ); return __GetUiControl(); }
-		WrapPointer<UiControl>	OnChangeSize( OnChangeSize_t && fn ) { m_OnChangeSize = std::move( fn ); return __GetUiControl(); }
+		WrapPointer<UiControl>	OnChangeFocus( OnChangeFocus_t && fn );
+		WrapPointer<UiControl>	OnChangeSize( OnChangeSize_t && fn ) { __ListenMessagePost( fn ); m_OnChangeSize = std::move( fn ); return __GetUiControl(); }
 		WrapPointer<UiControl>	OnPaintPost( const CallbackInfo& ci, OnPaintPost_t && fn );
 
 

@@ -16,52 +16,52 @@ namespace Nav
 	void UiMidiKey::DefineControl()
 	{
 		AutoAddMethod( SetRange );
-		AutoAddMethod( GetRange );
+		AutoAddMethod( GetRange, WrapObjectGeneric );
 		AutoAddMethod( SetMiddleOctave );
-		AutoAddMethod( GetMiddleOctave );
+		AutoAddMethod( GetMiddleOctave, WrapObjectGeneric );
 		AutoAddMethod( SetUniformWidth );
-		AutoAddMethod( GetUniformWidth );
+		AutoAddMethod( GetUniformWidth, WrapObjectGeneric );
 		AutoAddMethod( SetPerfectWidth );
-		AutoAddMethod( GetPerfectWidth );
+		AutoAddMethod( GetPerfectWidth, WrapObjectGeneric );
 		AutoAddMethod( SetWhiteWidthLimit );
-		AutoAddMethod( GetWhiteWidthLimit );
+		AutoAddMethod( GetWhiteWidthLimit, WrapObjectGeneric );
 		AutoAddMethod( SetWhiteWidth );
-		AutoAddMethod( GetWhiteWidth );
+		AutoAddMethod( GetWhiteWidth, WrapObjectGeneric );
 		AutoAddMethod( SetBlackSize );
-		AutoAddMethod( GetBlackSize );
+		AutoAddMethod( GetBlackSize, WrapObjectGeneric );
 		AutoAddMethod( SetOctaveLabel );
-		AutoAddMethod( GetOctaveLabel );
+		AutoAddMethod( GetOctaveLabel, WrapObjectGeneric );
 		AutoAddMethod( SetMultiplePress );
-		AutoAddMethod( GetMultiplePress );
-		AutoAddMethod( GetOctaveKeyWidth );
+		AutoAddMethod( GetMultiplePress, WrapObjectGeneric );
+		AutoAddMethod( GetOctaveKeyWidth, WrapObjectGeneric );
 		AutoAddMethod( MarkClear );
 		AutoAddMethod( MarkSetLabel );
-		AutoAddMethod( MarkGetLabel );
+		AutoAddMethod( MarkGetLabel, WrapObjectGeneric );
 		AutoAddMethod( MarkSetLabelColor );
-		AutoAddMethod( MarkGetLabelColor );
+		AutoAddMethod( MarkGetLabelColor, WrapObjectGeneric );
 		AutoAddMethod( MarkSetColor );
-		AutoAddMethod( MarkGetColor );
+		AutoAddMethod( MarkGetColor, WrapObjectGeneric );
 		AutoAddMethod( MarkSetIcon );
-		AutoAddMethod( MarkGetIcon );
+		AutoAddMethod( MarkGetIcon, WrapObjectGeneric );
 		AutoAddMethod( MarkbarSetHeight );
-		AutoAddMethod( MarkbarGetHeight );
+		AutoAddMethod( MarkbarGetHeight, WrapObjectGeneric );
 		AutoAddMethod( MarkbarSetMargin );
-		AutoAddMethod( MarkbarGetMargin );
+		AutoAddMethod( MarkbarGetMargin, WrapObjectGeneric );
 		AutoAddMethod( MarkbarSetColor );
-		AutoAddMethod( MarkbarGetColor );
+		AutoAddMethod( MarkbarGetColor, WrapObjectGeneric );
 		AutoAddMethod( MarkbarSetColorHeight );
-		AutoAddMethod( MarkbarGetColorHeight );
+		AutoAddMethod( MarkbarGetColorHeight, WrapObjectGeneric );
 		AutoAddMethod( MarkbarSetIcon );
-		AutoAddMethod( MarkbarGetIcon );
+		AutoAddMethod( MarkbarGetIcon, WrapObjectGeneric );
 		AutoAddMethod( RangeClear );
 		AutoAddMethod( RangeAdd );
-		AutoAddMethod( KeyHitTest );
-		AutoAddMethod( KeyGetRect );
+		AutoAddMethod( KeyHitTest, WrapObjectGeneric );
+		AutoAddMethod( KeyGetRect, WrapObjectGeneric );
 		AutoAddMethod( KeySetPress );
-		AutoAddMethod( KeyGetPress );
+		AutoAddMethod( KeyGetPress, WrapObjectGeneric );
 		AutoAddMethod( KeyClearPress );
-		AutoAddMethod( OnMidiKeyPress );
-		AutoAddMethod( OnMidiKeyRelease );
+		AutoAddMethod( OnMidiKeyPress, WrapObjectGeneric );
+		AutoAddMethod( OnMidiKeyRelease, WrapObjectGeneric );
 	}
 
 	U1 UiMidiKey::Ctor( UiWindow * p, Napi::Value v )
@@ -70,9 +70,6 @@ namespace Nav
 			return false;
 
 		GetControlTyped().SetIconManager( p->PublicCloneIconManager() );
-
-		GetControlTyped().GetEvent<Ui::IMidiKey::OnMidiKeyPress>() += MakeThisFunc( __OnMidiKeyPress );
-		GetControlTyped().GetEvent<Ui::IMidiKey::OnMidiKeyRelease>() += MakeThisFunc( __OnMidiKeyRelease );
 
 		return true;
 	}
@@ -87,4 +84,6 @@ namespace Nav
 		m_OnMidiKeyRelease( this, key, bLastRelease, nModifier );
 	}
 
+	UiMidiKey* UiMidiKey::OnMidiKeyPress( Callback_t&& fn ) { m_OnMidiKeyPress = SetEventCallback<Ui::IMidiKey::OnMidiKeyPress>( std::move( fn ), MakeThisFunc( __OnMidiKeyPress ) ); return this; }
+	UiMidiKey* UiMidiKey::OnMidiKeyRelease( Callback_t&& fn ) { m_OnMidiKeyRelease = SetEventCallback<Ui::IMidiKey::OnMidiKeyRelease>( std::move( fn ), MakeThisFunc( __OnMidiKeyRelease ) ); return this; }
 }

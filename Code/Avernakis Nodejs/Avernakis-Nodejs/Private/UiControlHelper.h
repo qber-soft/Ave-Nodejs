@@ -55,7 +55,6 @@ namespace Nav
 				__m_Control = ctl;
 				__m_Control->SetUserContext( static_cast<UiControl*>(this) );
 				__m_ControlData = std::move( ctl );
-				this->__ListenEvent();
 			}
 			return true;
 		}
@@ -77,7 +76,7 @@ namespace Nav
 		virtual Ui::Control		TakeOwnership() override { return std::move( __m_ControlData ); }
 		virtual void			GiveOwnership( Ui::Control c ) { __m_ControlData = std::move( c ); }
 
-		virtual void			SetSharedControl( Ui::IControl* c ) { if ( !__m_Control ) __m_Control = (TControl*) c; }
+		virtual void			SetSharedControl( Ui::IControl* c ) { __m_Control = (TControl*) c; }
 
 	private:
 		TControl*				__m_Control{ nullptr };
@@ -88,6 +87,16 @@ namespace Nav
 		const TControl&			GetControlTyped() const { return *__m_Control; }
 
 		void					GiveControl( UniPtr<TControl>&& p ) { if ( p ) p->SetUserContext( static_cast<UiControl*>(this) ); __m_Control = p; __m_ControlData = std::move( p ); }
+
+		template<class TEvent, class TCallback>
+		TCallback SetEventCallback( TCallback&& cb, const typename TEvent::Func_t& f )
+		{
+			if ( cb )
+				GetControlTyped().GetEvent<TEvent>() += f;
+			else
+				GetControlTyped().GetEvent<TEvent>() -= f;
+			return std::move( cb );
+		}
 	};
 
 #define AveWrapControl($x) friend class UiControl; $x( const Napi::CallbackInfo& cb ) : UiControlHelper( cb ) { __Ctor( cb ); }

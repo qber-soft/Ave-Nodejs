@@ -1,4 +1,4 @@
-﻿import { DpiSize, Grid, HeaderItem, HeaderItemFormat, RichListBox, RichListBoxItemVirtual, ThemeImage, ThemePredefined_Dark, Window, WindowCreation, WindowFlag, Ribbon, RibbonTab, RibbonGroup, RibbonButton, IconSource, ButtonType, ToolBar, ToolBarItem, ToolBarItemType, RibbonGallery, RibbonGalleryItem, RibbonGalleryViewMode, StringKey, Menu, MenuItem, MenuType, StatusBar, Vec4, Byo2ImageCreation, Byo2ImageDataType, AppPath, Byo2Image, Vec2, MessageIcon, MessageButton, SysDialogFilter, AveGetSDKVersion } from "../../../src";
+﻿import { DpiSize, Grid, HeaderItem, HeaderItemFormat, RichListBox, RichListBoxItemVirtual, ThemeImage, ThemePredefined_Dark, Window, WindowCreation, WindowFlag, Ribbon, RibbonTab, RibbonGroup, RibbonButton, IconSource, ButtonType, ToolBar, ToolBarItem, ToolBarItemType, RibbonGallery, RibbonGalleryItem, RibbonGalleryViewMode, StringKey, Menu, MenuItem, MenuType, StatusBar, Vec4, Byo2ImageCreation, Byo2ImageDataType, AppPath, Byo2Image, Vec2, MessageIcon, MessageButton, SysDialogFilter, AveGetSDKVersion, ThemeFileImage, ResourceSource } from "../../../src";
 import { DefaultString } from "../DefaultString";
 import { ResId } from "../ResId";
 import { IPage, PageRegister } from "./Page";
@@ -39,7 +39,7 @@ export class WindowMain implements IWindowMain {
 		lstPage.SetVirtual((s, nIndex, nSubIndex) => {
 			let r = new RichListBoxItemVirtual();
 			if (nIndex >= 0 && nIndex < this.m_Page.length && 0 == nSubIndex) {
-				r.String = DefaultString[this.m_Page[nIndex].NameKey];
+				r.String = DefaultString[this.m_Page[nIndex].NameKey] ?? "<NoString>";
 			}
 			return r;
 		});
@@ -294,7 +294,7 @@ export class WindowMain implements IWindowMain {
 	CreateAndShow() {
 		this.m_Theme = new ThemeImage();
 		if (!this.m_Theme) process.exit(-1);
-
+		
 		this.m_ThemeDark = new ThemePredefined_Dark();
 		this.m_ThemeDark.SetStyle(this.m_Theme, 0);
 

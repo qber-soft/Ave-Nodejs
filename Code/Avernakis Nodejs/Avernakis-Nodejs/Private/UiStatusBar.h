@@ -58,6 +58,6 @@ namespace Nav
 		UiStatusBar*					SetBackColor( const WrapData<U8_4>& vColor ) { GetControlTyped().SetBackColor( vColor ); return this; }
 		WrapData<U8_4>					GetBackColor() const { return GetControlTyped().GetBackColor(); }
 
-		UiStatusBar*					OnClick( OnClick_t&& fn ) { m_OnClick = std::move( fn ); return this; }
+		UiStatusBar*					OnClick( OnClick_t&& fn );
 	};
 }

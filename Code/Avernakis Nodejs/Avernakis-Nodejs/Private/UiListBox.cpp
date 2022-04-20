@@ -23,44 +23,39 @@ namespace Nav
 		AutoAddMethod( SetSelect );
 		AutoAddMethod( SetSelectRange );
 		AutoAddMethod( Sort );
-		AutoAddMethod( Find );
+		AutoAddMethod( Find, WrapObjectGeneric );
 		AutoAddMethod( Swap );
 		AutoAddMethod( Set );
-		AutoAddMethod( Get );
-		AutoAddMethod( GetCount );
-		AutoAddMethod( GetSelection );
-		AutoAddMethod( IsSelected );
-		AutoAddMethod( GetNextSelection );
+		AutoAddMethod( Get, WrapObjectGeneric );
+		AutoAddMethod( GetCount, WrapObjectGeneric );
+		AutoAddMethod( GetSelection, WrapObjectGeneric );
+		AutoAddMethod( IsSelected, WrapObjectGeneric );
+		AutoAddMethod( GetNextSelection, WrapObjectGeneric );
 
 		AutoAddMethod( Ensure );
 		AutoAddMethod( SetTopIndex );
-		AutoAddMethod( GetTopIndex );
-		AutoAddMethod( ItemIsVisible );
-		AutoAddMethod( ItemGetRect );
-		AutoAddMethod( ItemHitTest );
+		AutoAddMethod( GetTopIndex, WrapObjectGeneric );
+		AutoAddMethod( ItemIsVisible, WrapObjectGeneric );
+		AutoAddMethod( ItemGetRect, WrapObjectGeneric );
+		AutoAddMethod( ItemHitTest, WrapObjectGeneric );
 
 		AutoAddMethod( SetCount );
 
 		AutoAddMethod( SetVirtual );
 
 		AutoAddMethod( SetSelectionMode );
-		AutoAddMethod( GetSelectionMode );
+		AutoAddMethod( GetSelectionMode, WrapObjectGeneric );
 
-		AutoAddMethod( OnSelectionChange );
-		AutoAddMethod( OnSelectionEnd );
-		AutoAddMethod( OnDoubleClick );
-		AutoAddMethod( OnRightClick );
+		AutoAddMethod( OnSelectionChange, WrapObjectGeneric );
+		AutoAddMethod( OnSelectionEnd, WrapObjectGeneric );
+		AutoAddMethod( OnDoubleClick, WrapObjectGeneric );
+		AutoAddMethod( OnRightClick, WrapObjectGeneric );
 	}
 
 	U1 UiListBox::Ctor( UiWindow * p, Napi::Value v )
 	{
 		if ( !__CreateControl( p, v ) )
 			return false;
-
-		GetControlTyped().GetEvent<Ui::IListBox::OnSelectionChange>() += MakeThisFunc( __OnSelectionChange );
-		GetControlTyped().GetEvent<Ui::IListBox::OnSelectionEnd>() += MakeThisFunc( __OnSelectionEnd );
-		GetControlTyped().GetEvent<Ui::IListBox::OnDoubleClick>() += MakeThisFunc( __OnDoubleClick );
-		GetControlTyped().GetEvent<Ui::IListBox::OnRightClick>() += MakeThisFunc( __OnRightClick );
 
 		return true;
 	}
@@ -102,5 +97,10 @@ namespace Nav
 			GetControlTyped().SetVirtual( {} );
 		return this;
 	}
+
+	UiListBox* UiListBox::OnSelectionChange /**/( OnSelectionChange_t /**/ && fn ) { m_OnSelectionChange /**/ = SetEventCallback<Ui::IListBox::OnSelectionChange /**/>( std::move( fn ), MakeThisFunc( __OnSelectionChange /**/ ) ); return this; }
+	UiListBox* UiListBox::OnSelectionEnd    /**/( OnSelectionChange_t /**/ && fn ) { m_OnSelectionEnd    /**/ = SetEventCallback<Ui::IListBox::OnSelectionEnd    /**/>( std::move( fn ), MakeThisFunc( __OnSelectionEnd    /**/ ) ); return this; }
+	UiListBox* UiListBox::OnDoubleClick     /**/( OnClick_t           /**/ && fn ) { m_OnDoubleClick     /**/ = SetEventCallback<Ui::IListBox::OnDoubleClick     /**/>( std::move( fn ), MakeThisFunc( __OnDoubleClick     /**/ ) ); return this; }
+	UiListBox* UiListBox::OnRightClick      /**/( OnClick_t           /**/ && fn ) { m_OnRightClick      /**/ = SetEventCallback<Ui::IListBox::OnRightClick      /**/>( std::move( fn ), MakeThisFunc( __OnRightClick      /**/ ) ); return this; }
 
 }

@@ -2,6 +2,8 @@
 #include "App.h"
 #include "UiApp.h"
 
+#include "IoCommon.h"
+
 namespace Nav
 {
 
@@ -89,6 +91,18 @@ namespace Nav
 	{
 		if ( m_App )
 			m_App->ExecuteInJsThread( std::move( f ), bWait);
+	}
+
+	Io::AveStream __App::OpenResourceAsStream( const IoResourceSource & rs )
+	{
+		if ( IoResourceSourceType::Resource == rs.m_Type )
+			return GetDpiResourceProvider()->Open( rs.m_ResourceId );
+		else if ( IoResourceSourceType::FilePath == rs.m_Type )
+			return AveKak.Create<Io::IStreamFile>( rs.m_FilePath.c_str() );
+		else if ( IoResourceSourceType::InMemory == rs.m_Type )
+			return AveKak.Create<Io::IStreamMemory>( (void*) rs.m_InMemory.m_Data.m_Pointer, (Io::StreamSize_t) rs.m_InMemory.m_Data.m_Length );
+		else
+			return nullptr;
 	}
 
 }

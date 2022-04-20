@@ -91,11 +91,11 @@ namespace Nav
 		UiHeader*						SetCheckValue( U1 b ) { GetControlTyped().SetCheckValue( b ); return this; }
 		U1								GetCheckValue() const { return GetControlTyped().GetCheckValue(); }
 
-		UiHeader*						OnClick       /**/( OnCallback1_t	 /**/ && fn ) { m_OnClick       /**/ = std::move( fn ); return this; }
-		UiHeader*						OnAdjustWidth /**/( OnAdjustWidth_t	 /**/ && fn ) { m_OnAdjustWidth /**/ = std::move( fn ); return this; }
-		UiHeader*						OnOrder       /**/( OnOrder_t		 /**/ && fn ) { m_OnOrder       /**/ = std::move( fn ); return this; }
-		UiHeader*						OnDropDown    /**/( OnCallback1_t	 /**/ && fn ) { m_OnDropDown    /**/ = std::move( fn ); return this; }
-		UiHeader*						OnCheckItem   /**/( OnCallback1_t	 /**/ && fn ) { m_OnCheckItem   /**/ = std::move( fn ); return this; }
-		UiHeader*						OnCheckHeader /**/( OnCallback0_t	 /**/ && fn ) { m_OnCheckHeader /**/ = std::move( fn ); return this; }
+		UiHeader*						OnClick       /**/( OnCallback1_t   /**/ && fn );
+		UiHeader*						OnAdjustWidth /**/( OnAdjustWidth_t /**/ && fn );
+		UiHeader*						OnOrder       /**/( OnOrder_t       /**/ && fn );
+		UiHeader*						OnDropDown    /**/( OnCallback1_t   /**/ && fn );
+		UiHeader*						OnCheckItem   /**/( OnCallback1_t   /**/ && fn );
+		UiHeader*						OnCheckHeader /**/( OnCallback0_t   /**/ && fn );
 	};
 }

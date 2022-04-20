@@ -1,6 +1,6 @@
 ﻿import { IControl } from "../UiControl";
 import { AveLib } from "../../AveLib";
-import { Window } from "../Control/UiWindow";
+import { WindowLike } from "../Control/UiWindow";
 import { IconCache, DpiSize } from "../UiCommon";
 import { Vec2 } from "../../Math/Vector";
 
@@ -53,7 +53,7 @@ export class RibbonGalleryMenu {
 }
 
 export interface IRibbonGallery extends IControl {
-	new (window: Window, key?: string | number): IRibbonGallery;
+	new (window: WindowLike, key?: string | number): IRibbonGallery;
 
 	ItemInsert(pItem: RibbonGalleryItem): number;
 	ItemRemove(nIndex: number): boolean;

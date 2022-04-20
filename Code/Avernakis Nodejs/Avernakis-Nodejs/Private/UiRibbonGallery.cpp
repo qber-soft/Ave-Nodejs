@@ -40,37 +40,37 @@ namespace Nav
 		AutoAddMethod( ItemClear );
 		AutoAddMethod( ItemSelect );
 		AutoAddMethod( ItemSet );
-		AutoAddMethod( ItemGet );
-		AutoAddMethod( ItemGetCount );
-		AutoAddMethod( ItemGetSelection );
+		AutoAddMethod( ItemGet, WrapObjectGeneric );
+		AutoAddMethod( ItemGetCount, WrapObjectGeneric );
+		AutoAddMethod( ItemGetSelection, WrapObjectGeneric );
 		AutoAddMethod( GroupInsert );
 		AutoAddMethod( GroupRemove );
 		AutoAddMethod( GroupClear );
 		AutoAddMethod( GroupSet );
-		AutoAddMethod( GroupGet );
-		AutoAddMethod( GroupGetCount );
+		AutoAddMethod( GroupGet, WrapObjectGeneric );
+		AutoAddMethod( GroupGetCount, WrapObjectGeneric );
 		AutoAddMethod( MenuInsert );
 		AutoAddMethod( MenuRemove );
 		AutoAddMethod( MenuClear );
 		AutoAddMethod( MenuSet );
-		AutoAddMethod( MenuGet );
+		AutoAddMethod( MenuGet, WrapObjectGeneric );
 		AutoAddMethod( MenuSetEnable );
-		AutoAddMethod( MenuGetEnable );
-		AutoAddMethod( MenuGetCount );
+		AutoAddMethod( MenuGetEnable, WrapObjectGeneric );
+		AutoAddMethod( MenuGetCount, WrapObjectGeneric );
 		AutoAddMethod( ViewSetMode );
-		AutoAddMethod( ViewGetMode );
+		AutoAddMethod( ViewGetMode, WrapObjectGeneric );
 		AutoAddMethod( ViewSetItemWidth );
-		AutoAddMethod( ViewGetItemWidth );
+		AutoAddMethod( ViewGetItemWidth, WrapObjectGeneric );
 		AutoAddMethod( ViewSetDefaultItemCountPerLine );
-		AutoAddMethod( ViewGetDefaultItemCountPerLine );
+		AutoAddMethod( ViewGetDefaultItemCountPerLine, WrapObjectGeneric );
 		AutoAddMethod( ViewSetItemCountPerLineRange );
-		AutoAddMethod( ViewGetItemCountPerLineRange );
+		AutoAddMethod( ViewGetItemCountPerLineRange, WrapObjectGeneric );
 		AutoAddMethod( ViewSetWidthWeight );
-		AutoAddMethod( ViewGetWidthWeight );
-		AutoAddMethod( OnSelect );
-		AutoAddMethod( OnPreview );
-		AutoAddMethod( OnDrop );
-		AutoAddMethod( OnMenuClick );
+		AutoAddMethod( ViewGetWidthWeight, WrapObjectGeneric );
+		AutoAddMethod( OnSelect, WrapObjectGeneric );
+		AutoAddMethod( OnPreview, WrapObjectGeneric );
+		AutoAddMethod( OnDrop, WrapObjectGeneric );
+		AutoAddMethod( OnMenuClick, WrapObjectGeneric );
 	}
 
 	U1 UiRibbonGallery::Ctor( UiWindow * p, Napi::Value v )
@@ -79,11 +79,6 @@ namespace Nav
 			return false;
 
 		GetControlTyped().SetIconManager( p->PublicCloneIconManager() );
-
-		GetControlTyped().GetEvent<Ui::IRibbonGallery::OnSelect    /**/>() += MakeThisFunc( __OnSelect    /**/ );
-		GetControlTyped().GetEvent<Ui::IRibbonGallery::OnPreview   /**/>() += MakeThisFunc( __OnPreview   /**/ );
-		GetControlTyped().GetEvent<Ui::IRibbonGallery::OnDrop      /**/>() += MakeThisFunc( __OnDrop      /**/ );
-		GetControlTyped().GetEvent<Ui::IRibbonGallery::OnMenuClick /**/>() += MakeThisFunc( __OnMenuClick /**/ );
 
 		return true;
 	}
@@ -165,4 +160,8 @@ namespace Nav
 		m_OnMenuClick( this, nId );
 	}
 
+	UiRibbonGallery* UiRibbonGallery::OnSelect    /**/( Callback_t    /**/ && fn ) { m_OnSelect    /**/ = SetEventCallback<Ui::IRibbonGallery::OnSelect    /**/>( std::move( fn ), MakeThisFunc( __OnSelect    /**/ ) ); return this; }
+	UiRibbonGallery* UiRibbonGallery::OnPreview   /**/( OnPreview_t   /**/ && fn ) { m_OnPreview   /**/ = SetEventCallback<Ui::IRibbonGallery::OnPreview   /**/>( std::move( fn ), MakeThisFunc( __OnPreview   /**/ ) ); return this; }
+	UiRibbonGallery* UiRibbonGallery::OnDrop      /**/( Callback_t    /**/ && fn ) { m_OnDrop      /**/ = SetEventCallback<Ui::IRibbonGallery::OnDrop      /**/>( std::move( fn ), MakeThisFunc( __OnDrop      /**/ ) ); return this; }
+	UiRibbonGallery* UiRibbonGallery::OnMenuClick /**/( OnMenuClick_t /**/ && fn ) { m_OnMenuClick /**/ = SetEventCallback<Ui::IRibbonGallery::OnMenuClick /**/>( std::move( fn ), MakeThisFunc( __OnMenuClick /**/ ) ); return this; }
 }

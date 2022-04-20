@@ -52,7 +52,7 @@ namespace Nav
 		void							SysMenuReset() { GetControlTyped().SysMenuReset(); }
 		U1								SysMenuAppend( const WrapData<UiMenuItem>& pMenu );
 
-		UiWindowFrame*					OnSysMenuClick( OnSysMenuClick_t&& fn ) { m_OnSysMenuClick = std::move( fn ); return this; }
+		UiWindowFrame*					OnSysMenuClick( OnSysMenuClick_t&& fn );
 
 	public:
 		void							InitCallback();

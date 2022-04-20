@@ -29,32 +29,32 @@ namespace Nav
 		AutoAddMethod( ToolInsert );
 		AutoAddMethod( ToolRemove );
 		AutoAddMethod( ToolRemoveAll );
-		AutoAddMethod( ToolGet );
+		AutoAddMethod( ToolGet, WrapObjectGeneric );
 		AutoAddMethod( ToolSet );
-		AutoAddMethod( ToolGetById );
+		AutoAddMethod( ToolGetById, WrapObjectGeneric );
 		AutoAddMethod( ToolSetById );
-		AutoAddMethod( ToolGetCount );
+		AutoAddMethod( ToolGetCount, WrapObjectGeneric );
 		AutoAddMethod( ToolSetEnable );
-		AutoAddMethod( ToolGetEnable );
+		AutoAddMethod( ToolGetEnable, WrapObjectGeneric );
 		AutoAddMethod( ToolSetVisible );
-		AutoAddMethod( ToolGetVisible );
+		AutoAddMethod( ToolGetVisible, WrapObjectGeneric );
 		AutoAddMethod( ToolSetCheck );
-		AutoAddMethod( ToolGetCheck );
-		AutoAddMethod( ToolHitTest );
+		AutoAddMethod( ToolGetCheck, WrapObjectGeneric );
+		AutoAddMethod( ToolHitTest, WrapObjectGeneric );
 		AutoAddMethod( ContentSet );
-		AutoAddMethod( ContentGet );
+		AutoAddMethod( ContentGet, WrapObjectGeneric );
 		AutoAddMethod( ContentSetById );
-		AutoAddMethod( ContentGetById );
+		AutoAddMethod( ContentGetById, WrapObjectGeneric );
 		AutoAddMethod( DropSet );
-		AutoAddMethod( DropGet );
+		AutoAddMethod( DropGet, WrapObjectGeneric );
 		AutoAddMethod( DropSetById );
-		AutoAddMethod( DropGetById );
+		AutoAddMethod( DropGetById, WrapObjectGeneric );
 		AutoAddMethod( SetBackground );
-		AutoAddMethod( GetBackground );
+		AutoAddMethod( GetBackground, WrapObjectGeneric );
 		AutoAddMethod( SetIconTextDirection );
-		AutoAddMethod( GetIconTextDirection );
-		AutoAddMethod( OnClick );
-		AutoAddMethod( OnDrop );
+		AutoAddMethod( GetIconTextDirection, WrapObjectGeneric );
+		AutoAddMethod( OnClick, WrapObjectGeneric );
+		AutoAddMethod( OnDrop, WrapObjectGeneric );
 	}
 
 	U1 UiToolBar::Ctor( UiWindow * p, Napi::Value v )
@@ -63,9 +63,6 @@ namespace Nav
 			return false;
 
 		GetControlTyped().SetIconManager( p->PublicCloneIconManager() );
-
-		GetControlTyped().GetEvent<Ui::IToolBar::OnClick>() += MakeThisFunc( __OnClick );
-		GetControlTyped().GetEvent<Ui::IToolBar::OnDrop>() += MakeThisFunc( __OnDrop );
 
 		return true;
 	}
@@ -119,4 +116,6 @@ namespace Nav
 		return GetControlTyped().ToolSetById( nId, ti );
 	}
 
+	UiToolBar* UiToolBar::OnClick /**/( Callback_t&& fn ) { m_OnClick /**/ = SetEventCallback<Ui::IToolBar::OnClick /**/>( std::move( fn ), MakeThisFunc( __OnClick /**/ ) ); return this; }
+	UiToolBar* UiToolBar::OnDrop  /**/( Callback_t&& fn ) { m_OnDrop  /**/ = SetEventCallback<Ui::IToolBar::OnDrop  /**/>( std::move( fn ), MakeThisFunc( __OnDrop  /**/ ) ); return this; }
 }

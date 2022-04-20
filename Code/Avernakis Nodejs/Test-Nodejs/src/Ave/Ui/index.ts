@@ -9,6 +9,7 @@ export * from "./UiPlatform";
 // Theme
 export * from "./Theme/UiTheme";
 export * from "./Theme/UiThemePredefined";
+export * from "./Theme/UiThemeFile";
 
 // Controls
 export * from "./Control/UiButton";

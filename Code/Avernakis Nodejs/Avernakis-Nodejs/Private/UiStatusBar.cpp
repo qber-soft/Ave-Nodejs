@@ -16,34 +16,34 @@ namespace Nav
 	void UiStatusBar::DefineControl()
 	{
 		AutoAddMethod( SetPart );
-		AutoAddMethod( GetPart );
+		AutoAddMethod( GetPart, WrapObjectGeneric );
 		AutoAddMethod( SetWidth );
-		AutoAddMethod( GetWidth );
-		AutoAddMethod( GetWidthReal );
+		AutoAddMethod( GetWidth, WrapObjectGeneric );
+		AutoAddMethod( GetWidthReal, WrapObjectGeneric );
 		AutoAddMethod( SetMaxWidth );
-		AutoAddMethod( GetMaxWidth );
+		AutoAddMethod( GetMaxWidth, WrapObjectGeneric );
 		AutoAddMethod( SetReducePriority );
-		AutoAddMethod( GetReducePriority );
+		AutoAddMethod( GetReducePriority, WrapObjectGeneric );
 		AutoAddMethod( SetText );
-		AutoAddMethod( GetText );
+		AutoAddMethod( GetText, WrapObjectGeneric );
 		AutoAddMethod( SetPartToolTip );
 		AutoAddMethod( SetAlign );
-		AutoAddMethod( GetAlign );
+		AutoAddMethod( GetAlign, WrapObjectGeneric );
 		AutoAddMethod( SetIcon );
-		AutoAddMethod( GetIcon );
+		AutoAddMethod( GetIcon, WrapObjectGeneric );
 		AutoAddMethod( SetClickable );
-		AutoAddMethod( GetClickable );
+		AutoAddMethod( GetClickable, WrapObjectGeneric );
 		AutoAddMethod( SetContent );
-		AutoAddMethod( GetContent );
+		AutoAddMethod( GetContent, WrapObjectGeneric );
 		AutoAddMethod( SetContentMargin );
-		AutoAddMethod( GetContentMargin );
-		AutoAddMethod( HitTest );
-		AutoAddMethod( GetItemRect );
+		AutoAddMethod( GetContentMargin, WrapObjectGeneric );
+		AutoAddMethod( HitTest, WrapObjectGeneric );
+		AutoAddMethod( GetItemRect, WrapObjectGeneric );
 		AutoAddMethod( SetBackground );
-		AutoAddMethod( GetBackground );
+		AutoAddMethod( GetBackground, WrapObjectGeneric );
 		AutoAddMethod( SetBackColor );
-		AutoAddMethod( GetBackColor );
-		AutoAddMethod( OnClick );
+		AutoAddMethod( GetBackColor, WrapObjectGeneric );
+		AutoAddMethod( OnClick, WrapObjectGeneric );
 	}
 
 	U1 UiStatusBar::Ctor( UiWindow * p, Napi::Value v )
@@ -52,8 +52,6 @@ namespace Nav
 			return false;
 
 		GetControlTyped().SetIconManager( p->PublicCloneIconManager() );
-
-		GetControlTyped().GetEvent<Ui::IStatusBar::OnClick>() += MakeThisFunc( __OnClick );
 
 		return true;
 	}
@@ -85,5 +83,7 @@ namespace Nav
 		}
 		return {};
 	}
+
+	UiStatusBar * UiStatusBar::OnClick( OnClick_t && fn ) { m_OnClick = SetEventCallback<Ui::IStatusBar::OnClick>( std::move( fn ), MakeThisFunc( __OnClick ) ); return this; }
 
 }

@@ -45,6 +45,6 @@ namespace Nav
 		WrapPointer<UiControl>			ControlRemove( WrapPointer<UiControl> pChild ) { return __ChangeContent( GetControlTyped().ControlRemove( &pChild->GetControl() ) ); }
 		UiRibbonGroup*					ControlRemoveAll() { GetControlTyped().ControlRemoveAll(); return this; }
 
-		UiRibbonGroup*					OnDetailClick( Callback_t&& fn ) { m_OnClick = std::move( fn ); return this; }
+		UiRibbonGroup*					OnDetailClick( Callback_t&& fn );
 	};
 }

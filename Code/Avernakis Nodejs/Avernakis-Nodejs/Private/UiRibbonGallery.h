@@ -103,9 +103,9 @@ namespace Nav
 		UiRibbonGallery*				ViewSetWidthWeight( S32 nWeight ) { GetControlTyped().ViewSetWidthWeight( nWeight ); return this; }
 		S32								ViewGetWidthWeight() const { return GetControlTyped().ViewGetWidthWeight(); }
 
-		UiRibbonGallery*				OnSelect    /**/( Callback_t    /**/ && fn ) { m_OnSelect    /**/ = std::move( fn ); return this; }
-		UiRibbonGallery*				OnPreview   /**/( OnPreview_t   /**/ && fn ) { m_OnPreview   /**/ = std::move( fn ); return this; }
-		UiRibbonGallery*				OnDrop      /**/( Callback_t    /**/ && fn ) { m_OnDrop      /**/ = std::move( fn ); return this; }
-		UiRibbonGallery*				OnMenuClick /**/( OnMenuClick_t /**/ && fn ) { m_OnMenuClick /**/ = std::move( fn ); return this; }
+		UiRibbonGallery*				OnSelect    /**/( Callback_t    /**/ && fn );
+		UiRibbonGallery*				OnPreview   /**/( OnPreview_t   /**/ && fn );
+		UiRibbonGallery*				OnDrop      /**/( Callback_t    /**/ && fn );
+		UiRibbonGallery*				OnMenuClick /**/( OnMenuClick_t /**/ && fn );
 	};
 }

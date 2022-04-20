@@ -56,6 +56,15 @@ namespace Nav
 			m_TypedObject = Napi::ObjectWrap<TObject>::Unwrap( obj );
 		}
 
+		AveInline void Reset()
+		{
+			if ( m_Object )
+			{
+				m_Object.Reset();
+				m_TypedObject = nullptr;
+			}
+		}
+
 	private:
 		Napi::ObjectReference	m_Object;
 		TObject*				m_TypedObject{ nullptr };
@@ -829,7 +838,6 @@ namespace Nav
 			__Detail::__ConvertType<TRet>::ToCpp( &r, val );
 			this->__CallEnd();
 		}
-		return r;
 	}
 
 	template<class... TArg>

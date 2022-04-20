@@ -1,11 +1,5 @@
 ﻿import { Vec2 } from "../Math/Vector";
-import { Rect } from "./UiCommon";
-
-export enum PopupAlign {
-	Auto,
-	Left,
-	Right,
-}
+import { PopupAlign, Rect } from "./UiCommon";
 
 export enum PointerVisibility {
 	Hidden,

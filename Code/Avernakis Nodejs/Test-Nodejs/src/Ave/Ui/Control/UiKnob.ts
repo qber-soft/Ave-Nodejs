@@ -1,11 +1,11 @@
 ﻿import { IControl } from "../UiControl";
 import { AveLib } from "../../AveLib";
-import { Window } from "./UiWindow";
+import { WindowLike } from "./UiWindow";
 import { Vec2, Vec4 } from "../../Math/Vector";
 import { IVisual } from "../UiVisual";
 
 export interface IKnob extends IControl {
-	new (window: Window, key?: string | number): IKnob;
+	new (window: WindowLike, key?: string | number): IKnob;
 
 	SetText(s: string): Knob;
 	GetText(): string;

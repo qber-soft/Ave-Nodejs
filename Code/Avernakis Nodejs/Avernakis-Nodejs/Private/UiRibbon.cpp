@@ -18,35 +18,35 @@ namespace Nav
 
 	void UiRibbon::DefineControl()
 	{
-		AutoAddMethod( GetApp );
-		AutoAddMethod( GetToolBar );
+		AutoAddMethod( GetApp, WrapObjectGeneric );
+		AutoAddMethod( GetToolBar, WrapObjectGeneric );
 		AutoAddMethod( SetBackground );
-		AutoAddMethod( GetBackground );
+		AutoAddMethod( GetBackground, WrapObjectGeneric );
 		AutoAddMethod( SetMinimized );
-		AutoAddMethod( GetMinimized );
+		AutoAddMethod( GetMinimized, WrapObjectGeneric );
 		AutoAddMethod( SetCanMinimize );
-		AutoAddMethod( GetCanMinimize );
-		AutoAddMethod( TabGetCount );
+		AutoAddMethod( GetCanMinimize, WrapObjectGeneric );
+		AutoAddMethod( TabGetCount, WrapObjectGeneric );
 		AutoAddMethod( TabAdd );
 		AutoAddMethod( TabInsert );
-		AutoAddMethod( TabGetByIndex );
-		AutoAddMethod( TabGetById );
+		AutoAddMethod( TabGetByIndex, WrapObjectGeneric );
+		AutoAddMethod( TabGetById, WrapObjectGeneric );
 		AutoAddMethod( TabRemoveByIndex );
 		AutoAddMethod( TabRemoveById );
 		AutoAddMethod( TabRemove );
 		AutoAddMethod( TabRemoveAll );
 		AutoAddMethod( TabSelect );
-		AutoAddMethod( TabGetRect );
-		AutoAddMethod( TabGetContentRect );
-		AutoAddMethod( TabGetIndex );
+		AutoAddMethod( TabGetRect, WrapObjectGeneric );
+		AutoAddMethod( TabGetContentRect, WrapObjectGeneric );
+		AutoAddMethod( TabGetIndex, WrapObjectGeneric );
 		AutoAddMethod( SetContent );
-		AutoAddMethod( GetContent );
+		AutoAddMethod( GetContent, WrapObjectGeneric );
 		AutoAddMethod( SetAppMenu );
-		AutoAddMethod( GetAppMenu );
+		AutoAddMethod( GetAppMenu, WrapObjectGeneric );
 		AutoAddMethod( SetBackstage );
-		AutoAddMethod( GetBackstage );
+		AutoAddMethod( GetBackstage, WrapObjectGeneric );
 		AutoAddMethod( SetBackstageVisible );
-		AutoAddMethod( GetBackstageVisible );
+		AutoAddMethod( GetBackstageVisible, WrapObjectGeneric );
 	}
 
 	U1 UiRibbon::Ctor( const CallbackInfo& ci, UiWindow * p, Napi::Value v )

@@ -17,12 +17,12 @@ namespace Nav
 	void UiRibbonTab::DefineControl()
 	{
 		AutoAddMethod( SetText );
-		AutoAddMethod( GetText );
-		AutoAddMethod( GroupGetCount );
+		AutoAddMethod( GetText, WrapObjectGeneric );
+		AutoAddMethod( GroupGetCount, WrapObjectGeneric );
 		AutoAddMethod( GroupAdd );
 		AutoAddMethod( GroupInsert );
-		AutoAddMethod( GroupGetByIndex );
-		AutoAddMethod( GroupGetById );
+		AutoAddMethod( GroupGetByIndex, WrapObjectGeneric );
+		AutoAddMethod( GroupGetById, WrapObjectGeneric );
 		AutoAddMethod( GroupRemoveByIndex );
 		AutoAddMethod( GroupRemoveById );
 		AutoAddMethod( GroupRemove );

@@ -1,10 +1,10 @@
 ﻿import { IControl } from "../UiControl";
 import { AveLib } from "../../AveLib";
-import { Window } from "./UiWindow";
+import { WindowLike } from "./UiWindow";
 import { ProgressBarState } from "../UiCommon";
 
 export interface IProgressBar extends IControl {
-	new (window: Window): IProgressBar;
+	new (window: WindowLike): IProgressBar;
 
 	SetState(n: ProgressBarState): ProgressBar;
 	GetState(): ProgressBarState;

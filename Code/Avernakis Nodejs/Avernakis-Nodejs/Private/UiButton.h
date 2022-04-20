@@ -5,6 +5,32 @@
 namespace Nav
 {
 
+	class UiButtonCustomDrawResult
+	{
+	public:
+		U32								m_Behavior;
+		WrapData<U8_4>					m_NewTextColor;
+		WrapData<S32_R>					m_NewRect;
+		U32								m_NewFormat;
+	};
+
+	NavDefineDataByMember_( UiButtonCustomDrawResult, Behavior, NewTextColor, NewRect, NewFormat );
+
+	class UiButtonCustomDraw
+	{
+	public:
+		UiPainter*						m_Painter;
+		Ui::IButton::CustomDrawPart		m_Part;
+		Ui::CustomDrawStage				m_Stage;
+		WrapData<S32_R>					m_RectButton;
+		WrapData<S32_R>					m_Rect;
+		WString							m_Text;
+		U32								m_TextFlag;
+		WrapData<UiPainterState>		m_State;
+	};
+
+	NavDefineDataByMember_( UiButtonCustomDraw, Painter, Part, Stage, RectButton, Rect, Text, TextFlag, State );
+
 	class UiButton : public UiControlHelper<UiButton, Ui::IButton>
 	{
 	public:
@@ -21,12 +47,15 @@ namespace Nav
 
 	private:
 		using Callback_t = JsFuncSafe<void( UiButton* sender )>;
+		using CustomDraw_t = JsFuncSafe<WrapData<UiButtonCustomDrawResult>( UiButton* sender, const WrapData<UiButtonCustomDraw>& cdp )>;
 
 		Callback_t						m_OnClick;
 		Callback_t						m_OnDrop;
+		CustomDraw_t					m_OnCustomDraw;
 
 		void							__OnClick( Ui::IButton& sender );
 		void							__OnDrop( Ui::IButton& sender );
+		void							__OnCustomDraw( Ui::IButton& sender, const Ui::IButton::CustomDrawParam& cdp, U32& cdr );
 
 	private:
 		UiButton*						SetText( PCWChar szText ) { GetControlTyped().SetText( szText ? szText : AveWide( "" ) ); return this; }
@@ -44,7 +73,8 @@ namespace Nav
 		WrapPointer<UiVisual>			SetVisual( WrapPointer<UiVisual> v ) { return __ChangeContent( GetControlTyped().SetVisual( v->TakeVisual() ) ); }
 		WrapPointer<UiVisual>			GetVisual() const { return __ReturnContent( GetControlTyped().GetVisual() ); }
 
-		UiButton*						OnClick( Callback_t&& fn ) { m_OnClick = std::move( fn ); return this; }
-		UiButton*						OnDrop( Callback_t&& fn ) { m_OnDrop = std::move( fn ); return this; }
+		UiButton*						OnClick( Callback_t&& fn );
+		UiButton*						OnDrop( Callback_t&& fn );
+		UiButton*						OnCustomDraw( const CallbackInfo& ci, CustomDraw_t&& fn );
 	};
 }

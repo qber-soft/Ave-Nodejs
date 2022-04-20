@@ -16,30 +16,26 @@ namespace Nav
 	void UiTrackBar::DefineControl()
 	{
 		AutoAddMethod( SetOrientation );
-		AutoAddMethod( GetOrientation );
-		AutoAddMethod( GetOrientationActually );
+		AutoAddMethod( GetOrientation, WrapObjectGeneric );
+		AutoAddMethod( GetOrientationActually, WrapObjectGeneric );
 		AutoAddMethod( SetMinimum );
-		AutoAddMethod( GetMinimum );
+		AutoAddMethod( GetMinimum, WrapObjectGeneric );
 		AutoAddMethod( SetMaximum );
-		AutoAddMethod( GetMaximum );
+		AutoAddMethod( GetMaximum, WrapObjectGeneric );
 		AutoAddMethod( SetValue );
 		AutoAddMethod( SetValueForce );
-		AutoAddMethod( GetValue );
+		AutoAddMethod( GetValue, WrapObjectGeneric );
 		AutoAddMethod( SetPage );
-		AutoAddMethod( GetPage );
-		AutoAddMethod( OnThumbChange );
-		AutoAddMethod( OnThumbRelease );
-		AutoAddMethod( OnPageChange );
+		AutoAddMethod( GetPage, WrapObjectGeneric );
+		AutoAddMethod( OnThumbChange, WrapObjectGeneric );
+		AutoAddMethod( OnThumbRelease, WrapObjectGeneric );
+		AutoAddMethod( OnPageChange, WrapObjectGeneric );
 	}
 
 	U1 UiTrackBar::Ctor( UiWindow * p, Napi::Value v )
 	{
 		if ( !__CreateControl( p, v ) )
 			return false;
-
-		GetControlTyped().GetEvent<Ui::ITrackBar::OnThumbChange  /**/>() += MakeThisFunc( __OnThumbChange  /**/ );
-		GetControlTyped().GetEvent<Ui::ITrackBar::OnThumbRelease /**/>() += MakeThisFunc( __OnThumbRelease /**/ );
-		GetControlTyped().GetEvent<Ui::ITrackBar::OnPageChange   /**/>() += MakeThisFunc( __OnPageChange   /**/ );
 
 		return true;
 	}
@@ -59,4 +55,7 @@ namespace Nav
 		m_OnPageChange( this );
 	}
 
+	UiTrackBar* UiTrackBar::OnThumbChange  /**/( Callback_t&& fn ) { m_OnThumbChange  /**/ = SetEventCallback<Ui::ITrackBar::OnThumbChange  /**/>( std::move( fn ), MakeThisFunc( __OnThumbChange  /**/ ) ); return this; }
+	UiTrackBar* UiTrackBar::OnThumbRelease /**/( Callback_t&& fn ) { m_OnThumbRelease /**/ = SetEventCallback<Ui::ITrackBar::OnThumbRelease /**/>( std::move( fn ), MakeThisFunc( __OnThumbRelease /**/ ) ); return this; }
+	UiTrackBar* UiTrackBar::OnPageChange   /**/( Callback_t&& fn ) { m_OnPageChange   /**/ = SetEventCallback<Ui::ITrackBar::OnPageChange   /**/>( std::move( fn ), MakeThisFunc( __OnPageChange   /**/ ) ); return this; }
 }

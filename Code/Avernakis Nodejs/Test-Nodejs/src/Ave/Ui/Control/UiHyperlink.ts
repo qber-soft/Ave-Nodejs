@@ -2,7 +2,7 @@ import { AveLib } from "../../AveLib";
 import { AlignType } from "../UiCommon";
 import { Vec4 } from "../../Math/Vector";
 import { IVisual } from "../UiVisual";
-import { Window } from "../Control/UiWindow";
+import { WindowLike } from "../Control/UiWindow";
 
 export enum HyperlinkUnderline {
 	Always,
@@ -11,7 +11,7 @@ export enum HyperlinkUnderline {
 }
 
 export interface IHyperlink extends IVisual {
-	new (window: Window, key?: string | number): IHyperlink;
+	new (window: WindowLike, key?: string | number): IHyperlink;
 
 	SetText(s: string): Hyperlink;
 	GetText(): string;

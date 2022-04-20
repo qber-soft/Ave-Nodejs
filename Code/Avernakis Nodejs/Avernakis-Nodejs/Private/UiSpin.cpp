@@ -15,21 +15,16 @@ namespace Nav
 
 	void UiSpin::DefineControl()
 	{
-		AutoAddMethod( OnClick );
-		AutoAddMethod( OnSpinStart );
-		AutoAddMethod( OnSpinEnd );
-		AutoAddMethod( OnSpin );
+		AutoAddMethod( OnClick, WrapObjectGeneric );
+		AutoAddMethod( OnSpinStart, WrapObjectGeneric );
+		AutoAddMethod( OnSpinEnd, WrapObjectGeneric );
+		AutoAddMethod( OnSpin, WrapObjectGeneric );
 	}
 
 	U1 UiSpin::Ctor( UiWindow * p, Napi::Value v )
 	{
 		if ( !__CreateControl( p, v ) )
 			return false;
-
-		GetControlTyped().GetEvent<Ui::ISpin::OnClick     /**/>() += MakeThisFunc( __OnClick     /**/ );
-		GetControlTyped().GetEvent<Ui::ISpin::OnSpinStart /**/>() += MakeThisFunc( __OnSpinStart /**/ );
-		GetControlTyped().GetEvent<Ui::ISpin::OnSpinEnd   /**/>() += MakeThisFunc( __OnSpinEnd   /**/ );
-		GetControlTyped().GetEvent<Ui::ISpin::OnSpin      /**/>() += MakeThisFunc( __OnSpin      /**/ );
 
 		return true;
 	}
@@ -54,4 +49,8 @@ namespace Nav
 		m_OnSpin( this, nDelta );
 	}
 
+	UiSpin* UiSpin::OnClick     /**/( OnClick_t     /**/ && fn ) { m_OnClick     /**/ = SetEventCallback<Ui::ISpin::OnClick     /**/>( std::move( fn ), MakeThisFunc( __OnClick     /**/ ) ); return this; }
+	UiSpin* UiSpin::OnSpinStart /**/( OnSpinStart_t /**/ && fn ) { m_OnSpinStart /**/ = SetEventCallback<Ui::ISpin::OnSpinStart /**/>( std::move( fn ), MakeThisFunc( __OnSpinStart /**/ ) ); return this; }
+	UiSpin* UiSpin::OnSpinEnd   /**/( OnSpinEnd_t   /**/ && fn ) { m_OnSpinEnd   /**/ = SetEventCallback<Ui::ISpin::OnSpinEnd   /**/>( std::move( fn ), MakeThisFunc( __OnSpinEnd   /**/ ) ); return this; }
+	UiSpin* UiSpin::OnSpin      /**/( OnSpin_t      /**/ && fn ) { m_OnSpin      /**/ = SetEventCallback<Ui::ISpin::OnSpin      /**/>( std::move( fn ), MakeThisFunc( __OnSpin      /**/ ) ); return this; }
 }

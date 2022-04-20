@@ -47,6 +47,6 @@ namespace Nav
 		UiCalendar*						SetFormat( const WrapData<DateTimeFormat>& pFormat );
 		WrapData<DateTimeFormat>		GetFormat() const;
 
-		UiCalendar*						OnChange( OnChange_t&& fn ) { m_OnChange = std::move( fn ); return this; }
+		UiCalendar*						OnChange( OnChange_t&& fn );
 	};
 }

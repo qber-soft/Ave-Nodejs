@@ -81,9 +81,9 @@ namespace Nav
 		UiListBox*						SetSelectionMode( Ui::ListBoxSelectionMode nSelMode ) { GetControlTyped().SetSelectionMode( nSelMode ); return this; }
 		Ui::ListBoxSelectionMode		GetSelectionMode() const { return GetControlTyped().GetSelectionMode(); }
 
-		UiListBox*						OnSelectionChange( OnSelectionChange_t&& fn ) { m_OnSelectionChange = std::move( fn ); return this; }
-		UiListBox*						OnSelectionEnd( OnSelectionChange_t&& fn ) { m_OnSelectionEnd = std::move( fn ); return this; }
-		UiListBox*						OnDoubleClick( OnClick_t&& fn ) { m_OnDoubleClick = std::move( fn ); return this; }
-		UiListBox*						OnRightClick( OnClick_t&& fn ) { m_OnRightClick = std::move( fn ); return this; }
+		UiListBox*						OnSelectionChange /**/( OnSelectionChange_t /**/ && fn );
+		UiListBox*						OnSelectionEnd    /**/( OnSelectionChange_t /**/ && fn );
+		UiListBox*						OnDoubleClick     /**/( OnClick_t           /**/ && fn );
+		UiListBox*						OnRightClick      /**/( OnClick_t           /**/ && fn );
 	};
 }

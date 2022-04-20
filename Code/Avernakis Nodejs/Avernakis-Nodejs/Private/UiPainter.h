@@ -39,7 +39,7 @@ namespace Nav
 	};
 
 	NavDefineDataByMember_( Byo2DrawImageParam, SourceRect, TargetSize, SourceAlpha, SourceRect2, Filter, Address, Address2, Transform, Transform2 );
-	
+
 	class UiPainter : public WrapObject<UiPainter, void(), WrapObjectGeneric>
 	{
 	public:
@@ -61,6 +61,7 @@ namespace Nav
 
 		R64								GetTime() const { return m_Painter->GetTime(); }
 		U1								IsStable() const { return m_Painter->IsStable(); }
+		U1								UpdateState( Napi::Value v );
 
 		//----------------------------------------------------------------------------------------------------
 		// Common methods

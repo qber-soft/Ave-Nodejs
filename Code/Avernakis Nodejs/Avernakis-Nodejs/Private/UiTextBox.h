@@ -102,9 +102,9 @@ namespace Nav
 
 		WrapData<S32_2>					GetCaretPos() const { return GetControlTyped().GetCaretPos(); }
 
-		UiTextBox*						OnChange( OnChange_t&& fn ) { m_OnChange = std::move( fn ); return this; }
-		UiTextBox*						OnSpinStart( OnGeneric_t&& fn ) { m_OnSpinStart = std::move( fn ); return this; }
-		UiTextBox*						OnSpinEnd( OnSpinEnd_t&& fn ) { m_OnSpinEnd = std::move( fn ); return this; }
-		UiTextBox*						OnSpin( OnGeneric_t&& fn ) { m_OnSpin = std::move( fn ); return this; }
+		UiTextBox*						OnChange    /**/( OnChange_t  /**/ && fn );
+		UiTextBox*						OnSpinStart /**/( OnGeneric_t /**/ && fn );
+		UiTextBox*						OnSpinEnd   /**/( OnSpinEnd_t /**/ && fn );
+		UiTextBox*						OnSpin      /**/( OnGeneric_t /**/ && fn );
 	};
 }

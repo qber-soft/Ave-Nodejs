@@ -227,6 +227,12 @@
     <ClCompile Include="Private\DeeClipboard.cpp">
       <Filter>Ave\Dee</Filter>
     </ClCompile>
+    <ClCompile Include="Private\UiThemeFileImage.cpp">
+      <Filter>Ave\Ui\Theme\Image-based</Filter>
+    </ClCompile>
+    <ClCompile Include="Private\UiThemeFile.cpp">
+      <Filter>Ave\Ui\Theme</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Build">
@@ -676,6 +682,12 @@
     </ClInclude>
     <ClInclude Include="Private\DeeClipboard.h">
       <Filter>Ave\Dee</Filter>
+    </ClInclude>
+    <ClInclude Include="Private\UiThemeFileImage.h">
+      <Filter>Ave\Ui\Theme\Image-based</Filter>
+    </ClInclude>
+    <ClInclude Include="Private\UiThemeFile.h">
+      <Filter>Ave\Ui\Theme</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

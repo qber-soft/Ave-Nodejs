@@ -188,4 +188,36 @@ namespace Nav
 
 	NavDefineDataByMember_( UiFontDescription, Type, Name, File, ResourceId, Index, Size, Flag );
 
+	class UiPainterStateBase
+	{
+	public:
+		R64 m_Time;
+		R32 m_Speed;
+		R32 m_Ratio;
+	};
+
+	class UiPainterState
+	{
+	public:
+		R64			m_Time;
+		R32			m_Speed;
+		R32			m_Ratio;
+
+		R64			m_OldState;
+		R64			m_NewState;
+
+		template<class T>
+		AveInline void Set( const Ui::PainterState<T>& ps )
+		{
+			auto& psb = (UiPainterStateBase&) (Ui::PainterStateBase&) ps;
+			m_Time = psb.m_Time;
+			m_Speed = psb.m_Speed;
+			m_Ratio = psb.m_Ratio;
+			m_OldState = (R64) ps.GetStateOld();
+			m_NewState = (R64) ps.GetStateNew();
+		}
+	};
+
+	NavDefineDataByMember( UiPainterState, m_Time, m_Speed, m_Ratio, m_OldState, m_NewState );
+
 }

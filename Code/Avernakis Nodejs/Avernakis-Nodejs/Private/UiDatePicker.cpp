@@ -16,34 +16,32 @@ namespace Nav
 	void UiDatePicker::DefineControl()
 	{
 		AutoAddMethod( SetRange );
-		AutoAddMethod( GetRange );
+		AutoAddMethod( GetRange, WrapObjectGeneric );
 
 		AutoAddMethod( SetDate );
-		AutoAddMethod( GetDate );
+		AutoAddMethod( GetDate, WrapObjectGeneric );
 
 		AutoAddMethod( SetDateMark );
-		AutoAddMethod( GetDateMark );
+		AutoAddMethod( GetDateMark, WrapObjectGeneric );
 
 		AutoAddMethod( SetCultureId );
-		AutoAddMethod( GetCultureId );
+		AutoAddMethod( GetCultureId, WrapObjectGeneric );
 
 		AutoAddMethod( SetFormat );
-		AutoAddMethod( GetFormat );
+		AutoAddMethod( GetFormat, WrapObjectGeneric );
 
 		AutoAddMethod( SetBorder );
-		AutoAddMethod( GetBorder );
+		AutoAddMethod( GetBorder, WrapObjectGeneric );
 
 		AutoAddMethod( Drop );
 
-		AutoAddMethod( OnChange );
+		AutoAddMethod( OnChange, WrapObjectGeneric );
 	}
 
 	U1 UiDatePicker::Ctor( UiWindow * p, Napi::Value v )
 	{
 		if ( !__CreateControl( p, v ) )
 			return false;
-
-		GetControlTyped().GetEvent<Ui::IDatePicker::OnDateChange>() += MakeThisFunc( __OnChange );
 
 		return true;
 	}
@@ -57,7 +55,7 @@ namespace Nav
 	{
 		if ( 7 != pFormat.m_DayNameFull.Size() || 7 != pFormat.m_DayNameAbbreviated.Size() || 12 != pFormat.m_MonthNameFull.Size() || 12 != pFormat.m_MonthNameAbbreviated.Size() )
 			return this;
-		
+
 		m_Format = pFormat;
 
 		CultureInfoDateTime cidt{};
@@ -72,6 +70,12 @@ namespace Nav
 		WrapData<DateTimeFormat> r{};
 		r.FromCultureInfo( GetControlTyped().GetFormat() );
 		return r;
+	}
+
+	UiDatePicker * UiDatePicker::OnChange( OnChange_t && fn )
+	{
+		m_OnChange = SetEventCallback<Ui::IDatePicker::OnDateChange>( std::move( fn ), MakeThisFunc( __OnChange ) );
+		return this;
 	}
 
 }

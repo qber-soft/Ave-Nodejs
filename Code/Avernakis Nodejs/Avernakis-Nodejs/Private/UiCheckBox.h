@@ -49,7 +49,7 @@ namespace Nav
 		WrapPointer<UiVisual>			SetVisual( WrapPointer<UiVisual> v ) { return __ChangeContent( GetControlTyped().SetVisual( v->TakeVisual() ) ); }
 		WrapPointer<UiVisual>			GetVisual() const { return __ReturnContent( GetControlTyped().GetVisual() ); }
 
-		UiCheckBox*						OnCheck( OnCheck_t&& fn ) { m_OnCheck = std::move( fn ); return this; }
-		UiCheckBox*						OnChecking( OnChecking_t&& fn ) { m_OnChecking = std::move( fn ); return this; }
+		UiCheckBox*						OnCheck( OnCheck_t&& fn );
+		UiCheckBox*						OnChecking( OnChecking_t&& fn );
 	};
 }

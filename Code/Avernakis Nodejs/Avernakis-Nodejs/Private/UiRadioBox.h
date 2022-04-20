@@ -39,7 +39,7 @@ namespace Nav
 		UiRadioBox*						SetGroup( U32 nGroup ) { GetControlTyped().SetGroup( nGroup ); return this; }
 		U32								GetGroup() const { return GetControlTyped().GetGroup(); }
 
-		UiRadioBox*						OnCheck( OnCheck_t&& fn ) { m_OnCheck = std::move( fn ); return this; }
-		UiRadioBox*						OnChecking( OnChecking_t&& fn ) { m_OnChecking = std::move( fn ); return this; }
+		UiRadioBox*						OnCheck( OnCheck_t&& fn );
+		UiRadioBox*						OnChecking( OnChecking_t&& fn );
 	};
 }

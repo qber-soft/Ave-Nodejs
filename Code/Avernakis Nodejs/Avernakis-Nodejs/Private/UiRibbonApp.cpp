@@ -16,17 +16,15 @@ namespace Nav
 	void UiRibbonApp::DefineControl()
 	{
 		AutoAddMethod( SetText );
-		AutoAddMethod( GetText );
+		AutoAddMethod( GetText, WrapObjectGeneric );
 
-		AutoAddMethod( OnClick );
+		AutoAddMethod( OnClick, WrapObjectGeneric );
 	}
 
 	U1 UiRibbonApp::Ctor( UiWindow * p, Napi::Value v )
 	{
 		if ( !__CreateControl( p, v ) )
 			return false;
-
-		GetControlTyped().GetEvent<Ui::IRibbonApp::OnClick>() += MakeThisFunc( __OnClick );
 
 		return true;
 	}
@@ -35,5 +33,7 @@ namespace Nav
 	{
 		m_OnClick( this );
 	}
+
+	UiRibbonApp* UiRibbonApp::OnClick( Callback_t&& fn ) { m_OnClick = SetEventCallback<Ui::IRibbonApp::OnClick>( std::move( fn ), MakeThisFunc( __OnClick ) ); return this; }
 
 }
