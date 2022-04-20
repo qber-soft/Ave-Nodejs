@@ -172,12 +172,12 @@ namespace Nav
 		WrapData<S32_2>					GetScrollSize() const { return GetControlTyped().GetScrollSize(); }
 		WrapData<S32_2>					GetScrollMax() const;
 
-		UiTree*							OnSelectionChange /**/( OnSelectionChange_t /**/ && fn ) { m_OnSelectionChange /**/ = std::move( fn ); return this; }
-		UiTree*							OnDoubleClick     /**/( OnClick_t           /**/ && fn ) { m_OnDoubleClick     /**/ = std::move( fn ); return this; }
-		UiTree*							OnRightClick      /**/( OnClick_t           /**/ && fn ) { m_OnRightClick      /**/ = std::move( fn ); return this; }
-		UiTree*							OnEditBegin       /**/( OnEdit_t            /**/ && fn ) { m_OnEditBegin       /**/ = std::move( fn ); return this; }
-		UiTree*							OnEditEnd         /**/( OnEdit_t            /**/ && fn ) { m_OnEditEnd         /**/ = std::move( fn ); return this; }
-		UiTree*							OnEditFinish      /**/( OnEditFinish_t      /**/ && fn ) { m_OnEditFinish      /**/ = std::move( fn ); return this; }
-		UiTree*							OnDragBegin       /**/( OnDragBegin_t       /**/ && fn ) { m_OnDragBegin       /**/ = std::move( fn ); return this; }
+		UiTree*							OnSelectionChange /**/( OnSelectionChange_t /**/ && fn );
+		UiTree*							OnDoubleClick     /**/( OnClick_t           /**/ && fn );
+		UiTree*							OnRightClick      /**/( OnClick_t           /**/ && fn );
+		UiTree*							OnEditBegin       /**/( OnEdit_t            /**/ && fn );
+		UiTree*							OnEditEnd         /**/( OnEdit_t            /**/ && fn );
+		UiTree*							OnEditFinish      /**/( OnEditFinish_t      /**/ && fn );
+		UiTree*							OnDragBegin       /**/( OnDragBegin_t       /**/ && fn );
 	};
 }

@@ -283,7 +283,6 @@ namespace Nav
 
 		GetWindow().SetFrame( GetUiFactory().Create<Ui::IWindowFrame>() );
 		m_Frame->SetSharedControl( GetWindow().GetFrame() );
-		m_Frame->InitCallback();
 
 		Ui::CommonUiConfig cuicfg{};
 		cuicfg.m_Message.m_DefaultTitle = AveWide( "AveApp" );

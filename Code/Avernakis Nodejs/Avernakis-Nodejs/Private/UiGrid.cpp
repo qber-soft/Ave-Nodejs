@@ -16,21 +16,21 @@ namespace Nav
 
 	void UiGridControl::DefineObject()
 	{
-#	define __AutoAddMethod($x) AddMethod( #$x, &UiGridControl::$x )
+#	define __AutoAddMethod($x, ...) AddMethod<__VA_ARGS__>( #$x, &UiGridControl::$x )
 		__AutoAddMethod( GetControl );
 
 		__AutoAddMethod( SetDock );
-		__AutoAddMethod( GetDock );
+		__AutoAddMethod( GetDock, WrapObjectGeneric );
 		__AutoAddMethod( SetAnchor );
-		__AutoAddMethod( GetAnchor );
+		__AutoAddMethod( GetAnchor, WrapObjectGeneric );
 		__AutoAddMethod( SetMargin );
-		__AutoAddMethod( GetMargin );
+		__AutoAddMethod( GetMargin, WrapObjectGeneric );
 		__AutoAddMethod( SetGrid );
-		__AutoAddMethod( GetGrid );
+		__AutoAddMethod( GetGrid, WrapObjectGeneric );
 		__AutoAddMethod( SetPos );
 		__AutoAddMethod( SetSize );
 		__AutoAddMethod( SetPosZ );
-		__AutoAddMethod( GetPosZ );
+		__AutoAddMethod( GetPosZ, WrapObjectGeneric );
 		__AutoAddMethod( BringToFront );
 		__AutoAddMethod( BringToBack );
 #	undef __AutoAddMethod
@@ -39,32 +39,32 @@ namespace Nav
 	void UiGrid::DefineControl()
 	{
 		AutoAddMethod( SetBackground );
-		AutoAddMethod( GetBackground );
+		AutoAddMethod( GetBackground, WrapObjectGeneric );
 
 		AutoAddMethod( SetBackColor );
-		AutoAddMethod( GetBackColor );
+		AutoAddMethod( GetBackColor, WrapObjectGeneric );
 
 		AutoAddMethod( SetSplitterX );
-		AutoAddMethod( GetSplitterX );
+		AutoAddMethod( GetSplitterX, WrapObjectGeneric );
 		AutoAddMethod( SetSplitterY );
-		AutoAddMethod( GetSplitterY );
+		AutoAddMethod( GetSplitterY, WrapObjectGeneric );
 
-		AutoAddMethod( RowGetClear );
-		AutoAddMethod( RowGetCount );
-		AutoAddMethod( RowGetOffset );
-		AutoAddMethod( RowGetSize );
-		AutoAddMethod( RowGetDef );
+		AutoAddMethod( RowClear );
+		AutoAddMethod( RowGetCount, WrapObjectGeneric );
+		AutoAddMethod( RowGetOffset, WrapObjectGeneric );
+		AutoAddMethod( RowGetSize, WrapObjectGeneric );
+		AutoAddMethod( RowGetDef, WrapObjectGeneric );
 		AutoAddMethod( RowAdd );
 		AutoAddMethod( RowInsert );
 		AutoAddMethod( RowRemove );
 		AutoAddMethod( RowSet );
 		AutoAddMethod( RowSetDef );
 
-		AutoAddMethod( ColGetClear );
-		AutoAddMethod( ColGetCount );
-		AutoAddMethod( ColGetOffset );
-		AutoAddMethod( ColGetSize );
-		AutoAddMethod( ColGetDef );
+		AutoAddMethod( ColClear );
+		AutoAddMethod( ColGetCount, WrapObjectGeneric );
+		AutoAddMethod( ColGetOffset, WrapObjectGeneric );
+		AutoAddMethod( ColGetSize, WrapObjectGeneric );
+		AutoAddMethod( ColGetDef, WrapObjectGeneric );
 		AutoAddMethod( ColAdd );
 		AutoAddMethod( ColInsert );
 		AutoAddMethod( ColRemove );

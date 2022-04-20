@@ -671,16 +671,16 @@ export class IconSource {
 
 export type IconCache = number;
 
-export interface IIconManager {}
+export interface IIconManager { }
 
 // prettier-ignore
 export enum FontFlag {
-    Standard  /**/ = 0x0000,
-    Normal    /**/ = 0x0000,
-    Bold      /**/ = 0x0001,
-    Italic    /**/ = 0x0002,
-    Underline /**/ = 0x0004,
-    StrikeOut /**/ = 0x0008,
+	Standard  /**/ = 0x0000,
+	Normal    /**/ = 0x0000,
+	Bold      /**/ = 0x0001,
+	Italic    /**/ = 0x0002,
+	Underline /**/ = 0x0004,
+	StrikeOut /**/ = 0x0008,
 }
 
 export enum FontResourceType {
@@ -722,4 +722,17 @@ export class FontDescription {
 
 	Size: number = 10; // >0: pt  <0: px
 	Flag: FontFlag = FontFlag.Standard;
+}
+
+export enum CustomDrawStage {
+	Pre,
+	Post,
+}
+
+export enum Std5State {
+	Normal,
+	Hot,
+	Pressed,
+	Default,
+	Disabled,
 }

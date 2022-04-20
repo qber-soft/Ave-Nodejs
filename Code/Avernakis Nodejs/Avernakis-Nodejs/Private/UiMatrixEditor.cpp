@@ -27,58 +27,58 @@ namespace Nav
 		AutoAddMethod( ViewCopyFrom );
 
 		AutoAddMethod( ColSetSizeAll );
-		AutoAddMethod( ColGetSizeAll );
+		AutoAddMethod( ColGetSizeAll, WrapObjectGeneric );
 		AutoAddMethod( ColSetSize );
-		AutoAddMethod( ColGetSize );
+		AutoAddMethod( ColGetSize, WrapObjectGeneric );
 		AutoAddMethod( ColSetVertical );
-		AutoAddMethod( ColGetVertical );
+		AutoAddMethod( ColGetVertical, WrapObjectGeneric );
 
 		AutoAddMethod( RowSetSizeAll );
-		AutoAddMethod( RowGetSizeAll );
+		AutoAddMethod( RowGetSizeAll, WrapObjectGeneric );
 		AutoAddMethod( RowSetSize );
-		AutoAddMethod( RowGetSize );
+		AutoAddMethod( RowGetSize, WrapObjectGeneric );
 
 		AutoAddMethod( ViewSetCornerSize );
-		AutoAddMethod( ViewGetCornerSize );
+		AutoAddMethod( ViewGetCornerSize, WrapObjectGeneric );
 		AutoAddMethod( ViewSetCornerContent );
-		AutoAddMethod( ViewGetCornerContent );
+		AutoAddMethod( ViewGetCornerContent, WrapObjectGeneric );
 		AutoAddMethod( ViewSetBack );
-		AutoAddMethod( ViewGetBack );
+		AutoAddMethod( ViewGetBack, WrapObjectGeneric );
 		AutoAddMethod( ViewSetUnit );
-		AutoAddMethod( ViewGetUnit );
+		AutoAddMethod( ViewGetUnit, WrapObjectGeneric );
 		AutoAddMethod( ViewSetPanel );
-		AutoAddMethod( ViewGetPanel );
+		AutoAddMethod( ViewGetPanel, WrapObjectGeneric );
 		AutoAddMethod( ViewSetColHeader );
-		AutoAddMethod( ViewGetColHeader );
+		AutoAddMethod( ViewGetColHeader, WrapObjectGeneric );
 		AutoAddMethod( ViewSetRowHeader );
-		AutoAddMethod( ViewGetRowHeader );
+		AutoAddMethod( ViewGetRowHeader, WrapObjectGeneric );
 		AutoAddMethod( ViewSetUnitBack );
-		AutoAddMethod( ViewGetUnitBack );
+		AutoAddMethod( ViewGetUnitBack, WrapObjectGeneric );
 		AutoAddMethod( ViewSetCursor );
-		AutoAddMethod( ViewGetCursor );
+		AutoAddMethod( ViewGetCursor, WrapObjectGeneric );
 		AutoAddMethod( ViewSetCursorEmpty );
-		AutoAddMethod( ViewGetCursorEmpty );
+		AutoAddMethod( ViewGetCursorEmpty, WrapObjectGeneric );
 		AutoAddMethod( ViewSetGridX );
-		AutoAddMethod( ViewGetGridX );
+		AutoAddMethod( ViewGetGridX, WrapObjectGeneric );
 		AutoAddMethod( ViewSetGridY );
-		AutoAddMethod( ViewGetGridY );
+		AutoAddMethod( ViewGetGridY, WrapObjectGeneric );
 		AutoAddMethod( ViewSetScrollX );
-		AutoAddMethod( ViewGetScrollX );
+		AutoAddMethod( ViewGetScrollX, WrapObjectGeneric );
 		AutoAddMethod( ViewSetScrollY );
-		AutoAddMethod( ViewGetScrollY );
+		AutoAddMethod( ViewGetScrollY, WrapObjectGeneric );
 
-		AutoAddMethod( UnitGetRect );
+		AutoAddMethod( UnitGetRect, WrapObjectGeneric );
 
 		AutoAddMethod( SetKnobControlType );
-		AutoAddMethod( GetKnobControlType );
+		AutoAddMethod( GetKnobControlType, WrapObjectGeneric );
 
-		AutoAddMethod( GetEditorRect );
+		AutoAddMethod( GetEditorRect, WrapObjectGeneric );
 
-		AutoAddMethod( OnUnitClick );
-		AutoAddMethod( OnUnitRightClick );
-		AutoAddMethod( OnUnitChange );
-		AutoAddMethod( OnUnitChangeBegin );
-		AutoAddMethod( OnUnitChangeEnd );
+		AutoAddMethod( OnUnitClick, WrapObjectGeneric );
+		AutoAddMethod( OnUnitRightClick, WrapObjectGeneric );
+		AutoAddMethod( OnUnitChange, WrapObjectGeneric );
+		AutoAddMethod( OnUnitChangeBegin, WrapObjectGeneric );
+		AutoAddMethod( OnUnitChangeEnd, WrapObjectGeneric );
 	}
 
 	U1 UiMatrixEditor::Ctor( const CallbackInfo& ci, UiWindow * p, Napi::Value v )
@@ -91,12 +91,6 @@ namespace Nav
 			return false;
 
 		m_Window = p;
-
-		GetControlTyped().GetEvent<Ui::IMatrixEditor::OnUnitClick       /**/>() += MakeThisFunc( __OnUnitClick       /**/ );
-		GetControlTyped().GetEvent<Ui::IMatrixEditor::OnUnitRightClick  /**/>() += MakeThisFunc( __OnUnitRightClick  /**/ );
-		GetControlTyped().GetEvent<Ui::IMatrixEditor::OnUnitChange      /**/>() += MakeThisFunc( __OnUnitChange      /**/ );
-		GetControlTyped().GetEvent<Ui::IMatrixEditor::OnUnitChangeBegin /**/>() += MakeThisFunc( __OnUnitChangeBegin /**/ );
-		GetControlTyped().GetEvent<Ui::IMatrixEditor::OnUnitChangeEnd   /**/>() += MakeThisFunc( __OnUnitChangeEnd   /**/ );
 
 		GetControlTyped().GetDoc().SetIconManager( p->PublicCloneIconManager() );
 		m_Doc->SetDoc( &GetControlTyped().GetDoc() );
@@ -145,5 +139,11 @@ namespace Nav
 		m_Doc->SetDoc( &GetControlTyped().GetDoc() );
 		return this;
 	}
+
+	UiMatrixEditor* UiMatrixEditor::OnUnitClick       /**/( UnitCallback_t    /**/ && fn ) { m_OnUnitClick       /**/ = SetEventCallback<Ui::IMatrixEditor::OnUnitClick       /**/>( std::move( fn ), MakeThisFunc( __OnUnitClick       /**/ ) ); return this; }
+	UiMatrixEditor* UiMatrixEditor::OnUnitRightClick  /**/( UnitCallback_t    /**/ && fn ) { m_OnUnitRightClick  /**/ = SetEventCallback<Ui::IMatrixEditor::OnUnitRightClick  /**/>( std::move( fn ), MakeThisFunc( __OnUnitRightClick  /**/ ) ); return this; }
+	UiMatrixEditor* UiMatrixEditor::OnUnitChange      /**/( UnitCallback_t    /**/ && fn ) { m_OnUnitChange      /**/ = SetEventCallback<Ui::IMatrixEditor::OnUnitChange      /**/>( std::move( fn ), MakeThisFunc( __OnUnitChange      /**/ ) ); return this; }
+	UiMatrixEditor* UiMatrixEditor::OnUnitChangeBegin /**/( UnitCallback_t    /**/ && fn ) { m_OnUnitChangeBegin /**/ = SetEventCallback<Ui::IMatrixEditor::OnUnitChangeBegin /**/>( std::move( fn ), MakeThisFunc( __OnUnitChangeBegin /**/ ) ); return this; }
+	UiMatrixEditor* UiMatrixEditor::OnUnitChangeEnd   /**/( OnUnitChangeEnd_t /**/ && fn ) { m_OnUnitChangeEnd   /**/ = SetEventCallback<Ui::IMatrixEditor::OnUnitChangeEnd   /**/>( std::move( fn ), MakeThisFunc( __OnUnitChangeEnd   /**/ ) ); return this; }
 
 }

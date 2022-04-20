@@ -16,30 +16,27 @@ namespace Nav
 	void UiCheckBox::DefineControl()
 	{
 		AutoAddMethod( SetText );
-		AutoAddMethod( GetText );
+		AutoAddMethod( GetText, WrapObjectGeneric );
 		AutoAddMethod( SetValue );
-		AutoAddMethod( GetValue );
-		AutoAddMethod( GetNextValue );
+		AutoAddMethod( GetValue, WrapObjectGeneric );
+		AutoAddMethod( GetNextValue, WrapObjectGeneric );
 		AutoAddMethod( SetTriple );
-		AutoAddMethod( GetTriple );
+		AutoAddMethod( GetTriple, WrapObjectGeneric );
 		AutoAddMethod( SetCheckBoxStyle );
-		AutoAddMethod( GetCheckBoxStyle );
+		AutoAddMethod( GetCheckBoxStyle, WrapObjectGeneric );
 		AutoAddMethod( SetVisualTextLayout );
-		AutoAddMethod( GetVisualTextLayout );
+		AutoAddMethod( GetVisualTextLayout, WrapObjectGeneric );
 		AutoAddMethod( SetVisual );
-		AutoAddMethod( GetVisual );
+		AutoAddMethod( GetVisual, WrapObjectGeneric );
 
-		AutoAddMethod( OnCheck );
-		AutoAddMethod( OnChecking );
+		AutoAddMethod( OnCheck, WrapObjectGeneric );
+		AutoAddMethod( OnChecking, WrapObjectGeneric );
 	}
 
 	U1 UiCheckBox::Ctor( UiWindow * p, Napi::Value v )
 	{
 		if ( !__CreateControl( p, v ) )
 			return false;
-
-		GetControlTyped().GetEvent<Ui::ICheckBox::OnCheck>() += MakeThisFunc( __OnCheck );
-		GetControlTyped().GetEvent<Ui::ICheckBox::OnChecking>() += MakeThisFunc( __OnChecking );
 
 		return true;
 	}
@@ -52,6 +49,18 @@ namespace Nav
 	void UiCheckBox::__OnChecking( Ui::ICheckBox & sender, U1 & bCanCheck )
 	{
 		m_OnChecking.BlockCall( this, bCanCheck );
+	}
+
+	UiCheckBox * UiCheckBox::OnCheck( OnCheck_t && fn )
+	{
+		m_OnCheck = SetEventCallback<Ui::ICheckBox::OnCheck>( std::move( fn ), MakeThisFunc( __OnCheck ) );
+		return this;
+	}
+
+	UiCheckBox * UiCheckBox::OnChecking( OnChecking_t && fn )
+	{
+		m_OnChecking = SetEventCallback<Ui::ICheckBox::OnChecking>( std::move( fn ), MakeThisFunc( __OnChecking ) );
+		return this;
 	}
 
 }

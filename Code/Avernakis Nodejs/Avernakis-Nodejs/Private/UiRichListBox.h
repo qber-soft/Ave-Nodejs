@@ -164,13 +164,13 @@ namespace Nav
 
 		WrapData<S32_R>					GetListRect() const { return GetControlTyped().GetListRect(); }
 
-		UiRichListBox*					OnSelectionChange /**/( OnCallback0_t&& fn ) { m_OnSelectionChange /**/ = std::move( fn ); return this; }
-		UiRichListBox*					OnSelectionEnd    /**/( OnCallback0_t&& fn ) { m_OnSelectionEnd    /**/ = std::move( fn ); return this; }
-		UiRichListBox*					OnDoubleClick     /**/( OnCallback1_t&& fn ) { m_OnDoubleClick     /**/ = std::move( fn ); return this; }
-		UiRichListBox*					OnRightClick      /**/( OnCallback1_t&& fn ) { m_OnRightClick      /**/ = std::move( fn ); return this; }
-		UiRichListBox*					OnDragBegin       /**/( OnCallback0_t&& fn ) { m_OnDragBegin       /**/ = std::move( fn ); return this; }
-		UiRichListBox*					OnGlyphClick      /**/( OnCallback1_t&& fn ) { m_OnGlyphClick      /**/ = std::move( fn ); return this; }
-		UiRichListBox*					OnItemCheck       /**/( OnCallback1_t&& fn ) { m_OnItemCheck       /**/ = std::move( fn ); return this; }
+		UiRichListBox*					OnSelectionChange /**/( OnCallback0_t&& fn );
+		UiRichListBox*					OnSelectionEnd    /**/( OnCallback0_t&& fn );
+		UiRichListBox*					OnDoubleClick     /**/( OnCallback1_t&& fn );
+		UiRichListBox*					OnRightClick      /**/( OnCallback1_t&& fn );
+		UiRichListBox*					OnDragBegin       /**/( OnCallback0_t&& fn );
+		UiRichListBox*					OnGlyphClick      /**/( OnCallback1_t&& fn );
+		UiRichListBox*					OnItemCheck       /**/( OnCallback1_t&& fn );
 	};
 
 }

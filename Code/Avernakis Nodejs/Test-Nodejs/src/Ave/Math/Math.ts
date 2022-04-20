@@ -42,7 +42,7 @@ export class AveMath {
 
 	static WriteR16(dv: DataView, nByteOffset: number, f: number) {
 	}
-	
+
 	static WriteR11G11B10_FLOAT(dv: DataView, nByteOffset: number, v: Vec4) {
 	}
 
@@ -52,4 +52,15 @@ export class AveMath {
 	static WriteR10G10B10_XR_BIAS_A2_UNORM(dv: DataView, nByteOffset: number, v: Vec4) {
 	}
 
+	static Saturate<T extends number>(v: T): T {
+		return (v >= 1 ? 1 : (v <= 0 ? 0 : v)) as T;
+	}
+
+	static Clamp<T extends number>(v: T, vmin: T, vmax: T): T {
+		return (v >= vmax ? vmax : (v <= vmin ? vmin : v)) as T;
+	}
+
+	static Lerp<T extends number>(v0: T, v1: T, s: number): T {
+		return (v0 + (v1 - v0) * s) as T;
+	}
 }

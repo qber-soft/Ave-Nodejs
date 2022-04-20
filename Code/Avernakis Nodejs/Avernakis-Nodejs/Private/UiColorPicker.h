@@ -36,6 +36,6 @@ namespace Nav
 		UiColorPicker*					SetColor( const WrapData<U8_3>& vColor ) { GetControlTyped().SetColor( vColor ); return this; }
 		WrapData<U8_3>					GetColor() const { return GetControlTyped().GetColor(); }
 
-		UiColorPicker*					OnChange( OnChange_t&& fn ) { m_OnChange = std::move( fn ); return this; }
+		UiColorPicker*					OnChange( OnChange_t&& fn );
 	};
 }

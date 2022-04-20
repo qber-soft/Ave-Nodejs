@@ -16,28 +16,26 @@ namespace Nav
 	void UiRibbonGroup::DefineControl()
 	{
 		AutoAddMethod( SetText );
-		AutoAddMethod( GetText );
+		AutoAddMethod( GetText, WrapObjectGeneric );
 		AutoAddMethod( SetDetailButton );
-		AutoAddMethod( GetDetailButton );
+		AutoAddMethod( GetDetailButton, WrapObjectGeneric );
 		AutoAddMethod( SetVisual );
-		AutoAddMethod( GetVisual );
+		AutoAddMethod( GetVisual, WrapObjectGeneric );
 		AutoAddMethod( ControlAdd );
 		AutoAddMethod( ControlInsert );
-		AutoAddMethod( ControlGetByIndex );
-		AutoAddMethod( ControlGetById );
+		AutoAddMethod( ControlGetByIndex, WrapObjectGeneric );
+		AutoAddMethod( ControlGetById, WrapObjectGeneric );
 		AutoAddMethod( ControlRemoveByIndex );
 		AutoAddMethod( ControlRemoveById );
 		AutoAddMethod( ControlRemove );
 		AutoAddMethod( ControlRemoveAll );
-		AutoAddMethod( OnDetailClick );
+		AutoAddMethod( OnDetailClick, WrapObjectGeneric );
 	}
 
 	U1 UiRibbonGroup::Ctor( UiWindow * p, Napi::Value v )
 	{
 		if ( !__CreateControl( p, v ) )
 			return false;
-
-		GetControlTyped().GetEvent<Ui::IRibbonGroup::OnDetailClick>() += MakeThisFunc( __OnDetailClick );
 
 		return true;
 	}
@@ -46,5 +44,7 @@ namespace Nav
 	{
 		m_OnClick( this );
 	}
+
+	UiRibbonGroup* UiRibbonGroup::OnDetailClick( Callback_t&& fn ) { m_OnClick = SetEventCallback<Ui::IRibbonGroup::OnDetailClick>( std::move( fn ), MakeThisFunc( __OnDetailClick ) ); return this; }
 
 }

@@ -48,8 +48,8 @@ namespace Nav
 		UiTrackBar*						SetPage( S64 nValue ) { GetControlTyped().SetPage( nValue ); return this; }
 		S64								GetPage() const { return GetControlTyped().GetPage(); }
 
-		UiTrackBar*						OnThumbChange  /**/( Callback_t&& fn ) { m_OnThumbChange  /**/ = std::move( fn ); return this; }
-		UiTrackBar*						OnThumbRelease /**/( Callback_t&& fn ) { m_OnThumbRelease /**/ = std::move( fn ); return this; }
-		UiTrackBar*						OnPageChange   /**/( Callback_t&& fn ) { m_OnPageChange   /**/ = std::move( fn ); return this; }
+		UiTrackBar*						OnThumbChange  /**/( Callback_t&& fn );
+		UiTrackBar*						OnThumbRelease /**/( Callback_t&& fn );
+		UiTrackBar*						OnPageChange   /**/( Callback_t&& fn );
 	};
 }

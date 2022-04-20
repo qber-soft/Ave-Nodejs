@@ -16,15 +16,15 @@ namespace Nav
 	void UiColorPicker::DefineControl()
 	{
 		AutoAddMethod( SetPickerType );
-		AutoAddMethod( GetPickerType );
+		AutoAddMethod( GetPickerType, WrapObjectGeneric );
 
 		AutoAddMethod( SetCubePrimary );
-		AutoAddMethod( GetCubePrimary );
+		AutoAddMethod( GetCubePrimary, WrapObjectGeneric );
 
 		AutoAddMethod( SetColor );
-		AutoAddMethod( GetColor );
+		AutoAddMethod( GetColor, WrapObjectGeneric );
 
-		AutoAddMethod( OnChange );
+		AutoAddMethod( OnChange, WrapObjectGeneric );
 	}
 
 	U1 UiColorPicker::Ctor( UiWindow * p, Napi::Value v )
@@ -32,14 +32,18 @@ namespace Nav
 		if ( !__CreateControl( p, v ) )
 			return false;
 
-		GetControlTyped().GetEvent<Ui::IColorPicker::OnChange>() += MakeThisFunc( __OnChange );
-
 		return true;
 	}
 
 	void UiColorPicker::__OnChange( Ui::IColorPicker & sender )
 	{
 		m_OnChange( this );
+	}
+
+	UiColorPicker * UiColorPicker::OnChange( OnChange_t && fn )
+	{
+		m_OnChange = SetEventCallback<Ui::IColorPicker::OnChange>( std::move( fn ), MakeThisFunc( __OnChange ) );
+		return this;
 	}
 
 }

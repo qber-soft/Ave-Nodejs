@@ -1,5 +1,6 @@
 ﻿import { Byo2Image, Mat32, Vec2, Vec4 } from "../Ave";
 import { Byo2FlowDirection, Byo2Font, Byo2ReadingDirection } from "../Byo2/Byo2Font";
+import { AveMath } from "../Math";
 import { Rect } from "./UiCommon";
 
 export enum FillMode {
@@ -60,10 +61,105 @@ export class DrawImageParam {
 	Transform2: Mat32 = Mat32.Identity;
 }
 
+export class PainterState<T extends number = number> {
+	private m_Time: number = -Number.MAX_VALUE;
+	private m_Speed: number = 1;
+	private m_Ratio: number = 0;
+
+	private m_OldState: T;
+	private m_NewState: T;
+
+	constructor(nState?: T) {
+		if (nState) {
+			this.m_OldState = nState;
+			this.m_NewState = nState;
+			this.m_Ratio = 1;
+		}
+	}
+
+	Set(nNewState: T, fTime: number, fSpeed: number = 1): number {
+		if (nNewState != this.m_NewState) {
+			this.m_OldState = this.m_NewState;
+			this.m_NewState = nNewState;
+			this.m_Time = fTime;
+			this.m_Speed = fSpeed;
+			this.m_Ratio = 0;
+			return 1;
+		}
+		return 0;
+	}
+
+	SetStable(nNewState: T, fTime: number, fSpeed: number = 1): number {
+		if (nNewState != this.m_NewState) {
+			this.m_OldState = this.CurrentStateSmoothEnd;
+			this.m_NewState = nNewState;
+			this.m_Time = fTime;
+			this.m_Speed = fSpeed;
+			this.m_Ratio = 0;
+			return 1;
+		}
+		return 0;
+	}
+
+	SetForce(nNewState: T) {
+		this.m_OldState = nNewState;
+		this.m_NewState = nNewState;
+		this.m_Time = -Number.MAX_VALUE;
+		this.m_Ratio = 1;
+	}
+
+	get IsStable() {
+		return this.m_Ratio >= 1;
+	}
+
+	get Ratio() {
+		return this.m_Ratio;
+	}
+
+	get RatioSmoothEnd() {
+		return Math.sin((Math.PI * 0.5 - 0.000001) * this.m_Ratio);
+	}
+
+	get RatioSmoothStartEnd() {
+		const f = Math.sin((Math.PI * 0.5 - 0.000001) * this.m_Ratio);
+		return f * f;
+	}
+
+	get OldState() {
+		return this.m_OldState;
+	}
+
+	get NewState() {
+		return this.m_NewState;
+	}
+
+	get CurrentState() {
+		return AveMath.Lerp(this.m_OldState, this.m_NewState, this.m_Ratio);
+	}
+
+	get CurrentStateSmoothEnd() {
+		return AveMath.Lerp(this.m_OldState, this.m_NewState, this.RatioSmoothEnd);
+	}
+
+	static FromNative<T extends number>(r: PainterState<T>) {
+		const ret = new PainterState<T>();
+		ret.m_Time = r.m_Time;
+		ret.m_Speed = r.m_Speed;
+		ret.m_Ratio = r.m_Ratio;
+		ret.m_OldState = r.m_OldState;
+		ret.m_NewState = r.m_NewState;
+		return ret;
+	}
+}
+
 // prettier-ignore
 export interface IPainter {
 	GetTime(): number;
 	IsStable(): boolean;
+
+	// The painter is stable on initial, passing any unstable state to this method will cause the painter to unstable state so it will schedule the next frame rendering
+	// Return true if the currently updated state is stable
+	UpdateState<T extends number>(state: PainterState<T>): boolean;
 
 	TypedSetStyle(nStyle: number): void;
 	TypedSetOpacity(f: number): void;

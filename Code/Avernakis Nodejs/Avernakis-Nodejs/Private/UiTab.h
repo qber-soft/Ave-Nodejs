@@ -167,11 +167,11 @@ namespace Nav
 		UiTab*							SetTabKeyTip( PCWChar sKeyTip, U32 nId ) { GetControlTyped().SetKeyTip( sKeyTip, nId ); return this; }
 		WString							GetTabKeyTip( U32 nId ) const { return GetControlTyped().GetKeyTip( nId ); }
 
-		UiTab*							OnSelectionChange /**/( OnSelectionChange_t /**/ && fn ) { m_OnSelectionChange /**/ = std::move( fn ); return this; }
-		UiTab*							OnDoubleClick     /**/( OnTabClick_t        /**/ && fn ) { m_OnDoubleClick     /**/ = std::move( fn ); return this; }
-		UiTab*							OnRightClick      /**/( OnTabClick_t        /**/ && fn ) { m_OnRightClick      /**/ = std::move( fn ); return this; }
-		UiTab*							OnMiddleClick     /**/( OnTabClick_t        /**/ && fn ) { m_OnMiddleClick     /**/ = std::move( fn ); return this; }
-		UiTab*							OnDrag            /**/( OnDrag_t            /**/ && fn ) { m_OnDrag            /**/ = std::move( fn ); return this; }
-		UiTab*							OnButtonClick     /**/( OnButtonClick_t     /**/ && fn ) { m_OnButtonClick     /**/ = std::move( fn ); return this; }
+		UiTab*							OnSelectionChange /**/( OnSelectionChange_t /**/ && fn );
+		UiTab*							OnDoubleClick     /**/( OnTabClick_t        /**/ && fn );
+		UiTab*							OnRightClick      /**/( OnTabClick_t        /**/ && fn );
+		UiTab*							OnMiddleClick     /**/( OnTabClick_t        /**/ && fn );
+		UiTab*							OnDrag            /**/( OnDrag_t            /**/ && fn );
+		UiTab*							OnButtonClick     /**/( OnButtonClick_t     /**/ && fn );
 	};
 }

@@ -16,87 +16,82 @@ namespace Nav
 	void UiTextBox::DefineControl()
 	{
 		AutoAddMethod( SetText );
-		AutoAddMethod( GetText );
+		AutoAddMethod( GetText, WrapObjectGeneric );
 
 		AutoAddMethod( SetCue );
-		AutoAddMethod( GetCue );
+		AutoAddMethod( GetCue, WrapObjectGeneric );
 
 		AutoAddMethod( SetLimit );
-		AutoAddMethod( GetLimit );
+		AutoAddMethod( GetLimit, WrapObjectGeneric );
 
 		AutoAddMethod( SetLimitMode );
-		AutoAddMethod( GetLimitMode );
+		AutoAddMethod( GetLimitMode, WrapObjectGeneric );
 
 		AutoAddMethod( SetNumeric );
-		AutoAddMethod( GetNumeric );
+		AutoAddMethod( GetNumeric, WrapObjectGeneric );
 
 		AutoAddMethod( SetRange );
-		AutoAddMethod( GetRange );
+		AutoAddMethod( GetRange, WrapObjectGeneric );
 
 		AutoAddMethod( SetStep );
-		AutoAddMethod( GetStep );
+		AutoAddMethod( GetStep, WrapObjectGeneric );
 
 		AutoAddMethod( SetDefault );
-		AutoAddMethod( GetDefault );
+		AutoAddMethod( GetDefault, WrapObjectGeneric );
 
 		AutoAddMethod( SetValue );
-		AutoAddMethod( GetValue );
+		AutoAddMethod( GetValue, WrapObjectGeneric );
 
 		AutoAddMethod( SetInvalid );
-		AutoAddMethod( GetInvalid );
+		AutoAddMethod( GetInvalid, WrapObjectGeneric );
 
 		AutoAddMethod( SetValid );
-		AutoAddMethod( GetValid );
+		AutoAddMethod( GetValid, WrapObjectGeneric );
 
 		AutoAddMethod( SetReadOnly );
-		AutoAddMethod( GetReadOnly );
+		AutoAddMethod( GetReadOnly, WrapObjectGeneric );
 
 		AutoAddMethod( SetPassword );
-		AutoAddMethod( GetPassword );
+		AutoAddMethod( GetPassword, WrapObjectGeneric );
 
 		AutoAddMethod( SetIme );
-		AutoAddMethod( GetIme );
+		AutoAddMethod( GetIme, WrapObjectGeneric );
 
 		AutoAddMethod( SetRememberCaret );
-		AutoAddMethod( GetRememberCaret );
+		AutoAddMethod( GetRememberCaret, WrapObjectGeneric );
 
 		AutoAddMethod( SetHideSelection );
-		AutoAddMethod( GetHideSelection );
+		AutoAddMethod( GetHideSelection, WrapObjectGeneric );
 
 		AutoAddMethod( SetBorder );
-		AutoAddMethod( GetBorder );
+		AutoAddMethod( GetBorder, WrapObjectGeneric );
 
 		AutoAddMethod( SetForceCue );
-		AutoAddMethod( GetForceCue );
+		AutoAddMethod( GetForceCue, WrapObjectGeneric );
 
 		AutoAddMethod( SetKeyInputMode );
-		AutoAddMethod( GetKeyInputMode );
+		AutoAddMethod( GetKeyInputMode, WrapObjectGeneric );
 
 		AutoAddMethod( SetKey );
-		AutoAddMethod( GetKey );
+		AutoAddMethod( GetKey, WrapObjectGeneric );
 
 		AutoAddMethod( SelectionSet );
-		AutoAddMethod( SelectionGet );
-		AutoAddMethod( SelectionGetText );
+		AutoAddMethod( SelectionGet, WrapObjectGeneric );
+		AutoAddMethod( SelectionGetText, WrapObjectGeneric );
 		AutoAddMethod( SelectionReplace );
 
-		AutoAddMethod( GetCaretPos );
+		AutoAddMethod( GetCaretPos, WrapObjectGeneric );
 
-		AutoAddMethod( OnChange );
-		AutoAddMethod( OnSpinStart );
-		AutoAddMethod( OnSpinEnd );
-		AutoAddMethod( OnSpin );
+		AutoAddMethod( OnChange, WrapObjectGeneric );
+		AutoAddMethod( OnSpinStart, WrapObjectGeneric );
+		AutoAddMethod( OnSpinEnd, WrapObjectGeneric );
+		AutoAddMethod( OnSpin, WrapObjectGeneric );
 	}
 
 	U1 UiTextBox::Ctor( UiWindow * p, Napi::Value v )
 	{
 		if ( !__CreateControl( p, v ) )
 			return false;
-
-		GetControlTyped().GetEvent<Ui::ITextBox::OnChange>() += MakeThisFunc( __OnChange );
-		GetControlTyped().GetEvent<Ui::ITextBox::OnSpinStart>() += MakeThisFunc( __OnSpinStart );
-		GetControlTyped().GetEvent<Ui::ITextBox::OnSpinEnd>() += MakeThisFunc( __OnSpinEnd );
-		GetControlTyped().GetEvent<Ui::ITextBox::OnSpin>() += MakeThisFunc( __OnSpin );
 
 		return true;
 	}
@@ -121,4 +116,8 @@ namespace Nav
 		m_OnSpin( this );
 	}
 
+	UiTextBox* UiTextBox::OnChange    /**/( OnChange_t  /**/ && fn ) { m_OnChange    /**/ = SetEventCallback<Ui::ITextBox::OnChange    /**/>( std::move( fn ), MakeThisFunc( __OnChange    /**/ ) ); return this; }
+	UiTextBox* UiTextBox::OnSpinStart /**/( OnGeneric_t /**/ && fn ) { m_OnSpinStart /**/ = SetEventCallback<Ui::ITextBox::OnSpinStart /**/>( std::move( fn ), MakeThisFunc( __OnSpinStart /**/ ) ); return this; }
+	UiTextBox* UiTextBox::OnSpinEnd   /**/( OnSpinEnd_t /**/ && fn ) { m_OnSpinEnd   /**/ = SetEventCallback<Ui::ITextBox::OnSpinEnd   /**/>( std::move( fn ), MakeThisFunc( __OnSpinEnd   /**/ ) ); return this; }
+	UiTextBox* UiTextBox::OnSpin      /**/( OnGeneric_t /**/ && fn ) { m_OnSpin      /**/ = SetEventCallback<Ui::ITextBox::OnSpin      /**/>( std::move( fn ), MakeThisFunc( __OnSpin      /**/ ) ); return this; }
 }

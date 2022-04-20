@@ -101,11 +101,10 @@ namespace Nav
 
 		WrapData<S32_R>						GetEditorRect() const { return __GetView().GetEditorRect(); }
 
-
-		UiMatrixEditor*						OnUnitClick( UnitCallback_t&& fn ) { m_OnUnitClick = std::move( fn ); return this; }
-		UiMatrixEditor*						OnUnitRightClick( UnitCallback_t&& fn ) { m_OnUnitRightClick = std::move( fn ); return this; }
-		UiMatrixEditor*						OnUnitChange( UnitCallback_t&& fn ) { m_OnUnitChange = std::move( fn ); return this; }
-		UiMatrixEditor*						OnUnitChangeBegin( UnitCallback_t&& fn ) { m_OnUnitChangeBegin = std::move( fn ); return this; }
-		UiMatrixEditor*						OnUnitChangeEnd( OnUnitChangeEnd_t&& fn ) { m_OnUnitChangeEnd = std::move( fn ); return this; }
+		UiMatrixEditor*						OnUnitClick       /**/( UnitCallback_t    /**/ && fn );
+		UiMatrixEditor*						OnUnitRightClick  /**/( UnitCallback_t    /**/ && fn );
+		UiMatrixEditor*						OnUnitChange      /**/( UnitCallback_t    /**/ && fn );
+		UiMatrixEditor*						OnUnitChangeBegin /**/( UnitCallback_t    /**/ && fn );
+		UiMatrixEditor*						OnUnitChangeEnd   /**/( OnUnitChangeEnd_t /**/ && fn );
 	};
 }

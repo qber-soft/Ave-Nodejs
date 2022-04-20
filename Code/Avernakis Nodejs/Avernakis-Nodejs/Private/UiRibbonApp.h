@@ -30,6 +30,6 @@ namespace Nav
 		UiRibbonApp*					SetText( PCWChar szText ) { GetControlTyped().SetText( szText ); return this; }
 		WString							GetText() const { return GetControlTyped().GetText(); }
 
-		UiRibbonApp*					OnClick( Callback_t&& fn ) { m_OnClick = std::move( fn ); return this; }
+		UiRibbonApp*					OnClick( Callback_t&& fn );
 	};
 }

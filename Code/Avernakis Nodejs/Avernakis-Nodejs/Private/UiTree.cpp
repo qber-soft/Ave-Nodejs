@@ -22,51 +22,51 @@ namespace Nav
 		AutoAddMethod( ItemSetSelected );
 		AutoAddMethod( ItemSort );
 		AutoAddMethod( ItemSet );
-		AutoAddMethod( ItemGet );
-		AutoAddMethod( ItemGetNext );
-		AutoAddMethod( ItemGetCountPerPage );
-		AutoAddMethod( ItemGetSelectionCount );
-		AutoAddMethod( ItemGetSelection );
-		AutoAddMethod( ItemGetSelected );
-		AutoAddMethod( ItemGetSelectionAll );
+		AutoAddMethod( ItemGet, WrapObjectGeneric );
+		AutoAddMethod( ItemGetNext, WrapObjectGeneric );
+		AutoAddMethod( ItemGetCountPerPage, WrapObjectGeneric );
+		AutoAddMethod( ItemGetSelectionCount, WrapObjectGeneric );
+		AutoAddMethod( ItemGetSelection, WrapObjectGeneric );
+		AutoAddMethod( ItemGetSelected, WrapObjectGeneric );
+		AutoAddMethod( ItemGetSelectionAll, WrapObjectGeneric );
 		AutoAddMethod( ItemEnsure );
-		AutoAddMethod( ItemGetTop );
-		AutoAddMethod( ItemGetTopIndex );
+		AutoAddMethod( ItemGetTop, WrapObjectGeneric );
+		AutoAddMethod( ItemGetTopIndex, WrapObjectGeneric );
 		AutoAddMethod( ItemSetTopIndex );
-		AutoAddMethod( ItemIsVisible );
-		AutoAddMethod( ItemGetRect );
-		AutoAddMethod( ItemHitTest );
+		AutoAddMethod( ItemIsVisible, WrapObjectGeneric );
+		AutoAddMethod( ItemGetRect, WrapObjectGeneric );
+		AutoAddMethod( ItemHitTest, WrapObjectGeneric );
 		AutoAddMethod( ItemExpand );
-		AutoAddMethod( ItemIsExpanded );
+		AutoAddMethod( ItemIsExpanded, WrapObjectGeneric );
 		AutoAddMethod( ItemEdit );
-		AutoAddMethod( ItemIsEdit );
+		AutoAddMethod( ItemIsEdit, WrapObjectGeneric );
 		AutoAddMethod( ItemEditFinish );
 		AutoAddMethod( ItemSetHighlight );
 		AutoAddMethod( SetAutoEdit );
-		AutoAddMethod( GetAutoEdit );
+		AutoAddMethod( GetAutoEdit, WrapObjectGeneric );
 		AutoAddMethod( SetAutoScrollOnHover );
-		AutoAddMethod( GetAutoScrollOnHover );
+		AutoAddMethod( GetAutoScrollOnHover, WrapObjectGeneric );
 		AutoAddMethod( SetNodeLine );
-		AutoAddMethod( GetNodeLine );
+		AutoAddMethod( GetNodeLine, WrapObjectGeneric );
 		AutoAddMethod( SetNodeLineHighlight );
-		AutoAddMethod( GetNodeLineHighlight );
+		AutoAddMethod( GetNodeLineHighlight, WrapObjectGeneric );
 		AutoAddMethod( SetSingleClickExpand );
-		AutoAddMethod( GetSingleClickExpand );
+		AutoAddMethod( GetSingleClickExpand, WrapObjectGeneric );
 		AutoAddMethod( SetSelectionMode );
-		AutoAddMethod( GetSelectionMode );
+		AutoAddMethod( GetSelectionMode, WrapObjectGeneric );
 		AutoAddMethod( SetIndentWidth );
-		AutoAddMethod( GetIndentWidth );
+		AutoAddMethod( GetIndentWidth, WrapObjectGeneric );
 		AutoAddMethod( SetScrollPosition );
-		AutoAddMethod( GetScrollPosition );
-		AutoAddMethod( GetScrollSize );
-		AutoAddMethod( GetScrollMax );
-		AutoAddMethod( OnSelectionChange );
-		AutoAddMethod( OnDoubleClick );
-		AutoAddMethod( OnRightClick );
-		AutoAddMethod( OnEditBegin );
-		AutoAddMethod( OnEditEnd );
-		AutoAddMethod( OnEditFinish );
-		AutoAddMethod( OnDragBegin );
+		AutoAddMethod( GetScrollPosition, WrapObjectGeneric );
+		AutoAddMethod( GetScrollSize, WrapObjectGeneric );
+		AutoAddMethod( GetScrollMax, WrapObjectGeneric );
+		AutoAddMethod( OnSelectionChange, WrapObjectGeneric );
+		AutoAddMethod( OnDoubleClick, WrapObjectGeneric );
+		AutoAddMethod( OnRightClick, WrapObjectGeneric );
+		AutoAddMethod( OnEditBegin, WrapObjectGeneric );
+		AutoAddMethod( OnEditEnd, WrapObjectGeneric );
+		AutoAddMethod( OnEditFinish, WrapObjectGeneric );
+		AutoAddMethod( OnDragBegin, WrapObjectGeneric );
 	}
 
 	U1 UiTree::Ctor( UiWindow * p, Napi::Value v )
@@ -75,14 +75,6 @@ namespace Nav
 			return false;
 
 		GetControlTyped().SetIconManager( p->PublicCloneIconManager() );
-
-		GetControlTyped().GetEvent<Ui::ITree::OnSelectionChange /**/>() += MakeThisFunc( __OnSelectionChange /**/ );
-		GetControlTyped().GetEvent<Ui::ITree::OnDoubleClick     /**/>() += MakeThisFunc( __OnDoubleClick     /**/ );
-		GetControlTyped().GetEvent<Ui::ITree::OnRightClick      /**/>() += MakeThisFunc( __OnRightClick      /**/ );
-		GetControlTyped().GetEvent<Ui::ITree::OnEditBegin       /**/>() += MakeThisFunc( __OnEditBegin       /**/ );
-		GetControlTyped().GetEvent<Ui::ITree::OnEditEnd         /**/>() += MakeThisFunc( __OnEditEnd         /**/ );
-		GetControlTyped().GetEvent<Ui::ITree::OnEditFinish      /**/>() += MakeThisFunc( __OnEditFinish      /**/ );
-		GetControlTyped().GetEvent<Ui::ITree::OnDragBegin       /**/>() += MakeThisFunc( __OnDragBegin       /**/ );
 
 		return true;
 	}
@@ -201,4 +193,11 @@ namespace Nav
 		m_OnDragBegin.BlockCall( this, bCanDrag );
 	}
 
+	UiTree* UiTree::OnSelectionChange /**/( OnSelectionChange_t /**/ && fn ) { m_OnSelectionChange /**/ = SetEventCallback<Ui::ITree::OnSelectionChange /**/>( std::move( fn ), MakeThisFunc( __OnSelectionChange /**/ ) ); return this; }
+	UiTree* UiTree::OnDoubleClick     /**/( OnClick_t           /**/ && fn ) { m_OnDoubleClick     /**/ = SetEventCallback<Ui::ITree::OnDoubleClick     /**/>( std::move( fn ), MakeThisFunc( __OnDoubleClick     /**/ ) ); return this; }
+	UiTree* UiTree::OnRightClick      /**/( OnClick_t           /**/ && fn ) { m_OnRightClick      /**/ = SetEventCallback<Ui::ITree::OnRightClick      /**/>( std::move( fn ), MakeThisFunc( __OnRightClick      /**/ ) ); return this; }
+	UiTree* UiTree::OnEditBegin       /**/( OnEdit_t            /**/ && fn ) { m_OnEditBegin       /**/ = SetEventCallback<Ui::ITree::OnEditBegin       /**/>( std::move( fn ), MakeThisFunc( __OnEditBegin       /**/ ) ); return this; }
+	UiTree* UiTree::OnEditEnd         /**/( OnEdit_t            /**/ && fn ) { m_OnEditEnd         /**/ = SetEventCallback<Ui::ITree::OnEditEnd         /**/>( std::move( fn ), MakeThisFunc( __OnEditEnd         /**/ ) ); return this; }
+	UiTree* UiTree::OnEditFinish      /**/( OnEditFinish_t      /**/ && fn ) { m_OnEditFinish      /**/ = SetEventCallback<Ui::ITree::OnEditFinish      /**/>( std::move( fn ), MakeThisFunc( __OnEditFinish      /**/ ) ); return this; }
+	UiTree* UiTree::OnDragBegin       /**/( OnDragBegin_t       /**/ && fn ) { m_OnDragBegin       /**/ = SetEventCallback<Ui::ITree::OnDragBegin       /**/>( std::move( fn ), MakeThisFunc( __OnDragBegin       /**/ ) ); return this; }
 }

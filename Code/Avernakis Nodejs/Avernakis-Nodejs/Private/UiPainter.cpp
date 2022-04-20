@@ -20,6 +20,7 @@ namespace Nav
 	{
 		AutoAddMethod( GetTime );
 		AutoAddMethod( IsStable );
+		AutoAddMethod( UpdateState );
 
 		AutoAddMethod( TypedSetStyle );
 		AutoAddMethod( TypedSetOpacity );
@@ -90,6 +91,28 @@ namespace Nav
 		AutoAddMethod( AnnotationBegin );
 		AutoAddMethod( AnnotationEnd );
 		AutoAddMethod( AnnotationMark );
+	}
+
+	U1 UiPainter::UpdateState( Napi::Value v )
+	{
+		if ( !v.IsObject() )
+			return false;
+		auto obj = v.As<Napi::Object>();
+		auto time = obj.Get( "m_Time" );
+		auto speed = obj.Get( "m_Speed" );
+		auto ratio = obj.Get( "m_Ratio" );
+		if ( !time.IsNumber() || !speed.IsNumber() || !ratio.IsNumber() )
+			return false;
+
+		UiPainterStateBase ps{ time.As<Napi::Number>().DoubleValue(), speed.As<Napi::Number>().FloatValue(), ratio.As<Napi::Number>().FloatValue() };
+
+		const auto b = m_Painter->UpdateState( (Ui::PainterStateBase&) ps );
+		obj.Set( "m_Time", ps.m_Time );
+		obj.Set( "m_Speed", ps.m_Speed );
+		obj.Set( "m_Ratio", ps.m_Ratio );
+		return b;
+
+		AveStaticAssert( sizeof( ps ) == sizeof( Ui::PainterStateBase ), "Invalid painter state size." );
 	}
 
 	void UiPainter::TypedSetFont( Byo2Font * pFont )

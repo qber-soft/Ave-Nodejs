@@ -118,10 +118,10 @@ namespace Nav
 		WrapPointer<UiControl>			GetContentById( U32 nId ) const { return __ReturnContent( GetControlTyped().GetContentById( nId ) ); }
 		WrapPointer<UiControl>			GetContentByIndex( S32 nIndex ) const { return __ReturnContent( GetControlTyped().GetContentByIndex( nIndex ) ); }
 
-		UiMenu*							OnClick       /**/( Callback_t       /**/&& fn ) { m_OnClick       /**/ = std::move( fn ); return this; }
-		UiMenu*							OnRightClick  /**/( Callback_t       /**/&& fn ) { m_OnRightClick  /**/ = std::move( fn ); return this; }
-		UiMenu*							OnMiddleClick /**/( Callback_t       /**/&& fn ) { m_OnMiddleClick /**/ = std::move( fn ); return this; }
-		UiMenu*							OnShow        /**/( OnVisibleChange_t/**/&& fn ) { m_OnShow        /**/ = std::move( fn ); return this; }
-		UiMenu*							OnHide        /**/( OnVisibleChange_t/**/&& fn ) { m_OnHide        /**/ = std::move( fn ); return this; }
+		UiMenu*							OnClick       /**/( Callback_t       /**/&& fn );
+		UiMenu*							OnRightClick  /**/( Callback_t       /**/&& fn );
+		UiMenu*							OnMiddleClick /**/( Callback_t       /**/&& fn );
+		UiMenu*							OnShow        /**/( OnVisibleChange_t/**/&& fn );
+		UiMenu*							OnHide        /**/( OnVisibleChange_t/**/&& fn );
 	};
 }

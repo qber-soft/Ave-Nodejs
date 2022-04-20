@@ -16,50 +16,50 @@ namespace Nav
 	void UiMatrixEditorDoc::DefineObject()
 	{
 		AutoAddMethod( SetDimension );
-		AutoAddMethod( GetDimension );
+		AutoAddMethod( GetDimension, WrapObjectGeneric );
 
 		AutoAddMethod( SetVirtualUnit );
 		AutoAddMethod( SetVirtualColHeader );
 		AutoAddMethod( SetVirtualRowHeader );
 
 		AutoAddMethod( SetUnit );
-		AutoAddMethod( GetUnit );
+		AutoAddMethod( GetUnit, WrapObjectGeneric );
 		AutoAddMethod( SetUnitBackColor );
-		AutoAddMethod( GetUnitBackColor );
+		AutoAddMethod( GetUnitBackColor, WrapObjectGeneric );
 		AutoAddMethod( SetUnitForeColor );
-		AutoAddMethod( GetUnitForeColor );
+		AutoAddMethod( GetUnitForeColor, WrapObjectGeneric );
 		AutoAddMethod( SetUnitFillColor );
-		AutoAddMethod( GetUnitFillColor );
+		AutoAddMethod( GetUnitFillColor, WrapObjectGeneric );
 
 		AutoAddMethod( ColClearName );
 		AutoAddMethod( ColSetName );
-		AutoAddMethod( ColGetName );
+		AutoAddMethod( ColGetName, WrapObjectGeneric );
 		AutoAddMethod( ColClearSplitter );
 		AutoAddMethod( ColSetSplitter );
-		AutoAddMethod( ColGetSplitter );
+		AutoAddMethod( ColGetSplitter, WrapObjectGeneric );
 		AutoAddMethod( ColSetIcon );
-		AutoAddMethod( ColGetIcon );
+		AutoAddMethod( ColGetIcon, WrapObjectGeneric );
 		AutoAddMethod( ColSetBackColor );
-		AutoAddMethod( ColGetBackColor );
+		AutoAddMethod( ColGetBackColor, WrapObjectGeneric );
 		AutoAddMethod( ColSetVisible );
-		AutoAddMethod( ColGetVisible );
+		AutoAddMethod( ColGetVisible, WrapObjectGeneric );
 		AutoAddMethod( ColSetEnable );
-		AutoAddMethod( ColGetEnable );
+		AutoAddMethod( ColGetEnable, WrapObjectGeneric );
 
 		AutoAddMethod( RowClearName );
 		AutoAddMethod( RowSetName );
-		AutoAddMethod( RowGetName );
+		AutoAddMethod( RowGetName, WrapObjectGeneric );
 		AutoAddMethod( RowClearSplitter );
 		AutoAddMethod( RowSetSplitter );
-		AutoAddMethod( RowGetSplitter );
+		AutoAddMethod( RowGetSplitter, WrapObjectGeneric );
 		AutoAddMethod( RowSetIcon );
-		AutoAddMethod( RowGetIcon );
+		AutoAddMethod( RowGetIcon, WrapObjectGeneric );
 		AutoAddMethod( RowSetBackColor );
-		AutoAddMethod( RowGetBackColor );
+		AutoAddMethod( RowGetBackColor, WrapObjectGeneric );
 		AutoAddMethod( RowSetVisible );
-		AutoAddMethod( RowGetVisible );
+		AutoAddMethod( RowGetVisible, WrapObjectGeneric );
 		AutoAddMethod( RowSetEnable );
-		AutoAddMethod( RowGetEnable );
+		AutoAddMethod( RowGetEnable, WrapObjectGeneric );
 
 		AutoAddMethod( ViewSetValueFormat );
 

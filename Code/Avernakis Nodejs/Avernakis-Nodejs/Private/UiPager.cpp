@@ -16,31 +16,31 @@ namespace Nav
 	void UiPager::DefineControl()
 	{
 		AutoAddMethod( SetContent );
-		AutoAddMethod( GetContent );
+		AutoAddMethod( GetContent, WrapObjectGeneric );
 
 		AutoAddMethod( SetContentSize );
-		AutoAddMethod( GetContentSize );
-		AutoAddMethod( GetRealContentSize );
+		AutoAddMethod( GetContentSize, WrapObjectGeneric );
+		AutoAddMethod( GetRealContentSize, WrapObjectGeneric );
 
 		AutoAddMethod( SetContentHorizontalAlign );
-		AutoAddMethod( GetContentHorizontalAlign );
+		AutoAddMethod( GetContentHorizontalAlign, WrapObjectGeneric );
 
 		AutoAddMethod( SetContentVerticalAlign );
-		AutoAddMethod( GetContentVerticalAlign );
+		AutoAddMethod( GetContentVerticalAlign, WrapObjectGeneric );
 
 		AutoAddMethod( SetAdjustment );
-		AutoAddMethod( GetAdjustment );
+		AutoAddMethod( GetAdjustment, WrapObjectGeneric );
 
 		AutoAddMethod( SetAutoHideScroll );
-		AutoAddMethod( GetAutoHideScroll );
+		AutoAddMethod( GetAutoHideScroll, WrapObjectGeneric );
 
 		AutoAddMethod( SetPointerScroll );
-		AutoAddMethod( GetPointerScroll );
+		AutoAddMethod( GetPointerScroll, WrapObjectGeneric );
 
 		AutoAddMethod( SetScrollPosition );
-		AutoAddMethod( GetScrollPosition );
-		AutoAddMethod( GetScrollSize );
-		AutoAddMethod( GetScrollMax );
+		AutoAddMethod( GetScrollPosition, WrapObjectGeneric );
+		AutoAddMethod( GetScrollSize, WrapObjectGeneric );
+		AutoAddMethod( GetScrollMax, WrapObjectGeneric );
 	}
 
 	U1 UiPager::Ctor( UiWindow * p, Napi::Value v )

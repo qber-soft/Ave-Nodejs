@@ -46,6 +46,6 @@ namespace Nav
 		UiHyperlink*					SetUnderline( Ui::HyperlinkUnderline nUnderline ) { GetControlTyped().SetUnderline( nUnderline ); return this; }
 		Ui::HyperlinkUnderline			GetUnderline() const { return GetControlTyped().GetUnderline(); }
 
-		UiHyperlink*					OnClick( Callback_t&& fn ) { m_OnClick = std::move( fn ); return this; }
+		UiHyperlink*					OnClick( Callback_t&& fn );
 	};
 }

@@ -16,20 +16,20 @@ namespace Nav
 	void UiHyperlink::DefineControl()
 	{
 		AutoAddMethod( SetText );
-		AutoAddMethod( GetText );
-		AutoAddMethod( GetTextValid );
+		AutoAddMethod( GetText, WrapObjectGeneric );
+		AutoAddMethod( GetTextValid, WrapObjectGeneric );
 		AutoAddMethod( SetAlignHorz );
-		AutoAddMethod( GetAlignHorz );
+		AutoAddMethod( GetAlignHorz, WrapObjectGeneric );
 		AutoAddMethod( SetAlignVert );
-		AutoAddMethod( GetAlignVert );
+		AutoAddMethod( GetAlignVert, WrapObjectGeneric );
 		AutoAddMethod( SetBackColor );
-		AutoAddMethod( GetBackColor );
+		AutoAddMethod( GetBackColor, WrapObjectGeneric );
 		AutoAddMethod( SetWrappable );
-		AutoAddMethod( GetWrappable );
+		AutoAddMethod( GetWrappable, WrapObjectGeneric );
 		AutoAddMethod( SetUnderline );
-		AutoAddMethod( GetUnderline );
+		AutoAddMethod( GetUnderline, WrapObjectGeneric );
 
-		AutoAddMethod( OnClick );
+		AutoAddMethod( OnClick, WrapObjectGeneric );
 	}
 
 	U1 UiHyperlink::Ctor( UiWindow * p, Napi::Value v )
@@ -37,14 +37,18 @@ namespace Nav
 		if ( !__CreateControl( p, v ) )
 			return false;
 
-		GetControlTyped().GetEvent<Ui::IHyperlink::OnClick>() += MakeThisFunc( __OnClick );
-
 		return true;
 	}
 
 	void UiHyperlink::__OnClick( Ui::IHyperlink & sender, U32 nId )
 	{
 		m_OnClick( this, nId );
+	}
+
+	UiHyperlink * UiHyperlink::OnClick( Callback_t && fn )
+	{
+		m_OnClick = SetEventCallback<Ui::IHyperlink::OnClick>( std::move( fn ), MakeThisFunc( __OnClick ) );
+		return this;
 	}
 
 }

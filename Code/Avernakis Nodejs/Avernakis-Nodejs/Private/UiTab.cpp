@@ -16,84 +16,84 @@ namespace Nav
 	void UiTab::DefineControl()
 	{
 		AutoAddMethod( TabInsert );
-		AutoAddMethod( TabGetAll );
-		AutoAddMethod( TabGet );
+		AutoAddMethod( TabGetAll, WrapObjectGeneric );
+		AutoAddMethod( TabGet, WrapObjectGeneric );
 		AutoAddMethod( TabSet );
 		AutoAddMethod( TabRemove );
 		AutoAddMethod( TabClear );
 		AutoAddMethod( TabSelect );
-		AutoAddMethod( TabGetSelection );
+		AutoAddMethod( TabGetSelection, WrapObjectGeneric );
 		AutoAddMethod( TabSetSelected );
-		AutoAddMethod( TabGetSelected );
-		AutoAddMethod( TabGetSelectionCount );
-		AutoAddMethod( TabGetAllSelection );
+		AutoAddMethod( TabGetSelected, WrapObjectGeneric );
+		AutoAddMethod( TabGetSelectionCount, WrapObjectGeneric );
+		AutoAddMethod( TabGetAllSelection, WrapObjectGeneric );
 		AutoAddMethod( TabSetMultipleSelection );
-		AutoAddMethod( TabGetMultipleSelection );
-		AutoAddMethod( TabGetRect );
-		AutoAddMethod( TabGetHeaderRect );
+		AutoAddMethod( TabGetMultipleSelection, WrapObjectGeneric );
+		AutoAddMethod( TabGetRect, WrapObjectGeneric );
+		AutoAddMethod( TabGetHeaderRect, WrapObjectGeneric );
 		AutoAddMethod( TabSetDirection );
-		AutoAddMethod( TabGetDirection );
+		AutoAddMethod( TabGetDirection, WrapObjectGeneric );
 		AutoAddMethod( TabSetVertical );
-		AutoAddMethod( TabGetVertical );
+		AutoAddMethod( TabGetVertical, WrapObjectGeneric );
 		AutoAddMethod( TabSetOverflow );
-		AutoAddMethod( TabGetOverflow );
+		AutoAddMethod( TabGetOverflow, WrapObjectGeneric );
 		AutoAddMethod( TabSetSort );
-		AutoAddMethod( TabGetSort );
+		AutoAddMethod( TabGetSort, WrapObjectGeneric );
 		AutoAddMethod( TabSetHeaderSize );
-		AutoAddMethod( TabGetHeaderSize );
+		AutoAddMethod( TabGetHeaderSize, WrapObjectGeneric );
 		AutoAddMethod( TabSetMaxHeaderSize );
-		AutoAddMethod( TabGetMaxHeaderSize );
+		AutoAddMethod( TabGetMaxHeaderSize, WrapObjectGeneric );
 		AutoAddMethod( TabSetUngroupedPosition );
-		AutoAddMethod( TabGetUngroupedPosition );
+		AutoAddMethod( TabGetUngroupedPosition, WrapObjectGeneric );
 		AutoAddMethod( TabSetUngroupedName );
-		AutoAddMethod( TabGetUngroupedName );
+		AutoAddMethod( TabGetUngroupedName, WrapObjectGeneric );
 		AutoAddMethod( TabSetReorderable );
-		AutoAddMethod( TabGetReorderable );
+		AutoAddMethod( TabGetReorderable, WrapObjectGeneric );
 		AutoAddMethod( TabSetRegroup );
-		AutoAddMethod( TabGetRegroup );
+		AutoAddMethod( TabGetRegroup, WrapObjectGeneric );
 		AutoAddMethod( GroupInsert );
-		AutoAddMethod( GroupGetAll );
-		AutoAddMethod( GroupGet );
+		AutoAddMethod( GroupGetAll, WrapObjectGeneric );
+		AutoAddMethod( GroupGet, WrapObjectGeneric );
 		AutoAddMethod( GroupSet );
 		AutoAddMethod( GroupRemove );
 		AutoAddMethod( GroupClear );
 		AutoAddMethod( GroupExpand );
-		AutoAddMethod( GroupIsExpanded );
+		AutoAddMethod( GroupIsExpanded, WrapObjectGeneric );
 		AutoAddMethod( GroupSetGlyphVisible );
-		AutoAddMethod( GroupGetGlyphVisible );
+		AutoAddMethod( GroupGetGlyphVisible, WrapObjectGeneric );
 		AutoAddMethod( ButtonClear );
 		AutoAddMethod( ButtonSetIcon );
-		AutoAddMethod( ButtonGetIcon );
+		AutoAddMethod( ButtonGetIcon, WrapObjectGeneric );
 		AutoAddMethod( ButtonSetDisplay );
-		AutoAddMethod( ButtonGetDisplay );
+		AutoAddMethod( ButtonGetDisplay, WrapObjectGeneric );
 		AutoAddMethod( ButtonSetName );
-		AutoAddMethod( ButtonGetName );
+		AutoAddMethod( ButtonGetName, WrapObjectGeneric );
 		AutoAddMethod( HeaderSetNearSize );
-		AutoAddMethod( HeaderGetNearSize );
+		AutoAddMethod( HeaderGetNearSize, WrapObjectGeneric );
 		AutoAddMethod( HeaderSetNearContent );
-		AutoAddMethod( HeaderGetNearContent );
+		AutoAddMethod( HeaderGetNearContent, WrapObjectGeneric );
 		AutoAddMethod( HeaderSetFarSize );
-		AutoAddMethod( HeaderGetFarSize );
+		AutoAddMethod( HeaderGetFarSize, WrapObjectGeneric );
 		AutoAddMethod( HeaderSetFarContent );
-		AutoAddMethod( HeaderGetFarContent );
+		AutoAddMethod( HeaderGetFarContent, WrapObjectGeneric );
 		AutoAddMethod( SetSimpleTab );
-		AutoAddMethod( GetSimpleTab );
+		AutoAddMethod( GetSimpleTab, WrapObjectGeneric );
 		AutoAddMethod( SetSimpleColor );
-		AutoAddMethod( GetSimpleColor );
+		AutoAddMethod( GetSimpleColor, WrapObjectGeneric );
 		AutoAddMethod( ContentSet );
-		AutoAddMethod( ContentGet );
-		AutoAddMethod( ContentGetRect );
+		AutoAddMethod( ContentGet, WrapObjectGeneric );
+		AutoAddMethod( ContentGetRect, WrapObjectGeneric );
 		AutoAddMethod( ContentSetMargin );
-		AutoAddMethod( ContentGetMargin );
+		AutoAddMethod( ContentGetMargin, WrapObjectGeneric );
 		AutoAddMethod( StopReordering );
 		AutoAddMethod( SetTabKeyTip );
-		AutoAddMethod( GetTabKeyTip );
-		AutoAddMethod( OnSelectionChange );
-		AutoAddMethod( OnDoubleClick );
-		AutoAddMethod( OnRightClick );
-		AutoAddMethod( OnMiddleClick );
-		AutoAddMethod( OnDrag );
-		AutoAddMethod( OnButtonClick );
+		AutoAddMethod( GetTabKeyTip, WrapObjectGeneric );
+		AutoAddMethod( OnSelectionChange, WrapObjectGeneric );
+		AutoAddMethod( OnDoubleClick, WrapObjectGeneric );
+		AutoAddMethod( OnRightClick, WrapObjectGeneric );
+		AutoAddMethod( OnMiddleClick, WrapObjectGeneric );
+		AutoAddMethod( OnDrag, WrapObjectGeneric );
+		AutoAddMethod( OnButtonClick, WrapObjectGeneric );
 	}
 
 	U1 UiTab::Ctor( UiWindow * p, Napi::Value v )
@@ -102,13 +102,6 @@ namespace Nav
 			return false;
 
 		GetControlTyped().SetIconManager( p->PublicCloneIconManager() );
-
-		GetControlTyped().GetEvent<Ui::ITab::OnSelectionChange /**/>() += MakeThisFunc( __OnSelectionChange /**/ );
-		GetControlTyped().GetEvent<Ui::ITab::OnDoubleClick     /**/>() += MakeThisFunc( __OnDoubleClick     /**/ );
-		GetControlTyped().GetEvent<Ui::ITab::OnRightClick      /**/>() += MakeThisFunc( __OnRightClick      /**/ );
-		GetControlTyped().GetEvent<Ui::ITab::OnMiddleClick     /**/>() += MakeThisFunc( __OnMiddleClick     /**/ );
-		GetControlTyped().GetEvent<Ui::ITab::OnDrag            /**/>() += MakeThisFunc( __OnDrag            /**/ );
-		GetControlTyped().GetEvent<Ui::ITab::OnButtonClick     /**/>() += MakeThisFunc( __OnButtonClick     /**/ );
 
 		return true;
 	}
@@ -201,4 +194,10 @@ namespace Nav
 		return GetControlTyped().GroupSet( tg );
 	}
 
+	UiTab* UiTab::OnSelectionChange /**/( OnSelectionChange_t /**/ && fn ) { m_OnSelectionChange /**/ = SetEventCallback<Ui::ITab::OnSelectionChange /**/>( std::move( fn ), MakeThisFunc( __OnSelectionChange /**/ ) ); return this; }
+	UiTab* UiTab::OnDoubleClick     /**/( OnTabClick_t        /**/ && fn ) { m_OnDoubleClick     /**/ = SetEventCallback<Ui::ITab::OnDoubleClick     /**/>( std::move( fn ), MakeThisFunc( __OnDoubleClick     /**/ ) ); return this; }
+	UiTab* UiTab::OnRightClick      /**/( OnTabClick_t        /**/ && fn ) { m_OnRightClick      /**/ = SetEventCallback<Ui::ITab::OnRightClick      /**/>( std::move( fn ), MakeThisFunc( __OnRightClick      /**/ ) ); return this; }
+	UiTab* UiTab::OnMiddleClick     /**/( OnTabClick_t        /**/ && fn ) { m_OnMiddleClick     /**/ = SetEventCallback<Ui::ITab::OnMiddleClick     /**/>( std::move( fn ), MakeThisFunc( __OnMiddleClick     /**/ ) ); return this; }
+	UiTab* UiTab::OnDrag            /**/( OnDrag_t            /**/ && fn ) { m_OnDrag            /**/ = SetEventCallback<Ui::ITab::OnDrag            /**/>( std::move( fn ), MakeThisFunc( __OnDrag            /**/ ) ); return this; }
+	UiTab* UiTab::OnButtonClick     /**/( OnButtonClick_t     /**/ && fn ) { m_OnButtonClick     /**/ = SetEventCallback<Ui::ITab::OnButtonClick     /**/>( std::move( fn ), MakeThisFunc( __OnButtonClick     /**/ ) ); return this; }
 }

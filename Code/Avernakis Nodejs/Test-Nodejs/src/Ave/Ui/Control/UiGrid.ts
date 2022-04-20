@@ -69,7 +69,7 @@ export interface IGrid extends IControl {
 	SetSplitterY(n: DpiSize): Grid;
 	GetSplitterY(): DpiSize;
 
-	RowGetClear(): Grid;
+	RowClear(): Grid;
 	RowGetCount(): number;
 	RowGetOffset(nIndex: number): number;
 	RowGetSize(nIndex: number): number;
@@ -80,7 +80,7 @@ export interface IGrid extends IControl {
 	RowSet(nIndex: number, def: DpiSize): Grid;
 	RowSetDef(nIndex: number, def: GridDefinition): Grid;
 
-	ColGetClear(): Grid;
+	ColClear(): Grid;
 	ColGetCount(): number;
 	ColGetOffset(nIndex: number): number;
 	ColGetSize(nIndex: number): number;

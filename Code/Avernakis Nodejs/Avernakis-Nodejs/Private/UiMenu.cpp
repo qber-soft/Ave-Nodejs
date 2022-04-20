@@ -21,30 +21,30 @@ namespace Nav
 		AutoAddMethod( RemoveByIndex );
 		AutoAddMethod( SetById );
 		AutoAddMethod( SetByIndex );
-		AutoAddMethod( GetById );
-		AutoAddMethod( GetByIndex );
+		AutoAddMethod( GetById, WrapObjectGeneric );
+		AutoAddMethod( GetByIndex, WrapObjectGeneric );
 		AutoAddMethod( GetSubMenuById, WrapObjectMix );
 		AutoAddMethod( GetSubMenuByIndex, WrapObjectMix );
 		AutoAddMethod( Clear );
-		AutoAddMethod( GetCount );
+		AutoAddMethod( GetCount, WrapObjectGeneric );
 		AutoAddMethod( SetItemHeight );
-		AutoAddMethod( GetItemHeight );
+		AutoAddMethod( GetItemHeight, WrapObjectGeneric );
 		AutoAddMethod( SetCheckById );
-		AutoAddMethod( GetCheckById );
+		AutoAddMethod( GetCheckById, WrapObjectGeneric );
 		AutoAddMethod( SetRadioId );
-		AutoAddMethod( GetRadioId );
+		AutoAddMethod( GetRadioId, WrapObjectGeneric );
 		AutoAddMethod( SetGroupRadioId );
-		AutoAddMethod( GetGroupRadioId );
+		AutoAddMethod( GetGroupRadioId, WrapObjectGeneric );
 		AutoAddMethod( SetContentById );
 		AutoAddMethod( SetContentByIndex );
-		AutoAddMethod( GetContentById );
-		AutoAddMethod( GetContentByIndex );
+		AutoAddMethod( GetContentById, WrapObjectGeneric );
+		AutoAddMethod( GetContentByIndex, WrapObjectGeneric );
 
-		AutoAddMethod( OnClick       /**/ );
-		AutoAddMethod( OnRightClick  /**/ );
-		AutoAddMethod( OnMiddleClick /**/ );
-		AutoAddMethod( OnShow        /**/ );
-		AutoAddMethod( OnHide        /**/ );
+		AutoAddMethod( OnClick       /**/, WrapObjectGeneric );
+		AutoAddMethod( OnRightClick  /**/, WrapObjectGeneric );
+		AutoAddMethod( OnMiddleClick /**/, WrapObjectGeneric );
+		AutoAddMethod( OnShow        /**/, WrapObjectGeneric );
+		AutoAddMethod( OnHide        /**/, WrapObjectGeneric );
 	}
 
 	U1 UiMenu::Ctor( UiWindow * p, Napi::Value v )
@@ -55,12 +55,6 @@ namespace Nav
 		m_Window = p;
 
 		GetControlTyped().SetIconManager( p->PublicCloneIconManager() );
-
-		GetControlTyped().GetEvent<Ui::IMenu::OnClick       /**/>() += MakeThisFunc( __OnClick       /**/ );
-		GetControlTyped().GetEvent<Ui::IMenu::OnRightClick  /**/>() += MakeThisFunc( __OnRightClick  /**/ );
-		GetControlTyped().GetEvent<Ui::IMenu::OnMiddleClick /**/>() += MakeThisFunc( __OnMiddleClick /**/ );
-		GetControlTyped().GetEvent<Ui::IMenu::OnShow        /**/>() += MakeThisFunc( __OnShow        /**/ );
-		GetControlTyped().GetEvent<Ui::IMenu::OnHide        /**/>() += MakeThisFunc( __OnHide        /**/ );
 
 		return true;
 	}
@@ -208,4 +202,9 @@ namespace Nav
 		return nullptr;
 	}
 
+	UiMenu* UiMenu::OnClick       /**/( Callback_t       /**/&& fn ) { m_OnClick       /**/ = SetEventCallback<Ui::IMenu::OnClick       /**/>( std::move( fn ), MakeThisFunc( __OnClick       /**/ ) ); return this; }
+	UiMenu* UiMenu::OnRightClick  /**/( Callback_t       /**/&& fn ) { m_OnRightClick  /**/ = SetEventCallback<Ui::IMenu::OnRightClick  /**/>( std::move( fn ), MakeThisFunc( __OnRightClick  /**/ ) ); return this; }
+	UiMenu* UiMenu::OnMiddleClick /**/( Callback_t       /**/&& fn ) { m_OnMiddleClick /**/ = SetEventCallback<Ui::IMenu::OnMiddleClick /**/>( std::move( fn ), MakeThisFunc( __OnMiddleClick /**/ ) ); return this; }
+	UiMenu* UiMenu::OnShow        /**/( OnVisibleChange_t/**/&& fn ) { m_OnShow        /**/ = SetEventCallback<Ui::IMenu::OnShow        /**/>( std::move( fn ), MakeThisFunc( __OnShow        /**/ ) ); return this; }
+	UiMenu* UiMenu::OnHide        /**/( OnVisibleChange_t/**/&& fn ) { m_OnHide        /**/ = SetEventCallback<Ui::IMenu::OnHide        /**/>( std::move( fn ), MakeThisFunc( __OnHide        /**/ ) ); return this; }
 }

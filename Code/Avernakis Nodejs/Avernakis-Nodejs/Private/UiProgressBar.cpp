@@ -16,16 +16,16 @@ namespace Nav
 	void UiProgressBar::DefineControl()
 	{
 		AutoAddMethod( SetState );
-		AutoAddMethod( GetState );
+		AutoAddMethod( GetState, WrapObjectGeneric );
 		AutoAddMethod( SetMaximum );
-		AutoAddMethod( GetMaximum );
+		AutoAddMethod( GetMaximum, WrapObjectGeneric );
 		AutoAddMethod( SetValue );
-		AutoAddMethod( GetValue );
+		AutoAddMethod( GetValue, WrapObjectGeneric );
 		AutoAddMethod( SetStep );
-		AutoAddMethod( GetStep );
+		AutoAddMethod( GetStep, WrapObjectGeneric );
 		AutoAddMethod( Step );
 		AutoAddMethod( SetAnimation );
-		AutoAddMethod( GetAnimation );
+		AutoAddMethod( GetAnimation, WrapObjectGeneric );
 	}
 
 	U1 UiProgressBar::Ctor( UiWindow * p, Napi::Value v )

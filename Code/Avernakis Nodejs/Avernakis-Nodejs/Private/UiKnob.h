@@ -75,8 +75,8 @@ namespace Nav
 		WrapPointer<UiVisual>			RingGetVisual() const { return __ReturnContent( GetControlTyped().RingGetVisual() ); }
 
 
-		UiKnob*							OnChange( OnGeneric_t&& fn ) { m_OnChange = std::move( fn ); return this; }
-		UiKnob*							OnRotateBegin( OnGeneric_t&& fn ) { m_OnRotateBegin = std::move( fn ); return this; }
-		UiKnob*							OnRotateEnd( OnRotateEnd_t&& fn ) { m_OnRotateEnd = std::move( fn ); return this; }
+		UiKnob*							OnChange      /**/( OnGeneric_t   /**/ && fn );
+		UiKnob*							OnRotateBegin /**/( OnGeneric_t   /**/ && fn );
+		UiKnob*							OnRotateEnd   /**/( OnRotateEnd_t /**/ && fn );
 	};
 }

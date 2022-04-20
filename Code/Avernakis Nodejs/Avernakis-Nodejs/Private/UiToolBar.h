@@ -80,7 +80,7 @@ namespace Nav
 		UiToolBar*						SetIconTextDirection( Ui::CrossDirection nDir ) { GetControlTyped().SetIconTextDirection( nDir ); return this; }
 		Ui::CrossDirection				GetIconTextDirection() const { return GetControlTyped().GetIconTextDirection(); }
 
-		UiToolBar*						OnClick( Callback_t&& fn ) { m_OnClick = std::move( fn ); return this; }
-		UiToolBar*						OnDrop( Callback_t&& fn ) { m_OnDrop = std::move( fn ); return this; }
+		UiToolBar*						OnClick /**/( Callback_t&& fn );
+		UiToolBar*						OnDrop  /**/( Callback_t&& fn );
 	};
 }

@@ -17,59 +17,52 @@ namespace Nav
 	{
 		AutoAddMethod( Add );
 		AutoAddMethod( Insert );
-		AutoAddMethod( GetCount );
-		AutoAddMethod( Get );
-		AutoAddMethod( GetRect );
+		AutoAddMethod( GetCount, WrapObjectGeneric );
+		AutoAddMethod( Get, WrapObjectGeneric );
+		AutoAddMethod( GetRect, WrapObjectGeneric );
 		AutoAddMethod( Set );
 		AutoAddMethod( Remove );
 		AutoAddMethod( RemoveAll );
 
 		AutoAddMethod( ItemSetDownDrop );
-		AutoAddMethod( ItemGetDownDrop );
+		AutoAddMethod( ItemGetDownDrop, WrapObjectGeneric );
 		AutoAddMethod( ItemSetFilter );
-		AutoAddMethod( ItemGetFilter );
+		AutoAddMethod( ItemGetFilter, WrapObjectGeneric );
 		AutoAddMethod( ItemSetCheckValue );
-		AutoAddMethod( ItemGetCheckValue );
+		AutoAddMethod( ItemGetCheckValue, WrapObjectGeneric );
 
 		AutoAddMethod( SetOrder );
-		AutoAddMethod( GetOrder );
+		AutoAddMethod( GetOrder, WrapObjectGeneric );
 
 		AutoAddMethod( SetSort );
 
-		AutoAddMethod( GetSortIndex );
-		AutoAddMethod( GetSortOrder );
+		AutoAddMethod( GetSortIndex, WrapObjectGeneric );
+		AutoAddMethod( GetSortOrder, WrapObjectGeneric );
 
 		AutoAddMethod( SetDrag );
-		AutoAddMethod( GetDrag );
+		AutoAddMethod( GetDrag, WrapObjectGeneric );
 
 		AutoAddMethod( SetButton );
-		AutoAddMethod( GetButton );
+		AutoAddMethod( GetButton, WrapObjectGeneric );
 
 		AutoAddMethod( SetCheckMode );
-		AutoAddMethod( GetCheckMode );
+		AutoAddMethod( GetCheckMode, WrapObjectGeneric );
 
 		AutoAddMethod( SetCheckValue );
-		AutoAddMethod( GetCheckValue );
+		AutoAddMethod( GetCheckValue, WrapObjectGeneric );
 
-		AutoAddMethod( OnClick       /**/ );
-		AutoAddMethod( OnAdjustWidth /**/ );
-		AutoAddMethod( OnOrder       /**/ );
-		AutoAddMethod( OnDropDown    /**/ );
-		AutoAddMethod( OnCheckItem   /**/ );
-		AutoAddMethod( OnCheckHeader /**/ );
+		AutoAddMethod( OnClick       /**/, WrapObjectGeneric );
+		AutoAddMethod( OnAdjustWidth /**/, WrapObjectGeneric );
+		AutoAddMethod( OnOrder       /**/, WrapObjectGeneric );
+		AutoAddMethod( OnDropDown    /**/, WrapObjectGeneric );
+		AutoAddMethod( OnCheckItem   /**/, WrapObjectGeneric );
+		AutoAddMethod( OnCheckHeader /**/, WrapObjectGeneric );
 	}
 
 	U1 UiHeader::Ctor( UiWindow * p, Napi::Value v )
 	{
 		if ( !__CreateControl( p, v ) )
 			return false;
-
-		GetControlTyped().GetEvent<Ui::IHeader::OnClick       /**/>() += MakeThisFunc( __OnClick       /**/ );
-		GetControlTyped().GetEvent<Ui::IHeader::OnAdjustWidth /**/>() += MakeThisFunc( __OnAdjustWidth /**/ );
-		GetControlTyped().GetEvent<Ui::IHeader::OnOrder       /**/>() += MakeThisFunc( __OnOrder       /**/ );
-		GetControlTyped().GetEvent<Ui::IHeader::OnDropDown    /**/>() += MakeThisFunc( __OnDropDown    /**/ );
-		GetControlTyped().GetEvent<Ui::IHeader::OnCheckItem   /**/>() += MakeThisFunc( __OnCheckItem   /**/ );
-		GetControlTyped().GetEvent<Ui::IHeader::OnCheckHeader /**/>() += MakeThisFunc( __OnCheckHeader /**/ );
 
 		return true;
 	}
@@ -154,5 +147,12 @@ namespace Nav
 		item.m_Context = (void*) (USize) pItem.m_Context;
 		return GetControlTyped().Set( nIndex, item );
 	}
+
+	UiHeader * UiHeader::OnClick       /**/( OnCallback1_t   /**/ && fn ) { m_OnClick       /**/ = SetEventCallback<Ui::IHeader::OnClick       /**/>( std::move( fn ), MakeThisFunc( __OnClick       /**/ ) ); return this; }
+	UiHeader * UiHeader::OnAdjustWidth /**/( OnAdjustWidth_t /**/ && fn ) { m_OnAdjustWidth /**/ = SetEventCallback<Ui::IHeader::OnAdjustWidth /**/>( std::move( fn ), MakeThisFunc( __OnAdjustWidth /**/ ) ); return this; }
+	UiHeader * UiHeader::OnOrder       /**/( OnOrder_t       /**/ && fn ) { m_OnOrder       /**/ = SetEventCallback<Ui::IHeader::OnOrder       /**/>( std::move( fn ), MakeThisFunc( __OnOrder       /**/ ) ); return this; }
+	UiHeader * UiHeader::OnDropDown    /**/( OnCallback1_t   /**/ && fn ) { m_OnDropDown    /**/ = SetEventCallback<Ui::IHeader::OnDropDown    /**/>( std::move( fn ), MakeThisFunc( __OnDropDown    /**/ ) ); return this; }
+	UiHeader * UiHeader::OnCheckItem   /**/( OnCallback1_t   /**/ && fn ) { m_OnCheckItem   /**/ = SetEventCallback<Ui::IHeader::OnCheckItem   /**/>( std::move( fn ), MakeThisFunc( __OnCheckItem   /**/ ) ); return this; }
+	UiHeader * UiHeader::OnCheckHeader /**/( OnCallback0_t   /**/ && fn ) { m_OnCheckHeader /**/ = SetEventCallback<Ui::IHeader::OnCheckHeader /**/>( std::move( fn ), MakeThisFunc( __OnCheckHeader /**/ ) ); return this; }
 
 }

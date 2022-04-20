@@ -57,8 +57,8 @@ namespace Nav
 		UiRibbonBackstage*				ClearHighlight() { GetControlTyped().ClearHighlight(); return this; }
 
 		
-		UiRibbonBackstage*				OnSelect( Callback_t&& fn ) { m_OnSelect = std::move( fn ); return this; }
-		UiRibbonBackstage*				OnHighlight( Callback_t&& fn ) { m_OnHighlight = std::move( fn ); return this; }
+		UiRibbonBackstage*				OnSelect    /**/( Callback_t&& fn );
+		UiRibbonBackstage*				OnHighlight /**/( Callback_t&& fn );
 
 	};
 }

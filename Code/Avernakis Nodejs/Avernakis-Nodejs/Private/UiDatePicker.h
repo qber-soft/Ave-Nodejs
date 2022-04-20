@@ -49,6 +49,6 @@ namespace Nav
 
 		UiDatePicker*					Drop() { GetControlTyped().Drop(); return this; }
 
-		UiDatePicker*					OnChange( OnChange_t&& fn ) { m_OnChange = std::move( fn ); return this; }
+		UiDatePicker*					OnChange( OnChange_t&& fn );
 	};
 }
