@@ -101,6 +101,7 @@
     <TypeScriptCompile Include="examples\app\UI\PageIndex.ts" />
     <TypeScriptCompile Include="examples\app\UI\Page\PageButton.ts" />
     <TypeScriptCompile Include="examples\app\UI\Page\PageOwnedWindow.ts" />
+    <TypeScriptCompile Include="examples\app\UI\Page\PagePopup.ts" />
     <TypeScriptCompile Include="examples\app\UI\Page\PageRichListBox.ts" />
     <TypeScriptCompile Include="examples\app\UI\Page\PageTextBox.ts" />
     <TypeScriptCompile Include="examples\app\UI\WindowMain.ts" />

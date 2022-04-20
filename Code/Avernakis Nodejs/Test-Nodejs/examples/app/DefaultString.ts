@@ -113,6 +113,7 @@ export const DefaultString = {
 	// UI
 	PageButton					/**/: "Button",
 	PageOwnedWindow				/**/: "Owned Window",
+	PagePopup					/**/: "Popup",
 	PageTextBox					/**/: "TextBox",
 	PageRichListBox				/**/: "RichListBox",
 	PageRichListBoxView0		/**/: "Detail",

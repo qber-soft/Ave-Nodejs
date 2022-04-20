@@ -83,6 +83,19 @@ namespace Nav
 
 	NavDefineDataByMember_( Ui::MessageKey, Key, Modifier );
 
+	class UiPopupParam
+	{
+	public:
+		WrapData<S32_R>					m_Exclude;
+		Ui::PopupAlign					m_Align;
+		Ui::AlignType					m_VerticalAlign;
+		U1								m_ClipMonitor;
+		U1								m_ScreenSpace;
+		U8								m_CatchClosingClick;
+	};
+
+	NavDefineDataByMember_( UiPopupParam, Exclude, Align, VerticalAlign, ClipMonitor, ScreenSpace, CatchClosingClick );
+
 	class UiControl
 	{
 	protected:
@@ -103,60 +116,48 @@ namespace Nav
 		static void __DefineObject()
 		{
 #		define AutoAddMethod($x) T::AddMethod( #$x, &T::$x )
-
 			AutoAddMethod( SetVisible );
-			AutoAddMethod( GetVisible );
-
 			AutoAddMethod( SetEnable );
-			AutoAddMethod( GetEnable );
-
-			AutoAddMethod( GetRect );
-			AutoAddMethod( GetRectClient );
-
-			AutoAddMethod( GetIdealSize );
-
-			AutoAddMethod( GetParent );
-
+			AutoAddMethod( SetIdealSize );
 			AutoAddMethod( SetFocusEnable );
-			AutoAddMethod( GetFocusEnable );
-			AutoAddMethod( GetFocus );
 			AutoAddMethod( SetFocus );
-
 			AutoAddMethod( SetKeyTip );
-			AutoAddMethod( GetKeyTip );
-
 			AutoAddMethod( SetToolTip );
-			AutoAddMethod( GetToolTip );
-
 			AutoAddMethod( SetStyle );
-			AutoAddMethod( GetStyle );
-
 			AutoAddMethod( SetFont );
-
 			AutoAddMethod( SetTextColor );
-			AutoAddMethod( GetTextColor );
-
 			AutoAddMethod( SetOpacity );
-			AutoAddMethod( GetOpacity );
-
 			AutoAddMethod( SetRotation );
-			AutoAddMethod( GetRotation );
-			AutoAddMethod( HasRotation );
-
 			AutoAddMethod( SetTabStop );
-			AutoAddMethod( GetTabStop );
 
 			AutoAddMethod( MapRect );
 			AutoAddMethod( Redraw );
 
-			AutoAddMethod( GetLastInputType );
-			AutoAddMethod( GetLastPointerType );
-			AutoAddMethod( GetLastMessageTime );
-			AutoAddMethod( IsVisual );
+			AutoAddMethod( HidePopup );
 
 #		undef AutoAddMethod
 
 #		define AutoAddMethod($x) T::template AddMethod<WrapObjectGeneric>( #$x, &T::$x )
+			AutoAddMethod( GetVisible );
+			AutoAddMethod( GetEnable );
+			AutoAddMethod( GetRect );
+			AutoAddMethod( GetRectClient );
+			AutoAddMethod( GetIdealSize );
+			AutoAddMethod( GetParent );
+			AutoAddMethod( GetFocusEnable );
+			AutoAddMethod( GetFocus );
+			AutoAddMethod( GetKeyTip );
+			AutoAddMethod( GetToolTip );
+			AutoAddMethod( GetStyle );
+			AutoAddMethod( GetTextColor );
+			AutoAddMethod( GetOpacity );
+			AutoAddMethod( GetRotation );
+			AutoAddMethod( HasRotation );
+			AutoAddMethod( GetTabStop );
+			AutoAddMethod( GetLastInputType );
+			AutoAddMethod( GetLastPointerType );
+			AutoAddMethod( GetLastMessageTime );
+			AutoAddMethod( IsVisual );
 
 			AutoAddMethod( OnKeyPress   /**/ );
 			AutoAddMethod( OnKeyRelease /**/ );
@@ -182,7 +183,10 @@ namespace Nav
 			AutoAddMethod( OnChangeFocus );
 			AutoAddMethod( OnChangeSize );
 			AutoAddMethod( OnPaintPost );
+#		undef AutoAddMethod
 
+#		define AutoAddMethod($x) T::template AddMethod<WrapObjectPromise>( #$x, &T::$x )
+			AutoAddMethod( ShowPopup );
 #		undef AutoAddMethod
 		}
 
@@ -285,6 +289,7 @@ namespace Nav
 		WrapData<S32_R>			GetRect() { return GetControl().GetRect(); }
 		WrapData<S32_R>			GetRectClient() { return GetControl().GetRectClient(); }
 
+		WrapPointer<UiControl>	SetIdealSize( const WrapData<Ui::DpiSize_2>& v ) { GetControl().SetIdealSize( v ); return __GetUiControl(); }
 		WrapData<Ui::DpiSize_2>	GetIdealSize() { return GetControl().GetIdealSize(); }
 
 		WrapPointer<UiControl>	GetParent() { if ( auto p = GetControl().GetParent() ) return { (UiControl*) p->GetUserContext() }; return {}; }
@@ -325,6 +330,9 @@ namespace Nav
 		Ui::PointerType			GetLastPointerType() { return GetControl().GetLastPointerType(); }
 		R64						GetLastMessageTime() { return GetControl().GetLastMessageTime(); }
 		U1						IsVisual() { return GetControl().IsVisual(); }
+
+		U1						ShowPopup( WrapPointer<UiControl> pControl, const WrapData<S32_2>& vPos, const WrapData<UiPopupParam>& pp );
+		void					HidePopup() { GetControl().ProcessMessage( Ui::ControlMessage::RevPopupHide, {} ); }
 
 		WrapPointer<UiControl>  OnKeyPress   /**/( OnKey_t&& fn ) { __ListenMessagePost( fn ); m_OnKeyPress   /**/ = std::move( fn ); return __GetUiControl(); }
 		WrapPointer<UiControl>  OnKeyRelease /**/( OnKey_t&& fn ) { __ListenMessagePost( fn ); m_OnKeyRelease /**/ = std::move( fn ); return __GetUiControl(); }

@@ -101,6 +101,23 @@ namespace Nav
 		return __GetUiControl();
 	}
 
+	U1 UiControl::ShowPopup( WrapPointer<UiControl> pControl, const WrapData<S32_2>& vPos, const WrapData<UiPopupParam>& pp )
+	{
+		if ( auto p = GetControl().GetOwner() )
+		{
+			Ui::PopupParam pop{};
+			pop.m_Exclude = pp.m_Exclude;
+			pop.m_Align = pp.m_Align;
+			pop.m_VerticalAlign = pp.m_VerticalAlign;
+			pop.m_ClipMonitor = pp.m_ClipMonitor;
+			pop.m_ScreenSpace = pp.m_ScreenSpace;
+			pop.m_CatchClosingClick = pp.m_CatchClosingClick;
+			p->ShowPopup( GetControl(), pControl->GetControl(), vPos, &pop );
+			return true;
+		}
+		return false;
+	}
+
 	WrapPointer<UiControl> UiControl::OnChangeFocus( OnChangeFocus_t && fn )
 	{
 		if ( fn )
