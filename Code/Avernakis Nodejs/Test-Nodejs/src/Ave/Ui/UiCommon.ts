@@ -1,5 +1,11 @@
 ﻿import { Vec2 } from "../Math/Vector";
 
+export enum PopupAlign {
+	Auto,
+	Left,
+	Right,
+}
+
 export class StringKey {
 	BaseKey: string | number;
 	Offset: number;
@@ -671,7 +677,7 @@ export class IconSource {
 
 export type IconCache = number;
 
-export interface IIconManager { }
+export interface IIconManager {}
 
 // prettier-ignore
 export enum FontFlag {

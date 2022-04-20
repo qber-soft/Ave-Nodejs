@@ -1,5 +1,5 @@
 ﻿import { Vec2, Vec4 } from "../Math/Vector";
-import { AlignType, CursorType, DpiSize_2, InputModifier, InputType, KbKey, PointerButton, PointerType, Rect } from "./UiCommon";
+import { AlignType, CursorType, DpiSize_2, InputModifier, InputType, KbKey, PointerButton, PointerType, PopupAlign, Rect } from "./UiCommon";
 import { IControlExtension } from "../AveLib";
 import { FileFindItem } from "../Io/IoCommon";
 import { IAveStream } from "../Io/IoStream";
@@ -87,37 +87,31 @@ export interface IDragContext {
 	FileGet(): string[];
 }
 
-export enum PopupAlign {
-    Auto,
-    Left,
-    Right,
-};
-
 export class PopupParam {
-    // Excluded rect in control space which popup another control, the popuped control will avoid this area
-    Exclude: Rect = Rect.Empty;
+	// Excluded rect in control space which popup another control, the popuped control will avoid this area
+	Exclude: Rect = Rect.Empty;
 
-    // Horizontal alignemnt, if the PC has pen input and current system is set to right-handed, the popuped control will display at left side of the origin point
-    Align: PopupAlign = PopupAlign.Auto;
+	// Horizontal alignemnt, if the PC has pen input and current system is set to right-handed, the popuped control will display at left side of the origin point
+	Align: PopupAlign = PopupAlign.Auto;
 
-    // Vertical alignment
-    VerticalAlign: AlignType = AlignType.Near;
+	// Vertical alignment
+	VerticalAlign: AlignType = AlignType.Near;
 
-    // Whether to restrict the whole popuped control to the monitor that origin point belongs to
-    ClipMonitor: boolean = true;
+	// Whether to restrict the whole popuped control to the monitor that origin point belongs to
+	ClipMonitor: boolean = true;
 
-    // Whether to use screen space instead of popuper control's client space
-    ScreenSpace: boolean = false;
+	// Whether to use screen space instead of popuper control's client space
+	ScreenSpace: boolean = false;
 
-    // How many clicked can be catched that cause the popup window close, catched click will be sent to the target control that clicked.
-    // If this is 0, the user clicked a button on the main window, the popuped window will close but the button will not be clicked, this clicking is wasted and just use to close the popuped window
-    CatchClosingClick: number = 0;
+	// How many clicked can be catched that cause the popup window close, catched click will be sent to the target control that clicked.
+	// If this is 0, the user clicked a button on the main window, the popuped window will close but the button will not be clicked, this clicking is wasted and just use to close the popuped window
+	CatchClosingClick: number = 0;
 
-    constructor(rcExclue: Rect = Rect.Empty, align: PopupAlign = PopupAlign.Auto, valign: AlignType = AlignType.Near) {
-        this.Exclude = rcExclue;
-        this.Align = align;
-        this.VerticalAlign = valign;
-    }
+	constructor(rcExclue: Rect = Rect.Empty, align: PopupAlign = PopupAlign.Auto, valign: AlignType = AlignType.Near) {
+		this.Exclude = rcExclue;
+		this.Align = align;
+		this.VerticalAlign = valign;
+	}
 }
 
 // prettier-ignore
