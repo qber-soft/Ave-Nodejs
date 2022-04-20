@@ -7,7 +7,7 @@ import { Vec2 } from "../../Math";
 export enum ListBoxSelectionMode {
 	Single,
 	Multiple,
-};
+}
 
 export enum ListBoxItemFlag {
 	None = 0x0,
@@ -17,10 +17,10 @@ export enum ListBoxItemFlag {
 export class ListBoxItemVirtual {
 	Misc: ListBoxItemFlag;
 	String: string;
-};
+}
 
 export interface IListBox extends IControl {
-	new(window: WindowLike): IListBox;
+	new (window: WindowLike): IListBox;
 
 	Append(text: string): ListBox;
 	Insert(text: string, nInsertBefore: number): ListBox;
@@ -58,4 +58,8 @@ export interface IListBox extends IControl {
 	OnRightClick(fn: (sender: ListBox, nIndex: number) => void): ListBox;
 }
 
-export class ListBox extends (AveLib.UiListBox as IListBox) { }
+export class ListBox extends (AveLib.UiListBox as IListBox) {
+	ItemGetRect(nIndex: number): Rect {
+		return Rect.FromNative(super.ItemGetRect(nIndex));
+	}
+}
