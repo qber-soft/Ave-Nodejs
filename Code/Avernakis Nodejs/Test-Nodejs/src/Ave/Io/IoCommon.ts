@@ -1,5 +1,6 @@
 ﻿import { TimePoint } from "../TimePoint";
 import { IAveStream } from "./IoStream";
+import * as fs from "fs";
 
 export class InMemoryData {
 	Data: ArrayBuffer = null;
@@ -38,6 +39,12 @@ export class ResourceSource {
 		r.ResourceId = n;
 		return r;
 	}
+
+	static FromPackedFile(s: string) {
+		const buffer = fs.readFileSync(s);
+		return ResourceSource.FromBuffer(buffer);
+	}
+
 	static FromFilePath(s: string) {
 		let r = new ResourceSource();
 		r.Type = ResourceSourceType.FilePath;
