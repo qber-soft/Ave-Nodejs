@@ -42,7 +42,7 @@ export function run(main: Function) {
 	globalThis._window = window;
 
 	window.OnCreateContent((sender) => {
-		main(window, { theme, themeDark });
+		main(window, { theme, themeDark, app });
 		return true;
 	});
 
