@@ -39,6 +39,8 @@ export interface IPager extends IControl {
 	GetScrollPosition(): Vec2;
 	GetScrollSize(): Vec2;
 	GetScrollMax(): Vec2;
+
+	OnScroll(fn: (sender: Pager) => void): Pager;
 }
 
 export class Pager extends (AveLib.UiPager as IPager) {

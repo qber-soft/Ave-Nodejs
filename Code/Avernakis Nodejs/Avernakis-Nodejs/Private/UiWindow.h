@@ -34,16 +34,55 @@ namespace Nav
 	class UiWindowCreation
 	{
 	public:
-		WString					m_Title;
-		WString					m_Icon;
-		WrapData<S32_R>			m_Layout;
-		U32						m_Flag;
-		UiWindow*				m_ParentWindow;
-		WrapPointer<UiTheme>	m_Theme;
-		UiWindowDevice			m_Device;
+		WString								m_Title;
+		WString								m_Icon;
+		WrapData<S32_R>						m_Layout;
+		U32									m_Flag;
+		UiWindow*							m_ParentWindow;
+		WrapPointer<UiTheme>				m_Theme;
+		UiWindowDevice						m_Device;
 	};
 
 	NavDefineDataByMember_( UiWindowCreation, Title, Icon, Layout, Flag, ParentWindow, Theme, Device );
+
+	class UiWindowPlacementLayout
+	{
+	public:
+		WrapData<S32_R>						m_Virtual;
+		WrapData<S32_2>						m_WorkPos;
+		WrapData<R32_4>						m_Percent;
+
+		void FromLayout( const Ui::WindowPlacementLayout& r )
+		{
+			m_Virtual = r.m_Virtual;
+			m_WorkPos = r.m_WorkPos;
+			m_Percent = r.m_Percent;
+		}
+
+		void ToLayout( Ui::WindowPlacementLayout& r ) const
+		{
+			r.m_Virtual = m_Virtual;
+			r.m_WorkPos = m_WorkPos;
+			r.m_Percent = m_Percent;
+		}
+	};
+
+	NavDefineDataByMember_( UiWindowPlacementLayout, Virtual, WorkPos, Percent );
+
+	class UiWindowPlacement
+	{
+	public:
+		Ui::WindowSizeState					m_State;
+		Ui::WindowSizeState					m_StateNonMin;
+		WrapData<UiWindowPlacementLayout>	m_LayoutNormal;
+		WrapData<UiWindowPlacementLayout>	m_LayoutMin;
+		WrapData<UiWindowPlacementLayout>	m_LayoutMax;
+		WrapData<S32_R>						m_VirtualRect;
+		U32									m_MonitorLayoutChecksum;
+		U32									m_MonitorLayoutWithoutWorkAreaChecksum;
+	};
+
+	NavDefineDataByMember_( UiWindowPlacement, State, StateNonMin, LayoutNormal, LayoutMin, LayoutMax, VirtualRect, MonitorLayoutChecksum, MonitorLayoutWithoutWorkAreaChecksum );
 
 	using UiWindowCreation_t = WrapData<UiWindowCreation>;
 
@@ -210,6 +249,9 @@ namespace Nav
 		U1									IsMinimizable() { return GetNativeWindow().IsMinimizable(); }
 		U1									IsSizeable() { return GetNativeWindow().IsSizeable(); }
 
+		U1									SetPlacement( const WrapData<UiWindowPlacement>& wp, U32 nFlag );
+		WrapData<UiWindowPlacement>			GetPlacement() const;
+
 		UiWindow*							SetTopMost( U1 b ) { GetNativeWindow().SetTopMost( b ); return this; }
 		U1									GetTopMost() { return GetNativeWindow().GetTopMost(); }
 
@@ -236,6 +278,21 @@ namespace Nav
 
 		UiWindow*							SetIcon( U32 nResId ) { GetWindow().GetFrame()->SetIcon( CreateManagedIcon( 16_icon / nResId ) ); GetNativeWindow().SetIcon( CreateIconAsImage( nResId ) ); m_IconResId = nResId; return this; }
 		U32									GetIcon() { return m_IconResId; }
+
+		UiWindow*							SetInfectionOverride( U1 b ) { GetWindow().SetInfectionOverride( b ); return this; }
+		U1									GetInfectionOverride() const { return GetWindow().GetInfectionOverride(); }
+
+		UiWindow*							SetInfection( const WrapData<UiThemeInfection>& pi );
+		WrapData<UiThemeInfection>			GetInfection();
+
+		UiWindow*							SetImportantRender( U1 b ) { GetNativeWindow().SetImportantRender( b ); return this; }
+		U1									GetImportantRender() const { return GetNativeWindow().GetImportantRender(); }
+
+		UiWindow*							SetManualRender( U1 b ) { GetNativeWindow().SetManualRender( b ); return this; }
+		U1									GetManualRender() const { return GetNativeWindow().GetManualRender(); }
+		void								ManualRender() { GetNativeWindow().ManualRender(); }
+
+		void								Update() { GetNativeWindow().Update(); }
 
 		UiWindow*							SetAppId( PCWChar szId ) { GetNativeWindow().SetAppId( szId ); return this; }
 

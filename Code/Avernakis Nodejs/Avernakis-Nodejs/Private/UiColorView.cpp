@@ -16,13 +16,13 @@ namespace Nav
 	void UiColorView::DefineControl()
 	{
 		AutoAddMethod( SetSolidColor );
-		AutoAddMethod( GetSolidColor );
+		AutoAddMethod( GetSolidColor, WrapObjectGeneric );
 		AutoAddMethod( SetBackColor1 );
-		AutoAddMethod( GetBackColor1 );
+		AutoAddMethod( GetBackColor1, WrapObjectGeneric );
 		AutoAddMethod( SetBackColor2 );
-		AutoAddMethod( GetBackColor2 );
+		AutoAddMethod( GetBackColor2, WrapObjectGeneric );
 		AutoAddMethod( SetBackBlockSize );
-		AutoAddMethod( GetBackBlockSize );
+		AutoAddMethod( GetBackBlockSize, WrapObjectGeneric );
 	}
 
 	U1 UiColorView::Ctor( UiWindow * p, Napi::Value v )

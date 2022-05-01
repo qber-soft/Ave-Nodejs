@@ -1,7 +1,7 @@
 ﻿import { AveLib } from "../../AveLib";
 import { DropBehavior, IControl, IShellData } from "../UiControl";
 import { DpiSize_2, IconCache, IconSource, IIconManager, InputModifier, KbKey, ProgressBarState, Rect, StringKey } from "../UiCommon";
-import { Theme } from "../Theme/UiTheme";
+import { Theme, UiThemeInfection } from "../Theme/UiTheme";
 import { ICommonUi } from "../UiCommonUi";
 import { Vec2, Vec4 } from "../../Math/Vector";
 import { IPlatform, MonitorItem } from "../UiPlatform";
@@ -151,6 +151,23 @@ export class WindowCreation {
 	Device: WindowDevice = WindowDevice.Default2D;
 }
 
+export class WindowPlacementLayout {
+	Virtual: Rect = Rect.Empty;
+	WorkPos: Vec2 = Vec2.Zero;
+	Percent: Vec4 = Vec4.Zero;
+}
+
+export class WindowPlacement {
+	State: WindowSizeState = WindowSizeState.Normal;
+	StateNonMin: WindowSizeState = WindowSizeState.Normal;
+	LayoutNormal: WindowPlacementLayout = new WindowPlacementLayout();
+	LayoutMin: WindowPlacementLayout = new WindowPlacementLayout();
+	LayoutMax: WindowPlacementLayout = new WindowPlacementLayout();
+	VirtualRect: Rect = Rect.Empty;
+	MonitorLayoutChecksum: number = 0;
+	MonitorLayoutWithoutWorkAreaChecksum: number = 0;
+}
+
 export interface IWindowConstructor<T, Internal = any> {
 	new (cp: WindowCreation): IWindow<T> & IControl & Internal;
 }
@@ -209,6 +226,24 @@ export type IWindow<T> = {
 	SetIcon(nResId: number): T;
 	GetIcon(): number;
 
+	SetPlacement(wp: WindowPlacement): boolean;
+	GetPlacement(): WindowPlacement;
+
+	SetInfectionOverride(b: boolean): T;
+	GetInfectionOverride(): boolean;
+
+	SetInfection(infection: UiThemeInfection): T;
+	GetInfection(): UiThemeInfection;
+
+	SetImportantRender(b: boolean): T;
+	GetImportantRender(): boolean;
+	
+	SetManualRender(b: boolean): T;
+	GetManualRender(): boolean;
+	ManualRender(): void;
+
+	Update(): void;
+	
 	SetAppId(s: string): T;
 
 	SetDeviceNotification(b: boolean): T;

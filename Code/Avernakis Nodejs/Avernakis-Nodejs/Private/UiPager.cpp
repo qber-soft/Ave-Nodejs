@@ -41,6 +41,8 @@ namespace Nav
 		AutoAddMethod( GetScrollPosition, WrapObjectGeneric );
 		AutoAddMethod( GetScrollSize, WrapObjectGeneric );
 		AutoAddMethod( GetScrollMax, WrapObjectGeneric );
+
+		AutoAddMethod( OnScroll, WrapObjectGeneric );
 	}
 
 	U1 UiPager::Ctor( UiWindow * p, Napi::Value v )
@@ -51,6 +53,11 @@ namespace Nav
 		return true;
 	}
 
+	void UiPager::__OnScrolling( Ui::IScrollBar & sender )
+	{
+		m_OnScroll( this );
+	}
+
 	WrapData<S32_2> UiPager::GetScrollMax() const
 	{
 		S32_2 v{};
@@ -59,6 +66,22 @@ namespace Nav
 		if ( GetControlTyped().GetScrollV().GetEnable() )
 			v.y = GetControlTyped().GetScrollV().GetMaximum();
 		return v;
+	}
+
+	UiPager * UiPager::OnScroll( OnScroll_t && fn )
+	{
+		if ( fn )
+		{
+			GetControlTyped().GetScrollH().GetEvent<Ui::IScrollBar::OnScrolling>() += MakeThisFunc( __OnScrolling );
+			GetControlTyped().GetScrollV().GetEvent<Ui::IScrollBar::OnScrolling>() += MakeThisFunc( __OnScrolling );
+		}
+		else
+		{
+			GetControlTyped().GetScrollH().GetEvent<Ui::IScrollBar::OnScrolling>() -= MakeThisFunc( __OnScrolling );
+			GetControlTyped().GetScrollV().GetEvent<Ui::IScrollBar::OnScrolling>() -= MakeThisFunc( __OnScrolling );
+		}
+		m_OnScroll = std::move( fn );
+		return this;
 	}
 
 }
