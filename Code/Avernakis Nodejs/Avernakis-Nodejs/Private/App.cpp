@@ -52,6 +52,8 @@ namespace Nav
 		AveKak.StaticRegister<Ave::Byo2::IDeviceCg>();
 #endif
 
+		AveKak.StaticRegister<Img::IFontFreetype2>();
+
 		m_JsThreadId = GetSysInfo().GetCurrentThreadId();
 
 		return true;
