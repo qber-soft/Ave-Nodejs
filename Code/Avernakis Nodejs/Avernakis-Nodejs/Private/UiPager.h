@@ -20,6 +20,13 @@ namespace Nav
 		U1								Ctor( UiWindow* p, Napi::Value v );
 
 	private:
+		using OnScroll_t = JsFuncSafe<void( UiPager* sender )>;
+
+	private:
+		OnScroll_t						m_OnScroll;
+
+	private:
+		void							__OnScrolling( Ui::IScrollBar & sender );
 
 	private:
 		WrapPointer<UiControl>			SetContent( WrapPointer<UiControl> pControl ) { return __ChangeContent( GetControlTyped().SetContent( pControl->TakeOwnership() ) ); }
@@ -48,5 +55,7 @@ namespace Nav
 		WrapData<S32_2>					GetScrollPosition() const { return GetControlTyped().GetScrollPosition(); }
 		WrapData<S32_2>					GetScrollSize() const { return GetControlTyped().GetScrollSize(); }
 		WrapData<S32_2>					GetScrollMax() const;
+
+		UiPager*						OnScroll( OnScroll_t&& fn );
 	};
 }

@@ -16,20 +16,20 @@ namespace Nav
 	void UiAnimFrame::DefineControl()
 	{
 		AutoAddMethod( SetStretchMode );
-		AutoAddMethod( GetStretchMode );
+		AutoAddMethod( GetStretchMode, WrapObjectGeneric );
 		
 		AutoAddMethod( SetFrameInfo );
-		AutoAddMethod( GetFrameInfo );
+		AutoAddMethod( GetFrameInfo, WrapObjectGeneric );
 		
 		//AutoAddMethod( SetPicture );
 
-		AutoAddMethod( Play );
-		AutoAddMethod( Stop );
+		AutoAddMethod( Play, WrapObjectGeneric );
+		AutoAddMethod( Stop, WrapObjectGeneric );
 		
 		AutoAddMethod( SetPlayPosition );
-		AutoAddMethod( GetPlayPosition );
+		AutoAddMethod( GetPlayPosition, WrapObjectGeneric );
 		
-		AutoAddMethod( IsPlaying );
+		AutoAddMethod( IsPlaying, WrapObjectGeneric );
 	}
 
 	U1 UiAnimFrame::Ctor( UiWindow * p, Napi::Value v )

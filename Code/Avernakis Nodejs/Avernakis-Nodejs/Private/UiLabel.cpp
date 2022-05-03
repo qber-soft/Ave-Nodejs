@@ -16,15 +16,15 @@ namespace Nav
 	void UiLabel::DefineControl()
 	{
 		AutoAddMethod( SetText );
-		AutoAddMethod( GetText );
+		AutoAddMethod( GetText, WrapObjectGeneric );
 		AutoAddMethod( SetAlignHorz );
-		AutoAddMethod( GetAlignHorz );
+		AutoAddMethod( GetAlignHorz, WrapObjectGeneric );
 		AutoAddMethod( SetAlignVert );
-		AutoAddMethod( GetAlignVert );
+		AutoAddMethod( GetAlignVert, WrapObjectGeneric );
 		AutoAddMethod( SetBackColor );
-		AutoAddMethod( GetBackColor );
+		AutoAddMethod( GetBackColor, WrapObjectGeneric );
 		AutoAddMethod( SetWrappable );
-		AutoAddMethod( GetWrappable );
+		AutoAddMethod( GetWrappable, WrapObjectGeneric );
 	}
 
 	U1 UiLabel::Ctor( UiWindow * p, Napi::Value v )

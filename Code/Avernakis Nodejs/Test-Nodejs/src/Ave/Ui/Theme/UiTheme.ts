@@ -27,6 +27,15 @@ export class UiThemeInfection {
 	m_InfectionRadius: DpiSize = DpiSize.FromPixel(0);
 	m_InfectionOpacity: number = 0.75;
 	m_InfectionActiveRatio: number = 0.75;
+
+	static FromNative(raw: UiThemeInfection) {
+		const infection = new UiThemeInfection();
+		infection.m_InfectionSpread = raw.m_InfectionSpread;
+		infection.m_InfectionRadius = raw.m_InfectionRadius;
+		infection.m_InfectionOpacity = raw.m_InfectionOpacity;
+		infection.m_InfectionActiveRatio = raw.m_InfectionActiveRatio;
+		return infection;
+	}
 }
 
 export interface IThemeImage extends Theme {

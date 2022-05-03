@@ -59,6 +59,7 @@ export enum ProgressBarState {
 export enum StretchMode {
 	None, // 100% display at left-top corner of the canvas
 	Center, // 100% display at center of the canvas
+	CenterOrFit, // use Center if it can display at 100% without scaling or use Fit
 	Fit, // Scale to fit the canvas (keep aspect ratio)
 	Fill, // Fill up the the canvas (don't keep aspect ratio)
 	FitFill, // Fill up the the canvas (keep aspect ratio), some parts of the image will be cut (out of the canvas)

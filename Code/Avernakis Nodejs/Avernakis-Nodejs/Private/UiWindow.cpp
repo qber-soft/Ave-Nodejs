@@ -91,6 +91,24 @@ namespace Nav
 		AutoAddMethod( SetIcon );
 		AutoAddMethod( GetIcon );
 
+		AutoAddMethod( SetPlacement );
+		AutoAddMethod( GetPlacement );
+
+		AutoAddMethod( SetInfectionOverride );
+		AutoAddMethod( GetInfectionOverride );
+
+		AutoAddMethod( SetInfection );
+		AutoAddMethod( GetInfection );
+
+		AutoAddMethod( SetImportantRender );
+		AutoAddMethod( GetImportantRender );
+
+		AutoAddMethod( SetManualRender );
+		AutoAddMethod( GetManualRender );
+		AutoAddMethod( ManualRender, WrapObjectGeneric );
+
+		AutoAddMethod( Update );
+
 		AutoAddMethod( SetAppId );
 
 		AutoAddMethod( SetDeviceNotification );
@@ -575,6 +593,63 @@ namespace Nav
 			return false;
 
 		return true;
+	}
+
+	U1 UiWindow::SetPlacement( const WrapData<UiWindowPlacement>& wp, U32 nFlag )
+	{
+		Ui::WindowPlacement w{};
+		w.m_State = wp.m_State;
+		w.m_StateNonMin = wp.m_StateNonMin;
+		wp.m_LayoutNormal.ToLayout( w.m_LayoutNormal );
+		wp.m_LayoutMin.ToLayout( w.m_LayoutMin );
+		wp.m_LayoutMax.ToLayout( w.m_LayoutMax );
+		w.m_VirtualRect = wp.m_VirtualRect;
+		w.m_MonitorLayoutChecksum = wp.m_MonitorLayoutChecksum;
+		w.m_MonitorLayoutWithoutWorkAreaChecksum = wp.m_MonitorLayoutWithoutWorkAreaChecksum;
+		return GetWindow().SetPlacement( w, nFlag );
+	}
+
+	WrapData<UiWindowPlacement> UiWindow::GetPlacement() const
+	{
+		UiWindowPlacement w{};
+		Ui::WindowPlacement wp{};
+		if ( GetWindow().GetPlacement( wp ) )
+		{
+			w.m_State = wp.m_State;
+			w.m_StateNonMin = wp.m_StateNonMin;
+			w.m_LayoutNormal.FromLayout( wp.m_LayoutNormal );
+			w.m_LayoutMin.FromLayout( wp.m_LayoutMin );
+			w.m_LayoutMax.FromLayout( wp.m_LayoutMax );
+			w.m_VirtualRect = wp.m_VirtualRect;
+			w.m_MonitorLayoutChecksum = wp.m_MonitorLayoutChecksum;
+			w.m_MonitorLayoutWithoutWorkAreaChecksum = wp.m_MonitorLayoutWithoutWorkAreaChecksum;
+		}
+		return w;
+	}
+
+	UiWindow* UiWindow::SetInfection( const WrapData<UiThemeInfection>& pi )
+	{
+		if ( pi.m_InfectionRadius.IsSlice() )
+			return this;
+		Ui::ThemeInfection ti{};
+		ti.m_InfectionSpread = pi.m_InfectionSpread ? 1 : 0;
+		ti.m_InfectionRadius = pi.m_InfectionRadius;
+		ti.m_InfectionRadius.SetValue( Math::Clamp( ti.m_InfectionRadius.GetValue(), 0, 8192 ) );
+		ti.m_InfectionOpacity = Math::Saturate( pi.m_InfectionOpacity );
+		ti.m_InfectionActiveRatio = Math::Saturate( pi.m_InfectionActiveRatio );
+		GetWindow().SetInfection( ti );
+		return this;
+	}
+
+	WrapData<UiThemeInfection> UiWindow::GetInfection()
+	{
+		WrapData<UiThemeInfection> r{};
+		auto& ti = GetWindow().GetInfection();
+		r.m_InfectionSpread = 0 != ti.m_InfectionSpread;
+		r.m_InfectionRadius = ti.m_InfectionRadius;
+		r.m_InfectionOpacity = ti.m_InfectionOpacity;
+		r.m_InfectionActiveRatio = ti.m_InfectionActiveRatio;
+		return r;
 	}
 
 	UiWindow * UiWindow::SetDeviceNotification( U1 b )
