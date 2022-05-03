@@ -155,6 +155,14 @@ export class WindowPlacementLayout {
 	Virtual: Rect = Rect.Empty;
 	WorkPos: Vec2 = Vec2.Zero;
 	Percent: Vec4 = Vec4.Zero;
+
+	static FromNative(raw: WindowPlacementLayout) {
+		const layout = new WindowPlacementLayout();
+		layout.Virtual = Rect.FromNative(raw.Virtual);
+		layout.WorkPos = Vec2.FromNative(raw.WorkPos);
+		layout.Percent = Vec4.FromNative(raw.Percent);
+		return layout;
+	}
 }
 
 export class WindowPlacement {
@@ -166,6 +174,19 @@ export class WindowPlacement {
 	VirtualRect: Rect = Rect.Empty;
 	MonitorLayoutChecksum: number = 0;
 	MonitorLayoutWithoutWorkAreaChecksum: number = 0;
+
+	static FromNative(raw: WindowPlacement) {
+		const placement = new WindowPlacement();
+		placement.State = raw.State;
+		placement.StateNonMin = raw.StateNonMin;
+		placement.LayoutNormal = WindowPlacementLayout.FromNative(raw.LayoutNormal);
+		placement.LayoutMin = WindowPlacementLayout.FromNative(raw.LayoutMin);
+		placement.LayoutMax = WindowPlacementLayout.FromNative(raw.LayoutMax);
+		placement.VirtualRect = Rect.FromNative(raw.VirtualRect);
+		placement.MonitorLayoutChecksum = raw.MonitorLayoutChecksum;
+		placement.MonitorLayoutWithoutWorkAreaChecksum = raw.MonitorLayoutWithoutWorkAreaChecksum;
+		return placement;
+	}
 }
 
 export interface IWindowConstructor<T, Internal = any> {
@@ -237,13 +258,13 @@ export type IWindow<T> = {
 
 	SetImportantRender(b: boolean): T;
 	GetImportantRender(): boolean;
-	
+
 	SetManualRender(b: boolean): T;
 	GetManualRender(): boolean;
 	ManualRender(): void;
 
 	Update(): void;
-	
+
 	SetAppId(s: string): T;
 
 	SetDeviceNotification(b: boolean): T;
@@ -296,6 +317,14 @@ class WindowBase extends (AveLib.UiWindow as IWindowConstructor<WindowBase>) {
 	protected m_Frame: IWindowFrame;
 	protected m_FrameToolBarLeft: IControl;
 	protected m_FrameToolBarRight: IControl;
+
+	GetInfection(): UiThemeInfection {
+		return UiThemeInfection.FromNative(super.GetInfection());
+	}
+
+	GetPlacement(): WindowPlacement {
+		return WindowPlacement.FromNative(super.GetPlacement());
+	}
 
 	SetContent(c: IControl) {
 		this.m_Content = c;
