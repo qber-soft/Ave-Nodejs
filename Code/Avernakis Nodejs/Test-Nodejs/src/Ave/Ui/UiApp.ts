@@ -25,7 +25,7 @@ export type AppLanguageItem = {
 };
 
 export interface IApp {
-	new (): IApp;
+	new(): IApp;
 
 	//----------------------------------------------------------------------------------------------------
 	// Resource related
@@ -121,18 +121,20 @@ export class App extends (AveLib.UiApp as IApp) {
 		const map = {} as Record<Name, number>;
 		const provider: Record<number, string> = {};
 
-		let subIdCount = sizeList.length;
-		subIdCount |= subIdCount >> 1;
-		subIdCount |= subIdCount >> 2;
-		subIdCount |= subIdCount >> 4;
-		subIdCount |= subIdCount >> 8;
-		subIdCount |= subIdCount >> 16;
-		++subIdCount;
-		const baseId = subIdCount;
-
 		if (sizeList.length < 1 || sizeList.length > 1024) throw new Error("Invalid sizeList length.");
 		if (sizeList[0] <= 0) throw new Error("Invalid sizeList data.");
 		for (let i = 1; i < sizeList.length; ++i) if (sizeList[i] <= sizeList[i - 1]) throw new Error("Invalid sizeList data.");
+
+		let subIdCount = sizeList.length;
+		if (subIdCount & (subIdCount - 1)) {
+			subIdCount |= subIdCount >> 1;
+			subIdCount |= subIdCount >> 2;
+			subIdCount |= subIdCount >> 4;
+			subIdCount |= subIdCount >> 8;
+			subIdCount |= subIdCount >> 16;
+			++subIdCount;
+		}
+		const baseId = subIdCount;
 
 		Object.keys(iconDataMap).forEach((name, iconIndex) => {
 			const dataList = iconDataMap[name];
