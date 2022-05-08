@@ -121,7 +121,13 @@ export class App extends (AveLib.UiApp as IApp) {
 		const map = {} as Record<Name, number>;
 		const provider: Record<number, string> = {};
 
-		const subIdCount = sizeList.length;
+		let subIdCount = sizeList.length;
+		subIdCount |= subIdCount >> 1;
+		subIdCount |= subIdCount >> 2;
+		subIdCount |= subIdCount >> 4;
+		subIdCount |= subIdCount >> 8;
+		subIdCount |= subIdCount >> 16;
+		++subIdCount;
 		const baseId = subIdCount;
 
 		if (sizeList.length < 1 || sizeList.length > 1024) throw new Error("Invalid sizeList length.");
