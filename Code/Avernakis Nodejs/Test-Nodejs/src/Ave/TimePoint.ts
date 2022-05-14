@@ -76,6 +76,9 @@ export class TimePoint {
 	static get DayTo1899_30() {
 		return TimePoint.DayPer400Year * 4 + TimePoint.DayPer100Year * 3 - 367;
 	} // days from 1/1/0001 to 12/30/1899
+	static get DayTo1970() {
+		return TimePoint.DayPer400Year * 4 + TimePoint.DayPer100Year * 3 + TimePoint.DayPer4Year * 17;
+	} // days from 1/1/0001 to 12/31/1969
 	static get DayTo10000() {
 		return TimePoint.DayPer400Year * 25 - 366;
 	} // days from 1/1/0001 to 12/31/9999
@@ -155,6 +158,12 @@ export class TimePoint {
 	static FromOATime(n: number) {
 		const ret = new TimePoint();
 		ret.OATime = n;
+		return ret;
+	}
+
+	static FromJsDateTime(n: number) {
+		const ret = new TimePoint();
+		ret.JsDateTime = n;
 		return ret;
 	}
 
@@ -275,10 +284,10 @@ export class TimePoint {
 
 	// Window FILETIME/U64
 	set FileTime(nTime: number) {
-		this.Tick = nTime + TimePoint.FileTimeOffset;
+		this.Tick = Math.floor(nTime / 1000) + TimePoint.FileTimeOffset;
 	}
 	get FileTime() {
-		if (this.Tick >= TimePoint.FileTimeOffset) return this.Tick - TimePoint.FileTimeOffset;
+		if (this.Tick >= TimePoint.FileTimeOffset) return (this.Tick - TimePoint.FileTimeOffset) * 1000;
 		else return 0;
 	}
 
@@ -301,5 +310,13 @@ export class TimePoint {
 			if (0 != nFrac) nMs -= nFrac + TimePoint.MsPerDay;
 		}
 		return nMs / TimePoint.MsPerDay;
+	}
+
+	set JsDateTime(nTime: number) {
+		this.Tick = nTime * TimePoint.TickPerMillisecond + TimePoint.DayTo1970;
+	}
+	get JsDateTime() {
+		if (this.Tick >= TimePoint.DayTo1970) return Math.floor((this.Tick - TimePoint.DayTo1970) / TimePoint.TickPerMillisecond);
+		else return 0;
 	}
 }
