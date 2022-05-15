@@ -99,6 +99,9 @@ export class TimePoint {
 	static get OAMinTick() {
 		return (TimePoint.DayPer100Year - TimePoint.DayPerYear) * TimePoint.TickPerDay;
 	} // 1/1/0100
+	static get JsDateTimeOffset() {
+		return TimePoint.DayTo1970 * TimePoint.TickPerDay;
+	}
 
 	static get Day365() {
 		return [0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
@@ -313,10 +316,10 @@ export class TimePoint {
 	}
 
 	set JsDateTime(nTime: number) {
-		this.Tick = nTime * TimePoint.TickPerMillisecond + TimePoint.DayTo1970;
+		this.Tick = nTime * TimePoint.TickPerMillisecond + TimePoint.JsDateTimeOffset;
 	}
 	get JsDateTime() {
-		if (this.Tick >= TimePoint.DayTo1970) return Math.floor((this.Tick - TimePoint.DayTo1970) / TimePoint.TickPerMillisecond);
+		if (this.Tick >= TimePoint.JsDateTimeOffset) return Math.floor((this.Tick - TimePoint.JsDateTimeOffset) / TimePoint.TickPerMillisecond);
 		else return 0;
 	}
 }
