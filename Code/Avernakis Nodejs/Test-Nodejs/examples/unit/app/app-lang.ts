@@ -23,6 +23,7 @@ export function run() {
 		},
 		switch(this: Ii18n, id: CultureId) {
 			app.LangSetDefaultString(id, this.lang[id]);
+			app.LangSetCurrent(id);
 		},
 		lang: {
 			[CultureId.en_us]: {
