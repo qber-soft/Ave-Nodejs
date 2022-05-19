@@ -77,7 +77,7 @@ export class TimePoint {
 		return TimePoint.DayPer400Year * 4 + TimePoint.DayPer100Year * 3 - 367;
 	} // days from 1/1/0001 to 12/30/1899
 	static get DayTo1970() {
-		return TimePoint.DayPer400Year * 4 + TimePoint.DayPer100Year * 3 + TimePoint.DayPer4Year * 17;
+		return TimePoint.DayPer400Year * 4 + TimePoint.DayPer100Year * 3 + TimePoint.DayPer4Year * 17 + 365;
 	} // days from 1/1/0001 to 12/31/1969
 	static get DayTo10000() {
 		return TimePoint.DayPer400Year * 25 - 366;
@@ -102,7 +102,6 @@ export class TimePoint {
 	static get JsDateTimeOffset() {
 		return TimePoint.DayTo1970 * TimePoint.TickPerDay;
 	}
-
 	static get Day365() {
 		return [0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
 	}
@@ -270,19 +269,19 @@ export class TimePoint {
 		return this.GetDatePart(TimeDatePart.DayOfYear);
 	}
 	get DayOfWeek(): DayOfWeek {
-		return (this.Tick / TimePoint.TickPerDay + 1) % 7;
+		return (Math.floor(this.Tick / TimePoint.TickPerDay) + 1) % 7;
 	}
 	get Hour() {
-		return (this.Tick / TimePoint.TickPerHour) % 24;
+		return Math.floor(this.Tick / TimePoint.TickPerHour) % 24;
 	}
 	get Minute() {
-		return (this.Tick / TimePoint.TickPerMinute) % 60;
+		return Math.floor(this.Tick / TimePoint.TickPerMinute) % 60;
 	}
 	get Second() {
-		return (this.Tick / TimePoint.TickPerSecond) % 60;
+		return Math.floor(this.Tick / TimePoint.TickPerSecond) % 60;
 	}
 	get Millisecond() {
-		return (this.Tick / TimePoint.TickPerMillisecond) % 1000;
+		return Math.floor(this.Tick / TimePoint.TickPerMillisecond) % 1000;
 	}
 
 	// Window FILETIME/U64
