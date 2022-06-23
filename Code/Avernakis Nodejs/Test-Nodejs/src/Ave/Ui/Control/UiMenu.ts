@@ -93,13 +93,16 @@ export interface IMenu extends IControl {
 
 export class Menu extends (AveLib.UiMenu as IMenu) {
 	private m_Content: Set<IControl> = new Set();
+	private m_SubMenu: Set<Menu> = new Set();
 
 	RemoveById(nId: number) {
+		this.m_SubMenu.delete(this.GetSubMenuById(nId));
 		this.m_Content.delete(this.GetContentById(nId));
 		return super.RemoveById(nId);
 	}
 
 	RemoveByIndex(nIndex: number) {
+		this.m_SubMenu.delete(this.GetSubMenuByIndex(nIndex));
 		this.m_Content.delete(this.GetContentByIndex(nIndex));
 		return super.RemoveByIndex(nIndex);
 	}
@@ -125,6 +128,7 @@ export class Menu extends (AveLib.UiMenu as IMenu) {
 
 	InsertSubMenu(pItem: MenuItem): Menu {
 		const menu = super.InsertSubMenu(pItem);
+		this.m_SubMenu.add(menu);
 		ExtendControlInstance(menu);
 		return menu;
 	}
