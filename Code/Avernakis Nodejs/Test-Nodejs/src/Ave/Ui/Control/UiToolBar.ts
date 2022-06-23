@@ -46,6 +46,7 @@ export class ToolBarItem {
 export interface IToolBar extends IControl {
 	new (window: WindowLike, key?: StringKey): IToolBar;
 
+	// use nIndexBefore = -1 to denote push back
 	ToolInsert(item: ToolBarItem, nIndexBefore: number): boolean;
 	ToolRemove(nIndex: number): boolean;
 	ToolRemoveAll(): ToolBar;
