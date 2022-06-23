@@ -108,6 +108,7 @@ export class Menu extends (AveLib.UiMenu as IMenu) {
 	}
 
 	Clear() {
+		this.m_SubMenu.clear();
 		this.m_Content.clear();
 		return super.Clear();
 	}
