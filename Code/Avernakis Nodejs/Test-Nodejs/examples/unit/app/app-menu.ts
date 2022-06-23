@@ -140,7 +140,7 @@ function getControlDemoContainer(window: Window, count = 1, width = 120, height 
 function createToolbar(sender: Window) {
 	const toolbar = new ToolBar(sender);
 	toolbar.SetBackground(false);
-	toolbar.ToolInsert(new ToolBarItem(1, ToolBarItemType.Menu, 0, DpiSize.FromPixelScaled(50), "File", "File Tooltip"), -1);
+	toolbar.ToolInsert(new ToolBarItem(1, ToolBarItemType.Menu, 0, DpiSize.Zero, "File", "File Tooltip"), -1);
 
 	const menuFile = new Menu(sender);
 	menuFile.InsertItem(new MenuItem(1, MenuType.Text, 0, "", "", ""));
