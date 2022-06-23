@@ -147,10 +147,10 @@ function createToolbar(sender: Window) {
 	toolbar.ToolInsert(new ToolBarItem(4, ToolBarItemType.Menu), -1);
 
 	const menuFile = new Menu(sender, new StringKey("WdMainFile", 0, 6));
-	menuFile.InsertItem(new MenuItem(1, MenuType.Text, 0, "", "", ""));
-	menuFile.InsertItem(new MenuItem(2, MenuType.Text, 0, "", "", ""));
-	menuFile.InsertItem(new MenuItem(3, MenuType.Text, 0, "", "", ""));
-	menuFile.InsertItem(new MenuItem(4, MenuType.Text, 0, "", "", ""));
+	menuFile.InsertItem(new MenuItem(1, MenuType.Text));
+	menuFile.InsertItem(new MenuItem(2, MenuType.Text));
+	menuFile.InsertItem(new MenuItem(3, MenuType.Text));
+	menuFile.InsertItem(new MenuItem(4, MenuType.Text));
 	toolbar.DropSetById(1, menuFile);
 
 	//
@@ -159,10 +159,10 @@ function createToolbar(sender: Window) {
 	});
 
 	const menuEdit = new Menu(sender, new StringKey("WdMainEdit", 0, 7));
-	menuEdit.InsertItem(new MenuItem(1, MenuType.Text, 0, "", "", ""));
-	menuEdit.InsertItem(new MenuItem(2, MenuType.Text, 0, "", "", ""));
-	menuEdit.InsertItem(new MenuItem(3, MenuType.Text, 0, "", "", ""));
-	menuEdit.InsertItem(new MenuItem(4, MenuType.Text, 0, "", "", ""));
+	menuEdit.InsertItem(new MenuItem(1, MenuType.Text));
+	menuEdit.InsertItem(new MenuItem(2, MenuType.Text));
+	menuEdit.InsertItem(new MenuItem(3, MenuType.Text));
+	menuEdit.InsertItem(new MenuItem(4, MenuType.Text));
 	toolbar.DropSetById(2, menuEdit);
 
 	const menuView = new Menu(sender);
@@ -183,8 +183,8 @@ function createToolbar(sender: Window) {
 	});
 
 	const menuHelp = new Menu(sender, new StringKey("WdMainHelp", 0, 2));
-	menuHelp.InsertItem(new MenuItem(1, MenuType.Text, 0, "", "", ""));
-	menuHelp.InsertItem(new MenuItem(2, MenuType.Text, 0, "", "", ""));
+	menuHelp.InsertItem(new MenuItem(1, MenuType.Text));
+	menuHelp.InsertItem(new MenuItem(2, MenuType.Text));
 	toolbar.DropSetById(4, menuHelp);
 	return toolbar;
 }
