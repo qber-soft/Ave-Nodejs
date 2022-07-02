@@ -1,6 +1,6 @@
-// import { run } from "./utility";
-// import { main } from "./version/index";
-// run(main);
+import { run } from "./utility";
+import { main } from "./button/button-event-click-2";
+run(main);
 
 // ---
 
@@ -11,5 +11,5 @@
 // import { run } from "./app/app-lang";
 // import { run } from "./app/app-lang-auto";
 // import { run } from "./app/app-resource";
-import { run } from "./app/app-menu";
-run();
+// import { run } from "./app/app-menu";
+// run();
