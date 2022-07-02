@@ -2,9 +2,9 @@ import { App, WindowCreation, WindowFlag, Window, Grid, ThemeImage, ThemePredefi
 import * as fs from "fs";
 import { DefaultString } from "./DefaultString";
 
-export interface IThemeManager {
+export interface IAppContext {
 	theme: ThemeImage;
-	themeDark: ThemePredefined_Dark;
+	app: App;
 }
 
 export function run(main: Function) {
@@ -35,14 +35,11 @@ export function run(main: Function) {
 	cpWindow.Theme = theme;
 	globalThis.theme = theme;
 
-	const themeDark = new ThemePredefined_Dark();
-	globalThis.themeDark = themeDark;
-
 	const window = new Window(cpWindow);
 	globalThis._window = window;
 
 	window.OnCreateContent((sender) => {
-		main(window, { theme, themeDark, app });
+		main(window, { theme, app });
 		return true;
 	});
 

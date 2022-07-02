@@ -1,5 +1,5 @@
 import { run } from "./utility";
-import { main } from "./theme/theme-geek";
+import { main } from "./version";
 run(main);
 
 // ---

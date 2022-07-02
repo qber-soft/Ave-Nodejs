@@ -1,9 +1,9 @@
 import { Window, Button, ThemeFileImage, ResourceSource } from "../../../src";
-import { getControlDemoContainer, IThemeManager } from "../utility";
+import { getControlDemoContainer, IAppContext } from "../utility";
 import * as fs from "fs";
 import * as path from "path";
 
-export function main(window: Window, themeManager: IThemeManager) {
+export function main(window: Window, appContext: IAppContext) {
 	const button = new Button(window);
 	button.SetText("Toggling Themes");
 
@@ -14,12 +14,12 @@ export function main(window: Window, themeManager: IThemeManager) {
 			const themeBuffer = fs.readFileSync(themePath);
 			const themeGeek = new ThemeFileImage();
 			if (themeGeek.Open(ResourceSource.FromBuffer(themeBuffer))) {
-				themeGeek.SetTheme(themeManager.theme, 0);
+				themeGeek.SetTheme(appContext.theme, 0);
 			} else {
 				console.log("open image file failed");
 			}
 		} else {
-			themeManager.theme.ResetTheme();
+			appContext.theme.ResetTheme();
 		}
 		isDark = !isDark;
 	});
