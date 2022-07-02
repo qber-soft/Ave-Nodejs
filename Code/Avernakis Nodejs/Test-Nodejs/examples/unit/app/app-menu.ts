@@ -1,4 +1,4 @@
-import { App, WindowCreation, WindowFlag, CultureId, Grid, Window, ToolBar, StringKey, ToolBarItem, ToolBarItemType, Menu, MenuItem, MenuType, Button, DpiSize } from "../../../src";
+import { App, WindowCreation, WindowFlag, CultureId, Grid, Window, ToolBar, StringKey, ToolBarItem, ToolBarItemType, Menu, MenuItem, MenuType, Button, DpiSize, Vec4 } from "../../../src";
 import * as path from "path";
 
 interface ILang {
@@ -140,6 +140,7 @@ function getControlDemoContainer(window: Window, count = 1, width = 120, height 
 function createToolbar(sender: Window) {
 	const toolbar = new ToolBar(sender, new StringKey("WdMainAppbar", 0, 10));
 	toolbar.SetBackground(false);
+	toolbar.SetTextColor(new Vec4(255, 255, 255, 255 * 0.8));
 	// toolbar.ToolInsert(new ToolBarItem(1, ToolBarItemType.Menu, 0, DpiSize.FromPixelScaled(0), "File", ""), -1);
 	toolbar.ToolInsert(new ToolBarItem(1, ToolBarItemType.Menu), -1);
 	toolbar.ToolInsert(new ToolBarItem(2, ToolBarItemType.Menu), -1);
