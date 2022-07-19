@@ -63,6 +63,6 @@ namespace Nav
 		return GetControlTyped().SysMenuAppend( mi );
 	}
 
-	UiWindowFrame* UiWindowFrame::OnSysMenuClick( OnSysMenuClick_t&& fn ) { m_OnSysMenuClick = SetEventCallback<Ui::IWindowFrame::OnSysMenuClick>( std::move( fn ), MakeThisFunc( __OnSysMenuClick ) ); return this; }
+	UiWindowFrame* UiWindowFrame::OnSysMenuClick( OnSysMenuClick_t&& fn ) { SetEventCallback<Ui::IWindowFrame::OnSysMenuClick>( m_OnSysMenuClick, std::move( fn ), MakeThisFunc( __OnSysMenuClick ) ); return this; }
 
 }

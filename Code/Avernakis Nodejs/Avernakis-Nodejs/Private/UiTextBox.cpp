@@ -116,8 +116,8 @@ namespace Nav
 		m_OnSpin( this );
 	}
 
-	UiTextBox* UiTextBox::OnChange    /**/( OnChange_t  /**/ && fn ) { m_OnChange    /**/ = SetEventCallback<Ui::ITextBox::OnChange    /**/>( std::move( fn ), MakeThisFunc( __OnChange    /**/ ) ); return this; }
-	UiTextBox* UiTextBox::OnSpinStart /**/( OnGeneric_t /**/ && fn ) { m_OnSpinStart /**/ = SetEventCallback<Ui::ITextBox::OnSpinStart /**/>( std::move( fn ), MakeThisFunc( __OnSpinStart /**/ ) ); return this; }
-	UiTextBox* UiTextBox::OnSpinEnd   /**/( OnSpinEnd_t /**/ && fn ) { m_OnSpinEnd   /**/ = SetEventCallback<Ui::ITextBox::OnSpinEnd   /**/>( std::move( fn ), MakeThisFunc( __OnSpinEnd   /**/ ) ); return this; }
-	UiTextBox* UiTextBox::OnSpin      /**/( OnGeneric_t /**/ && fn ) { m_OnSpin      /**/ = SetEventCallback<Ui::ITextBox::OnSpin      /**/>( std::move( fn ), MakeThisFunc( __OnSpin      /**/ ) ); return this; }
+	UiTextBox* UiTextBox::OnChange    /**/( OnChange_t  /**/ && fn ) { SetEventCallback<Ui::ITextBox::OnChange    /**/>( m_OnChange    /**/, std::move( fn ), MakeThisFunc( __OnChange    /**/ ) ); return this; }
+	UiTextBox* UiTextBox::OnSpinStart /**/( OnGeneric_t /**/ && fn ) { SetEventCallback<Ui::ITextBox::OnSpinStart /**/>( m_OnSpinStart /**/, std::move( fn ), MakeThisFunc( __OnSpinStart /**/ ) ); return this; }
+	UiTextBox* UiTextBox::OnSpinEnd   /**/( OnSpinEnd_t /**/ && fn ) { SetEventCallback<Ui::ITextBox::OnSpinEnd   /**/>( m_OnSpinEnd   /**/, std::move( fn ), MakeThisFunc( __OnSpinEnd   /**/ ) ); return this; }
+	UiTextBox* UiTextBox::OnSpin      /**/( OnGeneric_t /**/ && fn ) { SetEventCallback<Ui::ITextBox::OnSpin      /**/>( m_OnSpin      /**/, std::move( fn ), MakeThisFunc( __OnSpin      /**/ ) ); return this; }
 }

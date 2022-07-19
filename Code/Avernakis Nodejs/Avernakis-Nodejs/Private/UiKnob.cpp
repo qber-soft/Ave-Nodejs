@@ -85,8 +85,8 @@ namespace Nav
 		m_OnRotateEnd( this, bCanceled );
 	}
 
-	UiKnob* UiKnob::OnChange      /**/( OnGeneric_t   /**/ && fn ) { m_OnChange      /**/ = SetEventCallback<Ui::IKnob::OnChange      /**/>( std::move( fn ), MakeThisFunc( __OnChange      /**/ ) ); return this; }
-	UiKnob* UiKnob::OnRotateBegin /**/( OnGeneric_t   /**/ && fn ) { m_OnRotateBegin /**/ = SetEventCallback<Ui::IKnob::OnRotateBegin /**/>( std::move( fn ), MakeThisFunc( __OnRotateBegin /**/ ) ); return this; }
-	UiKnob* UiKnob::OnRotateEnd   /**/( OnRotateEnd_t /**/ && fn ) { m_OnRotateEnd   /**/ = SetEventCallback<Ui::IKnob::OnRotateEnd   /**/>( std::move( fn ), MakeThisFunc( __OnRotateEnd   /**/ ) ); return this; }
+	UiKnob* UiKnob::OnChange      /**/( OnGeneric_t   /**/ && fn ) { SetEventCallback<Ui::IKnob::OnChange      /**/>( m_OnChange      /**/, std::move( fn ), MakeThisFunc( __OnChange      /**/ ) ); return this; }
+	UiKnob* UiKnob::OnRotateBegin /**/( OnGeneric_t   /**/ && fn ) { SetEventCallback<Ui::IKnob::OnRotateBegin /**/>( m_OnRotateBegin /**/, std::move( fn ), MakeThisFunc( __OnRotateBegin /**/ ) ); return this; }
+	UiKnob* UiKnob::OnRotateEnd   /**/( OnRotateEnd_t /**/ && fn ) { SetEventCallback<Ui::IKnob::OnRotateEnd   /**/>( m_OnRotateEnd   /**/, std::move( fn ), MakeThisFunc( __OnRotateEnd   /**/ ) ); return this; }
 
 }

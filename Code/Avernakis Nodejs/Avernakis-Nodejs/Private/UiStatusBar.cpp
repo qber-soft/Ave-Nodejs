@@ -84,6 +84,6 @@ namespace Nav
 		return {};
 	}
 
-	UiStatusBar * UiStatusBar::OnClick( OnClick_t && fn ) { m_OnClick = SetEventCallback<Ui::IStatusBar::OnClick>( std::move( fn ), MakeThisFunc( __OnClick ) ); return this; }
+	UiStatusBar * UiStatusBar::OnClick( OnClick_t && fn ) { SetEventCallback<Ui::IStatusBar::OnClick>( m_OnClick, std::move( fn ), MakeThisFunc( __OnClick ) ); return this; }
 
 }

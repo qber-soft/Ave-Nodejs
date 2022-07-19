@@ -140,10 +140,10 @@ namespace Nav
 		return this;
 	}
 
-	UiMatrixEditor* UiMatrixEditor::OnUnitClick       /**/( UnitCallback_t    /**/ && fn ) { m_OnUnitClick       /**/ = SetEventCallback<Ui::IMatrixEditor::OnUnitClick       /**/>( std::move( fn ), MakeThisFunc( __OnUnitClick       /**/ ) ); return this; }
-	UiMatrixEditor* UiMatrixEditor::OnUnitRightClick  /**/( UnitCallback_t    /**/ && fn ) { m_OnUnitRightClick  /**/ = SetEventCallback<Ui::IMatrixEditor::OnUnitRightClick  /**/>( std::move( fn ), MakeThisFunc( __OnUnitRightClick  /**/ ) ); return this; }
-	UiMatrixEditor* UiMatrixEditor::OnUnitChange      /**/( UnitCallback_t    /**/ && fn ) { m_OnUnitChange      /**/ = SetEventCallback<Ui::IMatrixEditor::OnUnitChange      /**/>( std::move( fn ), MakeThisFunc( __OnUnitChange      /**/ ) ); return this; }
-	UiMatrixEditor* UiMatrixEditor::OnUnitChangeBegin /**/( UnitCallback_t    /**/ && fn ) { m_OnUnitChangeBegin /**/ = SetEventCallback<Ui::IMatrixEditor::OnUnitChangeBegin /**/>( std::move( fn ), MakeThisFunc( __OnUnitChangeBegin /**/ ) ); return this; }
-	UiMatrixEditor* UiMatrixEditor::OnUnitChangeEnd   /**/( OnUnitChangeEnd_t /**/ && fn ) { m_OnUnitChangeEnd   /**/ = SetEventCallback<Ui::IMatrixEditor::OnUnitChangeEnd   /**/>( std::move( fn ), MakeThisFunc( __OnUnitChangeEnd   /**/ ) ); return this; }
+	UiMatrixEditor* UiMatrixEditor::OnUnitClick       /**/( UnitCallback_t    /**/ && fn ) { SetEventCallback<Ui::IMatrixEditor::OnUnitClick       /**/>( m_OnUnitClick       /**/, std::move( fn ), MakeThisFunc( __OnUnitClick       /**/ ) ); return this; }
+	UiMatrixEditor* UiMatrixEditor::OnUnitRightClick  /**/( UnitCallback_t    /**/ && fn ) { SetEventCallback<Ui::IMatrixEditor::OnUnitRightClick  /**/>( m_OnUnitRightClick  /**/, std::move( fn ), MakeThisFunc( __OnUnitRightClick  /**/ ) ); return this; }
+	UiMatrixEditor* UiMatrixEditor::OnUnitChange      /**/( UnitCallback_t    /**/ && fn ) { SetEventCallback<Ui::IMatrixEditor::OnUnitChange      /**/>( m_OnUnitChange      /**/, std::move( fn ), MakeThisFunc( __OnUnitChange      /**/ ) ); return this; }
+	UiMatrixEditor* UiMatrixEditor::OnUnitChangeBegin /**/( UnitCallback_t    /**/ && fn ) { SetEventCallback<Ui::IMatrixEditor::OnUnitChangeBegin /**/>( m_OnUnitChangeBegin /**/, std::move( fn ), MakeThisFunc( __OnUnitChangeBegin /**/ ) ); return this; }
+	UiMatrixEditor* UiMatrixEditor::OnUnitChangeEnd   /**/( OnUnitChangeEnd_t /**/ && fn ) { SetEventCallback<Ui::IMatrixEditor::OnUnitChangeEnd   /**/>( m_OnUnitChangeEnd   /**/, std::move( fn ), MakeThisFunc( __OnUnitChangeEnd   /**/ ) ); return this; }
 
 }

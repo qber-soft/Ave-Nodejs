@@ -75,7 +75,7 @@ namespace Nav
 		m_OnPageChange( this, fPagePercent );
 	}
 
-	UiScrollBar* UiScrollBar::OnScroll     /**/( OnScroll_t     /**/ && fn ) { m_OnScroll     /**/ = SetEventCallback<Ui::IScrollBar::OnScroll     /**/>( std::move( fn ), MakeThisFunc( __OnScroll     /**/ ) ); return this; }
-	UiScrollBar* UiScrollBar::OnScrolling  /**/( OnScrolling_t  /**/ && fn ) { m_OnScrolling  /**/ = SetEventCallback<Ui::IScrollBar::OnScrolling  /**/>( std::move( fn ), MakeThisFunc( __OnScrolling  /**/ ) ); return this; }
-	UiScrollBar* UiScrollBar::OnPageChange /**/( OnPageChange_t /**/ && fn ) { m_OnPageChange /**/ = SetEventCallback<Ui::IScrollBar::OnPageChange /**/>( std::move( fn ), MakeThisFunc( __OnPageChange /**/ ) ); return this; }
+	UiScrollBar* UiScrollBar::OnScroll     /**/( OnScroll_t     /**/ && fn ) { SetEventCallback<Ui::IScrollBar::OnScroll     /**/>( m_OnScroll     /**/, std::move( fn ), MakeThisFunc( __OnScroll     /**/ ) ); return this; }
+	UiScrollBar* UiScrollBar::OnScrolling  /**/( OnScrolling_t  /**/ && fn ) { SetEventCallback<Ui::IScrollBar::OnScrolling  /**/>( m_OnScrolling  /**/, std::move( fn ), MakeThisFunc( __OnScrolling  /**/ ) ); return this; }
+	UiScrollBar* UiScrollBar::OnPageChange /**/( OnPageChange_t /**/ && fn ) { SetEventCallback<Ui::IScrollBar::OnPageChange /**/>( m_OnPageChange /**/, std::move( fn ), MakeThisFunc( __OnPageChange /**/ ) ); return this; }
 }

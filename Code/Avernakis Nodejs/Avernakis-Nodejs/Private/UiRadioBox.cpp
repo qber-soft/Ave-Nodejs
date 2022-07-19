@@ -44,6 +44,6 @@ namespace Nav
 		m_OnChecking.BlockCall( this, bCanChangeValue, bCanChangeValue );
 	}
 
-	UiRadioBox* UiRadioBox::OnCheck( OnCheck_t&& fn ) { m_OnCheck = SetEventCallback<Ui::IRadioBox::OnCheck>( std::move( fn ), MakeThisFunc( __OnCheck ) ); return this; }
-	UiRadioBox* UiRadioBox::OnChecking( OnChecking_t&& fn ) { m_OnChecking = SetEventCallback<Ui::IRadioBox::OnChecking>( std::move( fn ), MakeThisFunc( __OnChecking ) ); return this; }
+	UiRadioBox* UiRadioBox::OnCheck( OnCheck_t&& fn ) { SetEventCallback<Ui::IRadioBox::OnCheck>( m_OnCheck, std::move( fn ), MakeThisFunc( __OnCheck ) ); return this; }
+	UiRadioBox* UiRadioBox::OnChecking( OnChecking_t&& fn ) { SetEventCallback<Ui::IRadioBox::OnChecking>( m_OnChecking, std::move( fn ), MakeThisFunc( __OnChecking ) ); return this; }
 }

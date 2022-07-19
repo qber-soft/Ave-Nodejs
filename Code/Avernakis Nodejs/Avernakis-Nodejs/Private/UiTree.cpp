@@ -193,11 +193,11 @@ namespace Nav
 		m_OnDragBegin.BlockCall( this, bCanDrag );
 	}
 
-	UiTree* UiTree::OnSelectionChange /**/( OnSelectionChange_t /**/ && fn ) { m_OnSelectionChange /**/ = SetEventCallback<Ui::ITree::OnSelectionChange /**/>( std::move( fn ), MakeThisFunc( __OnSelectionChange /**/ ) ); return this; }
-	UiTree* UiTree::OnDoubleClick     /**/( OnClick_t           /**/ && fn ) { m_OnDoubleClick     /**/ = SetEventCallback<Ui::ITree::OnDoubleClick     /**/>( std::move( fn ), MakeThisFunc( __OnDoubleClick     /**/ ) ); return this; }
-	UiTree* UiTree::OnRightClick      /**/( OnClick_t           /**/ && fn ) { m_OnRightClick      /**/ = SetEventCallback<Ui::ITree::OnRightClick      /**/>( std::move( fn ), MakeThisFunc( __OnRightClick      /**/ ) ); return this; }
-	UiTree* UiTree::OnEditBegin       /**/( OnEdit_t            /**/ && fn ) { m_OnEditBegin       /**/ = SetEventCallback<Ui::ITree::OnEditBegin       /**/>( std::move( fn ), MakeThisFunc( __OnEditBegin       /**/ ) ); return this; }
-	UiTree* UiTree::OnEditEnd         /**/( OnEdit_t            /**/ && fn ) { m_OnEditEnd         /**/ = SetEventCallback<Ui::ITree::OnEditEnd         /**/>( std::move( fn ), MakeThisFunc( __OnEditEnd         /**/ ) ); return this; }
-	UiTree* UiTree::OnEditFinish      /**/( OnEditFinish_t      /**/ && fn ) { m_OnEditFinish      /**/ = SetEventCallback<Ui::ITree::OnEditFinish      /**/>( std::move( fn ), MakeThisFunc( __OnEditFinish      /**/ ) ); return this; }
-	UiTree* UiTree::OnDragBegin       /**/( OnDragBegin_t       /**/ && fn ) { m_OnDragBegin       /**/ = SetEventCallback<Ui::ITree::OnDragBegin       /**/>( std::move( fn ), MakeThisFunc( __OnDragBegin       /**/ ) ); return this; }
+	UiTree* UiTree::OnSelectionChange /**/( OnSelectionChange_t /**/ && fn ) { SetEventCallback<Ui::ITree::OnSelectionChange /**/>( m_OnSelectionChange /**/, std::move( fn ), MakeThisFunc( __OnSelectionChange /**/ ) ); return this; }
+	UiTree* UiTree::OnDoubleClick     /**/( OnClick_t           /**/ && fn ) { SetEventCallback<Ui::ITree::OnDoubleClick     /**/>( m_OnDoubleClick     /**/, std::move( fn ), MakeThisFunc( __OnDoubleClick     /**/ ) ); return this; }
+	UiTree* UiTree::OnRightClick      /**/( OnClick_t           /**/ && fn ) { SetEventCallback<Ui::ITree::OnRightClick      /**/>( m_OnRightClick      /**/, std::move( fn ), MakeThisFunc( __OnRightClick      /**/ ) ); return this; }
+	UiTree* UiTree::OnEditBegin       /**/( OnEdit_t            /**/ && fn ) { SetEventCallback<Ui::ITree::OnEditBegin       /**/>( m_OnEditBegin       /**/, std::move( fn ), MakeThisFunc( __OnEditBegin       /**/ ) ); return this; }
+	UiTree* UiTree::OnEditEnd         /**/( OnEdit_t            /**/ && fn ) { SetEventCallback<Ui::ITree::OnEditEnd         /**/>( m_OnEditEnd         /**/, std::move( fn ), MakeThisFunc( __OnEditEnd         /**/ ) ); return this; }
+	UiTree* UiTree::OnEditFinish      /**/( OnEditFinish_t      /**/ && fn ) { SetEventCallback<Ui::ITree::OnEditFinish      /**/>( m_OnEditFinish      /**/, std::move( fn ), MakeThisFunc( __OnEditFinish      /**/ ) ); return this; }
+	UiTree* UiTree::OnDragBegin       /**/( OnDragBegin_t       /**/ && fn ) { SetEventCallback<Ui::ITree::OnDragBegin       /**/>( m_OnDragBegin       /**/, std::move( fn ), MakeThisFunc( __OnDragBegin       /**/ ) ); return this; }
 }

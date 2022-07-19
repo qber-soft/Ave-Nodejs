@@ -51,6 +51,6 @@ namespace Nav
 		m_OnDrop( this );
 	}
 
-	UiRibbonButton* UiRibbonButton::OnClick /**/( Callback_t&& fn ) { m_OnClick /**/ = SetEventCallback<Ui::IRibbonButton::OnClick /**/>( std::move( fn ), MakeThisFunc( __OnClick /**/ ) ); return this; }
-	UiRibbonButton* UiRibbonButton::OnDrop  /**/( Callback_t&& fn ) { m_OnDrop  /**/ = SetEventCallback<Ui::IRibbonButton::OnDrop  /**/>( std::move( fn ), MakeThisFunc( __OnDrop  /**/ ) ); return this; }
+	UiRibbonButton* UiRibbonButton::OnClick /**/( Callback_t&& fn ) { SetEventCallback<Ui::IRibbonButton::OnClick /**/>( m_OnClick /**/, std::move( fn ), MakeThisFunc( __OnClick /**/ ) ); return this; }
+	UiRibbonButton* UiRibbonButton::OnDrop  /**/( Callback_t&& fn ) { SetEventCallback<Ui::IRibbonButton::OnDrop  /**/>( m_OnDrop  /**/, std::move( fn ), MakeThisFunc( __OnDrop  /**/ ) ); return this; }
 }

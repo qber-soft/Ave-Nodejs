@@ -62,7 +62,7 @@ namespace Nav
 
 	UiComboBox * UiComboBox::OnSelectionChange( OnSelectionChange_t && fn )
 	{
-		m_OnSelectionChange = SetEventCallback<Ui::IComboBox::OnSelectionChange>( std::move( fn ), MakeThisFunc( __OnSelectionChange ) );
+		SetEventCallback<Ui::IComboBox::OnSelectionChange>( m_OnSelectionChange, std::move( fn ), MakeThisFunc( __OnSelectionChange ) );
 		return this;
 	}
 
