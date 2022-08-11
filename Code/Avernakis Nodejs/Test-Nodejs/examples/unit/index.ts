@@ -1,5 +1,5 @@
 import { run } from "./utility";
-import { main } from "./button/button-event-click-2";
+import { main } from "./version/index";
 run(main);
 
 // ---
