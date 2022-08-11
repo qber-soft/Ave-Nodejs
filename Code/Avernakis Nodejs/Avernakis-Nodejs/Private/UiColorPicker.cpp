@@ -42,7 +42,7 @@ namespace Nav
 
 	UiColorPicker * UiColorPicker::OnChange( OnChange_t && fn )
 	{
-		m_OnChange = SetEventCallback<Ui::IColorPicker::OnChange>( std::move( fn ), MakeThisFunc( __OnChange ) );
+		SetEventCallback<Ui::IColorPicker::OnChange>( m_OnChange, std::move( fn ), MakeThisFunc( __OnChange ) );
 		return this;
 	}
 

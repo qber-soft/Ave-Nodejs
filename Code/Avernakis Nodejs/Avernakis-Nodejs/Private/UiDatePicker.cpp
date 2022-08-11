@@ -74,7 +74,7 @@ namespace Nav
 
 	UiDatePicker * UiDatePicker::OnChange( OnChange_t && fn )
 	{
-		m_OnChange = SetEventCallback<Ui::IDatePicker::OnDateChange>( std::move( fn ), MakeThisFunc( __OnChange ) );
+		SetEventCallback<Ui::IDatePicker::OnDateChange>( m_OnChange, std::move( fn ), MakeThisFunc( __OnChange ) );
 		return this;
 	}
 

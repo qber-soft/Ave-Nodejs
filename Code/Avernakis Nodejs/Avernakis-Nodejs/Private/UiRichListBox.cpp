@@ -248,11 +248,11 @@ namespace Nav
 		return v;
 	}
 
-	UiRichListBox* UiRichListBox::OnSelectionChange /**/( OnCallback0_t&& fn ) { m_OnSelectionChange /**/ = SetEventCallback<Ui::IRichListBox::OnSelectionChange /**/>( std::move( fn ), MakeThisFunc( __OnSelectionChange /**/ ) ); return this; }
-	UiRichListBox* UiRichListBox::OnSelectionEnd    /**/( OnCallback0_t&& fn ) { m_OnSelectionEnd    /**/ = SetEventCallback<Ui::IRichListBox::OnSelectionEnd    /**/>( std::move( fn ), MakeThisFunc( __OnSelectionEnd    /**/ ) ); return this; }
-	UiRichListBox* UiRichListBox::OnDoubleClick     /**/( OnCallback1_t&& fn ) { m_OnDoubleClick     /**/ = SetEventCallback<Ui::IRichListBox::OnDoubleClick     /**/>( std::move( fn ), MakeThisFunc( __OnDoubleClick     /**/ ) ); return this; }
-	UiRichListBox* UiRichListBox::OnRightClick      /**/( OnCallback1_t&& fn ) { m_OnRightClick      /**/ = SetEventCallback<Ui::IRichListBox::OnRightClick      /**/>( std::move( fn ), MakeThisFunc( __OnRightClick      /**/ ) ); return this; }
-	UiRichListBox* UiRichListBox::OnDragBegin       /**/( OnCallback0_t&& fn ) { m_OnDragBegin       /**/ = SetEventCallback<Ui::IRichListBox::OnDragBegin       /**/>( std::move( fn ), MakeThisFunc( __OnDragBegin       /**/ ) ); return this; }
-	UiRichListBox* UiRichListBox::OnGlyphClick      /**/( OnCallback1_t&& fn ) { m_OnGlyphClick      /**/ = SetEventCallback<Ui::IRichListBox::OnGlyphClick      /**/>( std::move( fn ), MakeThisFunc( __OnGlyphClick      /**/ ) ); return this; }
-	UiRichListBox* UiRichListBox::OnItemCheck       /**/( OnCallback1_t&& fn ) { m_OnItemCheck       /**/ = SetEventCallback<Ui::IRichListBox::OnItemCheck       /**/>( std::move( fn ), MakeThisFunc( __OnItemCheck       /**/ ) ); return this; }
+	UiRichListBox* UiRichListBox::OnSelectionChange /**/( OnCallback0_t&& fn ) { SetEventCallback<Ui::IRichListBox::OnSelectionChange /**/>( m_OnSelectionChange /**/, std::move( fn ), MakeThisFunc( __OnSelectionChange /**/ ) ); return this; }
+	UiRichListBox* UiRichListBox::OnSelectionEnd    /**/( OnCallback0_t&& fn ) { SetEventCallback<Ui::IRichListBox::OnSelectionEnd    /**/>( m_OnSelectionEnd    /**/, std::move( fn ), MakeThisFunc( __OnSelectionEnd    /**/ ) ); return this; }
+	UiRichListBox* UiRichListBox::OnDoubleClick     /**/( OnCallback1_t&& fn ) { SetEventCallback<Ui::IRichListBox::OnDoubleClick     /**/>( m_OnDoubleClick     /**/, std::move( fn ), MakeThisFunc( __OnDoubleClick     /**/ ) ); return this; }
+	UiRichListBox* UiRichListBox::OnRightClick      /**/( OnCallback1_t&& fn ) { SetEventCallback<Ui::IRichListBox::OnRightClick      /**/>( m_OnRightClick      /**/, std::move( fn ), MakeThisFunc( __OnRightClick      /**/ ) ); return this; }
+	UiRichListBox* UiRichListBox::OnDragBegin       /**/( OnCallback0_t&& fn ) { SetEventCallback<Ui::IRichListBox::OnDragBegin       /**/>( m_OnDragBegin       /**/, std::move( fn ), MakeThisFunc( __OnDragBegin       /**/ ) ); return this; }
+	UiRichListBox* UiRichListBox::OnGlyphClick      /**/( OnCallback1_t&& fn ) { SetEventCallback<Ui::IRichListBox::OnGlyphClick      /**/>( m_OnGlyphClick      /**/, std::move( fn ), MakeThisFunc( __OnGlyphClick      /**/ ) ); return this; }
+	UiRichListBox* UiRichListBox::OnItemCheck       /**/( OnCallback1_t&& fn ) { SetEventCallback<Ui::IRichListBox::OnItemCheck       /**/>( m_OnItemCheck       /**/, std::move( fn ), MakeThisFunc( __OnItemCheck       /**/ ) ); return this; }
 }

@@ -84,6 +84,6 @@ namespace Nav
 		m_OnMidiKeyRelease( this, key, bLastRelease, nModifier );
 	}
 
-	UiMidiKey* UiMidiKey::OnMidiKeyPress( Callback_t&& fn ) { m_OnMidiKeyPress = SetEventCallback<Ui::IMidiKey::OnMidiKeyPress>( std::move( fn ), MakeThisFunc( __OnMidiKeyPress ) ); return this; }
-	UiMidiKey* UiMidiKey::OnMidiKeyRelease( Callback_t&& fn ) { m_OnMidiKeyRelease = SetEventCallback<Ui::IMidiKey::OnMidiKeyRelease>( std::move( fn ), MakeThisFunc( __OnMidiKeyRelease ) ); return this; }
+	UiMidiKey* UiMidiKey::OnMidiKeyPress( Callback_t&& fn ) { SetEventCallback<Ui::IMidiKey::OnMidiKeyPress>( m_OnMidiKeyPress, std::move( fn ), MakeThisFunc( __OnMidiKeyPress ) ); return this; }
+	UiMidiKey* UiMidiKey::OnMidiKeyRelease( Callback_t&& fn ) { SetEventCallback<Ui::IMidiKey::OnMidiKeyRelease>( m_OnMidiKeyRelease, std::move( fn ), MakeThisFunc( __OnMidiKeyRelease ) ); return this; }
 }

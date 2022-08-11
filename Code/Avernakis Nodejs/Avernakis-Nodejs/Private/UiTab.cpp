@@ -194,10 +194,10 @@ namespace Nav
 		return GetControlTyped().GroupSet( tg );
 	}
 
-	UiTab* UiTab::OnSelectionChange /**/( OnSelectionChange_t /**/ && fn ) { m_OnSelectionChange /**/ = SetEventCallback<Ui::ITab::OnSelectionChange /**/>( std::move( fn ), MakeThisFunc( __OnSelectionChange /**/ ) ); return this; }
-	UiTab* UiTab::OnDoubleClick     /**/( OnTabClick_t        /**/ && fn ) { m_OnDoubleClick     /**/ = SetEventCallback<Ui::ITab::OnDoubleClick     /**/>( std::move( fn ), MakeThisFunc( __OnDoubleClick     /**/ ) ); return this; }
-	UiTab* UiTab::OnRightClick      /**/( OnTabClick_t        /**/ && fn ) { m_OnRightClick      /**/ = SetEventCallback<Ui::ITab::OnRightClick      /**/>( std::move( fn ), MakeThisFunc( __OnRightClick      /**/ ) ); return this; }
-	UiTab* UiTab::OnMiddleClick     /**/( OnTabClick_t        /**/ && fn ) { m_OnMiddleClick     /**/ = SetEventCallback<Ui::ITab::OnMiddleClick     /**/>( std::move( fn ), MakeThisFunc( __OnMiddleClick     /**/ ) ); return this; }
-	UiTab* UiTab::OnDrag            /**/( OnDrag_t            /**/ && fn ) { m_OnDrag            /**/ = SetEventCallback<Ui::ITab::OnDrag            /**/>( std::move( fn ), MakeThisFunc( __OnDrag            /**/ ) ); return this; }
-	UiTab* UiTab::OnButtonClick     /**/( OnButtonClick_t     /**/ && fn ) { m_OnButtonClick     /**/ = SetEventCallback<Ui::ITab::OnButtonClick     /**/>( std::move( fn ), MakeThisFunc( __OnButtonClick     /**/ ) ); return this; }
+	UiTab* UiTab::OnSelectionChange /**/( OnSelectionChange_t /**/ && fn ) { SetEventCallback<Ui::ITab::OnSelectionChange /**/>( m_OnSelectionChange /**/, std::move( fn ), MakeThisFunc( __OnSelectionChange /**/ ) ); return this; }
+	UiTab* UiTab::OnDoubleClick     /**/( OnTabClick_t        /**/ && fn ) { SetEventCallback<Ui::ITab::OnDoubleClick     /**/>( m_OnDoubleClick     /**/, std::move( fn ), MakeThisFunc( __OnDoubleClick     /**/ ) ); return this; }
+	UiTab* UiTab::OnRightClick      /**/( OnTabClick_t        /**/ && fn ) { SetEventCallback<Ui::ITab::OnRightClick      /**/>( m_OnRightClick      /**/, std::move( fn ), MakeThisFunc( __OnRightClick      /**/ ) ); return this; }
+	UiTab* UiTab::OnMiddleClick     /**/( OnTabClick_t        /**/ && fn ) { SetEventCallback<Ui::ITab::OnMiddleClick     /**/>( m_OnMiddleClick     /**/, std::move( fn ), MakeThisFunc( __OnMiddleClick     /**/ ) ); return this; }
+	UiTab* UiTab::OnDrag            /**/( OnDrag_t            /**/ && fn ) { SetEventCallback<Ui::ITab::OnDrag            /**/>( m_OnDrag            /**/, std::move( fn ), MakeThisFunc( __OnDrag            /**/ ) ); return this; }
+	UiTab* UiTab::OnButtonClick     /**/( OnButtonClick_t     /**/ && fn ) { SetEventCallback<Ui::ITab::OnButtonClick     /**/>( m_OnButtonClick     /**/, std::move( fn ), MakeThisFunc( __OnButtonClick     /**/ ) ); return this; }
 }

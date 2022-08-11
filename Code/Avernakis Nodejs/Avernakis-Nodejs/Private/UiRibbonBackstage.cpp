@@ -61,7 +61,7 @@ namespace Nav
 		m_OnHighlight( this, nIndex );
 	}
 
-	UiRibbonBackstage* UiRibbonBackstage::OnSelect    /**/( Callback_t&& fn ) { m_OnSelect    /**/ = SetEventCallback<Ui::IRibbonBackstage::OnSelect    /**/>( std::move( fn ), MakeThisFunc( __OnSelect    /**/ ) ); return this; }
-	UiRibbonBackstage* UiRibbonBackstage::OnHighlight /**/( Callback_t&& fn ) { m_OnHighlight /**/ = SetEventCallback<Ui::IRibbonBackstage::OnHighlight /**/>( std::move( fn ), MakeThisFunc( __OnHighlight /**/ ) ); return this; }
+	UiRibbonBackstage* UiRibbonBackstage::OnSelect    /**/( Callback_t&& fn ) { SetEventCallback<Ui::IRibbonBackstage::OnSelect    /**/>( m_OnSelect    /**/, std::move( fn ), MakeThisFunc( __OnSelect    /**/ ) ); return this; }
+	UiRibbonBackstage* UiRibbonBackstage::OnHighlight /**/( Callback_t&& fn ) { SetEventCallback<Ui::IRibbonBackstage::OnHighlight /**/>( m_OnHighlight /**/, std::move( fn ), MakeThisFunc( __OnHighlight /**/ ) ); return this; }
 
 }

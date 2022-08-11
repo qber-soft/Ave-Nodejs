@@ -45,6 +45,6 @@ namespace Nav
 		m_OnClick( this );
 	}
 
-	UiRibbonGroup* UiRibbonGroup::OnDetailClick( Callback_t&& fn ) { m_OnClick = SetEventCallback<Ui::IRibbonGroup::OnDetailClick>( std::move( fn ), MakeThisFunc( __OnDetailClick ) ); return this; }
+	UiRibbonGroup* UiRibbonGroup::OnDetailClick( Callback_t&& fn ) { SetEventCallback<Ui::IRibbonGroup::OnDetailClick>( m_OnClick, std::move( fn ), MakeThisFunc( __OnDetailClick ) ); return this; }
 
 }

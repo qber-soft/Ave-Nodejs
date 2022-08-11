@@ -202,9 +202,9 @@ namespace Nav
 		return nullptr;
 	}
 
-	UiMenu* UiMenu::OnClick       /**/( Callback_t       /**/&& fn ) { m_OnClick       /**/ = SetEventCallback<Ui::IMenu::OnClick       /**/>( std::move( fn ), MakeThisFunc( __OnClick       /**/ ) ); return this; }
-	UiMenu* UiMenu::OnRightClick  /**/( Callback_t       /**/&& fn ) { m_OnRightClick  /**/ = SetEventCallback<Ui::IMenu::OnRightClick  /**/>( std::move( fn ), MakeThisFunc( __OnRightClick  /**/ ) ); return this; }
-	UiMenu* UiMenu::OnMiddleClick /**/( Callback_t       /**/&& fn ) { m_OnMiddleClick /**/ = SetEventCallback<Ui::IMenu::OnMiddleClick /**/>( std::move( fn ), MakeThisFunc( __OnMiddleClick /**/ ) ); return this; }
-	UiMenu* UiMenu::OnShow        /**/( OnVisibleChange_t/**/&& fn ) { m_OnShow        /**/ = SetEventCallback<Ui::IMenu::OnShow        /**/>( std::move( fn ), MakeThisFunc( __OnShow        /**/ ) ); return this; }
-	UiMenu* UiMenu::OnHide        /**/( OnVisibleChange_t/**/&& fn ) { m_OnHide        /**/ = SetEventCallback<Ui::IMenu::OnHide        /**/>( std::move( fn ), MakeThisFunc( __OnHide        /**/ ) ); return this; }
+	UiMenu* UiMenu::OnClick       /**/( Callback_t       /**/&& fn ) { SetEventCallback<Ui::IMenu::OnClick       /**/>( m_OnClick       /**/, std::move( fn ), MakeThisFunc( __OnClick       /**/ ) ); return this; }
+	UiMenu* UiMenu::OnRightClick  /**/( Callback_t       /**/&& fn ) { SetEventCallback<Ui::IMenu::OnRightClick  /**/>( m_OnRightClick  /**/, std::move( fn ), MakeThisFunc( __OnRightClick  /**/ ) ); return this; }
+	UiMenu* UiMenu::OnMiddleClick /**/( Callback_t       /**/&& fn ) { SetEventCallback<Ui::IMenu::OnMiddleClick /**/>( m_OnMiddleClick /**/, std::move( fn ), MakeThisFunc( __OnMiddleClick /**/ ) ); return this; }
+	UiMenu* UiMenu::OnShow        /**/( OnVisibleChange_t/**/&& fn ) { SetEventCallback<Ui::IMenu::OnShow        /**/>( m_OnShow        /**/, std::move( fn ), MakeThisFunc( __OnShow        /**/ ) ); return this; }
+	UiMenu* UiMenu::OnHide        /**/( OnVisibleChange_t/**/&& fn ) { SetEventCallback<Ui::IMenu::OnHide        /**/>( m_OnHide        /**/, std::move( fn ), MakeThisFunc( __OnHide        /**/ ) ); return this; }
 }

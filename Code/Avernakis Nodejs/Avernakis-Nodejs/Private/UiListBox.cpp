@@ -98,9 +98,9 @@ namespace Nav
 		return this;
 	}
 
-	UiListBox* UiListBox::OnSelectionChange /**/( OnSelectionChange_t /**/ && fn ) { m_OnSelectionChange /**/ = SetEventCallback<Ui::IListBox::OnSelectionChange /**/>( std::move( fn ), MakeThisFunc( __OnSelectionChange /**/ ) ); return this; }
-	UiListBox* UiListBox::OnSelectionEnd    /**/( OnSelectionChange_t /**/ && fn ) { m_OnSelectionEnd    /**/ = SetEventCallback<Ui::IListBox::OnSelectionEnd    /**/>( std::move( fn ), MakeThisFunc( __OnSelectionEnd    /**/ ) ); return this; }
-	UiListBox* UiListBox::OnDoubleClick     /**/( OnClick_t           /**/ && fn ) { m_OnDoubleClick     /**/ = SetEventCallback<Ui::IListBox::OnDoubleClick     /**/>( std::move( fn ), MakeThisFunc( __OnDoubleClick     /**/ ) ); return this; }
-	UiListBox* UiListBox::OnRightClick      /**/( OnClick_t           /**/ && fn ) { m_OnRightClick      /**/ = SetEventCallback<Ui::IListBox::OnRightClick      /**/>( std::move( fn ), MakeThisFunc( __OnRightClick      /**/ ) ); return this; }
+	UiListBox* UiListBox::OnSelectionChange /**/( OnSelectionChange_t /**/ && fn ) { SetEventCallback<Ui::IListBox::OnSelectionChange /**/>( m_OnSelectionChange /**/, std::move( fn ), MakeThisFunc( __OnSelectionChange /**/ ) ); return this; }
+	UiListBox* UiListBox::OnSelectionEnd    /**/( OnSelectionChange_t /**/ && fn ) { SetEventCallback<Ui::IListBox::OnSelectionEnd    /**/>( m_OnSelectionEnd    /**/, std::move( fn ), MakeThisFunc( __OnSelectionEnd    /**/ ) ); return this; }
+	UiListBox* UiListBox::OnDoubleClick     /**/( OnClick_t           /**/ && fn ) { SetEventCallback<Ui::IListBox::OnDoubleClick     /**/>( m_OnDoubleClick     /**/, std::move( fn ), MakeThisFunc( __OnDoubleClick     /**/ ) ); return this; }
+	UiListBox* UiListBox::OnRightClick      /**/( OnClick_t           /**/ && fn ) { SetEventCallback<Ui::IListBox::OnRightClick      /**/>( m_OnRightClick      /**/, std::move( fn ), MakeThisFunc( __OnRightClick      /**/ ) ); return this; }
 
 }

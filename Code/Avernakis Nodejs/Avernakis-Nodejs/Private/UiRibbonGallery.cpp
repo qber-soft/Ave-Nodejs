@@ -160,8 +160,8 @@ namespace Nav
 		m_OnMenuClick( this, nId );
 	}
 
-	UiRibbonGallery* UiRibbonGallery::OnSelect    /**/( Callback_t    /**/ && fn ) { m_OnSelect    /**/ = SetEventCallback<Ui::IRibbonGallery::OnSelect    /**/>( std::move( fn ), MakeThisFunc( __OnSelect    /**/ ) ); return this; }
-	UiRibbonGallery* UiRibbonGallery::OnPreview   /**/( OnPreview_t   /**/ && fn ) { m_OnPreview   /**/ = SetEventCallback<Ui::IRibbonGallery::OnPreview   /**/>( std::move( fn ), MakeThisFunc( __OnPreview   /**/ ) ); return this; }
-	UiRibbonGallery* UiRibbonGallery::OnDrop      /**/( Callback_t    /**/ && fn ) { m_OnDrop      /**/ = SetEventCallback<Ui::IRibbonGallery::OnDrop      /**/>( std::move( fn ), MakeThisFunc( __OnDrop      /**/ ) ); return this; }
-	UiRibbonGallery* UiRibbonGallery::OnMenuClick /**/( OnMenuClick_t /**/ && fn ) { m_OnMenuClick /**/ = SetEventCallback<Ui::IRibbonGallery::OnMenuClick /**/>( std::move( fn ), MakeThisFunc( __OnMenuClick /**/ ) ); return this; }
+	UiRibbonGallery* UiRibbonGallery::OnSelect    /**/( Callback_t    /**/ && fn ) { SetEventCallback<Ui::IRibbonGallery::OnSelect    /**/>( m_OnSelect    /**/, std::move( fn ), MakeThisFunc( __OnSelect    /**/ ) ); return this; }
+	UiRibbonGallery* UiRibbonGallery::OnPreview   /**/( OnPreview_t   /**/ && fn ) { SetEventCallback<Ui::IRibbonGallery::OnPreview   /**/>( m_OnPreview   /**/, std::move( fn ), MakeThisFunc( __OnPreview   /**/ ) ); return this; }
+	UiRibbonGallery* UiRibbonGallery::OnDrop      /**/( Callback_t    /**/ && fn ) { SetEventCallback<Ui::IRibbonGallery::OnDrop      /**/>( m_OnDrop      /**/, std::move( fn ), MakeThisFunc( __OnDrop      /**/ ) ); return this; }
+	UiRibbonGallery* UiRibbonGallery::OnMenuClick /**/( OnMenuClick_t /**/ && fn ) { SetEventCallback<Ui::IRibbonGallery::OnMenuClick /**/>( m_OnMenuClick /**/, std::move( fn ), MakeThisFunc( __OnMenuClick /**/ ) ); return this; }
 }

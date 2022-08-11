@@ -72,7 +72,7 @@ namespace Nav
 
 	UiCalendar * UiCalendar::OnChange( OnChange_t && fn )
 	{
-		m_OnChange = SetEventCallback<Ui::ICalendar::OnChange>( std::move( fn ), MakeThisFunc( __OnChange ) );
+		SetEventCallback<Ui::ICalendar::OnChange>( m_OnChange, std::move( fn ), MakeThisFunc( __OnChange ) );
 		return this;
 	}
 

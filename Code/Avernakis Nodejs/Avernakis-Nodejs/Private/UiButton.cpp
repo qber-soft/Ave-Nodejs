@@ -80,19 +80,19 @@ namespace Nav
 
 	UiButton * UiButton::OnClick( Callback_t && fn )
 	{
-		m_OnClick = SetEventCallback<Ui::IButton::OnClick>( std::move( fn ), MakeThisFunc( __OnClick ) );
+		SetEventCallback<Ui::IButton::OnClick>( m_OnClick, std::move( fn ), MakeThisFunc( __OnClick ) );
 		return this;
 	}
 
 	UiButton * UiButton::OnDrop( Callback_t && fn )
 	{
-		m_OnDrop = SetEventCallback<Ui::IButton::OnClick>( std::move( fn ), MakeThisFunc( __OnDrop ) );
+		SetEventCallback<Ui::IButton::OnClick>( m_OnDrop, std::move( fn ), MakeThisFunc( __OnDrop ) );
 		return this;
 	}
 
 	UiButton * UiButton::OnCustomDraw( const CallbackInfo& ci, CustomDraw_t && fn )
 	{
-		if ( m_OnCustomDraw = SetEventCallback<Ui::IButton::OnCustomDraw>( std::move( fn ), MakeThisFunc( __OnCustomDraw ) ) )
+		if ( SetEventCallback<Ui::IButton::OnCustomDraw>( m_OnCustomDraw, std::move( fn ), MakeThisFunc( __OnCustomDraw ) ) )
 			AcquirePainter( ci );
 		else
 			ReleasePainter();
