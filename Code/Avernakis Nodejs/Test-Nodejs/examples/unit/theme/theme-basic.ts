@@ -1,16 +1,17 @@
-import { Window, Button } from "../../../src";
-import { getControlDemoContainer, IThemeManager } from "../utility";
+import { Window, Button, ThemePredefined_Dark } from "../../../src";
+import { getControlDemoContainer, IAppContext } from "../utility";
 
-export function main(window: Window, themeManager: IThemeManager) {
+export function main(window: Window, appContext: IAppContext) {
 	const button = new Button(window);
 	button.SetText("Toggling Themes");
 
 	let isDark = false;
 	button.OnClick((sender) => {
 		if (!isDark) {
-			themeManager.themeDark.SetStyle(themeManager.theme, 0);
+			const themeDark = new ThemePredefined_Dark();
+			themeDark.SetStyle(appContext.theme, 0);
 		} else {
-			themeManager.theme.ResetTheme();
+			appContext.theme.ResetTheme();
 		}
 		isDark = !isDark;
 	});

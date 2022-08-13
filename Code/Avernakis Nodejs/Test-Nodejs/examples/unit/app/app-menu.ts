@@ -1,4 +1,4 @@
-import { App, WindowCreation, WindowFlag, CultureId, Grid, Window, ToolBar, StringKey, ToolBarItem, ToolBarItemType, Menu, MenuItem, MenuType, Button, DpiSize } from "../../../src";
+import { App, WindowCreation, WindowFlag, CultureId, Grid, Window, ToolBar, StringKey, ToolBarItem, ToolBarItemType, Menu, MenuItem, MenuType, Button, DpiSize, Vec4 } from "../../../src";
 import * as path from "path";
 
 interface ILang {
@@ -53,6 +53,14 @@ export function run() {
 				WdMainEdit2: "Cut",
 				WdMainEdit3: "Copy",
 
+				ViewMenu0: "View Item 0",
+				ViewMenu1: "View Item 1",
+				ViewMenu2: "View Item 2",
+				// ViewMenu3: reserved for separator
+				ViewMenu4: "Sub Menu",
+				SubMenu0: "SubView A",
+				SubMenu1: "SubView B",
+
 				WdMainHelp0: "Help",
 				WdMainHelp1: "About",
 			},
@@ -74,6 +82,13 @@ export function run() {
 				WdMainEdit1: "重做",
 				WdMainEdit2: "剪切",
 				WdMainEdit3: "复制",
+
+				ViewMenu0: "视图 0",
+				ViewMenu1: "视图 1",
+				ViewMenu2: "视图 2",
+				ViewMenu4: "子视图",
+				SubMenu0: "子视图 A",
+				SubMenu1: "子视图 B",
 
 				WdMainHelp0: "帮助",
 				WdMainHelp1: "关于",
@@ -140,6 +155,7 @@ function getControlDemoContainer(window: Window, count = 1, width = 120, height 
 function createToolbar(sender: Window) {
 	const toolbar = new ToolBar(sender, new StringKey("WdMainAppbar", 0, 10));
 	toolbar.SetBackground(false);
+	toolbar.SetTextColor(new Vec4(255, 255, 255, 255 * 0.8));
 	// toolbar.ToolInsert(new ToolBarItem(1, ToolBarItemType.Menu, 0, DpiSize.FromPixelScaled(0), "File", ""), -1);
 	toolbar.ToolInsert(new ToolBarItem(1, ToolBarItemType.Menu), -1);
 	toolbar.ToolInsert(new ToolBarItem(2, ToolBarItemType.Menu), -1);
@@ -165,11 +181,13 @@ function createToolbar(sender: Window) {
 	menuEdit.InsertItem(new MenuItem(4, MenuType.Text));
 	toolbar.DropSetById(2, menuEdit);
 
-	const menuView = new Menu(sender);
-	for (let i = 0; i < 16; ++i) menuView.InsertItem(new MenuItem(i + 1, MenuType.Text, 0, `View Item ${i}`));
+	const menuView = new Menu(sender, new StringKey("ViewMenu", 0, 5));
+	for (let i = 0; i < 3; ++i) menuView.InsertItem(new MenuItem(i + 1, MenuType.Text));
 	menuView.InsertItem(new MenuItem(0, MenuType.Separator));
-	const menuViewSub = menuView.InsertSubMenu(new MenuItem(100, MenuType.Text, 0, "Sub Menu"));
-	for (let i = 0; i < 16; ++i) menuViewSub.InsertItem(new MenuItem(200 + i, MenuType.Text, 0, `Sub Item ${i}`));
+	const menuViewSub = menuView.InsertSubMenu(new MenuItem(100, MenuType.Text));
+	sender.GetControlManager().AddControl(menuViewSub, new StringKey("SubMenu", 0, 2));
+
+	for (let i = 0; i < 2; ++i) menuViewSub.InsertItem(new MenuItem(200 + i, MenuType.Text));
 	toolbar.DropSetById(3, menuView);
 
 	//
