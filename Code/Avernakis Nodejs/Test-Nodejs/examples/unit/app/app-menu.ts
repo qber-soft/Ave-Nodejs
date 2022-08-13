@@ -176,12 +176,12 @@ function createToolbar(sender: Window) {
 	for (let i = 0; i < 3; ++i) menuView.InsertItem(new MenuItem(i + 1, MenuType.Text, 0, `View Item ${i}`));
 	menuView.InsertItem(new MenuItem(0, MenuType.Separator));
 	const menuViewSub = menuView.InsertSubMenu(new MenuItem(100, MenuType.Text, 0, "Sub Menu"));
-	sender.GetControlManager().AddControl(menuViewSub, "SubMenu");
+	// sender.GetControlManager().AddControl(menuViewSub, "SubMenu");
 
 	// crash:
 	// # Fatal error in HandleScope::HandleScope
 	// # Entering the V8 API without proper locking in place
-	// sender.GetControlManager().AddControl(menuViewSub, new StringKey("SubMenu", 0, 2));
+	sender.GetControlManager().AddControl(menuViewSub, new StringKey("SubMenu", 0, 2));
 
 	for (let i = 0; i < 2; ++i) menuViewSub.InsertItem(new MenuItem(200 + i, MenuType.Text));
 	toolbar.DropSetById(3, menuView);
