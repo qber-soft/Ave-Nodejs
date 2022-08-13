@@ -53,6 +53,9 @@ export function run() {
 				WdMainEdit2: "Cut",
 				WdMainEdit3: "Copy",
 
+				SubMenu0: "View A",
+				SubMenu1: "View B",
+
 				WdMainHelp0: "Help",
 				WdMainHelp1: "About",
 			},
@@ -74,6 +77,9 @@ export function run() {
 				WdMainEdit1: "重做",
 				WdMainEdit2: "剪切",
 				WdMainEdit3: "复制",
+
+				视图A: "View A",
+				视图B: "View B",
 
 				WdMainHelp0: "帮助",
 				WdMainHelp1: "关于",
@@ -167,10 +173,17 @@ function createToolbar(sender: Window) {
 	toolbar.DropSetById(2, menuEdit);
 
 	const menuView = new Menu(sender);
-	for (let i = 0; i < 16; ++i) menuView.InsertItem(new MenuItem(i + 1, MenuType.Text, 0, `View Item ${i}`));
+	for (let i = 0; i < 3; ++i) menuView.InsertItem(new MenuItem(i + 1, MenuType.Text, 0, `View Item ${i}`));
 	menuView.InsertItem(new MenuItem(0, MenuType.Separator));
 	const menuViewSub = menuView.InsertSubMenu(new MenuItem(100, MenuType.Text, 0, "Sub Menu"));
-	for (let i = 0; i < 16; ++i) menuViewSub.InsertItem(new MenuItem(200 + i, MenuType.Text, 0, `Sub Item ${i}`));
+	sender.GetControlManager().AddControl(menuViewSub, "SubMenu");
+
+	// crash:
+	// # Fatal error in HandleScope::HandleScope
+	// # Entering the V8 API without proper locking in place
+	// sender.GetControlManager().AddControl(menuViewSub, new StringKey("SubMenu", 0, 2));
+
+	for (let i = 0; i < 2; ++i) menuViewSub.InsertItem(new MenuItem(200 + i, MenuType.Text));
 	toolbar.DropSetById(3, menuView);
 
 	//
