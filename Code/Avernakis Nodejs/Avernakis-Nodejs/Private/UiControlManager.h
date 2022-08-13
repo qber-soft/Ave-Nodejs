@@ -7,7 +7,7 @@ namespace Nav
 
 	class UiControl;
 
-	class UiControlManager : public WrapObject<UiControlManager, void(), WrapObjectUi>
+	class UiControlManager : public WrapObject<UiControlManager, void(), WrapObjectGeneric>
 	{
 	public:
 		AveWrapObject( UiControlManager );
