@@ -53,13 +53,13 @@ namespace Nav
 
 	UiCheckBox * UiCheckBox::OnCheck( OnCheck_t && fn )
 	{
-		m_OnCheck = SetEventCallback<Ui::ICheckBox::OnCheck>( std::move( fn ), MakeThisFunc( __OnCheck ) );
+		SetEventCallback<Ui::ICheckBox::OnCheck>( m_OnCheck, std::move( fn ), MakeThisFunc( __OnCheck ) );
 		return this;
 	}
 
 	UiCheckBox * UiCheckBox::OnChecking( OnChecking_t && fn )
 	{
-		m_OnChecking = SetEventCallback<Ui::ICheckBox::OnChecking>( std::move( fn ), MakeThisFunc( __OnChecking ) );
+		SetEventCallback<Ui::ICheckBox::OnChecking>( m_OnChecking, std::move( fn ), MakeThisFunc( __OnChecking ) );
 		return this;
 	}
 

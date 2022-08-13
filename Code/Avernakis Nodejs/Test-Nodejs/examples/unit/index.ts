@@ -11,5 +11,5 @@
 // import { run } from "./app/app-lang";
 // import { run } from "./app/app-lang-auto";
 // import { run } from "./app/app-resource";
-import { run } from "./app/app-menu";
-run();
+// import { run } from "./app/app-menu";
+// run();

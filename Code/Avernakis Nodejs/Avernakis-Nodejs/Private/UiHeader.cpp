@@ -148,11 +148,11 @@ namespace Nav
 		return GetControlTyped().Set( nIndex, item );
 	}
 
-	UiHeader * UiHeader::OnClick       /**/( OnCallback1_t   /**/ && fn ) { m_OnClick       /**/ = SetEventCallback<Ui::IHeader::OnClick       /**/>( std::move( fn ), MakeThisFunc( __OnClick       /**/ ) ); return this; }
-	UiHeader * UiHeader::OnAdjustWidth /**/( OnAdjustWidth_t /**/ && fn ) { m_OnAdjustWidth /**/ = SetEventCallback<Ui::IHeader::OnAdjustWidth /**/>( std::move( fn ), MakeThisFunc( __OnAdjustWidth /**/ ) ); return this; }
-	UiHeader * UiHeader::OnOrder       /**/( OnOrder_t       /**/ && fn ) { m_OnOrder       /**/ = SetEventCallback<Ui::IHeader::OnOrder       /**/>( std::move( fn ), MakeThisFunc( __OnOrder       /**/ ) ); return this; }
-	UiHeader * UiHeader::OnDropDown    /**/( OnCallback1_t   /**/ && fn ) { m_OnDropDown    /**/ = SetEventCallback<Ui::IHeader::OnDropDown    /**/>( std::move( fn ), MakeThisFunc( __OnDropDown    /**/ ) ); return this; }
-	UiHeader * UiHeader::OnCheckItem   /**/( OnCallback1_t   /**/ && fn ) { m_OnCheckItem   /**/ = SetEventCallback<Ui::IHeader::OnCheckItem   /**/>( std::move( fn ), MakeThisFunc( __OnCheckItem   /**/ ) ); return this; }
-	UiHeader * UiHeader::OnCheckHeader /**/( OnCallback0_t   /**/ && fn ) { m_OnCheckHeader /**/ = SetEventCallback<Ui::IHeader::OnCheckHeader /**/>( std::move( fn ), MakeThisFunc( __OnCheckHeader /**/ ) ); return this; }
+	UiHeader * UiHeader::OnClick       /**/( OnCallback1_t   /**/ && fn ) { SetEventCallback<Ui::IHeader::OnClick       /**/>( m_OnClick       /**/, std::move( fn ), MakeThisFunc( __OnClick       /**/ ) ); return this; }
+	UiHeader * UiHeader::OnAdjustWidth /**/( OnAdjustWidth_t /**/ && fn ) { SetEventCallback<Ui::IHeader::OnAdjustWidth /**/>( m_OnAdjustWidth /**/, std::move( fn ), MakeThisFunc( __OnAdjustWidth /**/ ) ); return this; }
+	UiHeader * UiHeader::OnOrder       /**/( OnOrder_t       /**/ && fn ) { SetEventCallback<Ui::IHeader::OnOrder       /**/>( m_OnOrder       /**/, std::move( fn ), MakeThisFunc( __OnOrder       /**/ ) ); return this; }
+	UiHeader * UiHeader::OnDropDown    /**/( OnCallback1_t   /**/ && fn ) { SetEventCallback<Ui::IHeader::OnDropDown    /**/>( m_OnDropDown    /**/, std::move( fn ), MakeThisFunc( __OnDropDown    /**/ ) ); return this; }
+	UiHeader * UiHeader::OnCheckItem   /**/( OnCallback1_t   /**/ && fn ) { SetEventCallback<Ui::IHeader::OnCheckItem   /**/>( m_OnCheckItem   /**/, std::move( fn ), MakeThisFunc( __OnCheckItem   /**/ ) ); return this; }
+	UiHeader * UiHeader::OnCheckHeader /**/( OnCallback0_t   /**/ && fn ) { SetEventCallback<Ui::IHeader::OnCheckHeader /**/>( m_OnCheckHeader /**/, std::move( fn ), MakeThisFunc( __OnCheckHeader /**/ ) ); return this; }
 
 }

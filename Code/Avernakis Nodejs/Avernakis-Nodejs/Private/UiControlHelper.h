@@ -89,13 +89,14 @@ namespace Nav
 		void					GiveControl( UniPtr<TControl>&& p ) { if ( p ) p->SetUserContext( static_cast<UiControl*>(this) ); __m_Control = p; __m_ControlData = std::move( p ); }
 
 		template<class TEvent, class TCallback>
-		TCallback SetEventCallback( TCallback&& cb, const typename TEvent::Func_t& f )
+		U1 SetEventCallback( TCallback& v, TCallback&& cb, const typename TEvent::Func_t& f )
 		{
-			if ( cb )
+			if ( !v && cb )
 				GetControlTyped().GetEvent<TEvent>() += f;
-			else
+			else if ( v && !cb )
 				GetControlTyped().GetEvent<TEvent>() -= f;
-			return std::move( cb );
+			v = std::move( cb );
+			return !!cb;
 		}
 	};
 

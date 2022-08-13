@@ -47,7 +47,7 @@ namespace Nav
 
 	UiHyperlink * UiHyperlink::OnClick( Callback_t && fn )
 	{
-		m_OnClick = SetEventCallback<Ui::IHyperlink::OnClick>( std::move( fn ), MakeThisFunc( __OnClick ) );
+		SetEventCallback<Ui::IHyperlink::OnClick>( m_OnClick, std::move( fn ), MakeThisFunc( __OnClick ) );
 		return this;
 	}
 

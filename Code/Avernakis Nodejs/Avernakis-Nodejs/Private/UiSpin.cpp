@@ -49,8 +49,8 @@ namespace Nav
 		m_OnSpin( this, nDelta );
 	}
 
-	UiSpin* UiSpin::OnClick     /**/( OnClick_t     /**/ && fn ) { m_OnClick     /**/ = SetEventCallback<Ui::ISpin::OnClick     /**/>( std::move( fn ), MakeThisFunc( __OnClick     /**/ ) ); return this; }
-	UiSpin* UiSpin::OnSpinStart /**/( OnSpinStart_t /**/ && fn ) { m_OnSpinStart /**/ = SetEventCallback<Ui::ISpin::OnSpinStart /**/>( std::move( fn ), MakeThisFunc( __OnSpinStart /**/ ) ); return this; }
-	UiSpin* UiSpin::OnSpinEnd   /**/( OnSpinEnd_t   /**/ && fn ) { m_OnSpinEnd   /**/ = SetEventCallback<Ui::ISpin::OnSpinEnd   /**/>( std::move( fn ), MakeThisFunc( __OnSpinEnd   /**/ ) ); return this; }
-	UiSpin* UiSpin::OnSpin      /**/( OnSpin_t      /**/ && fn ) { m_OnSpin      /**/ = SetEventCallback<Ui::ISpin::OnSpin      /**/>( std::move( fn ), MakeThisFunc( __OnSpin      /**/ ) ); return this; }
+	UiSpin* UiSpin::OnClick     /**/( OnClick_t     /**/ && fn ) { SetEventCallback<Ui::ISpin::OnClick     /**/>( m_OnClick     /**/, std::move( fn ), MakeThisFunc( __OnClick     /**/ ) ); return this; }
+	UiSpin* UiSpin::OnSpinStart /**/( OnSpinStart_t /**/ && fn ) { SetEventCallback<Ui::ISpin::OnSpinStart /**/>( m_OnSpinStart /**/, std::move( fn ), MakeThisFunc( __OnSpinStart /**/ ) ); return this; }
+	UiSpin* UiSpin::OnSpinEnd   /**/( OnSpinEnd_t   /**/ && fn ) { SetEventCallback<Ui::ISpin::OnSpinEnd   /**/>( m_OnSpinEnd   /**/, std::move( fn ), MakeThisFunc( __OnSpinEnd   /**/ ) ); return this; }
+	UiSpin* UiSpin::OnSpin      /**/( OnSpin_t      /**/ && fn ) { SetEventCallback<Ui::ISpin::OnSpin      /**/>( m_OnSpin      /**/, std::move( fn ), MakeThisFunc( __OnSpin      /**/ ) ); return this; }
 }

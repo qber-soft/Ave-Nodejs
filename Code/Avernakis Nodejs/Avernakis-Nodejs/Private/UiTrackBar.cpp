@@ -55,7 +55,7 @@ namespace Nav
 		m_OnPageChange( this );
 	}
 
-	UiTrackBar* UiTrackBar::OnThumbChange  /**/( Callback_t&& fn ) { m_OnThumbChange  /**/ = SetEventCallback<Ui::ITrackBar::OnThumbChange  /**/>( std::move( fn ), MakeThisFunc( __OnThumbChange  /**/ ) ); return this; }
-	UiTrackBar* UiTrackBar::OnThumbRelease /**/( Callback_t&& fn ) { m_OnThumbRelease /**/ = SetEventCallback<Ui::ITrackBar::OnThumbRelease /**/>( std::move( fn ), MakeThisFunc( __OnThumbRelease /**/ ) ); return this; }
-	UiTrackBar* UiTrackBar::OnPageChange   /**/( Callback_t&& fn ) { m_OnPageChange   /**/ = SetEventCallback<Ui::ITrackBar::OnPageChange   /**/>( std::move( fn ), MakeThisFunc( __OnPageChange   /**/ ) ); return this; }
+	UiTrackBar* UiTrackBar::OnThumbChange  /**/( Callback_t&& fn ) { SetEventCallback<Ui::ITrackBar::OnThumbChange  /**/>( m_OnThumbChange  /**/, std::move( fn ), MakeThisFunc( __OnThumbChange  /**/ ) ); return this; }
+	UiTrackBar* UiTrackBar::OnThumbRelease /**/( Callback_t&& fn ) { SetEventCallback<Ui::ITrackBar::OnThumbRelease /**/>( m_OnThumbRelease /**/, std::move( fn ), MakeThisFunc( __OnThumbRelease /**/ ) ); return this; }
+	UiTrackBar* UiTrackBar::OnPageChange   /**/( Callback_t&& fn ) { SetEventCallback<Ui::ITrackBar::OnPageChange   /**/>( m_OnPageChange   /**/, std::move( fn ), MakeThisFunc( __OnPageChange   /**/ ) ); return this; }
 }

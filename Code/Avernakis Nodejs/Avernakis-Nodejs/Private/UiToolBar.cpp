@@ -116,6 +116,6 @@ namespace Nav
 		return GetControlTyped().ToolSetById( nId, ti );
 	}
 
-	UiToolBar* UiToolBar::OnClick /**/( Callback_t&& fn ) { m_OnClick /**/ = SetEventCallback<Ui::IToolBar::OnClick /**/>( std::move( fn ), MakeThisFunc( __OnClick /**/ ) ); return this; }
-	UiToolBar* UiToolBar::OnDrop  /**/( Callback_t&& fn ) { m_OnDrop  /**/ = SetEventCallback<Ui::IToolBar::OnDrop  /**/>( std::move( fn ), MakeThisFunc( __OnDrop  /**/ ) ); return this; }
+	UiToolBar* UiToolBar::OnClick /**/( Callback_t&& fn ) { SetEventCallback<Ui::IToolBar::OnClick /**/>( m_OnClick /**/, std::move( fn ), MakeThisFunc( __OnClick /**/ ) ); return this; }
+	UiToolBar* UiToolBar::OnDrop  /**/( Callback_t&& fn ) { SetEventCallback<Ui::IToolBar::OnDrop  /**/>( m_OnDrop  /**/, std::move( fn ), MakeThisFunc( __OnDrop  /**/ ) ); return this; }
 }
