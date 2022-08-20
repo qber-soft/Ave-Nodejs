@@ -1,4 +1,4 @@
-import { App, WindowCreation, WindowFlag, CultureId, Grid, Window, ToolBar, StringKey, ToolBarItem, ToolBarItemType, Menu, MenuItem, MenuType, Button, DpiSize, Vec4 } from "../../../src";
+import { App, WindowCreation, WindowFlag, CultureId, Grid, Window, ToolBar, StringKey, ToolBarItem, ToolBarItemType, Menu, MenuItem, MenuType, Button, DpiSize, Vec4, IconSource } from "../../../src";
 import * as path from "path";
 
 interface ILang {
@@ -22,6 +22,7 @@ export function run() {
 
 	const iconDataMap = {
 		WindowIcon: [path.resolve(__dirname, "./Ave#2.png")],
+		OpenFileIcon: [path.resolve(__dirname, "./FileOpen#0.png")],
 	};
 	const resMap = app.CreateResourceMap(app, [16], iconDataMap);
 
@@ -128,7 +129,7 @@ export function run() {
 		const container = getControlDemoContainer(window);
 		container.ControlAdd(button).SetGrid(1, 1);
 
-		const toolbarLeft = createToolbar(window);
+		const toolbarLeft = createToolbar(window, resMap);
 		window.GetFrame().SetToolBarLeft(toolbarLeft);
 		window.SetContent(container);
 		return true;
@@ -152,7 +153,7 @@ function getControlDemoContainer(window: Window, count = 1, width = 120, height 
 	return container;
 }
 
-function createToolbar(sender: Window) {
+function createToolbar(sender: Window, resMap: Record<string, number>) {
 	const toolbar = new ToolBar(sender, new StringKey("WdMainAppbar", 0, 10));
 	toolbar.SetBackground(false);
 	toolbar.SetTextColor(new Vec4(255, 255, 255, 255 * 0.8));
@@ -164,7 +165,8 @@ function createToolbar(sender: Window) {
 
 	const menuFile = new Menu(sender, new StringKey("WdMainFile", 0, 6));
 	menuFile.InsertItem(new MenuItem(1, MenuType.Text));
-	menuFile.InsertItem(new MenuItem(2, MenuType.Text));
+	const openFileIcon = sender.CacheIcon(new IconSource(resMap.OpenFileIcon, 16));
+	menuFile.InsertItem(new MenuItem(2, MenuType.Text, openFileIcon));
 	menuFile.InsertItem(new MenuItem(3, MenuType.Text));
 	menuFile.InsertItem(new MenuItem(4, MenuType.Text));
 	toolbar.DropSetById(1, menuFile);
