@@ -34,16 +34,16 @@ namespace Nav
 					if ( key.m_Count > 0 )
 					{
 						if ( key.m_IdKey )
-							ctl = p->PublicGetControlManager().CreateControlEx<TControl>( key.m_Offset, key.m_IdKey, key.m_Count );
+							ctl = p->PublicGetControlManager().Create<TControl>( key.m_Offset, key.m_IdKey, key.m_Count );
 						else
-							ctl = p->PublicGetControlManager().CreateControlEx<TControl>( key.m_StrKey.c_str(), key.m_Offset, key.m_Count );
+							ctl = p->PublicGetControlManager().Create<TControl>( key.m_StrKey.c_str(), key.m_Offset, key.m_Count );
 					}
 					else
 					{
 						if ( key.m_IdKey )
-							ctl = p->PublicGetControlManager().CreateControl<TControl>( key.m_IdKey );
+							ctl = p->PublicGetControlManager().Create<TControl>( key.m_IdKey );
 						else
-							ctl = p->PublicGetControlManager().CreateControl<TControl>( key.m_StrKey.c_str() );
+							ctl = p->PublicGetControlManager().Create<TControl>( key.m_StrKey.c_str() );
 					}
 				}
 				else

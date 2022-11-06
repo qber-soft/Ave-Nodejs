@@ -233,6 +233,9 @@
     <ClCompile Include="Private\UiThemeFile.cpp">
       <Filter>Ave\Ui\Theme</Filter>
     </ClCompile>
+    <ClCompile Include="Private\UiRichLabel.cpp">
+      <Filter>Ave\Ui\Visual\RichLabel</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Build">
@@ -432,6 +435,9 @@
     </Filter>
     <Filter Include="Ave\Dee">
       <UniqueIdentifier>{5d72e95c-d1dc-4ed6-a2ed-deb952ec9be1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Ave\Ui\Visual\RichLabel">
+      <UniqueIdentifier>{56a8f1d7-bc26-4ba0-bd89-8551a6ed0582}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -688,6 +694,9 @@
     </ClInclude>
     <ClInclude Include="Private\UiThemeFile.h">
       <Filter>Ave\Ui\Theme</Filter>
+    </ClInclude>
+    <ClInclude Include="Private\UiRichLabel.h">
+      <Filter>Ave\Ui\Visual\RichLabel</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

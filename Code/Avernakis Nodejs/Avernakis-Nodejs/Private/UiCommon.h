@@ -108,6 +108,51 @@ namespace Nav
 		List<U32>				m_Index;
 		R32						m_Size;
 		U32						m_Flag;
+
+		U1 FromAve( const Byo2::FontDesc& fd )
+		{
+			m_Type = FontResourceType::Name;
+			m_Name.Clear();
+			m_File.Clear();
+			m_ResourceId.Clear();
+			m_Index.Clear();
+			m_Size = 0.f;
+			m_Flag = 0;
+			if ( !fd.m_Res.m_Name )
+				return false;
+			auto v = AveStr.Split( fd.m_Res.m_Name, AveWide( '/' ) );
+			if ( v.IsEmpty() )
+				return false;
+			if ( AveStr.Find( fd.m_Res.m_Name, AveWide( ':' ) ) )
+			{
+				m_Type = FontResourceType::File;
+				for ( auto& i : v )
+				{
+					auto pColon = (PWChar) AveStr.Find( &i[0], AveWide( ':' ) );
+					if ( !pColon )
+						return false;
+					*pColon = 0;
+					m_Name.Add( i );
+					m_File.Add( pColon + 1 );
+				}
+			}
+			else
+			{
+				for ( auto& i : v )
+				{
+					m_Name.Add( i );
+				}
+			}
+			if ( fd.m_Res.m_Index )
+			{
+				const auto nCount = (U32) v.Size();
+				for ( U32 i = 0; i < nCount; ++i )
+					m_Index.Add( fd.m_Res.m_Index[i] );
+			}
+			m_Size = fd.m_Size;
+			m_Flag = fd.m_Flag;
+			return true;
+		}
 	};
 
 	class UiFontDescriptionByo2
@@ -120,7 +165,7 @@ namespace Nav
 
 		void FromJs( const WrapData<UiFontDescription>& font, Io::IResourceManager& rm )
 		{
-			m_String.clear();
+			m_String.Clear();
 			m_Stream.Clear();
 			m_StreamPointer.Clear();
 			AveZeroObject( m_FontDesc );
@@ -137,7 +182,8 @@ namespace Nav
 						return;
 					m_String += i + AveWide( "/" );
 				}
-				m_String.pop_back();
+				if ( !m_String.IsEmpty() )
+					m_String.RemoveLast();
 			}
 			else if ( FontResourceType::File == font.m_Type )
 			{
@@ -156,7 +202,8 @@ namespace Nav
 					m_Stream.Add( std::move( fs ) );
 					m_String += WString( AveWide( "a:" ) ) + i + AveWide( "/" );
 				}
-				m_String.pop_back();
+				if ( !m_String.IsEmpty() )
+					m_String.RemoveLast();
 			}
 			else if ( FontResourceType::ResourceId == font.m_Type )
 			{
@@ -173,7 +220,8 @@ namespace Nav
 					m_Stream.Add( std::move( fs ) );
 					m_String += AveWide( "a/" );
 				}
-				m_String.pop_back();
+				if ( !m_String.IsEmpty() )
+					m_String.RemoveLast();
 			}
 
 			m_FontDesc.m_Res.m_Name = m_String.c_str();

@@ -31,6 +31,7 @@ namespace Nav
 		void						ResetTheme() { m_Object->ThemeClear(); }
 
 		void						SetFont( const WrapData<UiFontDescription>& font );
+		WrapData<UiFontDescription>	GetFont() const;
 
 		void						AnimationSetDuration( U32 nMillisecond );
 		U32							AnimationGetDuration();

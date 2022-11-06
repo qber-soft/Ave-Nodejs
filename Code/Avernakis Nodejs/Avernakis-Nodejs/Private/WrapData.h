@@ -162,6 +162,11 @@ namespace Nav
 			WrapDataTransit<TData>::__Init();
 		}
 
+		WrapData( std::nullptr_t )
+		{
+			m_Null = true;
+		}
+
 		WrapData( const TData& r )
 		{
 			WrapDataTransit<TData>::__Init();
@@ -181,6 +186,8 @@ namespace Nav
 			Napi::Value( *m_ToJs )(Napi::Env, const void*);
 		};
 
+		U1 m_Null{ false };
+
 	private:
 		static AveInline U1 __Check( const Napi::Object& obj )
 		{
@@ -190,12 +197,16 @@ namespace Nav
 
 		AveInline void __SetData( const Napi::Object& obj )
 		{
+			m_Null = false;
 			WrapDataTransit<TData>::__SetData( *this, obj );
 		}
 
 		AveInline Napi::Value __GetData( Napi::Env env )
 		{
-			return WrapDataTransit<TData>::__GetData( *this, env );
+			if ( !m_Null )
+				return WrapDataTransit<TData>::__GetData( *this, env );
+			else
+				return env.Undefined();
 		}
 	};
 

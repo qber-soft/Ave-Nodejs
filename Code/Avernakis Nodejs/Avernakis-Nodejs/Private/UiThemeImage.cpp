@@ -18,6 +18,7 @@ namespace Nav
 		AutoAddMethod( ResetTheme, WrapObjectUi );
 
 		AutoAddMethod( SetFont, WrapObjectUi );
+		AutoAddMethod( GetFont );
 
 		AutoAddMethod( AnimationSetDuration );
 		AutoAddMethod( AnimationGetDuration );
@@ -44,6 +45,13 @@ namespace Nav
 		UiFontDescriptionByo2 f2;
 		f2.FromJs( font, m_Object->GetResourceManager() );
 		m_Object->SetFont( f2.m_FontDesc );
+	}
+
+	WrapData<UiFontDescription> UiThemeImage::GetFont() const
+	{
+		WrapData<UiFontDescription> fd;
+		fd.FromAve( m_Object->GetFont() );
+		return fd;
 	}
 
 	void UiThemeImage::AnimationSetDuration( U32 nMillisecond )

@@ -48,6 +48,7 @@ export * from "./Visual/UiAnimFrame";
 export * from "./Visual/UiColorView";
 export * from "./Visual/UiLabel";
 export * from "./Visual/UiPicture";
+export * from "./Visual/UiRichLabel";
 
 // Ribbon
 export * from "./Ribbon/UiRibbon";
