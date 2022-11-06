@@ -116,6 +116,13 @@ export class RichLabelSimpleShape {
 }
 
 export class RichLabelColor {
+	static FromNative(color: RichLabelColor) {
+		color.Color = Vec4.FromNative(color.Color);
+		color.Rect = color.Rect?.map((each) => Rect.FromNative(each));
+		color.Scaling = Vec2.FromNative(color.Scaling);
+		return color;
+	}
+
 	Color: Vec4 = Vec4.Zero; // .a==0: use default
 	Rect: Rect[] = null;
 	Scaling: Vec2 = Vec2.Zero;
@@ -124,11 +131,21 @@ export class RichLabelColor {
 }
 
 export class RichLabelUnderline {
+	static FromNative(underline: RichLabelUnderline) {
+		underline.Color = RichLabelColor.FromNative(underline.Color);
+		return underline;
+	}
+
 	Color: RichLabelColor = new RichLabelColor();
 	Shape: RichLabelSimpleShape = new RichLabelSimpleShape(); // .Offset is auto scaled pixel
 }
 
 export class RichLabelStrike {
+	static FromNative(strike: RichLabelStrike) {
+		strike.Color = RichLabelColor.FromNative(strike.Color);
+		return strike;
+	}
+
 	Color: RichLabelColor = new RichLabelColor();
 	Shape: RichLabelSimpleShape = new RichLabelSimpleShape(); // .Offset is normalized value in the whole line excluding ruby
 }
@@ -140,6 +157,11 @@ export enum RichLabelEmphasisType {
 }
 
 export class RichLabelEmphasis {
+	static FromNative(emphasis: RichLabelEmphasis) {
+		emphasis.Color = RichLabelColor.FromNative(emphasis.Color);
+		return emphasis;
+	}
+
 	Type: RichLabelEmphasisType = RichLabelEmphasisType.Rectangle;
 	Shape: RichLabelSimpleShape = new RichLabelSimpleShape(); // .Offset is auto scaled pixel
 	Near: boolean = false; // true: display at nearer to begining of text flow direction
@@ -148,21 +170,44 @@ export class RichLabelEmphasis {
 }
 
 export class RichLabelTextColor {
+	static FromNative(color: RichLabelTextColor) {
+		color.Text = RichLabelColor.FromNative(color.Text);
+		color.Border = RichLabelColor.FromNative(color.Border);
+		color.Shadow = RichLabelColor.FromNative(color.Shadow);
+		return color;
+	}
+
 	Text: RichLabelColor = new RichLabelColor(); // .Color.a==0: use Label default text color (FmSetDefaultTextColor)
 	Border: RichLabelColor = new RichLabelColor();
 	Shadow: RichLabelColor = new RichLabelColor();
 }
 
 export class RichLabelBackColor {
+	static FromNative(color: RichLabelBackColor) {
+		color.Color = RichLabelColor.FromNative(color.Color);
+		return color;
+	}
+
 	Color: RichLabelColor = new RichLabelColor();
 }
 
 export class RichLabelTextFxColor {
+	static FromNative(color: RichLabelTextFxColor) {
+		color.Color = color.Color?.map((each) => Vec4.FromNative(each));
+		return color;
+	}
+
 	Color: Vec4[] = [];
 	Speed: number = 0; // unit: 1/s. 0.5 means need 2 seconds to translate between all m_ColorCount colors
 }
 
 export class RichLabelTextFxTransform {
+	static FromNative(transform: RichLabelTextFxTransform) {
+		transform.TranslationRange = Vec2.FromNative(transform.TranslationRange);
+		transform.ScaleRange = Vec2.FromNative(transform.ScaleRange);
+		return transform;
+	}
+
 	TranslationRange: Vec2 = Vec2.Zero;
 	RotationRange: number = 0;
 	ScaleRange: Vec2 = Vec2.Zero;
@@ -183,6 +228,12 @@ export class RichLabelTextWave {
 }
 
 export class RichLabelTextFx {
+	static FromNative(fx: RichLabelTextFx) {
+		fx.Color = RichLabelTextFxColor.FromNative(fx.Color);
+		fx.Transform = RichLabelTextFxTransform.FromNative(fx.Transform);
+		return fx;
+	}
+
 	Type: RichLabelTextFxType = RichLabelTextFxType.Custom;
 	CustomId: number = 0;
 	Color: RichLabelTextFxColor = new RichLabelTextFxColor();
@@ -381,4 +432,56 @@ export interface IRichLabel extends IVisual {
 	PlGetLastCluster(): number;
 }
 
-export class RichLabel extends (AveLib.UiRichLabel as IRichLabel) {}
+export class RichLabel extends (AveLib.UiRichLabel as IRichLabel) {
+	FmGetDefaultTextColor(): RichLabelTextColor {
+		return RichLabelTextColor.FromNative(super.FmGetDefaultTextColor());
+	}
+
+	FmGetDefaultBackColor(): RichLabelTextColor {
+		return RichLabelTextColor.FromNative(super.FmGetDefaultBackColor());
+	}
+
+	FmGetRubyTextColor(): RichLabelTextColor {
+		return RichLabelTextColor.FromNative(super.FmGetRubyTextColor());
+	}
+
+	FmGetRubyBackColor(): RichLabelBackColor {
+		return RichLabelBackColor.FromNative(super.FmGetRubyBackColor());
+	}
+
+	FmGetUnderline(index: number): RichLabelUnderline {
+		return RichLabelUnderline.FromNative(super.FmGetUnderline(index));
+	}
+
+	FmGetStrikethrough(index: number): RichLabelStrike[] {
+		return super.FmGetStrikethrough(index).map((each) => RichLabelStrike.FromNative(each));
+	}
+
+	FmGetEmphasis(index: number): RichLabelEmphasis {
+		return RichLabelEmphasis.FromNative(super.FmGetEmphasis(index));
+	}
+
+	FmGetTextColor(index: number): RichLabelTextColor {
+		return RichLabelTextColor.FromNative(super.FmGetTextColor(index));
+	}
+
+	FmGetTextColorByName(name: string): RichLabelTextColor {
+		return RichLabelTextColor.FromNative(super.FmGetTextColorByName(name));
+	}
+
+	FmGetBackColor(index: number): RichLabelBackColor {
+		return RichLabelBackColor.FromNative(super.FmGetBackColor(index));
+	}
+
+	FmGetBackColorByName(name: string): RichLabelBackColor {
+		return RichLabelBackColor.FromNative(super.FmGetBackColorByName(name));
+	}
+
+	FmGetTextEffect(index: number): RichLabelTextFx {
+		return RichLabelTextFx.FromNative(super.FmGetTextEffect(index));
+	}
+
+	FmGetTextEffectByName(name: string): RichLabelTextFx {
+		return RichLabelTextFx.FromNative(super.FmGetTextEffectByName(name));
+	}
+}
