@@ -10,6 +10,7 @@ export interface ITheme {
 	ResetTheme(): void;
 
 	SetFont(font: FontDescription): void;
+	GetFont(): FontDescription;
 
 	AnimationSetDuration(nMillisecond: number): void; // [0, 10000]
 	AnimationGetDuration(): number;

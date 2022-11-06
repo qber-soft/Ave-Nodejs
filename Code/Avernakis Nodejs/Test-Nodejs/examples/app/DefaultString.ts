@@ -115,6 +115,7 @@ export const DefaultString = {
 	PageOwnedWindow				/**/: "Owned Window",
 	PagePopup					/**/: "Popup",
 	PageTextBox					/**/: "TextBox",
+	PageRichLabel 				/**/: "RichLabel",
 	PageRichListBox				/**/: "RichListBox",
 	PageRichListBoxView0		/**/: "Detail",
 	PageRichListBoxView1		/**/: "Tile",

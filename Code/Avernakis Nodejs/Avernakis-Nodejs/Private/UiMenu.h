@@ -30,9 +30,9 @@ namespace Nav
 			m_Text    /**/ = s.m_Text    /**/;
 			m_TextSub /**/ = s.m_TextSub /**/;
 			m_Size    /**/ = s.m_Size    /**/;
-			m_Key.clear();
+			m_Key.Clear();
 			if ( s.m_Key )
-				m_Key.push_back( s.m_Key );
+				m_Key += s.m_Key;
 		}
 	};
 
@@ -53,7 +53,7 @@ namespace Nav
 			d.m_Size    /**/ = s.m_Size    /**/;
 			d.m_Text    /**/ = (PWChar) s.m_Text    /**/.c_str();
 			d.m_TextSub /**/ = (PWChar) s.m_TextSub /**/.c_str();
-			d.m_Key     /**/ = 1 == s.m_Key.length() && (s.m_Key[0] < 0xd800 || s.m_Key[0] > 0xdfff) ? s.m_Key[0] : 0;
+			d.m_Key     /**/ = 1 == s.m_Key.Length() && (s.m_Key[0] < 0xd800 || s.m_Key[0] > 0xdfff) ? s.m_Key[0] : 0;
 			d.m_Context = nullptr;
 			d.m_TextCharLength = 0;
 			d.m_TextSubCharLength = 0;

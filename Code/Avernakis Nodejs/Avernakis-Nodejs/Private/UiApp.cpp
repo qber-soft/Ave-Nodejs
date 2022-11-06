@@ -280,7 +280,7 @@ namespace Nav
 			auto& str = App::GetSingleton().IniGetString();
 			auto vkey = str.GetKey();
 			for ( auto& i : vkey )
-				obj.Set( AveStr.Utf16ToUtf8( i ), Napi::String::New( ci.GetEnv(), (const char16_t*) str.GetString( i ) ) );
+				obj.Set( AveStr.Utf16ToUtf8( i ).c_str(), Napi::String::New(ci.GetEnv(), (const char16_t*) str.GetString(i)));
 		}
 		return obj;
 	}

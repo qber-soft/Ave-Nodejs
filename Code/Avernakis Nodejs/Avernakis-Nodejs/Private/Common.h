@@ -256,12 +256,12 @@ namespace Nav
 			if ( ci.m_Symbol )
 				m_Symbol = ci.m_Symbol;
 			else
-				m_Symbol.clear();
-			m_DecimalSeparator.clear();
-			m_DecimalSeparator.push_back( ci.m_DecimalSeparator );
+				m_Symbol.Clear();
+			m_DecimalSeparator.Clear();
+			m_DecimalSeparator += ci.m_DecimalSeparator;
 			m_DecimalDigits = ci.m_DecimalDigits;
-			m_GroupSeparator.clear();
-			m_GroupSeparator.push_back( ci.m_GroupSeparator );
+			m_GroupSeparator.Clear();
+			m_GroupSeparator += ci.m_GroupSeparator;
 			m_GroupSize.Resize( CountOf( ci.m_GroupSize ) );
 			AveCopyMemory( m_GroupSize.Data(), ci.m_GroupSize, sizeof( ci.m_GroupSize ) );
 			m_PositivePattern = ci.m_PositivePattern;

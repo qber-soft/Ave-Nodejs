@@ -37,6 +37,18 @@ namespace Nav
 		U1				m_Null{ false };
 	};
 
+	template<class T>
+	class Nullable;
+
+	template<>
+	class Nullable<PCWChar>
+	{
+	public:
+		PCWChar			m_Data;
+
+		operator PCWChar () const { return m_Data; }
+	};
+
 	// Don't use Napi::ObjectReference, this class doesn't allow copy
 	template<class TObject>
 	class JsObject
@@ -317,6 +329,16 @@ namespace Nav
 		template<> class __CheckType<PCWChar /**/> : public __CheckTypeHelper<&Napi::Number::IsString> {};
 		template<> class __CheckType<WString /**/> : public __CheckTypeHelper<&Napi::Number::IsString> {};
 
+		template<>
+		class __CheckType<Nullable<PCWChar>>
+		{
+		public:
+			static AveInline U1 Check( const Napi::Value & v )
+			{
+				return v.IsNull() || v.IsUndefined() || v.IsString();
+			}
+		};
+
 		template<class T>
 		class __CheckType<WrapData<T>>
 		{
@@ -440,6 +462,7 @@ namespace Nav
 		template<> class __CheckType<WrapArray<R32_2 /**/>> : public __CheckArrayHelper {};
 		template<> class __CheckType<WrapArray<R32_3 /**/>> : public __CheckArrayHelper {};
 		template<> class __CheckType<WrapArray<R32_4 /**/>> : public __CheckArrayHelper {};
+		template<> class __CheckType<WrapArray<R32_R /**/>> : public __CheckArrayHelper {};
 
 		template<> class __CheckType<const WrapArray<S8    /**/>&> : public __CheckArrayHelper {};
 		template<> class __CheckType<const WrapArray<S16   /**/>&> : public __CheckArrayHelper {};
@@ -452,6 +475,7 @@ namespace Nav
 		template<> class __CheckType<const WrapArray<R32_2 /**/>&> : public __CheckArrayHelper {};
 		template<> class __CheckType<const WrapArray<R32_3 /**/>&> : public __CheckArrayHelper {};
 		template<> class __CheckType<const WrapArray<R32_4 /**/>&> : public __CheckArrayHelper {};
+		template<> class __CheckType<const WrapArray<R32_R /**/>&> : public __CheckArrayHelper {};
 
 		template<> class __CheckType<ArrayBuffer> : public __CheckArrayHelper {};
 		template<> class __CheckType<const ArrayBuffer&>: public __CheckArrayHelper {};
@@ -544,6 +568,28 @@ namespace Nav
 		public:
 			using TargetType_t = __WString;
 			static AveInline void ToCpp( void* p, const Napi::Value& v ) { *(TargetType_t*) p = (PCWChar) v.As<Napi::String>().Utf16Value().c_str(); }
+		};
+
+		class __NullableWString : WString
+		{
+		public:
+			using WString::WString;
+			U1 m_Null{ false };
+			operator Nullable<PCWChar>() const { return { m_Null ? nullptr : c_str() }; }
+		};
+
+		// This type only support js to c++ conversion
+		template<> class __ConvertType<Nullable<PCWChar>>
+		{
+		public:
+			using TargetType_t = __NullableWString;
+			static AveInline void ToCpp( void* p, const Napi::Value& v )
+			{
+				if ( v.IsString() )
+					*(TargetType_t*) p = (PCWChar) v.As<Napi::String>().Utf16Value().c_str();
+				else
+					((TargetType_t*) p)->m_Null = true;
+			}
 		};
 
 		template<class T>
