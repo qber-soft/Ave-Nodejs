@@ -74,8 +74,8 @@ ID			(dec): Specify icon ID
 
 FX syntax
 ====================================================================================================
-Index		(dec): Specify icon index, define with SetTextEffect
-%Name		(txt): Specify icon name, define with SetTextEffect
+Index		(dec): Specify FX index, define with SetTextEffect
+%Name		(txt): Specify FX name, define with SetTextEffect
 
 
 VAR syntax
@@ -137,7 +137,7 @@ export enum RichLabelEmphasisType {
 	Rectangle,
 	Circle,
 	Icon,
-};
+}
 
 export class RichLabelEmphasis {
 	Type: RichLabelEmphasisType = RichLabelEmphasisType.Rectangle;
@@ -162,7 +162,7 @@ export class RichLabelTextFxColor {
 	Speed: number = 0; // unit: 1/s. 0.5 means need 2 seconds to translate between all m_ColorCount colors
 }
 
-export class RichLabelTextTransform {
+export class RichLabelTextFxTransform {
 	TranslationRange: Vec2 = Vec2.Zero;
 	RotationRange: number = 0;
 	ScaleRange: Vec2 = Vec2.Zero;
@@ -174,19 +174,19 @@ export enum RichLabelTextFxType {
 	Color,
 	Transform,
 	Wave,
-};
+}
 
 export class RichLabelTextWave {
 	Frequency: number = 0;
 	Amplitude: number = 0;
 	Speed: number = 0; // unit: 1/s.
-};
+}
 
 export class RichLabelTextFx {
 	Type: RichLabelTextFxType = RichLabelTextFxType.Custom;
 	CustomId: number = 0;
 	Color: RichLabelTextFxColor = new RichLabelTextFxColor();
-	Transform: RichLabelTextTransform = new RichLabelTextTransform();
+	Transform: RichLabelTextFxTransform = new RichLabelTextFxTransform();
 	Wave: RichLabelTextWave = new RichLabelTextWave();
 }
 
@@ -196,7 +196,7 @@ export type RichLabelCluster = {
 	CharTotal: number;
 	ClusterIndex: number;
 	ClusterTotal: number;
-}
+};
 
 export class RichLabelTransform {
 	Translation: Vec2 = Vec2.Zero;
@@ -216,20 +216,20 @@ export type RichLabelTextFxCustom = {
 	Id: number;
 	Time: number;
 	FrameTime: number;
-}
+};
 
 export type RichLabelCustomPlay = {
 	Cluster: RichLabelCluster;
 	Progress: number;
 	Time: number;
 	FrameTime: number;
-}
+};
 
 export type RichLabelQueryVariable = {
 	IsName: boolean;
 	Id: number;
 	Name: string;
-}
+};
 
 // prettier-ignore
 export enum RichLabelReset {
@@ -245,7 +245,7 @@ export enum RichLabelReset {
 }
 
 export interface IRichLabel extends IVisual {
-	new(window: WindowLike, key?: string | number): IRichLabel;
+	new (window: WindowLike, key?: string | number): IRichLabel;
 
 	// ====================================================================================================
 	// Basic
@@ -381,5 +381,4 @@ export interface IRichLabel extends IVisual {
 	PlGetLastCluster(): number;
 }
 
-export class RichLabel extends (AveLib.UiRichLabel as IRichLabel) {
-}
+export class RichLabel extends (AveLib.UiRichLabel as IRichLabel) {}
