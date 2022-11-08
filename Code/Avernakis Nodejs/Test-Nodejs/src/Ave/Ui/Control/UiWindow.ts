@@ -100,10 +100,15 @@ export enum WindowTaskbarIconicType {
 	LivePreview,
 }
 
+function WindowTaskbarIconicImageFromNative(image: WindowTaskbarIconicImage) {
+	image.Size = Vec2.FromNative(image.Size);
+	return image;
+}
+
 export type WindowTaskbarIconicImage = {
 	Type: WindowTaskbarIconicType;
 	Size: Vec2;
-}
+};
 
 export interface IWindowTaskbar {
 	SetState(n: ProgressBarState): IWindowTaskbar;
@@ -353,6 +358,22 @@ class WindowBase extends (AveLib.UiWindow as IWindowConstructor<WindowBase>) {
 	protected m_Frame: IWindowFrame;
 	protected m_FrameToolBarLeft: IControl;
 	protected m_FrameToolBarRight: IControl;
+
+	GetTaskbar(): IWindowTaskbar {
+		const taskBar = super.GetTaskbar();
+
+		type OnIconicUpdateType = IWindowTaskbar["OnIconicUpdate"];
+		const createOnIconicUpdate: (original: OnIconicUpdateType) => OnIconicUpdateType = (original) => {
+			return (fn) => {
+				const callback: Parameters<OnIconicUpdateType>[0] = (sender, ii) => fn(sender, WindowTaskbarIconicImageFromNative(ii));
+				return original(callback);
+			};
+		};
+		const OnIconicUpdate = taskBar.OnIconicUpdate.bind(taskBar);
+		taskBar.OnIconicUpdate = createOnIconicUpdate(OnIconicUpdate);
+
+		return taskBar;
+	}
 
 	GetInfection(): UiThemeInfection {
 		return UiThemeInfection.FromNative(super.GetInfection());

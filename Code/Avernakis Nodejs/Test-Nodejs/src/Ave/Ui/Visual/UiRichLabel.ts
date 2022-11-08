@@ -249,12 +249,24 @@ export type RichLabelCluster = {
 };
 
 export class RichLabelTransform {
+	static FromNative(transform: RichLabelTransform) {
+		transform.Translation = Vec2.FromNative(transform.Translation);
+		transform.Scaling = Vec2.FromNative(transform.Scaling);
+		return transform;
+	}
 	Translation: Vec2 = Vec2.Zero;
 	Scaling: Vec2 = Vec2.Zero;
 	Rotation: number = 0;
 }
 
 export class RichLabelDisplay {
+	static FromNative(display: RichLabelDisplay) {
+		display.Transform = RichLabelTransform.FromNative(display.Transform);
+		display.TextColor = RichLabelTextColor.FromNative(display.TextColor);
+		display.BackColor = RichLabelBackColor.FromNative(display.BackColor);
+		return display;
+	}
+
 	Transform: RichLabelTransform = new RichLabelTransform();
 	TextColor: RichLabelTextColor = new RichLabelTextColor();
 	BackColor: RichLabelBackColor = new RichLabelBackColor();
@@ -265,6 +277,11 @@ export type RichLabelQueryVariable = {
 	IsName: boolean;
 	Id: number;
 	Name: string;
+};
+
+function RichLabelCustomDisplayFromNative(display: RichLabelCustomDisplay) {
+	display.Display = display.Display?.map((each) => RichLabelDisplay.FromNative(each));
+	return display;
 }
 
 export type RichLabelCustomDisplay = {
@@ -274,7 +291,7 @@ export type RichLabelCustomDisplay = {
 	TotalCluster: number;
 	Time: number;
 	FrameTime: number;
-}
+};
 
 // prettier-ignore
 export enum RichLabelReset {
@@ -430,6 +447,35 @@ export interface IRichLabel extends IVisual {
 }
 
 export class RichLabel extends (AveLib.UiRichLabel as IRichLabel) {
+	constructor(window: WindowLike, key?: string | number) {
+		super(window, key);
+		this.ExtendControlInstance(this);
+	}
+
+	private ExtendControlInstance(instance: RichLabel) {
+		//
+		type PlSetCustomType = IRichLabel["PlSetCustom"];
+		const createPlSetCustom: (original: PlSetCustomType) => PlSetCustomType = (original) => {
+			return (fn) => {
+				const callback: Parameters<PlSetCustomType>[0] = (sender, display) => fn(sender, RichLabelCustomDisplayFromNative(display));
+				return original(callback);
+			};
+		};
+		const PlSetCustom = instance.PlSetCustom.bind(instance);
+		instance.PlSetCustom = createPlSetCustom(PlSetCustom);
+
+		//
+		type FmSetTextEffectCustomType = IRichLabel["FmSetTextEffectCustom"];
+		const createFmSetTextEffectCustom: (original: FmSetTextEffectCustomType) => FmSetTextEffectCustomType = (original) => {
+			return (fn) => {
+				const callback: Parameters<FmSetTextEffectCustomType>[0] = (sender, nId, cd) => fn(sender, nId, RichLabelCustomDisplayFromNative(cd));
+				return original(callback);
+			};
+		};
+		const FmSetTextEffectCustom = instance.FmSetTextEffectCustom.bind(instance);
+		instance.FmSetTextEffectCustom = createFmSetTextEffectCustom(FmSetTextEffectCustom);
+	}
+
 	FmGetDefaultTextColor(): RichLabelTextColor {
 		return RichLabelTextColor.FromNative(super.FmGetDefaultTextColor());
 	}
