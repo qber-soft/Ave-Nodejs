@@ -64,4 +64,6 @@ export interface IPlatform {
 	MonitorEnumerate(): MonitorItem[];
 	MonitorGetNeareatPoint(vPos: Vec2, bExtendInfo: boolean): MonitorItem;
 	MonitorGetNeareatRect(vPos: Rect, bExtendInfo: boolean): MonitorItem;
+
+	FontEnumerate(bIncludeVertical: boolean): string[];
 }

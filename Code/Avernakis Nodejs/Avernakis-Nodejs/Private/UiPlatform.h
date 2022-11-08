@@ -54,6 +54,8 @@ namespace Nav
 		WrapData<UiMonitorItem>				MonitorGetNeareatPoint( const WrapData<S32_2>& vPos, U1 bExtendInfo ) const;
 		WrapData<UiMonitorItem>				MonitorGetNeareatRect( const WrapData<S32_R>& vArea, U1 bExtendInfo ) const;
 
+		List<WString>						FontEnumerate( U1 bIncludeVertical ) const;
+
 	private:
 		static AveInline void				__ConvertMonitorInfo( WrapData<UiMonitorItem>& d, Ui::MonitorItem& mi );
 

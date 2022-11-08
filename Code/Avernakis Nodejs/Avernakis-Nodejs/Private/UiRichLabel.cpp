@@ -149,17 +149,6 @@ namespace Nav
 		return true;
 	}
 
-	void UiRichLabel::__OnCustomTextFx( Ui::IRichLabel & sender, const Ui::RichLabelTextFxCustom & fx, Ui::RichLabelDisplay & cd )
-	{
-		UiRichLabelTextFxCustom_t f;
-		UiRichLabelDisplay_t d;
-		UiRichLabelDisplay_t r;
-		f.FromAve( fx );
-		d.FromAve( cd );
-		m_OnCustomTextFx.BlockCall( this, f, d, r );
-		r.ToAve( cd );
-	}
-
 	U32 UiRichLabel::__OnQueryIconId( Ui::IRichLabel & sender, PCWChar szName )
 	{
 		U32 nId = 0;
@@ -176,15 +165,26 @@ namespace Nav
 		return m_QueryVariableResult.c_str();
 	}
 
-	void UiRichLabel::__OnCustomPlay( Ui::IRichLabel & sender, const Ui::RichLabelCustomPlay & cp, Ui::RichLabelDisplay & cd )
+	void UiRichLabel::__OnCustomTextFx( Ui::IRichLabel & sender, U32 nId, Ui::RichLabelCustomDisplay & cd )
 	{
-		UiRichLabelCustomPlay_t c;
-		UiRichLabelDisplay_t d;
-		UiRichLabelDisplay_t r;
-		c.FromAve( cp );
+		RichLabelCustomDisplay_t d;
+		List<UiRichLabelDisplay_t> r;
 		d.FromAve( cd );
-		m_OnCustomPlay.BlockCall( this, c, d, r );
-		r.ToAve( cd );
+		m_OnCustomTextFx.BlockCall( this, nId, d, r );
+		if ( r.Size() == cd.m_Count )
+			for ( U32 i = 0; i < cd.m_Count; ++i )
+				r[i].ToAve( cd.m_Display[i] );
+	}
+
+	void UiRichLabel::__OnCustomPlay( Ui::IRichLabel & sender, const Ui::RichLabelCustomDisplay & cd )
+	{
+		RichLabelCustomDisplay_t d;
+		List<UiRichLabelDisplay_t> r;
+		d.FromAve( cd );
+		m_OnCustomPlay.BlockCall( this, d, r );
+		if ( r.Size() == cd.m_Count )
+			for ( U32 i = 0; i < cd.m_Count; ++i )
+				r[i].ToAve( cd.m_Display[i] );
 	}
 
 	UiRichLabel * UiRichLabel::FmSetDefaultFont( WrapPointer<Byo2Font> pFont )

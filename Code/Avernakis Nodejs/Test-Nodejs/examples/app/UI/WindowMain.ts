@@ -14,7 +14,7 @@ export class WindowMain implements IWindowMain {
 	private m_Theme: ThemeImage;
 	private m_ThemeDark: ThemePredefined_Dark;
 
-	private m_Page: Array<IPage> = null;
+	private m_Page: Array<IPage> = [];
 	private m_PageCurrent: IPage = null;
 
 	private CreateUIMain(sender: Window) {
@@ -263,6 +263,24 @@ export class WindowMain implements IWindowMain {
 
 		sender.GetFrame().SetToolBarLeft(tbrLeft);
 		sender.GetFrame().SetToolBarRight(tbrRight);
+		
+		const tb = sender.GetTaskbar();
+		if (tb) {
+			tb.SetIconCount(2);
+			tb.SetIcon(0, sender.CreateIconAsImage(ResId.Icon_Copy_png, 0));
+			tb.SetIcon(1, sender.CreateIconAsImage(ResId.Icon_Cut_png, 0));
+
+			tb.SetButtonIcon(0, 0);
+			tb.SetButtonIcon(1, 1);
+			tb.SetButtonTooltip(0, "Copy");
+			tb.SetButtonTooltip(1, "Cut");
+			tb.SetButtonVisible(0, true);
+			tb.SetButtonVisible(1, true);
+
+			tb.OnButtonClick((sender, nIndex) => {
+				console.log(`Button[${nIndex}] is clicked.`);
+			});
+		}
 	}
 
 	private OnCreateContent(sender: Window) {

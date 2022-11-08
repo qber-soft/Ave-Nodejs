@@ -228,7 +228,7 @@ namespace Nav
 			m_Speed = 0.f;
 		}
 
-		void ToAve( Ui::RichLabelTextTransform& d ) const
+		void ToAve( Ui::RichLabelTextFxTransform& d ) const
 		{
 			d.m_TranslationRange = m_TranslationRange;
 			d.m_RotationRange = m_RotationRange;
@@ -236,7 +236,7 @@ namespace Nav
 			d.m_Speed = m_Speed;
 		}
 
-		void FromAve( const Ui::RichLabelTextTransform& d )
+		void FromAve( const Ui::RichLabelTextFxTransform& d )
 		{
 			m_TranslationRange = d.m_TranslationRange;
 			m_RotationRange = d.m_RotationRange;
@@ -298,9 +298,8 @@ namespace Nav
 	public:
 		WString							m_Char;
 		S32								m_CharIndex;
-		S32								m_CharTotal;
 		S32								m_ClusterIndex;
-		S32								m_ClusterTotal;
+		R32								m_Progress;
 
 		void FromAve( const Ui::RichLabelCluster& d )
 		{
@@ -309,12 +308,11 @@ namespace Nav
 			if ( 2 == d.m_CharLength )
 				m_Char.Add( d.m_Char[1] );
 			m_CharIndex = d.m_CharIndex;
-			m_CharTotal = d.m_CharTotal;
 			m_ClusterIndex = d.m_ClusterIndex;
-			m_ClusterTotal = d.m_ClusterTotal;
+			m_Progress = d.m_Progress;
 		}
 	};
-	NavDefineDataByMember_( UiRichLabelCluster, Char, CharIndex, CharTotal, ClusterIndex, ClusterTotal );
+	NavDefineDataByMember_( UiRichLabelCluster, Char, CharIndex, ClusterIndex, Progress );
 	using UiRichLabelCluster_t = WrapData<UiRichLabelCluster>;
 
 	class UiRichLabelTransform
@@ -362,43 +360,35 @@ namespace Nav
 	NavDefineDataByMember_( UiRichLabelDisplay, Transform, TextColor, BackColor, Opacity );
 	using UiRichLabelDisplay_t = WrapData<UiRichLabelDisplay>;
 
-	class UiRichLabelTextFxCustom
+	class UiRichLabelCustomDisplay
 	{
 	public:
-		UiRichLabelCluster_t			m_Cluster;
-		U32								m_Id;
+		List<UiRichLabelCluster_t>		m_Cluster;
+		List<UiRichLabelDisplay_t>		m_Display;
+
+		S32								m_TotalChar;
+		S32								m_TotalCluster;
+
 		R64								m_Time;
 		R32								m_FrameTime;
 
-		void FromAve( const Ui::RichLabelTextFxCustom& d )
+		void FromAve( const Ui::RichLabelCustomDisplay& d )
 		{
-			m_Cluster.FromAve( d.m_Cluster );
-			m_Id = d.m_Id;
+			m_Cluster.Resize( d.m_Count );
+			m_Display.Resize( d.m_Count );
+			for ( U32 i = 0; i < d.m_Count; ++i )
+			{
+				m_Cluster[i].FromAve( d.m_Cluster[i] );
+				m_Display[i].FromAve( d.m_Display[i] );
+			}
+			m_TotalChar = d.m_TotalChar;
+			m_TotalCluster = d.m_TotalCluster;
 			m_Time = d.m_Time;
 			m_FrameTime = d.m_FrameTime;
 		}
 	};
-	NavDefineDataByMember_( UiRichLabelTextFxCustom, Cluster, Id, Time, FrameTime );
-	using UiRichLabelTextFxCustom_t = WrapData<UiRichLabelTextFxCustom>;
-
-	class UiRichLabelCustomPlay
-	{
-	public:
-		UiRichLabelCluster_t			m_Cluster;
-		R32								m_Progress;
-		R64								m_Time;
-		R32								m_FrameTime;
-
-		void FromAve( const Ui::RichLabelCustomPlay& d )
-		{
-			m_Cluster.FromAve( d.m_Cluster );
-			m_Progress = d.m_Progress;
-			m_Time = d.m_Time;
-			m_FrameTime = d.m_FrameTime;
-		}
-	};
-	NavDefineDataByMember_( UiRichLabelCustomPlay, Cluster, Progress, Time, FrameTime );
-	using UiRichLabelCustomPlay_t = WrapData<UiRichLabelCustomPlay>;
+	NavDefineDataByMember_( UiRichLabelCustomDisplay, Cluster, Display, TotalChar, TotalCluster, Time, FrameTime );
+	using RichLabelCustomDisplay_t = WrapData<UiRichLabelCustomDisplay>;
 
 	class UiRichLabelQueryVariable
 	{
@@ -437,10 +427,10 @@ namespace Nav
 		U1								Ctor( UiWindow* p, Napi::Value v );
 
 	private:
-		using OnCustomTextFx_t			/**/ = JsFuncSafe<UiRichLabelDisplay_t( UiRichLabel* sender, const UiRichLabelTextFxCustom_t& fx, const UiRichLabelDisplay_t& cd )>;
 		using OnQueryIconId_t			/**/ = JsFuncSafe<U32( UiRichLabel* sender, WString szName )>;
 		using OnQueryVariable_t			/**/ = JsFuncSafe<WString( UiRichLabel* sender, const UiRichLabelQueryVariable_t& qv )>;
-		using OnCustomPlay_t			/**/ = JsFuncSafe<UiRichLabelDisplay_t( UiRichLabel* sender, const UiRichLabelCustomPlay_t& cp, const UiRichLabelDisplay_t& cd )>;
+		using OnCustomTextFx_t			/**/ = JsFuncSafe<List<UiRichLabelDisplay_t>( UiRichLabel* sender, U32 nId, const RichLabelCustomDisplay_t& cd )>;
+		using OnCustomPlay_t			/**/ = JsFuncSafe<List<UiRichLabelDisplay_t>( UiRichLabel* sender, const RichLabelCustomDisplay_t& cd )>;
 
 		OnCustomTextFx_t				m_OnCustomTextFx;
 		OnQueryIconId_t					m_OnQueryIconId;
@@ -449,10 +439,10 @@ namespace Nav
 
 		WString							m_QueryVariableResult;
 
-		void							__OnCustomTextFx( Ui::IRichLabel& sender, const Ui::RichLabelTextFxCustom& fx, Ui::RichLabelDisplay& cd );
 		U32								__OnQueryIconId( Ui::IRichLabel& sender, PCWChar szName );
 		PCWChar							__OnQueryVariable( Ui::IRichLabel& sender, const Ui::RichLabelQueryVariable& qv );
-		void							__OnCustomPlay( Ui::IRichLabel& sender, const Ui::RichLabelCustomPlay& cp, Ui::RichLabelDisplay& cd );
+		void							__OnCustomTextFx( Ui::IRichLabel& sender, U32 nId, Ui::RichLabelCustomDisplay& cd );
+		void							__OnCustomPlay( Ui::IRichLabel& sender, const Ui::RichLabelCustomDisplay& cd );
 
 	private:
 		UiRichLabel*					SetText( PCWChar szText ) { GetControlTyped().SetText( szText ? szText : AveWide( "" ) ); return this; }

@@ -7,6 +7,7 @@ import { Vec2, Vec4 } from "../../Math/Vector";
 import { IPlatform, MonitorItem } from "../UiPlatform";
 import { IWindowFrame } from "./UiWindowFrame";
 import { IIcon } from "../Visual/UiIcon";
+import { AveImage } from "../../Image";
 
 //----------------------------------------------------------------------------------------------------
 // Window related objects
@@ -94,6 +95,16 @@ export interface IWindowDeviceNotification extends IWindowExtension {
 	OnChange(fn: (sender: Window) => void): IWindowDeviceNotification;
 }
 
+export enum WindowTaskbarIconicType {
+	Thumbnail,
+	LivePreview,
+}
+
+export type WindowTaskbarIconicImage = {
+	Type: WindowTaskbarIconicType;
+	Size: Vec2;
+}
+
 export interface IWindowTaskbar {
 	SetState(n: ProgressBarState): IWindowTaskbar;
 	GetState(): ProgressBarState;
@@ -110,6 +121,30 @@ export interface IWindowTaskbar {
 
 	SetForceBigIconSize100(n: number): IWindowTaskbar;
 	GetForceBigIconSize100(): number;
+
+	SetIconicImage(b: boolean): IWindowTaskbar;
+	GetIconicImage(): boolean;
+
+	SetIconicThumbnail(img: AveImage): IWindowTaskbar;
+	SetIconicLivePreview(img: AveImage): IWindowTaskbar;
+
+	GetButtonCount(): number;
+	SetButtonVisible(index: number, b: boolean): IWindowTaskbar;
+	GetButtonVisible(index: number): boolean;
+	SetButtonEnable(index: number, b: boolean): IWindowTaskbar;
+	GetButtonEnable(index: number): boolean;
+	SetButtonIcon(index: number, nIconIndex: number): IWindowTaskbar;
+	GetButtonIcon(index: number): number;
+	SetButtonTooltip(index: number, tip: string): IWindowTaskbar;
+	GetButtonTooltip(index: number): string;
+
+	SetIconCount(count: number): IWindowTaskbar;
+	GetIconCount(): number;
+	SetIcon(index: number, img: AveImage);
+	GetIcon(index: number): AveImage;
+
+	OnIconicUpdate(fn: (sender: IWindowTaskbar, ii: WindowTaskbarIconicImage) => void): IWindowTaskbar;
+	OnButtonClick(fn: (sender: IWindowTaskbar, nIndex: number) => void): IWindowTaskbar;
 }
 
 /* Localized control manager, support these controls
@@ -284,6 +319,7 @@ export type IWindow<T> = {
 
 	CacheIcon(icon: IconSource): IconCache;
 	CreateManagedIcon(icon: IconSource): IIcon;
+	CreateIconAsImage(nIconId: number, nSubCount: number): AveImage;
 
 	// Hotkey
 	HotkeyRegister(key: KbKey, n: InputModifier): number;

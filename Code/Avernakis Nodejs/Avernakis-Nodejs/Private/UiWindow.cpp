@@ -14,6 +14,8 @@
 #include "UiThemeImage.h"
 #include "UiWindowFrame.h"
 
+#include "ImgImage.h"
+
 #define ThisMethod($x) &UiWindow::$x
 #define AutoAddMethod($x, ...) AddMethod<__VA_ARGS__>( #$x, ThisMethod( $x ) )
 #define MakeThisFunc($x) MakeFunc( this, ThisMethod( $x ) )
@@ -129,6 +131,7 @@ namespace Nav
 
 		AddMethod<WrapObjectGeneric>( "CacheIcon", ThisMethod( __CacheIcon ) );
 		AddMethod<WrapObjectGeneric>( "CreateManagedIcon", ThisMethod( __CreateManagedIcon ) );
+		AddMethod<WrapObjectGeneric>( "CreateIconAsImage", ThisMethod( __CreateIconAsImage ) );
 
 		AddMethod<>( "HotkeyRegister", ThisMethod( __HotkeyRegister ) );
 		AddMethod<>( "HotkeyDeregister", ThisMethod( __HotkeyDeregister ) );
@@ -672,6 +675,19 @@ namespace Nav
 	{
 		if ( auto p = ci.NewJsObject<UiIcon>() )
 			return p->SetIcon( CreateManagedIcon( is ) );
+		return nullptr;
+	}
+
+	ImgImage * UiWindow::__CreateIconAsImage( const CallbackInfo & ci, U32 nId, U32 nSubCount )
+	{
+		if ( auto pImage = CreateIconAsImage( nId, nSubCount ) )
+		{
+			if ( auto p = ci.NewJsObject<ImgImage>() )
+			{
+				p->SetImage( std::move( pImage ) );
+				return p;
+			}
+		}
 		return nullptr;
 	}
 

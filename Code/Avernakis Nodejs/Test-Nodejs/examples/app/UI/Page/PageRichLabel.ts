@@ -102,6 +102,10 @@ class PageRichLabel extends PageHelper<PageRichLabel> {
 		fx2.Wave.Amplitude = 5;
 		fx2.Wave.Speed = 5;
 
+		const fx3 = new RichLabelTextFx();
+		fx3.Type = RichLabelTextFxType.Custom;
+		fx3.CustomId = 1;
+
 		const tc = new RichLabelTextColor();
 		tc.Text.Color = new Vec4(210, 210, 210, 255);
 
@@ -137,6 +141,7 @@ class PageRichLabel extends PageHelper<PageRichLabel> {
 		ctl.FmSetTextEffect(0, fx0, "c");
 		ctl.FmSetTextEffect(1, fx1, "t");
 		ctl.FmSetTextEffect(2, fx2, "w");
+		ctl.FmSetTextEffect(3, fx3, "r");
 
 		ctl.PlSetAdvanceSpeed(20);
 		ctl.PlSetClusterSpeed(1);
@@ -161,16 +166,37 @@ class PageRichLabel extends PageHelper<PageRichLabel> {
 			return "";
 		});
 
-		// FIXME: this causes lag
-		ctl.PlSetCustom((sender, cp, cd) => {
-			cd.Transform.Translation.x = 256.0 * (1.0 - cp.Progress);
-			cd.Transform.Scaling.x = 1.0 + 3.0 * (1.0 - cp.Progress);
-			cd.Transform.Scaling.y = cd.Transform.Scaling.x;
-			cd.Transform.Rotation = (45.0 / 180.0) * Math.PI * (cp.Progress - 1);
-			return cd;
+		ctl.FmSetTextEffectCustom((sender, fxid, cd) => {
+			if (1 == fxid)
+				return cd.Display.map((e, i) => {
+					e.Transform.Rotation += cd.Time * 8.0 + cd.Cluster[i].ClusterIndex * (20.0 / 180.0) * Math.PI;
+					return e;
+				});
+			return cd.Display;
 		});
 
-		ctl.SetText("" + "<fx %w>Hello, <fx %c %t>this  is</fx %c %t> an <e>rich</e> <r what?>label</r>. " + "<b>Bold text</b>, <i>Italic text</i>.</fx %w> <u>Underline</u>, <s>Strikethrough</s>, " + "1.5<sp><i>sin(2)</i></sp><sb><b>abc</b></sb>, " + "<c f00>Red text</c>, <c %b>Bordered text</c>, <c %s>Shadow text</c>, " + "<ic %a/> Copy, <ic %b/> Cut, `#1`, " + "<e 1><f %z><r da>射</r><r niao>雕</r><r gou>英</r><r xiong>雄</r><r chuanchuan>传</r></f></e>, " + "<c %rb0>Rainbow text</c>, <c %bg>Blue gradient text</c>, <c %bb>Blue with border text</c>, <c %tex>textured text ●■◆</c>, " + "<u 1>Rainbow underline</u>");
+		ctl.PlSetCustom((sender, cd) => {
+			return cd.Display.map((e, i) => {
+				const f = 1.0 - cd.Cluster[i].Progress;
+				e.Transform.Translation.x = 256.0 * f;
+				e.Transform.Scaling.x = 1.0 + 3.0 * f;
+				e.Transform.Scaling.y = e.Transform.Scaling.x;
+				e.Transform.Rotation = (45.0 / 180.0) * Math.PI * -f;
+				return e;
+			});
+		});
+
+		// prettier-ignore
+		ctl.SetText(""
+			+ "<fx %w>Hello, <fx %c %t>this  is</fx %c %t> an <e>rich</e> <r what?>label</r>. "
+			+ "<b><fx %r>Bold text</fx %r></b>, <i>Italic text</i>.</fx %w> <u>Underline</u>, <s>Strikethrough</s>, "
+			+ "1.5<sp><i>sin(2)</i></sp><sb><b>abc</b></sb>, "
+			+ "<c f00>Red text</c>, <c %b>Bordered text</c>, <c %s>Shadow text</c>, "
+			+ "<ic %a/> Copy, <ic %b/> Cut, `#1`, "
+			+ "<e 1><f %z><r da>射</r><r niao>雕</r><r gou>英</r><r xiong>雄</r><r chuanchuan>传</r></f></e>, "
+			+ "<c %rb0>Rainbow text</c>, <c %bg>Blue gradient text</c>, <c %bb>Blue with border text</c>, <c %tex>textured text ●■◆</c>, "
+			+ "<u 1>Rainbow underline</u>"
+		);
 
 		let tbr = grid.ControlAdd(new ToolBar(window)).SetGrid(0, 0).GetControl();
 		tbr.ToolInsert(new ToolBarItem(1, ToolBarItemType.Button, 0, DpiSize.Zero, "Replay"), -1);

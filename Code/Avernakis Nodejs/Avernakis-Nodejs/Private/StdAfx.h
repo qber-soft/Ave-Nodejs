@@ -19,8 +19,8 @@
 #	error Ave SDK version is too old.
 #endif
 
-#if !AveCheckSdkCompileVersion( 0, 8, 3, 0 ) && !AveCheckSdkCompileVersionPrivate( 2022, 1001 ) && ( 0 != __AveVersion_Major || 0 != __AveVersion_Minor || 0 != __AveVersion_Build || 0 != __AveVersion_Private )
-#	error This node addon needs Ave SDK 0.8.3 or private version 2022.1001 at least, or an experimental build.
+#if !AveCheckSdkCompileVersion( 0, 8, 3, 1 ) && !AveCheckSdkCompileVersionPrivate( 2022, 1108 ) && ( 0 != __AveVersion_Major || 0 != __AveVersion_Minor || 0 != __AveVersion_Build || 0 != __AveVersion_Private )
+#	error This node addon needs Ave SDK 0.8.3.1 or private version 2022.1108 at least, or an experimental build.
 #endif
 
 namespace Nav

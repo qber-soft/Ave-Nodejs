@@ -244,9 +244,8 @@ export class RichLabelTextFx {
 export type RichLabelCluster = {
 	Char: string; // this is a cluster which contains 1 UTF-16 char or 2 UTF-16 chars
 	CharIndex: number;
-	CharTotal: number;
 	ClusterIndex: number;
-	ClusterTotal: number;
+	Progress: number;
 };
 
 export class RichLabelTransform {
@@ -262,25 +261,20 @@ export class RichLabelDisplay {
 	Opacity: number = 0;
 }
 
-export type RichLabelTextFxCustom = {
-	Cluster: RichLabelCluster;
-	Id: number;
-	Time: number;
-	FrameTime: number;
-};
-
-export type RichLabelCustomPlay = {
-	Cluster: RichLabelCluster;
-	Progress: number;
-	Time: number;
-	FrameTime: number;
-};
-
 export type RichLabelQueryVariable = {
 	IsName: boolean;
 	Id: number;
 	Name: string;
-};
+}
+
+export type RichLabelCustomDisplay = {
+	Cluster: RichLabelCluster[];
+	Display: RichLabelDisplay[];
+	TotalChar: number;
+	TotalCluster: number;
+	Time: number;
+	FrameTime: number;
+}
 
 // prettier-ignore
 export enum RichLabelReset {
@@ -303,6 +297,9 @@ export interface IRichLabel extends IVisual {
 	// ====================================================================================================
 	SetText(s: string): RichLabel;
 	GetText(): string;
+	GetTextData(): string;
+	IsTextValid(): boolean;
+	Recompile(): boolean;
 
 	SetAlignHorz(n: AlignType): RichLabel;
 	GetAlignHorz(): AlignType;
@@ -383,7 +380,7 @@ export interface IRichLabel extends IVisual {
 	FmSetTextEffect(index: number, fx: RichLabelTextFx, name?: string): RichLabel;
 	FmGetTextEffect(index: number): RichLabelTextFx;
 	FmGetTextEffectByName(name: string): RichLabelTextFx;
-	FmSetTextEffectCustom(fn: (sender: RichLabel, fx: RichLabelTextFxCustom, cd: RichLabelDisplay) => RichLabelDisplay): RichLabel;
+	FmSetTextEffectCustom(fn: (sender: RichLabel, nId: number, cd: RichLabelCustomDisplay) => RichLabelDisplay[]): RichLabel;
 
 	// ====================================================================================================
 	// Icon
@@ -427,7 +424,7 @@ export interface IRichLabel extends IVisual {
 	PlSetClusterSpeed(_1PerSecond: number): RichLabel;
 	PlGetClusterSpeed(): number;
 
-	PlSetCustom(fn: (sender: RichLabel, cp: RichLabelCustomPlay, cd: RichLabelDisplay) => RichLabelDisplay): RichLabel;
+	PlSetCustom(fn: (sender: RichLabel, cd: RichLabelCustomDisplay) => RichLabelDisplay[]): RichLabel;
 	PlGetFirstCluster(): number;
 	PlGetLastCluster(): number;
 }

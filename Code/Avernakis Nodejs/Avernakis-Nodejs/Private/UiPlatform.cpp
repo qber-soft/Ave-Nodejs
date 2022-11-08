@@ -27,6 +27,8 @@ namespace Nav
 		AutoAddMethod( MonitorEnumerate );
 		AutoAddMethod( MonitorGetNeareatPoint );
 		AutoAddMethod( MonitorGetNeareatRect );
+
+		AutoAddMethod( FontEnumerate );
 	}
 
 	Ui::PopupAlign UiPlatform::GetPopupAlign() const
@@ -89,6 +91,11 @@ namespace Nav
 		WrapData<UiMonitorItem> r{};
 		__ConvertMonitorInfo( r, mi );
 		return r;
+	}
+
+	List<WString> UiPlatform::FontEnumerate( U1 bIncludeVertical ) const
+	{
+		return m_Platform->FontEnumerate( bIncludeVertical );
 	}
 
 	AveInline void UiPlatform::__ConvertMonitorInfo( WrapData<UiMonitorItem>& d, Ui::MonitorItem& mi )
