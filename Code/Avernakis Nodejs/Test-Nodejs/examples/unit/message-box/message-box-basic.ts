@@ -4,9 +4,9 @@ import { getControlDemoContainer } from "../utility";
 export function main(window: Window) {
 	const button = new Button(window);
 	button.SetText("Button");
-	button.OnClick((sender) => {
+	button.OnClick(async (sender) => {
 		const commonUi = window.GetCommonUi();
-		const result = commonUi.Message("Message", "This is a message", MessageIcon.Infomation, MessageButton.YesNo, "Title");
+		const result = await commonUi.Message("Message", "This is a message", MessageIcon.Infomation, MessageButton.YesNo, "Title");
 		console.log(`message result: ${result}(${MessageResult[result]})`);
 	});
 
