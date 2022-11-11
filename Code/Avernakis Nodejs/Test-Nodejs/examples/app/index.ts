@@ -29,15 +29,9 @@ class MyApp {
 			this.m_App.ResAddPackageIndex(AppPath.AppPath + "_Debug\\AppRes.index", AppPath.AppPath + "_Debug\\AppRes");
 		} else if (fs.existsSync(AppPath.AppPath + "Data\\AppRes.bin")) {
 			// release mode
-			this.m_App.ResAddPackage(AppPath.AppPath + "Data\\AppRes.bin");
-		} else {
-			// pack
-			const exePath = process.cwd();
-			this.m_App.ResAddPackage(exePath + "\\Data\\AppRes.bin");
-
-			// const data = fs.readFileSync(path.resolve(__dirname, "/Data/AppRes.bin"));
-			// const source = ResourceSource.FromBuffer(data);
-			// this.m_App.ResAddPackageData(source.InMemory.Data);
+			const data = fs.readFileSync(AppPath.AppPath + "Data\\AppRes.bin");
+			const source = ResourceSource.FromBuffer(data);
+			this.m_App.ResAddPackageData(source.InMemory.Data);
 		}
 
 		this.m_App.ResSetIconSizeList([16, 24, 32, 48, 64, 96, 128]);
