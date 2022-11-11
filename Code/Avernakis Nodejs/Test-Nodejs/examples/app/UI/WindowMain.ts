@@ -267,9 +267,8 @@ export class WindowMain implements IWindowMain {
 		if (tb) {
 			tb.SetIconCount(2);
 
-			// FIXME: crash when res not found
-			// tb.SetIcon(0, sender.CreateIconAsImage(ResId.Icon_Copy_png, 0));
-			// tb.SetIcon(1, sender.CreateIconAsImage(ResId.Icon_Cut_png, 0));
+			tb.SetIcon(0, sender.CreateIconAsImage(ResId.Icon_Copy_png, 0));
+			tb.SetIcon(1, sender.CreateIconAsImage(ResId.Icon_Cut_png, 0));
 
 			tb.SetButtonIcon(0, 0);
 			tb.SetButtonIcon(1, 1);

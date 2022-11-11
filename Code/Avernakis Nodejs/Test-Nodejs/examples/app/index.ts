@@ -26,9 +26,13 @@ class MyApp {
 		if (fs.existsSync(AppPath.AppPath + "_Debug\\AppRes.index")) {
 			// debug mode
 			this.m_App.ResAddPackageIndex(AppPath.AppPath + "_Debug\\AppRes.index", AppPath.AppPath + "_Debug\\AppRes");
-		} else {
+		} else if (fs.existsSync(AppPath.AppPath + "Data\\AppRes.bin")) {
 			// release mode
 			this.m_App.ResAddPackage(AppPath.AppPath + "Data\\AppRes.bin");
+		} else {
+			// pack
+			const exePath = process.cwd();
+			this.m_App.ResAddPackage(exePath + "\\Data\\AppRes.bin");
 		}
 
 		this.m_App.ResSetIconSizeList([16, 24, 32, 48, 64, 96, 128]);

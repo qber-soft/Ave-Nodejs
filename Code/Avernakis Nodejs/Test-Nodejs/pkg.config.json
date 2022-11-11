@@ -1,3 +1,3 @@
 {
-	"assets": ["build\\examples\\app\\**\\*.png", "build\\Language\\**\\*", "build\\Data\\**\\*", "build\\_Debug\\AppRes\\**\\*", "build\\_Debug\\AppRes.index"]
+	"assets": ["build\\examples\\app\\**\\*.png", "build\\Language\\**\\*", "build\\Data\\**\\*"]
 }
