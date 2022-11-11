@@ -3,7 +3,7 @@ name: pack
 on: [push]
 
 jobs:
-  build:
+  pack:
     runs-on: windows-latest
 
     strategy:
