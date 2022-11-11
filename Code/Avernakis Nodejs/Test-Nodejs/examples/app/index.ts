@@ -4,8 +4,9 @@
 //run();
 
 import * as fs from "fs";
+import * as path from "path";
 
-import { App, CultureId, AppPath } from "../../src";
+import { App, CultureId, AppPath, ResourceSource } from "../../src";
 import { DefaultString } from "./DefaultString";
 
 import { WindowMain } from "./UI/WindowMain";
@@ -33,6 +34,10 @@ class MyApp {
 			// pack
 			const exePath = process.cwd();
 			this.m_App.ResAddPackage(exePath + "\\Data\\AppRes.bin");
+
+			// const data = fs.readFileSync(path.resolve(__dirname, "/Data/AppRes.bin"));
+			// const source = ResourceSource.FromBuffer(data);
+			// this.m_App.ResAddPackageData(source.InMemory.Data);
 		}
 
 		this.m_App.ResSetIconSizeList([16, 24, 32, 48, 64, 96, 128]);

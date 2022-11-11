@@ -148,6 +148,7 @@ namespace Nav
 	private:
 		U1											ResAddPackageIndex( PCWChar szFile, PCWChar szRoot );
 		U1											ResAddPackage( PCWChar szFile );
+		U1											ResAddPackageData( const WrapArray<U8>& pData );
 		U1											ResAddResourceProvider( Napi::Value v );
 		UiApp*										ResSetIconSizeList( const List<U32>& v );
 
