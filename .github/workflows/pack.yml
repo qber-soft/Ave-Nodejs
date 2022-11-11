@@ -16,13 +16,13 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
-      - name: npm install, build, test and pack
+      - name: npm install and pack demo app
         run: |
           cd "Code/Avernakis Nodejs/Test-Nodejs"
           npm ci
           npm run examples:pack
         env:
-          CI: true 
+          CI: true
       - uses: actions/upload-artifact@v3
         with:
           name: ave-app
