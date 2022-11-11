@@ -39,6 +39,8 @@
 		"preexamples:build": "del-cli ./build",
 		"examples:build": "tsc --build examples-tsconfig.json",
 		"postexamples:build": "npm run examples:copy:lib && npm run examples:copy:resource && npm run examples:copy:assets",
+		"preexamples:pack": "npm run examples:build",
+		"examples:pack": "ave-pack pack",
 		"examples:copy:lib": "copyfiles ./lib/* ./build",
 		"examples:copy:resource": "cd ../../.. && copyfiles -u 1 \"./Resource/**/*\" \"./Code/Avernakis Nodejs/Test-Nodejs/build\"",
 		"examples:copy:assets": "copyfiles ./examples/**/*.png ./build",

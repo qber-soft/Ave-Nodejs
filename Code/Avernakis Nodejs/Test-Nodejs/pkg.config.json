@@ -1,0 +1,3 @@
+{
+	"assets": ["build\\examples\\app\\**\\*.png", "build\\Language\\**\\*", "build\\Data\\**\\*"]
+}
