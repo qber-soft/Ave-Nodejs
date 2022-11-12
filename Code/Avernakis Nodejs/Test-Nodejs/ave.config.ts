@@ -6,6 +6,8 @@ const config: IPackConfig = {
 		target: "node14-win-x64",
 		input: "./build/examples/app/index.js",
 		output: "./bin/ave-app.exe",
+		// debug: true,
+		edit: false,
 	},
 	resource: {
 		icon: "./examples/assets/ave.ico",
@@ -15,6 +17,7 @@ const config: IPackConfig = {
 		companyName: "QberSoft",
 		fileDescription: "The Demo App of Ave",
 		LegalCopyright: `© ${new Date().getFullYear()} Ave Copyright.`,
+		manifest: "./node-manifest.xml",
 	},
 };
 
