@@ -31,6 +31,7 @@ namespace Nav
 	{
 		AutoAddMethod( ResAddPackageIndex );
 		AutoAddMethod( ResAddPackage );
+		AutoAddMethod( ResAddPackageData );
 		AutoAddMethod( ResAddResourceProvider );
 		AutoAddMethod( ResSetIconSizeList );
 
@@ -146,6 +147,17 @@ namespace Nav
 			return false;
 		auto sFile = App::GetSingleton().GetFileSystem().FileGetFullPath( szFile );
 		if ( !res->OpenPackage( sFile.c_str() ) )
+			return false;
+		App::GetSingleton().m_InitDpiware->AddResourcePackage( std::move( res ) );
+		return true;
+	}
+
+	U1 UiApp::ResAddPackageData( const WrapArray<U8>& pData )
+	{
+		auto res = AveKak.Create<Io::IFilePackage>();
+		if ( !res )
+			return false;
+		if ( !res->OpenPackage( pData, (U32) pData.m_Length, true ) )
 			return false;
 		App::GetSingleton().m_InitDpiware->AddResourcePackage( std::move( res ) );
 		return true;

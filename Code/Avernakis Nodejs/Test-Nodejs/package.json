@@ -36,6 +36,14 @@
 		"dev:app:debug": "cross-env AVE_BUILD_ENV=DEBUG_BUILD npm run dev:app",
 		"prebuild": "del-cli ./build",
 		"build": "tsc --build",
+		"preexamples:build": "del-cli ./build",
+		"examples:build": "tsc --build examples-tsconfig.json",
+		"postexamples:build": "npm run examples:copy:lib && npm run examples:copy:res && npm run examples:copy:assets",
+		"preexamples:pack": "npm run examples:build && del-cli ./bin/ave-app.exe",
+		"examples:pack": "ave-pack pack",
+		"examples:copy:lib": "copyfiles ./lib/* ./build",
+		"examples:copy:res": "cd ../../.. && copyfiles -u 1 \"./Resource/{Language,Data}/*\" \"./Code/Avernakis Nodejs/Test-Nodejs/build\"",
+		"examples:copy:assets": "copyfiles ./examples/**/*.png ./build",
 		"release": "npm run build && npm publish",
 		"test": "jest",
 		"format": "prettier --write \"{src,examples}/**/*.{js,jsx,ts,tsx,md,mdx}\""
@@ -43,6 +51,8 @@
 	"devDependencies": {
 		"@types/jest": "^29.2.2",
 		"@types/node": "^8.0.14",
+		"ave-pack": "^0.9.4",
+		"copyfiles": "^2.4.1",
 		"cross-env": "^7.0.3",
 		"del-cli": "^4.0.1",
 		"husky": "^7.0.4",
