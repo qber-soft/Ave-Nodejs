@@ -27,3 +27,4 @@ jobs:
         with:
           name: ave-app
           path: "Code/Avernakis Nodejs/Test-Nodejs/bin"
+          if-no-files-found: error
