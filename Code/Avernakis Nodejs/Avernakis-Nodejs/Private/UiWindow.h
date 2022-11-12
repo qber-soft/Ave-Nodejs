@@ -99,6 +99,7 @@ namespace Nav
 	class UiWindowTaskbar;
 	
 	class UiWindowFrame;
+	class ImgImage;
 
 	class UiWindow : public UiControl, public WrapObject<UiWindow, void( const UiWindowCreation_t& ), WrapObjectUi>, AppHelper::Window<UiWindowFeature>
 	{
@@ -314,6 +315,7 @@ namespace Nav
 
 		Ui::IconCache						__CacheIcon( const WrapData<Ui::IconSource>& is ) { return CacheIcon( is ); }
 		UiIcon*								__CreateManagedIcon( const CallbackInfo& ci, const WrapData<Ui::IconSource>& is );
+		ImgImage*							__CreateIconAsImage( const CallbackInfo& ci, U32 nId, U32 nSubCount );
 
 		U32									__HotkeyRegister( Ui::Key nKey, U32 nModifier ) { return HotkeyRegister( nKey, nModifier ); }
 		U1									__HotkeyDeregister( U32 nId ) { return HotkeyDeregister( nId ); }

@@ -14,7 +14,7 @@ export class WindowMain implements IWindowMain {
 	private m_Theme: ThemeImage;
 	private m_ThemeDark: ThemePredefined_Dark;
 
-	private m_Page: Array<IPage> = null;
+	private m_Page: Array<IPage> = [];
 	private m_PageCurrent: IPage = null;
 
 	private CreateUIMain(sender: Window) {
@@ -86,8 +86,7 @@ export class WindowMain implements IWindowMain {
 
 		const pHomeEditPaste = this.CreateUIRibbonButton("RibHomeClipPaste", ResId.Icon_Paste_png);
 		pHomeEditPaste.SetButtonType(ButtonType.Split);
-		pHomeEditPaste.OnClick(() => {
-		});
+		pHomeEditPaste.OnClick(() => {});
 		pHomeClip.ControlAdd(pHomeEditPaste);
 
 		const pHomeEditCut = this.CreateUIRibbonButton("RibHomeClipCut", ResId.Icon_Cut_png, true);
@@ -263,6 +262,25 @@ export class WindowMain implements IWindowMain {
 
 		sender.GetFrame().SetToolBarLeft(tbrLeft);
 		sender.GetFrame().SetToolBarRight(tbrRight);
+
+		const tb = sender.GetTaskbar();
+		if (tb) {
+			tb.SetIconCount(2);
+
+			tb.SetIcon(0, sender.CreateIconAsImage(ResId.Icon_Copy_png, 0));
+			tb.SetIcon(1, sender.CreateIconAsImage(ResId.Icon_Cut_png, 0));
+
+			tb.SetButtonIcon(0, 0);
+			tb.SetButtonIcon(1, 1);
+			tb.SetButtonTooltip(0, "Copy");
+			tb.SetButtonTooltip(1, "Cut");
+			tb.SetButtonVisible(0, true);
+			tb.SetButtonVisible(1, true);
+
+			tb.OnButtonClick((sender, nIndex) => {
+				console.log(`Button[${nIndex}] is clicked.`);
+			});
+		}
 	}
 
 	private OnCreateContent(sender: Window) {
@@ -283,8 +301,7 @@ export class WindowMain implements IWindowMain {
 			this.m_PageCurrent = null;
 		}
 		const nIndex = sender.ItemGetSelection();
-		if (1 == sender.ItemGetSelectionCount() && nIndex >= 0 && nIndex < this.m_Page.length)
-			this.m_PageCurrent = this.m_Page[nIndex];
+		if (1 == sender.ItemGetSelectionCount() && nIndex >= 0 && nIndex < this.m_Page.length) this.m_PageCurrent = this.m_Page[nIndex];
 		if (this.m_PageCurrent) {
 			this.m_PageCurrent.OnShow?.call(this.m_PageCurrent);
 			this.m_PageCurrent.Control.SetVisible(true);
@@ -294,7 +311,7 @@ export class WindowMain implements IWindowMain {
 	CreateAndShow() {
 		this.m_Theme = new ThemeImage();
 		if (!this.m_Theme) process.exit(-1);
-		
+
 		this.m_ThemeDark = new ThemePredefined_Dark();
 		this.m_ThemeDark.SetStyle(this.m_Theme, 0);
 

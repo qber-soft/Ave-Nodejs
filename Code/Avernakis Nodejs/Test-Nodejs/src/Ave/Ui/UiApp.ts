@@ -36,6 +36,9 @@ export interface IApp {
 	// Add a packaged resource file
 	ResAddPackage(sFile: string): boolean;
 
+	// Add a packaged resource file data
+	ResAddPackageData(data: ArrayBuffer): boolean;
+
 	// Add a resource provider, IResourceProvider is not supported yet
 	ResAddResourceProvider(p: (nId: number) => ArrayBuffer | IResourceProvider): void;
 
