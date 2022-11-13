@@ -112,6 +112,7 @@ export const DefaultString = {
 	//----------------------------------------------------------------------------------------------------
 	// UI
 	PageButton					/**/: "Button",
+	PageCodeEditor				/**/: "CodeEditor (WIP)",
 	PageOwnedWindow				/**/: "Owned Window",
 	PagePopup					/**/: "Popup",
 	PageTextBox					/**/: "TextBox",

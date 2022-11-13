@@ -307,6 +307,7 @@ const AveLib = RequireAveLib();
 	"UiButton",
 	"UiCalendar",
 	"UiCheckBox",
+	"UiCodeEditor",
 	"UiColorPicker",
 	"UiComboBox",
 	"UiContainer3D",

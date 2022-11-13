@@ -236,6 +236,12 @@
     <ClCompile Include="Private\UiRichLabel.cpp">
       <Filter>Ave\Ui\Visual\RichLabel</Filter>
     </ClCompile>
+    <ClCompile Include="Private\UiCodeEditor.cpp">
+      <Filter>Ave\Ui\Control\CodeEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="Private\UiCodeEditorDoc.cpp">
+      <Filter>Ave\Ui\Control\CodeEditor</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Build">
@@ -438,6 +444,9 @@
     </Filter>
     <Filter Include="Ave\Ui\Visual\RichLabel">
       <UniqueIdentifier>{56a8f1d7-bc26-4ba0-bd89-8551a6ed0582}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Ave\Ui\Control\CodeEditor">
+      <UniqueIdentifier>{e1715636-4f02-4203-8df8-6cdd994d4a4d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -697,6 +706,12 @@
     </ClInclude>
     <ClInclude Include="Private\UiRichLabel.h">
       <Filter>Ave\Ui\Visual\RichLabel</Filter>
+    </ClInclude>
+    <ClInclude Include="Private\UiCodeEditor.h">
+      <Filter>Ave\Ui\Control\CodeEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="Private\UiCodeEditorDoc.h">
+      <Filter>Ave\Ui\Control\CodeEditor</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
