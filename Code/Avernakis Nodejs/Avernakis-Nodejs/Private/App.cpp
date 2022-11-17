@@ -53,6 +53,13 @@ namespace Nav
 #endif
 
 		AveKak.StaticRegister<Img::IFontFreetype2>();
+		AveKak.StaticRegister<Img::IContainer_AveImage>();
+		AveKak.StaticRegister<Img::IContainer_BMP>();
+		AveKak.StaticRegister<Img::IContainer_JPG>();
+		AveKak.StaticRegister<Img::IContainer_PNG>();
+		AveKak.StaticRegister<Img::IContainer_DDS>();
+		AveKak.StaticRegister<Img::IContainer_TGA>();
+		AveKak.StaticRegister<Img::IContainer_GIF>();
 
 		m_JsThreadId = GetSysInfo().GetCurrentThreadId();
 

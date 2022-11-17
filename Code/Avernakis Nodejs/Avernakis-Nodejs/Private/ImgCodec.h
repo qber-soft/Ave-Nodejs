@@ -51,7 +51,7 @@ namespace Nav
 		WrapData<Img::Metadata>				GetMetadata( const WrapData<IoResourceSource>& rs );
 
 		U1									SaveFile( PCWChar szFile, ImgImage* img, ImgContainerType nType );
-		ArrayBuffer							SaveArrayBuffer( PCWChar szFile, ImgImage* img, ImgContainerType nType );
+		ArrayBuffer							SaveArrayBuffer( ImgImage* img, ImgContainerType nType );
 
 	};
 
