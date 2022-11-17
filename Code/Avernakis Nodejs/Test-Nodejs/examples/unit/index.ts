@@ -1,5 +1,5 @@
 import { run } from "./utility";
-import { main } from "./pager/pager-basic";
+import { main } from "./image/image-basic";
 run(main);
 
 // ---
