@@ -825,11 +825,17 @@ namespace Nav
 		{
 		private:
 			using Type_t = typename __ConvertType<T>::TargetType_t;
-			Type_t m_Arg;
+			Type_t mutable m_Arg;
 
 		public:
 			AveInline Type_t& GetArg() { return m_Arg; }
 			AveInline const Type_t& GetArg() const { return m_Arg; }
+
+			AveInline S32 SetArg( const Napi::Value& v )
+			{
+				__Detail::__ConvertType<T>::ToCpp( &m_Arg, v );
+				return 0;
+			}
 		};
 
 		template<USize TIndex, class... TArg>

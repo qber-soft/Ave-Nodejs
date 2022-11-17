@@ -176,6 +176,11 @@ namespace Nav
 				cc.m_Stage = MixCallStage::PostUi;
 		}
 
+		template<class... TArg>
+		AveInline void __SetArg( TArg ... )
+		{
+		}
+
 		template<class T, class TObj, class TRet, class... TArg>
 		class __PromiseCall : public CallbackInfo, public IPromiseCall, public AllocObject<>
 		{
@@ -198,7 +203,8 @@ namespace Nav
 			template<USize... N>
 			void __PrepareArg( const Napi::CallbackInfo& ci, __Detail::__Index<N...>* )
 			{
-				(__Detail::__ConvertType<TArg>::ToCpp( &m_Arg.__ArgData<TArg, N>::GetArg(), ci[N] ), ...);
+				//(__Detail::__ConvertType<TArg>::ToCpp( &m_Arg.__ArgData<TArg, N>::GetArg(), ci[N] ), ...);
+				__SetArg( m_Arg.__ArgData<TArg, N>::SetArg( ci[N] )... );
 			}
 
 			template<USize... N>
@@ -273,7 +279,8 @@ namespace Nav
 			AveInline TRet __Call( const Napi::CallbackInfo& cb, TRet( T::*p )(TArg...), __Detail::__Index<N...>* )
 			{
 				__Detail::__ArgList<TArg...> arg{};
-				(__Detail::__ConvertType<TArg>::ToCpp( &arg.__ArgData<TArg, N>::GetArg(), cb[N] ), ...);
+				//(__Detail::__ConvertType<TArg>::ToCpp( &arg.__ArgData<TArg, N>::GetArg(), cb[N] ), ...);
+				__SetArg( arg.__ArgData<TArg, N>::SetArg( cb[N] )... );
 				return (((T&) *this).*p)(std::forward<TArg>( arg.__ArgData<TArg, N>::GetArg() )...);
 			}
 
@@ -287,7 +294,8 @@ namespace Nav
 			AveInline TRet __CallCi( const Napi::CallbackInfo& cb, TRet( T::*p )(const CallbackInfo&, TArg...), __Detail::__Index<N...>* )
 			{
 				__Detail::__ArgList<TArg...> arg{};
-				(__Detail::__ConvertType<TArg>::ToCpp( &arg.__ArgData<TArg, N>::GetArg(), cb[N] ), ...);
+				//(__Detail::__ConvertType<TArg>::ToCpp( &arg.__ArgData<TArg, N>::GetArg(), cb[N] ), ...);
+				__SetArg( arg.__ArgData<TArg, N>::SetArg( cb[N] )... );
 				return (((T&) *this).*p)(cb, std::forward<TArg>( arg.__ArgData<TArg, N>::GetArg() )...);
 			}
 
@@ -307,7 +315,8 @@ namespace Nav
 			AveInline TRet __Call( const Napi::CallbackInfo& cb, TRet( T::*p )(TArg...), __Detail::__Index<N...>* )
 			{
 				__Detail::__ArgList<TArg...> arg{};
-				(__Detail::__ConvertType<TArg>::ToCpp( &arg.__ArgData<TArg, N>::GetArg(), cb[N] ), ...);
+				//(__Detail::__ConvertType<TArg>::ToCpp( &arg.__ArgData<TArg, N>::GetArg(), cb[N] ), ...);
+				__SetArg( arg.__ArgData<TArg, N>::SetArg( cb[N] )... );
 
 				TRet r{};
 				App::GetSingleton().ExecuteInUiThread( [&r, &arg, this, p]
@@ -321,7 +330,8 @@ namespace Nav
 			AveInline void __Call( const Napi::CallbackInfo& cb, void(T::*p)(TArg...), __Detail::__Index<N...>* )
 			{
 				__Detail::__ArgList<TArg...> arg{};
-				(__Detail::__ConvertType<TArg>::ToCpp( &arg.__ArgData<TArg, N>::GetArg(), cb[N] ), ...);
+				//(__Detail::__ConvertType<TArg>::ToCpp( &arg.__ArgData<TArg, N>::GetArg(), cb[N] ), ...);
+				__SetArg( arg.__ArgData<TArg, N>::SetArg( cb[N] )... );
 
 				App::GetSingleton().ExecuteInUiThread( [&arg, this, p]
 				{
@@ -339,7 +349,8 @@ namespace Nav
 			AveInline TRet __CallCi( const Napi::CallbackInfo& cb, TRet( T::*p )(const CallbackInfo&, TArg...), __Detail::__Index<N...>* )
 			{
 				__Detail::__ArgList<TArg...> arg{};
-				(__Detail::__ConvertType<TArg>::ToCpp( &arg.__ArgData<TArg, N>::GetArg(), cb[N] ), ...);
+				//(__Detail::__ConvertType<TArg>::ToCpp( &arg.__ArgData<TArg, N>::GetArg(), cb[N] ), ...);
+				__SetArg( arg.__ArgData<TArg, N>::SetArg( cb[N] )... );
 
 				TRet r{};
 				App::GetSingleton().ExecuteInUiThread( [&r, &arg, &cb, this, p]
@@ -353,7 +364,8 @@ namespace Nav
 			AveInline void __CallCi( const Napi::CallbackInfo& cb, void(T::*p)(const CallbackInfo&, TArg...), __Detail::__Index<N...>* )
 			{
 				__Detail::__ArgList<TArg...> arg{};
-				(__Detail::__ConvertType<TArg>::ToCpp( &arg.__ArgData<TArg, N>::GetArg(), cb[N] ), ...);
+				//(__Detail::__ConvertType<TArg>::ToCpp( &arg.__ArgData<TArg, N>::GetArg(), cb[N] ), ...);
+				__SetArg( arg.__ArgData<TArg, N>::SetArg( cb[N] )... );
 
 				App::GetSingleton().ExecuteInUiThread( [&arg, this, p]
 				{
@@ -376,7 +388,8 @@ namespace Nav
 			AveInline TRet __Call( const Napi::CallbackInfo& cb, TRet( T::*p )(const MixCallContext&, TArg...), __Detail::__Index<N...>* )
 			{
 				__Detail::__ArgList<TArg...> arg{};
-				(__Detail::__ConvertType<TArg>::ToCpp( &arg.__ArgData<TArg, N>::GetArg(), cb[N] ), ...);
+				//(__Detail::__ConvertType<TArg>::ToCpp( &arg.__ArgData<TArg, N>::GetArg(), cb[N] ), ...);
+				__SetArg( arg.__ArgData<TArg, N>::SetArg( cb[N] )... );
 
 				MixCallContext cc( cb );
 				(((T&) *this).*p)(cc, std::forward<TArg>( arg.__ArgData<TArg, N>::GetArg() )...);
@@ -394,7 +407,8 @@ namespace Nav
 			AveInline void __Call( const Napi::CallbackInfo& cb, void(T::*p)(const MixCallContext&, TArg...), __Detail::__Index<N...>* )
 			{
 				__Detail::__ArgList<TArg...> arg{};
-				(__Detail::__ConvertType<TArg>::ToCpp( &arg.__ArgData<TArg, N>::GetArg(), cb[N] ), ...);
+				//(__Detail::__ConvertType<TArg>::ToCpp( &arg.__ArgData<TArg, N>::GetArg(), cb[N] ), ...);
+				__SetArg( arg.__ArgData<TArg, N>::SetArg( cb[N] )... );
 
 				MixCallContext cc( cb );
 				(((T&) *this).*p)(cc, std::forward<TArg>( arg.__ArgData<TArg, N>::GetArg() )...);
@@ -651,7 +665,8 @@ namespace Nav
 		static AveInline TRet __CallGlobalMethod( const Napi::CallbackInfo& cb, TRet( *p )(TArg...), __Detail::__Index<N...>* )
 		{
 			__Detail::__ArgList<TArg...> arg{};
-			(__Detail::__ConvertType<TArg>::ToCpp( &arg.__ArgData<TArg, N>::GetArg(), cb[N] ), ...);
+			//(__Detail::__ConvertType<TArg>::ToCpp( &arg.__ArgData<TArg, N>::GetArg(), cb[N] ), ...);
+			__Detail::__SetArg( arg.__ArgData<TArg, N>::SetArg( cb[N] )... );
 			return (*p)(std::forward<TArg>( arg.__ArgData<TArg, N>::GetArg() )...);
 		}
 
@@ -665,7 +680,8 @@ namespace Nav
 		static AveInline TRet __CallGlobalMethodCi( const Napi::CallbackInfo& cb, TRet( *p )(const CallbackInfo&, TArg...), __Detail::__Index<N...>* )
 		{
 			__Detail::__ArgList<TArg...> arg{};
-			(__Detail::__ConvertType<TArg>::ToCpp( &arg.__ArgData<TArg, N>::GetArg(), cb[N] ), ...);
+			//(__Detail::__ConvertType<TArg>::ToCpp( &arg.__ArgData<TArg, N>::GetArg(), cb[N] ), ...);
+			__Detail::__SetArg( arg.__ArgData<TArg, N>::SetArg( cb[N] )... );
 			return (*p)(cb, std::forward<TArg>( arg.__ArgData<TArg, N>::GetArg() )...);
 		}
 

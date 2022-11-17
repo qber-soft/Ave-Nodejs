@@ -81,7 +81,7 @@ namespace Nav
 		return c.m_Container->Save( *img->Get(), szFile );
 	}
 
-	ArrayBuffer ImgCodec::SaveArrayBuffer( PCWChar szFile, ImgImage * img, ImgContainerType nType )
+	ArrayBuffer ImgCodec::SaveArrayBuffer( ImgImage * img, ImgContainerType nType )
 	{
 		ArrayBuffer ab{};
 		ab.m_Null = true;
