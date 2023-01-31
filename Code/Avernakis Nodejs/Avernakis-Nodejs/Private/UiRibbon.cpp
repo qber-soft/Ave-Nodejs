@@ -26,6 +26,8 @@ namespace Nav
 		AutoAddMethod( GetMinimized, WrapObjectGeneric );
 		AutoAddMethod( SetCanMinimize );
 		AutoAddMethod( GetCanMinimize, WrapObjectGeneric );
+		AutoAddMethod( SetAutoMinimizeThreshold );
+		AutoAddMethod( GetAutoMinimizeThreshold, WrapObjectGeneric );
 		AutoAddMethod( TabGetCount, WrapObjectGeneric );
 		AutoAddMethod( TabAdd );
 		AutoAddMethod( TabInsert );

@@ -5,6 +5,8 @@ import { FileFindItem } from "../Io/IoCommon";
 import { IAveStream } from "../Io/IoStream";
 import { IPainter } from "./UiPainter";
 import { Byo2Font } from "../Byo2/Byo2Font";
+import { Mat32 } from "../Math";
+import { ImageData } from "../Image";
 
 export enum DropBehavior {
 	None = 0b0000,
@@ -152,9 +154,10 @@ export interface IControl extends IControlExtension {
     SetOpacity(f: number): IControl;
     GetOpacity(): number;
 
-    SetRotation(f: number): IControl;
-    GetRotation(): number;
-    HasRotation(): boolean;
+    SetTransform(m: Mat32): IControl;
+    GetTransform(): Mat32;
+    GetTransformInv(): Mat32;
+    HasTransform(): boolean;
 
     SetTabStop(b: boolean): IControl;
     GetTabStop(): boolean;
@@ -166,6 +169,9 @@ export interface IControl extends IControlExtension {
     GetLastPointerType(): PointerType;
     GetLastMessageTime(): number;
     IsVisual(): boolean;
+
+	SetViewReadback(fn: (sender: IControl, data: ImageData) => void, nCount: number): IControl; // nCount == 0: always readback
+
 
     SetDropEnable(b: boolean): IControl;
     GetDropEnable(): boolean;

@@ -54,7 +54,10 @@ export class MessageExtra {
 	VerificationTriple: boolean = false;
 	FooterIcon: IconCache = 0;
 	FooterText: string = "";
+	FooterIsLink: boolean = false;
 	MaxWidth: DpiSize = DpiSize.Zero;
+
+	OnMessageLink: (nId: number) => void;
 }
 
 export class MessageExResult {

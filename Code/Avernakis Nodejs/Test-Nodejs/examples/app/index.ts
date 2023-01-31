@@ -41,7 +41,7 @@ class MyApp {
 		this.m_App.LangSetDefaultString(CultureId.en_us, DefaultString);
 		this.m_App.LangSetCurrent(CultureId.en_us);
 
-		this.m_Window = new WindowMain();
+		this.m_Window = new WindowMain(this.m_App);
 		this.m_Window.CreateAndShow();
 
 		return this;

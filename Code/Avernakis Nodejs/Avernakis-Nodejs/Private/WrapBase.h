@@ -212,7 +212,7 @@ namespace Nav
 				}
 			}
 
-			AveInline operator U1 () const { return m_JsFuncDir; }
+			AveInline operator U1 () const { return m_Calling > 0 ? m_JsFuncNew : m_JsFuncDir; }
 
 			AveInline void operator () ( TArg... p );
 		};
@@ -386,7 +386,27 @@ namespace Nav
 		};
 
 		template<class TRet, class... TArg>
+		class __CheckType<JsFuncSafe<TRet( TArg... )>>
+		{
+		public:
+			static AveInline U1 Check( const Napi::Value & v )
+			{
+				return v.IsNull() || v.IsUndefined() || v.IsFunction();
+			}
+		};
+
+		template<class TRet, class... TArg>
 		class __CheckType<JsFuncSafe<TRet( TArg... )>&&>
+		{
+		public:
+			static AveInline U1 Check( const Napi::Value & v )
+			{
+				return v.IsNull() || v.IsUndefined() || v.IsFunction();
+			}
+		};
+
+		template<class TRet, class... TArg>
+		class __CheckType<JsFuncDirect<TRet( TArg... )>>
 		{
 		public:
 			static AveInline U1 Check( const Napi::Value & v )
@@ -629,10 +649,28 @@ namespace Nav
 		};
 
 		template<class TRet, class... TArg>
+		class __ConvertType<JsFuncSafe<TRet( TArg... )>>
+		{
+		public:
+			using TargetType_t = JsFuncSafe<TRet( TArg... )>;
+			static AveInline void ToCpp( void* p, const Napi::Value& v ) { ((TargetType_t*) p)->SetFunc( v ); }
+			static AveInline Napi::Value ToJs( Napi::Env env, const void* v ) { return env.Undefined(); } // This method should never be called
+		};
+
+		template<class TRet, class... TArg>
 		class __ConvertType<JsFuncSafe<TRet( TArg... )>&&>
 		{
 		public:
 			using TargetType_t = JsFuncSafe<TRet( TArg... )>;
+			static AveInline void ToCpp( void* p, const Napi::Value& v ) { ((TargetType_t*) p)->SetFunc( v ); }
+			static AveInline Napi::Value ToJs( Napi::Env env, const void* v ) { return env.Undefined(); } // This method should never be called
+		};
+
+		template<class TRet, class... TArg>
+		class __ConvertType<JsFuncDirect<TRet( TArg... )>>
+		{
+		public:
+			using TargetType_t = JsFuncDirect<TRet( TArg... )>;
 			static AveInline void ToCpp( void* p, const Napi::Value& v ) { ((TargetType_t*) p)->SetFunc( v ); }
 			static AveInline Napi::Value ToJs( Napi::Env env, const void* v ) { return env.Undefined(); } // This method should never be called
 		};
@@ -764,7 +802,8 @@ namespace Nav
 				}
 				auto ab = v.As<Napi::ArrayBuffer>();
 				rb.m_Data.Resize( ab.ByteLength() );
-				AveCopyMemory( rb.m_Data.Data(), ab.Data(), ab.ByteLength() );
+				rb.m_Null = false;
+				AveCopyMemoryAuto( rb.m_Data.Data(), ab.Data(), ab.ByteLength() );
 			}
 
 			static AveInline Napi::Value ToJs( Napi::Env env, const void* v )
@@ -773,7 +812,7 @@ namespace Nav
 				if ( rb.m_Null )
 					return env.Undefined();
 				auto buf = Napi::ArrayBuffer::New( env, rb.m_Data.Size() );
-				AveCopyMemory( buf.Data(), rb.m_Data.Data(), rb.m_Data.Size() );
+				AveCopyMemoryAuto( buf.Data(), rb.m_Data.Data(), rb.m_Data.Size() );
 				return buf;
 			}
 		};

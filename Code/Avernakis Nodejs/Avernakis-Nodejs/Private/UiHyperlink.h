@@ -29,6 +29,7 @@ namespace Nav
 	private:
 		UiHyperlink*					SetText( PCWChar szText ) { GetControlTyped().SetText( szText ? szText : AveWide( "" ) ); return this; }
 		WString							GetText() const { return GetControlTyped().GetText(); }
+		WString							GetTextDisplay() const { return GetControlTyped().GetTextDisplay(); }
 		U1								GetTextValid() const { return GetControlTyped().GetTextValid(); }
 
 		UiHyperlink*					SetAlignHorz( Ui::AlignType nAlign ) { GetControlTyped().SetAlignHorz( nAlign ); return this; }

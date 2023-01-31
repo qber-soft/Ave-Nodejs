@@ -33,6 +33,10 @@ namespace Nav
 
 		U32									GetMetadataCount() const { return m_Image->GetMetadataCount(); }
 		WrapData<Img::Metadata>				GetMetadata( U32 nIndex ) const { return m_Image->GetMetadata( nIndex ); }
+
+		U32									GetIndexBySize2( U32 nDesiredWidth, U32 nDesiredHeight, U32 nDesiredDepth ) const { return m_Image->GetIndexBySize( nDesiredWidth, nDesiredHeight, nDesiredDepth ); }
+		U32									GetIndexBySize( U32 nDesiredSize ) const { return m_Image->GetIndexBySize( nDesiredSize ); }
+
 		WrapData<Img::AnimationInfo>		GetAnimationInfo() const { return m_Image->GetAnimationInfo(); }
 		void								SetAnimationInfo( const WrapData<Img::AnimationInfo>& ai ) { return m_Image->SetAnimationInfo( ai ); }
 		List<WrapData<Img::AnimationFrame>>	GetFrameInfo() const;

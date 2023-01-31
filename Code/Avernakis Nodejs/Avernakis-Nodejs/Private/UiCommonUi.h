@@ -33,6 +33,8 @@ namespace Nav
 	class UiCommonUiMessage
 	{
 	public:
+		using OnMessageLink_t = JsFuncSafe<void( U32 nId )>;
+
 		Ui::IconCache									m_Icon;
 		Ui::DialogMessageResult							m_Default;
 		U32												m_RadioDefault;
@@ -45,10 +47,12 @@ namespace Nav
 		U1												m_VerificationTriple;
 		Ui::IconCache									m_FooterIcon;
 		WString											m_FooterText;
+		U1												m_FooterIsLink;
 		WrapData<Ui::DpiSize>							m_MaxWidth;
+		OnMessageLink_t									m_OnMessageLink;
 	};
 
-	NavDefineDataByMember_( UiCommonUiMessage, Icon, Default, RadioDefault, Radio, Button, StandardButton, Verification, VerificationKeyTip, VerificationDefault, VerificationTriple, FooterIcon, FooterText, MaxWidth );
+	NavDefineDataByMember_( UiCommonUiMessage, Icon, Default, RadioDefault, Radio, Button, StandardButton, Verification, VerificationKeyTip, VerificationDefault, VerificationTriple, FooterIcon, FooterText, FooterIsLink, MaxWidth, OnMessageLink );
 
 	class UiCommonUiMessageResult
 	{
@@ -91,7 +95,7 @@ namespace Nav
 		Ui::IWindow*						m_Window;
 		AppHelper::IWindowCommonUi*			m_CommonUi;
 
-		class WaitCall;
+		class MessageCallback;
 
 	private:
 		Ui::DialogMessageResult				Message( PCWChar szMain, PCWChar szDetail, Ui::DialogMessageIcon nIcon, U32 nButton, PCWChar szTitle );

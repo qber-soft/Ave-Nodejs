@@ -4,7 +4,7 @@ import { WindowLike } from "../Control/UiWindow";
 import { RibbonApp } from "./UiRibbonApp";
 import { ToolBar } from "../Control/UiToolBar";
 import { RibbonTab } from "./UiRibbonTab";
-import { Rect } from "../UiCommon";
+import { DpiSize, Rect } from "../UiCommon";
 
 export interface IRibbon extends IControl {
 	new (window: WindowLike): IRibbon;
@@ -20,6 +20,9 @@ export interface IRibbon extends IControl {
 
 	SetCanMinimize(b: boolean): Ribbon;
 	GetCanMinimize(): boolean;
+
+	SetAutoMinimizeThreshold(n: DpiSize): Ribbon;
+	GetAutoMinimizeThreshold(): DpiSize;
 
 	TabGetCount(): number;
 	TabAdd(pChild: RibbonTab): boolean;

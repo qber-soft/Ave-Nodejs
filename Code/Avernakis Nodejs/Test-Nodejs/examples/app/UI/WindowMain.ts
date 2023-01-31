@@ -1,4 +1,4 @@
-﻿import { DpiSize, Grid, HeaderItem, HeaderItemFormat, RichListBox, RichListBoxItemVirtual, ThemeImage, ThemePredefined_Dark, Window, WindowCreation, WindowFlag, Ribbon, RibbonTab, RibbonGroup, RibbonButton, IconSource, ButtonType, ToolBar, ToolBarItem, ToolBarItemType, RibbonGallery, RibbonGalleryItem, RibbonGalleryViewMode, StringKey, Menu, MenuItem, MenuType, StatusBar, Vec4, Byo2ImageCreation, Byo2ImageDataType, AppPath, Byo2Image, Vec2, MessageIcon, MessageButton, SysDialogFilter, AveGetSDKVersion, ThemeFileImage, ResourceSource } from "../../../src";
+﻿import { DpiSize, Grid, HeaderItem, HeaderItemFormat, RichListBox, RichListBoxItemVirtual, ThemeImage, ThemePredefined_Dark, Window, WindowCreation, WindowFlag, Ribbon, RibbonTab, RibbonGroup, RibbonButton, IconSource, ButtonType, ToolBar, ToolBarItem, ToolBarItemType, RibbonGallery, RibbonGalleryItem, RibbonGalleryViewMode, StringKey, Menu, MenuItem, MenuType, StatusBar, App } from "../../../src";
 import { DefaultString } from "../DefaultString";
 import { ResId } from "../ResId";
 import { IPage, PageRegister } from "./Page";
@@ -14,8 +14,13 @@ export class WindowMain implements IWindowMain {
 	private m_Theme: ThemeImage;
 	private m_ThemeDark: ThemePredefined_Dark;
 
+	private m_App: App;
 	private m_Page: Array<IPage> = [];
-	private m_PageCurrent: IPage = null;
+	private m_PageCurrent: IPage = null as any;
+
+	public constructor(app: App) {
+		this.m_App = app;
+	}
 
 	private CreateUIMain(sender: Window) {
 		const page = PageRegister.GetPage();
@@ -47,7 +52,7 @@ export class WindowMain implements IWindowMain {
 		this.m_Page = new Array<IPage>(page.length);
 		for (let i = 0; i < page.length; ++i) {
 			const p = page[i]();
-			grid.ControlAdd(p.CreateControl(this)).SetGrid(1, 0);
+			grid.ControlAdd(p.CreateControl(this, this.m_App)).SetGrid(1, 0);
 			p.Control.SetVisible(false);
 			this.m_Page[i] = p;
 		}
@@ -71,6 +76,7 @@ export class WindowMain implements IWindowMain {
 		sender.GetControlManager().AddControl(rib.GetApp(), "RibApp");
 
 		rib.SetContent(this.CreateUIMain(sender));
+		rib.SetAutoMinimizeThreshold(DpiSize.FromPixelScaled(400));
 
 		//----------------------------------------------------------------------------------------------------
 		// Home
@@ -298,7 +304,7 @@ export class WindowMain implements IWindowMain {
 		if (this.m_PageCurrent) {
 			this.m_PageCurrent.OnHide?.call(this.m_PageCurrent);
 			this.m_PageCurrent.Control.SetVisible(false);
-			this.m_PageCurrent = null;
+			this.m_PageCurrent = null as any;
 		}
 		const nIndex = sender.ItemGetSelection();
 		if (1 == sender.ItemGetSelectionCount() && nIndex >= 0 && nIndex < this.m_Page.length) this.m_PageCurrent = this.m_Page[nIndex];

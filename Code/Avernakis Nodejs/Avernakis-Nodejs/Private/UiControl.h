@@ -2,6 +2,7 @@
 
 #include "UiCommon.h"
 #include "UiDragContext.h"
+#include "ImgImage.h"
 
 namespace Nav
 {
@@ -96,7 +97,7 @@ namespace Nav
 
 	NavDefineDataByMember_( UiPopupParam, Exclude, Align, VerticalAlign, ClipMonitor, ScreenSpace, CatchClosingClick );
 
-	class UiControl
+	class UiControl : Byo2::ILayerReadback
 	{
 	protected:
 		UiControl() {}
@@ -110,6 +111,9 @@ namespace Nav
 		virtual void			GiveOwnership( Ui::Control c ) = 0;
 
 		virtual void			SetSharedControl( Ui::IControl* c ) = 0;
+
+	private:
+		virtual void 			OnLayerReadback( const Img::ImageData& pData, void* pContext ) override;
 
 	protected:
 		template<class T>
@@ -127,7 +131,7 @@ namespace Nav
 			AutoAddMethod( SetFont );
 			AutoAddMethod( SetTextColor );
 			AutoAddMethod( SetOpacity );
-			AutoAddMethod( SetRotation );
+			AutoAddMethod( SetTransform );
 			AutoAddMethod( SetTabStop );
 
 			AutoAddMethod( MapRect );
@@ -151,13 +155,16 @@ namespace Nav
 			AutoAddMethod( GetStyle );
 			AutoAddMethod( GetTextColor );
 			AutoAddMethod( GetOpacity );
-			AutoAddMethod( GetRotation );
-			AutoAddMethod( HasRotation );
+			AutoAddMethod( GetTransform );
+			AutoAddMethod( GetTransformInv );
+			AutoAddMethod( HasTransform );
 			AutoAddMethod( GetTabStop );
 			AutoAddMethod( GetLastInputType );
 			AutoAddMethod( GetLastPointerType );
 			AutoAddMethod( GetLastMessageTime );
 			AutoAddMethod( IsVisual );
+
+			AutoAddMethod( SetViewReadback );
 
 			AutoAddMethod( OnKeyPress   /**/ );
 			AutoAddMethod( OnKeyRelease /**/ );
@@ -247,6 +254,8 @@ namespace Nav
 		using OnChangeSize_t	/**/ = JsFuncSafe<void( UiControl* sender, const WrapData<S32_2>& vSize )>;
 		using OnPaintPost_t		/**/ = JsFuncSafe<void( UiControl* sender, UiPainter* painter, const WrapData<S32_R>& rc )>;
 
+		using OnViewReadback_t  /**/ = JsFuncSafe<void( UiControl* sender, const WrapData<ImgImageData>& data )>;
+
 		// JS is single-threaded, no need to use atomic
 		S32						m_MessagePostRefCount{ 0 };
 
@@ -274,6 +283,9 @@ namespace Nav
 		OnChangeFocus_t			m_OnChangeFocus;
 		OnChangeSize_t			m_OnChangeSize;
 		OnPaintPost_t			m_OnPaintPost;
+
+		OnViewReadback_t		m_OnViewReadback;
+		U32						m_ViewReadbackCount{ 0 };
 
 		// JS is single-threaded, no need to use atomic
 		S32						m_PainterRefCount{ 0 };
@@ -316,9 +328,10 @@ namespace Nav
 		WrapPointer<UiControl>	SetOpacity( R32 f ) { GetControl().SetOpacity( f ); return __GetUiControl();}
 		R32						GetOpacity() { return GetControl().GetOpacity(); }
 
-		WrapPointer<UiControl>	SetRotation( R32 f ) { GetControl().SetRotation( f ); return __GetUiControl(); }
-		R32						GetRotation() { return GetControl().GetRotation(); }
-		U1						HasRotation() { return GetControl().HasRotation(); }
+		WrapPointer<UiControl>	SetTransform( const WrapData<R32_3x2>& m ) { GetControl().SetTransform( m ); return __GetUiControl(); }
+		WrapData<R32_3x2>		GetTransform() { return GetControl().GetTransform(); }
+		WrapData<R32_3x2>		GetTransformInv() { return GetControl().GetTransformInv(); }
+		U1						HasTransform() { return GetControl().HasTransform(); }
 
 		WrapPointer<UiControl>	SetTabStop( U1 b ) { GetControl().SetTabStop( b ); return __GetUiControl(); }
 		U1						GetTabStop() { return GetControl().GetTabStop(); }
@@ -330,6 +343,10 @@ namespace Nav
 		Ui::PointerType			GetLastPointerType() { return GetControl().GetLastPointerType(); }
 		R64						GetLastMessageTime() { return GetControl().GetLastMessageTime(); }
 		U1						IsVisual() { return GetControl().IsVisual(); }
+
+		WrapPointer<UiControl>	SetViewReadback( OnViewReadback_t&& fn, U32 nCount );
+
+
 
 		U1						ShowPopup( WrapPointer<UiControl> pControl, const WrapData<S32_2>& vPos, const WrapData<UiPopupParam>& pp );
 		void					HidePopup() { GetControl().ProcessMessage( Ui::ControlMessage::RevPopupHide, {} ); }

@@ -40,6 +40,16 @@ namespace Nav
 
 	NavDefineDataByMember_( Byo2DrawImageParam, SourceRect, TargetSize, SourceAlpha, SourceRect2, Filter, Address, Address2, Transform, Transform2 );
 
+	class Byo2Viewport
+	{
+	public:
+		WrapData<R32_2>					m_Offset;
+		R32								m_Opacity;
+		WrapData<R32_3x2>				m_Transform;
+	};
+
+	NavDefineDataByMember_( Byo2Viewport, Offset, Opacity, Transform );
+
 	class UiPainter : public WrapObject<UiPainter, void(), WrapObjectGeneric>
 	{
 	public:
@@ -86,7 +96,8 @@ namespace Nav
 		// Byo2 methods
 		//----------------------------------------------------------------------------------------------------
 
-		void							PushViewport( const WrapData<R32_R>& rc, const WrapData<R32_2>& vOffset, R32 fOpacity, R32 fRotation ) { m_Painter->GetDeviceContext2().PushViewport( rc, &vOffset, fOpacity, fRotation ); }
+		void							PushViewport( const WrapData<R32_R>& rc, const WrapData<R32_2>& vOffset, R32 fOpacity ) { Byo2::ViewportProperty vp{ vOffset, fOpacity, {} }; m_Painter->GetDeviceContext2().PushViewport( rc, &vp ); }
+		void							PushViewport2( const WrapData<R32_R>& rc, const WrapData<Byo2Viewport>& v ) { Byo2::ViewportProperty vp{ v.m_Offset, v.m_Opacity, v.m_Transform }; m_Painter->GetDeviceContext2().PushViewport( rc, &vp ); }
 		void							PopViewport() { m_Painter->GetDeviceContext2().PopViewport(); }
 		WrapData<R32_R>					GetViewportRect() const { return m_Painter->GetDeviceContext2().GetViewportRect(); }
 

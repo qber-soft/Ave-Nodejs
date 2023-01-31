@@ -18,6 +18,17 @@ export interface IAveImage {
 
 	GetMetadataCount(): number;
 	GetMetadata(nIndex: number): ImageMetadata;
+
+	// Find the smallest image which >= desired size.
+	// If there is no such an image, the image with largest area will be returned.
+	// Use 0 to ignore the specified dimension.
+	GetIndexBySize2(nDesiredWidth: number, nDesiredHeight: number, nDesiredDepth: number);
+	
+	// Find the smallest squre/cube image which >= desired size.
+	// If there is no such an image or no squer/cube image, 0 will be returned.
+	// Usually this is use to find an icon with the best size
+	GetIndexBySize(nDesiredSize: number);
+
 	GetAnimationInfo(): AnimationInfo;
 	SetAnimationInfo(ai: AnimationInfo): void;
 	GetFrameInfo(): AnimationFrame[];

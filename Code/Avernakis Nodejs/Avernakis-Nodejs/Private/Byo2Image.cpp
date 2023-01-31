@@ -18,7 +18,14 @@ namespace Nav
 	{
 		AutoAddMethod( GetWidth );
 		AutoAddMethod( GetHeight );
+		AutoAddMethod( Invalidate );
+		AutoAddMethod( Prepare );
 		AutoAddMethod( Upload );
+
+		AutoAddMethod( SetOpacity );
+		AutoAddMethod( SetTransform );
+		AutoAddMethod( SetAddress );
+		AutoAddMethod( SetFilter );
 	}
 
 	U1 Byo2Image::Ctor( UiWindow* p, const WrapData<Byo2ImageCreation>& c )

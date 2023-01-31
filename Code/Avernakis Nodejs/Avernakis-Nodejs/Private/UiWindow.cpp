@@ -102,6 +102,9 @@ namespace Nav
 		AutoAddMethod( SetInfection );
 		AutoAddMethod( GetInfection );
 
+		AutoAddMethod( SetInplacePopup );
+		AutoAddMethod( GetInplacePopup );
+
 		AutoAddMethod( SetImportantRender );
 		AutoAddMethod( GetImportantRender );
 
