@@ -1,6 +1,8 @@
 ﻿import { IControl, IDragContext, MessagePointer } from "./Ui/UiControl";
 import { Vec2, Vec4 } from "./Math/Vector";
-import { CursorType, Rect } from "./Ui/UiCommon";
+import { Mat32 } from "./Math/Matrix";
+import { Rect } from "./Ui/UiCommon";
+import { ImageData } from "./Image/ImgCommon";
 import * as fs from "fs";
 import { Byo2Font } from "./Byo2/Byo2Font";
 
@@ -9,7 +11,7 @@ export interface IControlExtension {
 	GetPosition(): Vec2;
 	GetSize(): Vec2;
 	GetEnableWithParent(): boolean;
-    GetFont(): Byo2Font;
+	GetFont(): Byo2Font;
 }
 
 export function ExtendControlInstance(instance: IControl) {
@@ -26,6 +28,16 @@ export function ExtendControlInstance(instance: IControl) {
 	const GetRect = instance.GetRect.bind(instance);
 	instance.GetRect = () => {
 		return Rect.FromNative(GetRect());
+	};
+
+	const GetTransform = instance.GetTransform.bind(instance);
+	instance.GetTransform = () => {
+		return Mat32.FromNative(GetTransform());
+	};
+
+	const GetTransformInv = instance.GetTransformInv.bind(instance);
+	instance.GetTransformInv = () => {
+		return Mat32.FromNative(GetTransformInv());
 	};
 
 	const GetRectClient = instance.GetRectClient?.bind(instance);
@@ -64,6 +76,17 @@ export function ExtendControlInstance(instance: IControl) {
 	instance.GetFont = (): Byo2Font => {
 		return (instance as any).m_Font;
 	};
+
+	//
+	const SetViewReadback = instance.SetViewReadback?.bind(instance);
+	if (SetViewReadback) {
+		type Handler = (sender: IControl, data: ImageData) => void;
+		type Method = (fn: Handler, nCount: number) => IControl;
+		const createSetViewReadback: (original: Method) => Method = (original) => {
+			return (fn, nCount) => original((sender, data) => fn(sender, ImageData.FromNative(data)), nCount);
+		};
+		instance.SetViewReadback = createSetViewReadback(SetViewReadback);
+	}
 
 	//
 	type DragHandler = (sender: IControl, dc: IDragContext) => void;

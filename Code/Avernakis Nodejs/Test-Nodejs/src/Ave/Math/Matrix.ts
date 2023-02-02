@@ -35,6 +35,10 @@ export class Mat32 {
 		}
 	}
 
+	static FromNative(m: Mat32) {
+		return new Mat32(m._11, m._12, m._21, m._22, m._31, m._32);
+	}
+
 	static get Identity() {
 		return new Mat32();
 	}
@@ -48,15 +52,17 @@ export class Mat32 {
 	}
 
 	static Rotation(f: number, cx: number = 0, cy: number = 0) {
-		const s = Math.sin(f), c = Math.cos(f);
+		const s = Math.sin(f),
+			c = Math.cos(f);
 		return new Mat32(c, s, -s, c, cx - cx * c + cy * s, cy - cx * s - cy * c);
 	}
-	
+
 	static Skew(x: number = 0, y: number = 0, cx: number = 0, cy: number = 0) {
-		const tx = Math.tan(x), ty = Math.tan(y);
+		const tx = Math.tan(x),
+			ty = Math.tan(y);
 		return new Mat32(1, ty, tx, 1, -tx * cy, -ty * cx);
 	}
-	
+
 	Equal(r: Mat32) {
 		return this._11 == r._11 && this._12 == r._12 && this._21 == r._21 && this._22 == r._22 && this._31 == r._31 && this._32 == r._32;
 	}
