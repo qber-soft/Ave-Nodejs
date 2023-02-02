@@ -152,6 +152,12 @@ export class PainterState<T extends number = number> {
 	}
 }
 
+export class PainterViewport {
+	Offset: Vec2 = Vec2.Zero;
+	Opacity: number = 1;
+	Transform: Mat32 = Mat32.Identity;
+}
+
 // prettier-ignore
 export interface IPainter {
 	GetTime(): number;
@@ -172,7 +178,8 @@ export interface IPainter {
 
 	DrawAnimation(): void;
 
-	PushViewport(rc: Rect, vOffset: Vec2, fOpacity: number, fRotation: number): void;
+	PushViewport(rc: Rect, vOffset: Vec2, fOpacity: number): void;
+	PushViewport2(rc: Rect, vp: PainterViewport): void;
 	PopViewport(): void;
 	GetViewportRect(): Rect;
 

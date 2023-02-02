@@ -28,6 +28,10 @@ namespace Nav
 
 		AutoAddMethod( GetMetadataCount );
 		AutoAddMethod( GetMetadata );
+
+		AutoAddMethod( GetIndexBySize2 );
+		AutoAddMethod( GetIndexBySize );
+
 		AutoAddMethod( GetAnimationInfo );
 		AutoAddMethod( SetAnimationInfo );
 		AutoAddMethod( GetFrameInfo );

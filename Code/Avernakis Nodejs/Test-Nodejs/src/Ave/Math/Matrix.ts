@@ -1,6 +1,6 @@
 ﻿import { Plane } from "./Plane";
 import { DualQuat, Quat } from "./Quaternion";
-import { Vec3, Vec4 } from "./Vector";
+import { Vec2, Vec3, Vec4 } from "./Vector";
 
 export class Mat32 {
 	_11: number = 1;
@@ -10,8 +10,65 @@ export class Mat32 {
 	_31: number = 0;
 	_32: number = 0;
 
+	constructor(a: Mat32 | Vec2 | number = 1, b: Vec2 | number = 0, c: Vec2 | number = 0, _22: number = 1, _31: number = 0, _32: number = 0) {
+		if (a instanceof Mat32) {
+			this._11 = a._11;
+			this._12 = a._12;
+			this._21 = a._21;
+			this._22 = a._22;
+			this._31 = a._31;
+			this._32 = a._32;
+		} else if (a instanceof Vec2 && b instanceof Vec2 && c instanceof Vec2) {
+			this._11 = a.x;
+			this._12 = a.y;
+			this._21 = b.x;
+			this._22 = b.y;
+			this._31 = c.x;
+			this._32 = c.y;
+		} else if (typeof a == "number" && typeof b == "number" && typeof c == "number") {
+			this._11 = a;
+			this._12 = b;
+			this._21 = c;
+			this._22 = _22;
+			this._31 = _31;
+			this._32 = _32;
+		}
+	}
+
+	static FromNative(m: Mat32) {
+		return new Mat32(m._11, m._12, m._21, m._22, m._31, m._32);
+	}
+
 	static get Identity() {
 		return new Mat32();
+	}
+
+	static Translation(x: number = 0, y: number = 0) {
+		return new Mat32(1, 0, 0, 1, x, y);
+	}
+
+	static Scaling(x: number = 1, y: number = 1, cx: number = 0, cy: number = 0) {
+		return new Mat32(x, 0, 0, y, cx - x * cx, cy - y * cy);
+	}
+
+	static Rotation(f: number, cx: number = 0, cy: number = 0) {
+		const s = Math.sin(f),
+			c = Math.cos(f);
+		return new Mat32(c, s, -s, c, cx - cx * c + cy * s, cy - cx * s - cy * c);
+	}
+
+	static Skew(x: number = 0, y: number = 0, cx: number = 0, cy: number = 0) {
+		const tx = Math.tan(x),
+			ty = Math.tan(y);
+		return new Mat32(1, ty, tx, 1, -tx * cy, -ty * cx);
+	}
+
+	Equal(r: Mat32) {
+		return this._11 == r._11 && this._12 == r._12 && this._21 == r._21 && this._22 == r._22 && this._31 == r._31 && this._32 == r._32;
+	}
+
+	Mul(r: Mat32) {
+		return new Mat32(this._11 * r._11 + this._12 * r._21, this._11 * r._12 + this._12 * r._22, this._21 * r._11 + this._22 * r._21, this._21 * r._12 + this._22 * r._22, this._31 * r._11 + this._32 * r._21 + r._31, this._31 * r._12 + this._32 * r._22 + r._32);
 	}
 }
 

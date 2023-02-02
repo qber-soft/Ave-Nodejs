@@ -10,6 +10,20 @@
 namespace Nav
 {
 
+	void UiControl::OnLayerReadback( const Img::ImageData & pData, void * pContext )
+	{
+		if ( m_ViewReadbackCount > 0 && m_OnViewReadback )
+		{
+			m_OnViewReadback( __GetUiControl(), ImgImageData::FromImageData( pData ) );
+			if ( 0xffffffff != m_ViewReadbackCount )
+			{
+				--m_ViewReadbackCount;
+				if ( 0 == m_ViewReadbackCount )
+					GetControl().SetViewReadback( nullptr );
+			}
+		}
+	}
+
 	void UiControl::AcquirePainter( const CallbackInfo & ci )
 	{
 		if ( 1 == ++m_PainterRefCount )
@@ -98,6 +112,19 @@ namespace Nav
 	WrapPointer<UiControl> UiControl::SetFont( WrapPointer<Byo2Font> pFont )
 	{
 		GetControl().SetFont( pFont->CloneFont() );
+		return __GetUiControl();
+	}
+
+	WrapPointer<UiControl> UiControl::SetViewReadback( OnViewReadback_t && fn, U32 nCount )
+	{
+		m_OnViewReadback = std::move( fn );
+		m_ViewReadbackCount = nCount;
+		if ( 0 == m_ViewReadbackCount )
+			m_ViewReadbackCount = 0xffffffff;
+		if ( m_OnViewReadback )
+			GetControl().SetViewReadback( this );
+		else
+			GetControl().SetViewReadback( nullptr );
 		return __GetUiControl();
 	}
 

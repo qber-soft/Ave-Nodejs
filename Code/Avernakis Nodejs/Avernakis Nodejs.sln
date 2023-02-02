@@ -1,11 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.31410.357
+# Visual Studio Version 17
+VisualStudioVersion = 17.4.33103.184
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Avernakis-Nodejs", "Avernakis-Nodejs\Avernakis-Nodejs.vcxproj", "{2D616F99-8F53-47A2-86FF-5DC1903963E8}"
-EndProject
-Project("{9092AA53-FB77-4645-B42D-1CCCA6BD08BD}") = "Test-Nodejs", "Test-Nodejs\Test-Nodejs.njsproj", "{B9220CEB-C362-47DA-A86A-836C762D90F7}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test-Nodejs Resource", "Test-Nodejs Resource", "{73A43A40-7B04-425D-83AA-8F22DDB5A938}"
 EndProject
@@ -36,14 +34,6 @@ Global
 		{2D616F99-8F53-47A2-86FF-5DC1903963E8}.Release|x64.Build.0 = Release|x64
 		{2D616F99-8F53-47A2-86FF-5DC1903963E8}.Release|x86.ActiveCfg = Release|Win32
 		{2D616F99-8F53-47A2-86FF-5DC1903963E8}.Release|x86.Build.0 = Release|Win32
-		{B9220CEB-C362-47DA-A86A-836C762D90F7}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{B9220CEB-C362-47DA-A86A-836C762D90F7}.Debug|x64.Build.0 = Debug|Any CPU
-		{B9220CEB-C362-47DA-A86A-836C762D90F7}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{B9220CEB-C362-47DA-A86A-836C762D90F7}.Debug|x86.Build.0 = Debug|Any CPU
-		{B9220CEB-C362-47DA-A86A-836C762D90F7}.Release|x64.ActiveCfg = Release|Any CPU
-		{B9220CEB-C362-47DA-A86A-836C762D90F7}.Release|x64.Build.0 = Release|Any CPU
-		{B9220CEB-C362-47DA-A86A-836C762D90F7}.Release|x86.ActiveCfg = Release|Any CPU
-		{B9220CEB-C362-47DA-A86A-836C762D90F7}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

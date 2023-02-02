@@ -15,30 +15,51 @@ namespace Nav
 		ObjectRegister<UiCommonUi> c_obj;
 	}
 
-	class UiCommonUi::WaitCall : public PromiseCall<UiCommonUi, WaitCall, Dee::AsyncOpState( Wait_t&& )>
+	//class UiCommonUi::WaitCall : public PromiseCall<UiCommonUi, WaitCall, Dee::AsyncOpState( Wait_t&& )>
+	//{
+	//public:
+	//	using PromiseCall::PromiseCall;
+
+	//	virtual void OnPrepare( const CallbackInfo& ci ) override
+	//	{
+	//		m_Wait = ci.NewJsObjectWithOwnership<UiCommonUiWait>();
+	//	}
+
+	//	Dee::AsyncOpState operator () ( Wait_t && fn )
+	//	{
+	//		return m_Owner->m_CommonUi->Wait( [this, &fn]( Ui::IDialogWaitOp& op )
+	//		{
+	//			m_Wait->SetOp( &op );
+	//			App::GetSingleton().ExecuteInJsThread( [this, &fn]
+	//			{
+	//				fn.DirectCall( m_Wait );
+	//			}, true );
+	//		}, 1 );
+	//	}
+
+	//private:
+	//	JsObject<UiCommonUiWait> m_Wait;
+	//};
+
+	class UiCommonUi::MessageCallback : public Ui::IDialogMessageCallback
 	{
+		virtual U1 OnDialogMessageCreate( Ui::IDialogMessageCreate& pmc ) override
+		{
+			return true;
+		}
+
+		virtual void OnDialogMessageLink( U32 nId ) override
+		{
+			m_OnMessageLink( nId );
+		}
+
+		UiCommonUiMessage::OnMessageLink_t m_OnMessageLink;
+
 	public:
-		using PromiseCall::PromiseCall;
-
-		virtual void OnPrepare( const CallbackInfo& ci ) override
+		MessageCallback( UiCommonUiMessage& extra )
 		{
-			m_Wait = ci.NewJsObjectWithOwnership<UiCommonUiWait>();
+			m_OnMessageLink = std::move( extra.m_OnMessageLink );
 		}
-
-		Dee::AsyncOpState operator () ( Wait_t && fn )
-		{
-			return m_Owner->m_CommonUi->Wait( [this, &fn]( Ui::IDialogWaitOp& op )
-			{
-				m_Wait->SetOp( &op );
-				App::GetSingleton().ExecuteInJsThread( [this, &fn]
-				{
-					fn.DirectCall( m_Wait );
-				}, true );
-			}, 1 );
-		}
-
-	private:
-		JsObject<UiCommonUiWait> m_Wait;
 	};
 
 	void UiCommonUi::DefineObject()
@@ -98,6 +119,7 @@ namespace Nav
 		pConvertButton( vStdButton, extra.m_StandardButton );
 
 		Ui::DialogMessageExtra dme{};
+		MessageCallback cb( (UiCommonUiMessage&) extra );
 		dme.m_Icon = extra.m_Icon;
 		dme.m_Default = extra.m_Default;
 		dme.m_RadioCount = (U32) vRadio.Size();
@@ -113,7 +135,9 @@ namespace Nav
 		dme.m_VerificationTriple = extra.m_VerificationTriple;
 		dme.m_FooterIcon = extra.m_FooterIcon;
 		dme.m_FooterText = extra.m_FooterText.c_str();
+		dme.m_FooterIsLink = extra.m_FooterIsLink;
 		dme.m_MaxWidth = extra.m_MaxWidth;
+		dme.m_Callback = &cb;
 
 		UiCommonUiMessageResult result;
 		result.m_Result = m_CommonUi->Message( szMain, szDetail, nIcon, nButton, szTitle, &dme );

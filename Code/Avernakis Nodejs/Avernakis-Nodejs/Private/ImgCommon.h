@@ -63,7 +63,7 @@ namespace Nav
 			r.m_RowPitch = data.m_RowPitch;
 			r.m_SlicePitch = data.m_SlicePitch;
 			r.m_Data.m_Data.Resize( data.m_SlicePitch * data.m_Depth );
-			AveCopyMemory( r.m_Data.m_Data.Data(), data.m_Data, r.m_Data.m_Data.DataSize() );
+			AveCopyMemoryAuto( r.m_Data.m_Data.Data(), data.m_Data, r.m_Data.m_Data.DataSize() );
 			r.m_Data.m_Null = false;
 			return std::move( r );
 		}

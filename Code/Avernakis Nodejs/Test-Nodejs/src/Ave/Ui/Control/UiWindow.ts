@@ -296,6 +296,9 @@ export type IWindow<T> = {
 	SetInfection(infection: UiThemeInfection): T;
 	GetInfection(): UiThemeInfection;
 
+	SetInplacePopup(b: boolean): T;
+	GetInplacePopup(): boolean;
+	
 	SetImportantRender(b: boolean): T;
 	GetImportantRender(): boolean;
 

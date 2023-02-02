@@ -40,6 +40,9 @@ namespace Nav
 		UiRibbon*						SetCanMinimize( U1 b ) { GetControlTyped().SetCanMinimize( b ); return this; }
 		U1								GetCanMinimize() const { return GetControlTyped().GetCanMinimize(); }
 
+		UiRibbon*						SetAutoMinimizeThreshold( const WrapData<Ui::DpiSize>& nWidth ) { GetControlTyped().SetAutoMinimizeThreshold( nWidth ); return this; }
+		WrapData<Ui::DpiSize>			GetAutoMinimizeThreshold() const { return GetControlTyped().GetAutoMinimizeThreshold(); }
+
 		U32								TabGetCount() const { return GetControlTyped().TabGetCount(); }
 		U1								TabAdd( UiRibbonTab* pChild );
 		U1								TabInsert( U32 nInsertBefore, UiRibbonTab* pChild );

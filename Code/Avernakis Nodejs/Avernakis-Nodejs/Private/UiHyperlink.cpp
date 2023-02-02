@@ -17,6 +17,7 @@ namespace Nav
 	{
 		AutoAddMethod( SetText );
 		AutoAddMethod( GetText, WrapObjectGeneric );
+		AutoAddMethod( GetTextDisplay, WrapObjectGeneric );
 		AutoAddMethod( GetTextValid, WrapObjectGeneric );
 		AutoAddMethod( SetAlignHorz );
 		AutoAddMethod( GetAlignHorz, WrapObjectGeneric );

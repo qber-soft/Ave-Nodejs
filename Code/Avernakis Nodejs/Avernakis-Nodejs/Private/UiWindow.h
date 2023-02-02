@@ -286,6 +286,9 @@ namespace Nav
 		UiWindow*							SetInfection( const WrapData<UiThemeInfection>& pi );
 		WrapData<UiThemeInfection>			GetInfection();
 
+		UiWindow*							SetInplacePopup( U1 b ) { GetWindow().SetInplacePopup( b ); return this; }
+		U1									GetInplacePopup() const { return GetWindow().GetInplacePopup(); }
+
 		UiWindow*							SetImportantRender( U1 b ) { GetNativeWindow().SetImportantRender( b ); return this; }
 		U1									GetImportantRender() const { return GetNativeWindow().GetImportantRender(); }
 

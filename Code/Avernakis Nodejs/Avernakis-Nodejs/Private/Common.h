@@ -41,17 +41,17 @@ namespace Nav
 	NavDefineDataByMember( R32_4x4, _11, _12, _13, _14, _21, _22, _23, _24, _31, _32, _33, _34, _41, _42, _43, _44 );
 
 	template<>
-	class WrapDataDefine<R32_3x2> : WrapDataBase<R32_3x4>
+	class WrapDataDefine<R32_3x2> : WrapDataBase<R32_3x2>
 	{
 	public:
 		static void DefineData()
 		{
-			AddField( "_11", &R32_3x4::d, 0 );
-			AddField( "_12", &R32_3x4::d, 1 );
-			AddField( "_21", &R32_3x4::d, 2 );
-			AddField( "_22", &R32_3x4::d, 3 );
-			AddField( "_31", &R32_3x4::d, 4 );
-			AddField( "_32", &R32_3x4::d, 5 );
+			AddField( "_11", &R32_3x2::d, 0 );
+			AddField( "_12", &R32_3x2::d, 1 );
+			AddField( "_21", &R32_3x2::d, 2 );
+			AddField( "_22", &R32_3x2::d, 3 );
+			AddField( "_31", &R32_3x2::d, 4 );
+			AddField( "_32", &R32_3x2::d, 5 );
 		}
 	};
 

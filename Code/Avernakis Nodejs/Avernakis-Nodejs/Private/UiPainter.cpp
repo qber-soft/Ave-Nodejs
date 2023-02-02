@@ -34,6 +34,7 @@ namespace Nav
 		AutoAddMethod( DrawAnimation );
 
 		AutoAddMethod( PushViewport );
+		AutoAddMethod( PushViewport2 );
 		AutoAddMethod( PopViewport );
 		AutoAddMethod( GetViewportRect );
 
