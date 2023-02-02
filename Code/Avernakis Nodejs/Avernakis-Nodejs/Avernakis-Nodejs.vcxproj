@@ -180,6 +180,8 @@
     <ClCompile Include="Private\UiButton.cpp" />
     <ClCompile Include="Private\UiCalendar.cpp" />
     <ClCompile Include="Private\UiCheckBox.cpp" />
+    <ClCompile Include="Private\UiCodeEditor.cpp" />
+    <ClCompile Include="Private\UiCodeEditorDoc.cpp" />
     <ClCompile Include="Private\UiColorPicker.cpp" />
     <ClCompile Include="Private\UiColorView.cpp" />
     <ClCompile Include="Private\UiComboBox.cpp" />
@@ -266,6 +268,8 @@
     <ClInclude Include="Private\UiButton.h" />
     <ClInclude Include="Private\UiCalendar.h" />
     <ClInclude Include="Private\UiCheckBox.h" />
+    <ClInclude Include="Private\UiCodeEditor.h" />
+    <ClInclude Include="Private\UiCodeEditorDoc.h" />
     <ClInclude Include="Private\UiColorPicker.h" />
     <ClInclude Include="Private\UiColorView.h" />
     <ClInclude Include="Private\UiComboBox.h" />

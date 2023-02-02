@@ -1,4 +1,5 @@
 ﻿import * as PageButton from "./Page/PageButton";
+import * as PageCodeEditor from "./Page/PageCodeEditor";
 import * as PageOwnedWindow from "./Page/PageOwnedWindow";
 import * as PagePopup from "./Page/PagePopup";
 import * as PageRichLabel from "./Page/PageRichLabel";
@@ -8,6 +9,7 @@ import * as PageTextBox from "./Page/PageTextBox";
 export function Register() {
 	[
 		PageButton,
+		PageCodeEditor,
 		PageOwnedWindow,
 		PagePopup,
 		PageRichLabel,

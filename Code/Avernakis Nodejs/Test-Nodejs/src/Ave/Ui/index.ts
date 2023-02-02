@@ -15,6 +15,7 @@ export * from "./Theme/UiThemeFile";
 export * from "./Control/UiButton";
 export * from "./Control/UiCalendar";
 export * from "./Control/UiCheckBox";
+export * from "./Control/UiCodeEditor";
 export * from "./Control/UiColorPicker";
 export * from "./Control/UiComboBox";
 export * from "./Control/UiContainer3D";
