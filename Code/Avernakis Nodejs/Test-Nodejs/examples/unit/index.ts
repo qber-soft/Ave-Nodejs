@@ -1,5 +1,5 @@
 import { run } from "./utility";
-import { main } from "./image/image-basic";
+import { main } from "./image/image-readback";
 run(main);
 
 // ---
