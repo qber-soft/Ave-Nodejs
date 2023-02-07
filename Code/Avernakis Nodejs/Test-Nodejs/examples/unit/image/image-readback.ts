@@ -21,18 +21,13 @@ export function main(window: Window, { app }: { app: App }) {
 	container.ControlAdd(picture).SetGrid(1, 1);
 	window.SetContent(container);
 
-	let done = false;
 	setTimeout(() => {
 		container.SetViewReadback((sender, data) => {
 			console.log("callback invoked");
-			if (!done) {
-				console.log("reset image");
-				const aveImage = new AveImage();
-				aveImage.CreateFromImage(ImageDimension.Texture2D, data);
-				// codec.SaveFile("./out.png", aveImage, ImageContainerType.PNG);
-				picture.SetImageData(aveImage);
-				done = true;
-			}
-		}, 0);
-	}, 5000);
+			const aveImage = new AveImage();
+			aveImage.CreateFromImage(ImageDimension.Texture2D, data);
+			// codec.SaveFile("./out.png", aveImage, ImageContainerType.PNG);
+			picture.SetImageData(aveImage);
+		}, 1);
+	}, 2000);
 }
