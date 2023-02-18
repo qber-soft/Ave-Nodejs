@@ -154,6 +154,8 @@ namespace Nav
 		U1								GetSimpleTab() const { return GetControlTyped().GetSimpleTab(); }
 		UiTab*							SetSimpleColor( const WrapData<U8_4>& vColor ) { GetControlTyped().SetSimpleColor( vColor ); return this; }
 		WrapData<U8_4>					GetSimpleColor() const { return GetControlTyped().GetSimpleColor(); }
+		UiTab*							SetBorder( U1 b ) { GetControlTyped().SetBorder( b ); return this; }
+		U1								GetBorder() const { return GetControlTyped().GetBorder(); }
 
 		WrapPointer<UiControl>			ContentSet( U32 nId, WrapPointer<UiControl> pControl ) { return __ChangeContent( GetControlTyped().ContentSet( nId, pControl->TakeOwnership() ) ); }
 		WrapPointer<UiControl>			ContentGet( U32 nId ) const { return __ReturnContent( GetControlTyped().ContentGet( nId ) ); }

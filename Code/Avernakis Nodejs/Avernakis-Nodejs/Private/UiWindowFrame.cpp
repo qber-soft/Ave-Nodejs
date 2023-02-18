@@ -33,6 +33,9 @@ namespace Nav
 		AutoAddMethod( SetBorderVisible );
 		AutoAddMethod( GetBorderVisible, WrapObjectGeneric );
 
+		AutoAddMethod( SetBorderOpacity );
+		AutoAddMethod( GetBorderOpacity, WrapObjectGeneric );
+
 		AutoAddMethod( SetCaptionVisible );
 		AutoAddMethod( GetCaptionVisible, WrapObjectGeneric );
 

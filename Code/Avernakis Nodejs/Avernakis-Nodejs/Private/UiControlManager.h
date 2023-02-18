@@ -25,6 +25,9 @@ namespace Nav
 		U1									AddControl( WrapPointer<UiControl> c, Napi::Value key );
 		void								RemoveControl( WrapPointer<UiControl> c );
 
+		U1									AddToolTip( WrapPointer<UiControl> c, Napi::Value key );
+		void								RemoveToolTip( WrapPointer<UiControl> c );
+
 	public:
 		AveInline UiControlManager*	SetControlManager( Ui::IControlManager* p ) { m_ControlManager = p; return this; }
 	};

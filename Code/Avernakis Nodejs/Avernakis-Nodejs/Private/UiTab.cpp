@@ -80,6 +80,8 @@ namespace Nav
 		AutoAddMethod( GetSimpleTab, WrapObjectGeneric );
 		AutoAddMethod( SetSimpleColor );
 		AutoAddMethod( GetSimpleColor, WrapObjectGeneric );
+		AutoAddMethod( SetBorder );
+		AutoAddMethod( GetBorder, WrapObjectGeneric );
 		AutoAddMethod( ContentSet );
 		AutoAddMethod( ContentGet, WrapObjectGeneric );
 		AutoAddMethod( ContentGetRect, WrapObjectGeneric );

@@ -39,6 +39,9 @@ export interface IWindowFrame {
 	SetBorderVisible(b: boolean): IWindowFrame;
 	GetBorderVisible(): boolean;
 
+	SetBorderOpacity(f: number): IWindowFrame;
+	GetBorderOpacity(): number;
+
 	SetCaptionVisible(b: boolean): IWindowFrame;
 	GetCaptionVisible(): boolean;
 

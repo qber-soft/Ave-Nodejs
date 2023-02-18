@@ -19,6 +19,9 @@ namespace Nav
 	{
 		AutoAddMethod( AddControl );
 		AutoAddMethod( RemoveControl );
+
+		AutoAddMethod( AddToolTip );
+		AutoAddMethod( RemoveToolTip );
 	}
 
 	U1 UiControlManager::AddControl( WrapPointer<UiControl> c, Napi::Value key )
@@ -29,9 +32,9 @@ namespace Nav
 		if ( sk.m_Count > 0 )
 		{
 			if ( sk.m_IdKey )
-				m_ControlManager->AddControlEx( c->GetControl().GetType(), &c->GetControl(), sk.m_Offset, sk.m_IdKey, sk.m_Count );
+				m_ControlManager->AddControl( c->GetControl().GetType(), &c->GetControl(), sk.m_Offset, sk.m_IdKey, sk.m_Count );
 			else
-				m_ControlManager->AddControlEx( c->GetControl().GetType(), &c->GetControl(), sk.m_StrKey.c_str(), sk.m_Offset, sk.m_Count );
+				m_ControlManager->AddControl( c->GetControl().GetType(), &c->GetControl(), sk.m_StrKey.c_str(), sk.m_Offset, sk.m_Count );
 		}
 		else
 		{
@@ -46,6 +49,25 @@ namespace Nav
 	void UiControlManager::RemoveControl( WrapPointer<UiControl> c )
 	{
 		m_ControlManager->RemoveControl( &c->GetControl() );
+	}
+
+	U1 UiControlManager::AddToolTip( WrapPointer<UiControl> c, Napi::Value key )
+	{
+		StringKey sk;
+		if ( !sk.Set( key ) )
+			return false;
+		if ( sk.m_Count > 0 )
+			return false;
+		if ( sk.m_IdKey )
+			m_ControlManager->AddToolTip( &c->GetControl(), sk.m_IdKey );
+		else
+			m_ControlManager->AddToolTip( &c->GetControl(), sk.m_StrKey.c_str() );
+		return true;
+	}
+
+	void UiControlManager::RemoveToolTip( WrapPointer<UiControl> c )
+	{
+		m_ControlManager->RemoveToolTip( &c->GetControl() );
 	}
 
 }
