@@ -60,6 +60,7 @@ namespace Nav
 		AveKak.StaticRegister<Img::IContainer_DDS>();
 		AveKak.StaticRegister<Img::IContainer_TGA>();
 		AveKak.StaticRegister<Img::IContainer_GIF>();
+		AveKak.StaticRegister<Img::IContainer_ICO>();
 
 		m_JsThreadId = GetSysInfo().GetCurrentThreadId();
 

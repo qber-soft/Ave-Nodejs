@@ -146,6 +146,8 @@ export interface ITab extends IControl {
 	GetSimpleTab(): boolean;
 	SetSimpleColor(vColor: Vec4): Tab;
 	GetSimpleColor(): Vec4;
+	SetBorder(b: boolean): Tab;
+	GetBorder(): boolean;
 
 	ContentSet(nId: number, pControl: IControl): IControl;
 	ContentGet(nId: number): IControl;

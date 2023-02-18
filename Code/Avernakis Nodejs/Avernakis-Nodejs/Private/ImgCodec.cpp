@@ -36,6 +36,7 @@ namespace Nav
 		m_Container[(U32) ImgContainerType::TGA].m_Guid = AveGuidOf( Ave::Img::IContainer_TGA );
 		m_Container[(U32) ImgContainerType::TIF].m_Guid = AveGuidOf( Ave::Img::IContainer_TIF );
 		m_Container[(U32) ImgContainerType::GIF].m_Guid = AveGuidOf( Ave::Img::IContainer_GIF );
+		m_Container[(U32) ImgContainerType::ICO].m_Guid = AveGuidOf( Ave::Img::IContainer_ICO );
 
 		return true;
 	}

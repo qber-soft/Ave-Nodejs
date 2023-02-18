@@ -17,6 +17,7 @@ namespace Nav
 		TGA = 5,
 		TIF = 6,
 		GIF = 7,
+		ICO = 8,
 
 		__Count,
 	};

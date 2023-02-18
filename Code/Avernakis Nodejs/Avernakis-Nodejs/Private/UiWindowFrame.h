@@ -58,6 +58,9 @@ namespace Nav
 		UiWindowFrame*					SetBorderVisible( U1 b ) { GetControlTyped().SetBorderVisible( b ); return this; }
 		U1								GetBorderVisible() const { return GetControlTyped().GetBorderVisible(); }
 
+		UiWindowFrame*					SetBorderOpacity( R32 f ) { GetControlTyped().SetBorderOpacity( f ); return this; }
+		R32								GetBorderOpacity() const { return GetControlTyped().GetBorderOpacity(); }
+
 		UiWindowFrame*					SetCaptionVisible( U1 b ) { GetControlTyped().SetCaptionVisible( b ); return this; }
 		U1								GetCaptionVisible() const { return GetControlTyped().GetCaptionVisible(); }
 

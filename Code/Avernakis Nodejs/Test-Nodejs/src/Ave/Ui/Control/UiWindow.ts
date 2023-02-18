@@ -175,6 +175,9 @@ export interface IWindowTaskbar {
 export interface IWindowControlManager {
 	AddControl(c: IControl, key: string | number | StringKey): boolean;
 	RemoveControl(c: IControl): boolean;
+
+	AddToolTip(c: IControl, key: string | number | StringKey): boolean;
+	RemoveToolTip(c: IControl): boolean;
 }
 
 //----------------------------------------------------------------------------------------------------
