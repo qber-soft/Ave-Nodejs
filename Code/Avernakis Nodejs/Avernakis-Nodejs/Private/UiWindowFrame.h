@@ -22,11 +22,23 @@ namespace Nav
 		U1								Ctor( UiWindow* p, Napi::Value v );
 
 	private:
-		using OnSysMenuClick_t = JsFuncSafe<void( UiWindowFrame* sender, U32 nId )>;
+		using OnNcHitTest_t       /**/ = JsFuncSafe<Ui::WindowFrameBackPart( UiWindowFrame* sender, const WrapData<S32_2>& vPos, Ui::WindowFrameBackPart nPart )>;
+		using OnNcHitTestResult_t /**/ = JsFuncSafe<void( UiWindowFrame* sender, Ui::WindowFrameBackPart nPart )>;
+		using OnSysMenuPopup_t    /**/ = JsFuncSafe<void( UiWindowFrame* sender )>;
+		using OnSysMenuClick_t    /**/ = JsFuncSafe<void( UiWindowFrame* sender, U32 nId )>;
+		using OnMaximumClick_t    /**/ = JsFuncSafe<void( UiWindowFrame* sender )>;
 
-		OnSysMenuClick_t				m_OnSysMenuClick;
+		OnNcHitTest_t					m_OnNcHitTest       /**/;
+		OnNcHitTestResult_t				m_OnNcHitTestResult /**/;
+		OnSysMenuPopup_t				m_OnSysMenuPopup    /**/;
+		OnSysMenuClick_t				m_OnSysMenuClick    /**/;
+		OnMaximumClick_t				m_OnMaximumClick    /**/;
 
-		void							__OnSysMenuClick( Ui::IWindowFrame& sender, U32 nId );
+		void							__OnNcHitTest       /**/( Ui::IWindowFrame& sender, const Ui::MessageNcHitTest& mp );
+		void							__OnNcHitTestResult /**/( Ui::IWindowFrame& sender, Ui::WindowFrameBackPart nPart );
+		void							__OnSysMenuPopup    /**/( Ui::IWindowFrame& sender );
+		void							__OnSysMenuClick    /**/( Ui::IWindowFrame& sender, U32 nId );
+		void							__OnMaximumClick    /**/( Ui::IWindowFrame& sender );
 
 	private:
 		WrapPointer<UiVisual>			SetIcon( WrapPointer<UiVisual> pVisual ) { return __ChangeContent( GetControlTyped().SetIcon( pVisual->TakeVisual() ) ); }
@@ -52,7 +64,11 @@ namespace Nav
 		void							SysMenuReset() { GetControlTyped().SysMenuReset(); }
 		U1								SysMenuAppend( const WrapData<UiMenuItem>& pMenu );
 
-		UiWindowFrame*					OnSysMenuClick( OnSysMenuClick_t&& fn );
+		UiWindowFrame*					OnNcHitTest       /**/( OnNcHitTest_t       /**/ && fn );
+		UiWindowFrame*					OnNcHitTestResult /**/( OnNcHitTestResult_t /**/ && fn );
+		UiWindowFrame*					OnSysMenuPopup    /**/( OnSysMenuPopup_t    /**/ && fn );
+		UiWindowFrame*					OnSysMenuClick    /**/( OnSysMenuClick_t    /**/ && fn );
+		UiWindowFrame*					OnMaximumClick    /**/( OnMaximumClick_t    /**/ && fn );
 
 	public:
 		void							InitCallback();
