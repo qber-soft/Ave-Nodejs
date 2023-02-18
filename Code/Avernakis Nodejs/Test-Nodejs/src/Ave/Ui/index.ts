@@ -43,6 +43,7 @@ export * from "./Control/UiToolBar";
 export * from "./Control/UiTrackBar";
 export * from "./Control/UiTree";
 export * from "./Control/UiWindow";
+export * from "./Control/UiWindowFrame";
 
 // Visuals
 export * from "./Visual/UiAnimFrame";

@@ -1,5 +1,4 @@
-import { App, WindowCreation, WindowFlag, Window, Grid, Vec4, DockMode } from "../../../src";
-import { WindowFramePart } from "../../../src/Ave/Ui/Control/UiWindowFrame";
+import { WindowFramePart, App, WindowCreation, WindowFlag, Window, Grid, Vec4, DockMode } from "../../../src";
 
 export function run() {
 	const app = new App();
