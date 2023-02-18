@@ -1,7 +1,25 @@
-﻿import { Rect } from "../UiCommon";
+﻿import { Vec2 } from "../../Math";
+import { Rect } from "../UiCommon";
 import { IControl } from "../UiControl";
 import { IVisual } from "../UiVisual";
 import { MenuItem } from "./UiMenu";
+
+export enum WindowFramePart {
+	BorderL,
+	BorderT,
+	BorderR,
+	BorderB,
+	CornerLT,
+	CornerRT,
+	CornerLB,
+	CornerRB,
+	Caption,
+	Client,
+	Minimum,
+	Maximum,
+	Close,
+	SysMenu,
+}
 
 export interface IWindowFrame {
 	SetIcon(n: IVisual): IVisual;
@@ -26,4 +44,10 @@ export interface IWindowFrame {
 
 	SysMenuReset(): void;
 	SysMenuAppend(mi: MenuItem): boolean;
+
+	OnNcHitTest(fn: (sender: IWindowFrame, vPos: Vec2, nPart: WindowFramePart) => WindowFramePart): IWindowFrame;
+	OnNcHitTestResult(fn: (sender: IWindowFrame, nPart: WindowFramePart) => void): IWindowFrame;
+	OnSysMenuPopup(fn: (sender: IWindowFrame) => void): IWindowFrame;
+	OnSysMenuClick(fn: (sender: IWindowFrame, nId: number) => void): IWindowFrame;
+	OnMaximumClick(fn: (sender: IWindowFrame) => void): IWindowFrame;
 }
